@@ -13,6 +13,13 @@ class JSONFormatter(logging.Formatter):
             "message": record.getMessage(),
         }
         for field in (
+            "batch_id",
+            "job_id",
+            "worker_execution_id",
+            "attempt_count",
+            "trigger_type",
+            "duration_ms",
+            "safe_error_code",
             "method",
             "path",
             "status_code",

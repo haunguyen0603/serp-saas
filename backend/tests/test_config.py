@@ -66,6 +66,8 @@ def test_production_rejects_fake_provider(monkeypatch: pytest.MonkeyPatch) -> No
     monkeypatch.setenv("DEBUG", "false")
     monkeypatch.setenv("AUTH_COOKIE_SECURE", "true")
     monkeypatch.setenv("SERP_PROVIDER", "fake")
+    monkeypatch.setenv("SERP_ENABLED_PROVIDERS", "fake")
+    monkeypatch.setenv("SERP_PROVIDER_STRATEGY", "fixed")
     monkeypatch.setenv(
         "JWT_SECRET_KEY", "production-secret-with-enough-random-characters-92741"
     )

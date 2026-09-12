@@ -16,6 +16,7 @@ from app.core.middleware import RequestLoggingMiddleware
 from app.core.redis import create_redis_client
 from app.core.security import hash_password
 from app.db.session import create_engine, create_session_factory
+from app.services.task_queue import create_task_queue
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -27,6 +28,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         engine = create_engine(settings)
         client = create_redis_client(settings)
         app.state.session_factory = create_session_factory(engine)
+        app.state.task_queue = create_task_queue(settings)
         app.state.redis = client
         try:
             app.state.dummy_password_hash = await run_in_threadpool(
@@ -59,7 +61,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         CORSMiddleware,
         allow_origins=settings.cors_origins,
         allow_credentials=True,
-        allow_methods=["GET", "POST", "PATCH", "DELETE"],
+        allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
         allow_headers=["Content-Type", "Authorization"],
     )
     return app

@@ -141,6 +141,9 @@ const detail: RankCheckDetail = {
 
 function mockApi() {
   request.mockImplementation(async (path: string, options?: RequestInit) => {
+    if (path.includes("rank-check-batches?") || path.includes("/jobs?"))
+      return { items: [], next_cursor: null, has_more: false };
+    if (path.endsWith("rank-schedule")) return null;
     if (path === "/api/v1/projects/project-1" && !options) return project;
     if (path.endsWith("/rankings/latest"))
       return {
@@ -167,16 +170,35 @@ function mockApi() {
       return { items: [check], next_cursor: null, has_more: false };
     if (path.includes("/keywords") && !options)
       return { items: keywords, next_cursor: null, has_more: false };
-    if (path.endsWith("/rank-checks") && options?.method === "POST") {
-      if (path.includes("/keywords/")) return detail;
+    if (path.endsWith("/rank-check-batches") && options?.method === "POST") {
       return {
-        project_id: project.id,
-        submitted_keywords: 3,
-        succeeded: 3,
-        failed: 0,
-        checks: [],
+        batch_id: "batch-1",
+        job_id: null,
+        status: "queued",
+        requested_keyword_count: 3,
       };
     }
+    if (path.includes("rank-check-batches") && path.includes("/jobs"))
+      return { items: [], next_cursor: null, has_more: false };
+    if (path.endsWith("rank-check-batches/batch-1"))
+      return {
+        id: "batch-1",
+        status: "completed",
+        trigger_type: "manual_project",
+        requested_keyword_count: 3,
+        succeeded_keyword_count: 3,
+        failed_keyword_count: 0,
+        cancelled_keyword_count: 0,
+        running_keyword_count: 0,
+        queued_keyword_count: 0,
+        progress_percent: 100,
+        requested_at: check.requested_at,
+        started_at: null,
+        completed_at: check.requested_at,
+      };
+    if (path.includes("rank-check-batches?"))
+      return { items: [], next_cursor: null, has_more: false };
+    if (path.endsWith("rank-schedule")) return null;
     return undefined;
   });
 }
@@ -206,6 +228,9 @@ it("hides provider and fallback metadata from ranking history", async () => {
     ],
   };
   request.mockImplementation(async (path: string, options?: RequestInit) => {
+    if (path.includes("rank-check-batches?") || path.includes("/jobs?"))
+      return { items: [], next_cursor: null, has_more: false };
+    if (path.endsWith("rank-schedule")) return null;
     if (path === "/api/v1/projects/project-1" && !options) return project;
     if (path.endsWith("/rankings/latest"))
       return {
@@ -245,7 +270,9 @@ it("renders latest ranking, no-match, and failed states from real API data", asy
     </Providers>,
   );
   await screen.findByText("Owned Site #2");
-  const table = screen.getByRole("table");
+  const table = screen
+    .getAllByRole("table")
+    .find((item) => !item.getAttribute("aria-label"))!;
   expect(within(table).getByText("Owned Site #2")).toBeVisible();
   expect(within(table).getByText("Not found in Top 10")).toBeVisible();
   expect(within(table).getByText("Check failed")).toBeVisible();
@@ -259,11 +286,11 @@ it("runs project and single Keyword checks with loading-safe actions", async () 
   );
   await screen.findByText("ranked keyword");
   fireEvent.click(screen.getByRole("button", { name: "Check Rankings" }));
-  expect(await screen.findByText("3 ranking checks succeeded.")).toBeVisible();
+  expect(await screen.findByText("Ranking checks queued.")).toBeVisible();
   fireEvent.click(screen.getAllByRole("button", { name: "Check now" })[0]);
-  expect(await screen.findByText("Keyword ranking checked.")).toBeVisible();
+  expect(await screen.findByText("Keyword check queued.")).toBeVisible();
   expect(request).toHaveBeenCalledWith(
-    "/api/v1/projects/project-1/rank-checks",
+    "/api/v1/projects/project-1/rank-check-batches",
     expect.objectContaining({ method: "POST" }),
   );
 });
@@ -290,7 +317,9 @@ it("opens history and detail with snapshots and tracked result labels", async ()
   expect(within(checkDetail).getByText("competitor.example")).toBeVisible();
   expect(within(checkDetail).getByText("Tracked · Owned Site")).toBeVisible();
   expect(within(checkDetail).getByText(/VN · vi · desktop/)).toBeVisible();
-  expect(within(checkDetail).getByText(/Data source: SerpApi/)).toBeVisible();
+  expect(
+    within(checkDetail).queryByText(/Data source: SerpApi/),
+  ).not.toBeInTheDocument();
   await waitFor(() =>
     expect(request).toHaveBeenCalledWith(
       "/api/v1/projects/project-1/keywords/keyword-1/rank-checks/check-1",

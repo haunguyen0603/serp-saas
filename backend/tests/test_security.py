@@ -132,6 +132,14 @@ def test_production_cookie_and_secret(monkeypatch: pytest.MonkeyPatch) -> None:
         Settings()
     monkeypatch.setenv("AUTH_COOKIE_SECURE", "true")
     monkeypatch.setenv("SERP_PROVIDER", "serpapi")
+    monkeypatch.setenv("SERPAPI_API_KEY", "mock-test-key")
+    monkeypatch.setenv("SERP_ENABLED_PROVIDERS", "serpapi")
+    monkeypatch.setenv("TASK_QUEUE_PROVIDER", "cloud_tasks")
+    monkeypatch.setenv("GCP_PROJECT_ID", "test")
+    monkeypatch.setenv("GCP_LOCATION", "test")
+    monkeypatch.setenv("CLOUD_TASKS_WORKER_URL", "https://worker.example")
+    monkeypatch.setenv("CLOUD_TASKS_SERVICE_ACCOUNT_EMAIL", "tasks@test.example")
+    monkeypatch.setenv("SCHEDULER_SERVICE_ACCOUNT_EMAIL", "scheduler@test.example")
     assert Settings().auth_cookie_secure
 
 

@@ -1,3 +1,7 @@
+> M5 update: the synchronous POST routes described below are retired. Use the
+> [Batch and schedule API](rank-check-batches.md). Existing GET history/detail contracts
+> and RankCheck response fields remain available.
+
 # Rank Check API
 
 All routes require a bearer access token. Ownership always comes from the token;

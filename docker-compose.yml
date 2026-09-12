@@ -31,7 +31,11 @@ services:
       context: .
       dockerfile: infrastructure/docker/backend.Dockerfile
       target: development
-    environment:
+    environment: &backend_environment
+      TASK_QUEUE_PROVIDER: ${TASK_QUEUE_PROVIDER:-local}
+      RANK_CHECK_BATCH_MAX_KEYWORDS: ${RANK_CHECK_BATCH_MAX_KEYWORDS:-5000}
+      RANK_CHECK_JOB_MAX_ATTEMPTS: ${RANK_CHECK_JOB_MAX_ATTEMPTS:-5}
+      RANK_CHECK_JOB_LEASE_SECONDS: ${RANK_CHECK_JOB_LEASE_SECONDS:-300}
       APP_ENV: ${APP_ENV:?Set APP_ENV in .env}
       APP_NAME: ${APP_NAME:?Set APP_NAME in .env}
       APP_VERSION: ${APP_VERSION:?Set APP_VERSION in .env}
@@ -78,6 +82,23 @@ services:
       timeout: 5s
       retries: 10
       start_period: 20s
+
+  worker:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/backend.Dockerfile
+      target: development
+    environment:
+      <<: *backend_environment
+    command: ["python", "-m", "scripts.rank_jobs", "--loop"]
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os; os.kill(1, 0)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   frontend:
     build:

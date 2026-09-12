@@ -51,3 +51,13 @@ serpapi-smoke:
 serper-smoke:
 	@echo "WARNING: this command may consume one real Serper search credit."
 	$(COMPOSE) run --rm -e RUN_REAL_SERPER_SMOKE=$(RUN_REAL_SERPER_SMOKE) backend python -m scripts.smoke_serper
+
+.PHONY: async-ranking-smoke cloud-tasks-contract-smoke recover-rank-jobs cloud-tasks-smoke
+async-ranking-smoke:
+	$(COMPOSE) exec -T backend python -m scripts.smoke_async_rankings
+cloud-tasks-contract-smoke:
+	$(COMPOSE) exec -T backend python -m scripts.smoke_cloud_tasks_contract
+recover-rank-jobs:
+	$(COMPOSE) run --rm backend python -m scripts.rank_jobs
+cloud-tasks-smoke:
+	$(COMPOSE) run --rm -e RUN_REAL_CLOUD_TASKS_SMOKE=$(RUN_REAL_CLOUD_TASKS_SMOKE) -e CLOUD_TASKS_SMOKE_JOB_ID=$(CLOUD_TASKS_SMOKE_JOB_ID) backend python -m scripts.smoke_cloud_tasks

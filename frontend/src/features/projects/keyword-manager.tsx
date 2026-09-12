@@ -17,6 +17,8 @@ import {
 } from "@/features/rankings/api";
 import { RankCheckDetail } from "@/features/rankings/rank-check-detail";
 import { RankCheckHistory } from "@/features/rankings/rank-check-history";
+import { BatchPanel, SchedulePanel } from "@/features/rankings/batch-panel";
+import { batchKey } from "@/features/rankings/batches";
 import type { RankCheck } from "@/features/rankings/types";
 import { ApiError } from "@/lib/api/client";
 import {
@@ -43,6 +45,7 @@ const message = (error: unknown, fallback: string) =>
 export function KeywordManager({ project }: { project: Project }) {
   const auth = useProtectedAuth();
   const queryClient = useQueryClient();
+  const [selectedBatch, setSelectedBatch] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [active, setActive] = useState<"true" | "false" | "all">("true");
   const [panel, setPanel] = useState<"single" | "bulk" | null>(null);
@@ -130,22 +133,12 @@ export function KeywordManager({ project }: { project: Project }) {
     onError: (failure) =>
       setError(message(failure, "Keyword could not be deleted.")),
   });
-  const refreshRankings = async (keywordId?: string) => {
-    await queryClient.invalidateQueries({
-      queryKey: rankingKeys.all(project.id),
-    });
-    if (keywordId)
-      await queryClient.invalidateQueries({
-        queryKey: rankingKeys.history(project.id, keywordId),
-      });
-  };
   const projectCheck = useMutation({
     mutationFn: () => checkProject(auth.request, project.id),
     onSuccess: async (result) => {
-      setNotice(
-        `${result.succeeded} ranking checks succeeded${result.failed ? `; ${result.failed} failed` : ""}.`,
-      );
-      await refreshRankings();
+      setNotice("Ranking checks queued.");
+      setSelectedBatch(result.batch_id);
+      await queryClient.invalidateQueries({ queryKey: batchKey(project.id) });
     },
     onError: (failure) =>
       setError(message(failure, "Project rankings could not be checked.")),
@@ -153,9 +146,10 @@ export function KeywordManager({ project }: { project: Project }) {
   const keywordCheck = useMutation({
     mutationFn: (keywordId: string) =>
       checkKeyword(auth.request, project.id, keywordId),
-    onSuccess: async (_, keywordId) => {
-      setNotice("Keyword ranking checked.");
-      await refreshRankings(keywordId);
+    onSuccess: async (result) => {
+      setNotice("Keyword check queued.");
+      setSelectedBatch(result.batch_id);
+      await queryClient.invalidateQueries({ queryKey: batchKey(project.id) });
     },
     onError: (failure) =>
       setError(message(failure, "Keyword ranking could not be checked.")),
@@ -207,7 +201,7 @@ export function KeywordManager({ project }: { project: Project }) {
               projectCheck.mutate();
             }}
           >
-            {projectCheck.isPending ? "Checking Rankings…" : "Check Rankings"}
+            {projectCheck.isPending ? "Queueing…" : "Check Rankings"}
           </button>
           <button
             className="rounded-lg bg-teal-400 px-4 py-2 font-semibold text-slate-950"
@@ -223,12 +217,15 @@ export function KeywordManager({ project }: { project: Project }) {
           </button>
         </div>
       </div>
-      {project.keyword_count > 25 && (
-        <p className="mt-3 text-sm text-amber-200">
-          Project checks are limited to 25 Keywords by default. Use Check now on
-          individual rows to select Keywords safely.
-        </p>
-      )}
+      <BatchPanel
+        projectId={project.id}
+        selectedBatch={selectedBatch}
+        onSelect={setSelectedBatch}
+      />
+      <SchedulePanel
+        projectId={project.id}
+        archived={project.status !== "active"}
+      />
       {panel === "single" && (
         <form
           aria-label="Add keyword"
@@ -409,7 +406,7 @@ export function KeywordManager({ project }: { project: Project }) {
                   >
                     {keywordCheck.isPending &&
                     keywordCheck.variables === item.id
-                      ? "Checking…"
+                      ? "Queueing…"
                       : "Check now"}
                   </button>
                   <button

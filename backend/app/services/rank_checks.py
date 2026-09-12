@@ -4,6 +4,7 @@ from collections import defaultdict
 from datetime import UTC, datetime
 from uuid import UUID
 
+from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
@@ -36,6 +37,7 @@ from app.schemas.rank_check import (
     RankCheckStatusFilter,
 )
 from app.services.domain_matching import DomainMatcher, MatchableDomain
+from app.services.job_execution import JobExecution
 from app.services.normalization import decode_cursor, encode_cursor
 from app.services.serp import OrganicResult, SerpProviderError, SerpSearchRequest
 from app.services.serp.router import ProviderRouter
@@ -65,11 +67,13 @@ class RankCheckExecutionService:
         provider: ProviderRouter,
         settings: Settings,
         matcher: DomainMatcher | None = None,
+        job_execution: JobExecution | None = None,
     ) -> None:
         self.session_factory = session_factory
         self.provider = provider
         self.settings = settings
         self.matcher = matcher or DomainMatcher()
+        self.job_execution = job_execution
 
     async def run_keyword(
         self, project_id: UUID, keyword_id: UUID, user_id: UUID
@@ -157,6 +161,11 @@ class RankCheckExecutionService:
                 keywords.append(keyword)
             return keywords
 
+    async def execute_rank_check(
+        self, project_id: UUID, keyword_id: UUID, user_id: UUID
+    ) -> RankCheckDetailResponse:
+        return await self._execute(project_id, keyword_id, user_id)
+
     async def _execute(
         self, project_id: UUID, keyword_id: UUID, user_id: UUID
     ) -> RankCheckDetailResponse:
@@ -222,6 +231,8 @@ class RankCheckExecutionService:
         try:
             async with self.session_factory() as session:
                 async with session.begin():
+                    if self.job_execution:
+                        await self.job_execution.lock(session)
                     checks = RankCheckRepository(session)
                     stored = await checks.get_owned(
                         check.id, project_id, user_id, for_update=True
@@ -259,12 +270,29 @@ class RankCheckExecutionService:
                     rankings = await RankingRepository(session).create_many(
                         stored.id, matches
                     )
+                    request_count = provider_result.provider_request_count
+                    if self.job_execution:
+                        request_count = int(
+                            await session.scalar(
+                                select(
+                                    func.coalesce(
+                                        func.sum(
+                                            RankCheckProviderAttempt.provider_request_count
+                                        ),
+                                        0,
+                                    )
+                                ).where(
+                                    RankCheckProviderAttempt.rank_check_id == stored.id
+                                )
+                            )
+                            or 0
+                        )
                     await checks.mark_succeeded(
                         stored,
                         provider=provider_result.provider,
                         provider_request_id=provider_result.provider_request_id,
                         provider_metadata=provider_result.raw_metadata,
-                        provider_request_count=provider_result.provider_request_count,
+                        provider_request_count=request_count,
                         completed_at=provider_result.completed_at,
                     )
             logger.info(
@@ -305,6 +333,11 @@ class RankCheckExecutionService:
         try:
             async with self.session_factory() as session:
                 async with session.begin():
+                    job = (
+                        await self.job_execution.lock(session)
+                        if self.job_execution
+                        else None
+                    )
                     project = await ProjectRepository(session).get_for_user(
                         project_id, user_id
                     )
@@ -324,6 +357,25 @@ class RankCheckExecutionService:
                             400, "KEYWORD_NOT_ACTIVE", "The Keyword is paused."
                         )
                     requested_at = datetime.now(UTC)
+                    previous = (
+                        await session.get(RankCheck, job.rank_check_id)
+                        if job and job.rank_check_id
+                        else None
+                    )
+                    if previous is not None:
+                        previous.status = RankCheckStatus.RUNNING
+                        previous.completed_at = None
+                        previous.error_code = None
+                        previous.error_message = None
+                        return previous, SerpSearchRequest(
+                            query=previous.query_snapshot,
+                            search_engine=previous.search_engine_snapshot,
+                            country_code=previous.country_code_snapshot,
+                            language_code=previous.language_code_snapshot,
+                            device=previous.device_snapshot,
+                            location=previous.location_snapshot,
+                            result_limit=previous.result_limit,
+                        )
                     check = await RankCheckRepository(session).create_running(
                         user_id=user_id,
                         project_id=project.id,
@@ -338,6 +390,8 @@ class RankCheckExecutionService:
                         result_limit=self.settings.serp_default_result_limit,
                         requested_at=requested_at,
                     )
+                    if job is not None:
+                        job.rank_check_id = check.id
                     request = SerpSearchRequest(
                         query=keyword.keyword,
                         search_engine=project.search_engine,
@@ -367,12 +421,28 @@ class RankCheckExecutionService:
     ) -> RankCheckDetailResponse:
         async with self.session_factory() as session:
             async with session.begin():
+                if self.job_execution:
+                    await self.job_execution.lock(session)
                 repository = RankCheckRepository(session)
                 check = await repository.get_owned(
                     check_id, project_id, user_id, for_update=True
                 )
                 if check is None:
                     raise RuntimeError("Rank check disappeared before failure update")
+                if self.job_execution:
+                    request_count = int(
+                        await session.scalar(
+                            select(
+                                func.coalesce(
+                                    func.sum(
+                                        RankCheckProviderAttempt.provider_request_count
+                                    ),
+                                    0,
+                                )
+                            ).where(RankCheckProviderAttempt.rank_check_id == check.id)
+                        )
+                        or 0
+                    )
                 await repository.mark_failed(
                     check,
                     provider=provider,

@@ -51,6 +51,24 @@ class Settings(BaseSettings):
     serp_max_concurrent_requests: int = Field(default=3, ge=1, le=10)
     serp_manual_project_keyword_limit: int = Field(default=25, ge=1, le=100)
 
+    task_queue_provider: Literal["local", "cloud_tasks"] = "local"
+    gcp_project_id: str = ""
+    gcp_location: str = ""
+    cloud_tasks_queue: str = "rank-checks"
+    cloud_tasks_worker_url: str = ""
+    cloud_tasks_service_account_email: str = ""
+    scheduler_service_account_email: str = ""
+    rank_check_batch_max_keywords: int = Field(default=5000, ge=1, le=5000)
+    rank_check_job_max_attempts: int = Field(default=5, ge=1, le=10)
+    rank_check_job_lease_seconds: int = Field(default=300, ge=30, le=1800)
+    task_dispatch_max_per_second: float = Field(default=2, gt=0)
+    task_max_concurrent_dispatches: int = Field(default=2, ge=1)
+    task_min_backoff_seconds: int = Field(default=30, ge=1)
+    task_max_backoff_seconds: int = Field(default=300, ge=1)
+    task_max_retry_duration_seconds: int = Field(default=3600, ge=60)
+    worker_db_pool_size: int = Field(default=2, ge=1, le=10)
+    worker_db_max_overflow: int = Field(default=0, ge=0, le=10)
+
     @field_validator("jwt_secret_key")
     @classmethod
     def validate_jwt_secret(cls, value: SecretStr) -> SecretStr:
@@ -211,6 +229,35 @@ class Settings(BaseSettings):
                 )
         if self.auth_cookie_samesite == "none" and not self.auth_cookie_secure:
             raise ValueError("SameSite=None requires AUTH_COOKIE_SECURE=true")
+        return self
+
+    @model_validator(mode="after")
+    def validate_queue(self) -> Self:
+        if self.app_env == "production" and self.task_queue_provider != "cloud_tasks":
+            raise ValueError("Production requires Cloud Tasks")
+        if self.task_queue_provider == "cloud_tasks":
+            if not all(
+                (
+                    self.gcp_project_id,
+                    self.gcp_location,
+                    self.cloud_tasks_worker_url,
+                    self.cloud_tasks_service_account_email,
+                    self.scheduler_service_account_email,
+                )
+            ):
+                raise ValueError(
+                    "Cloud Tasks and internal OIDC configuration is required"
+                )
+            url = urlsplit(self.cloud_tasks_worker_url)
+            if (
+                url.scheme != "https"
+                or not url.hostname
+                or url.path not in ("", "/")
+                or url.query
+                or url.fragment
+                or url.username
+            ):
+                raise ValueError("Worker URL must be an HTTPS service origin")
         return self
 
 

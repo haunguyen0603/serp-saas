@@ -23,6 +23,7 @@ from app.services.serp.router import ProviderRouter
 from app.services.serp.serpapi import SerpApiProvider
 from app.services.serp.serper import SerperProvider
 from tests.business_helpers import authorization, create_project, project_body, register
+from tests.ranking_helpers import execute_engine
 from tests.test_auth import auth_app, auth_client
 
 __all__ = ["auth_app", "auth_client"]
@@ -101,7 +102,8 @@ async def test_safe_failure_falls_back_and_persists_attempts(
     use_router(auth_app, [registration(primary), registration(fallback)])
     headers, project_id, keyword_id = await keyword_endpoint(auth_client)
 
-    response = await auth_client.post(
+    response = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-checks",
         headers=headers,
         json={},
@@ -142,7 +144,8 @@ async def test_unsafe_failure_does_not_fallback(
     use_router(auth_app, [registration(primary), registration(fallback)])
     headers, project_id, keyword_id = await keyword_endpoint(auth_client)
 
-    response = await auth_client.post(
+    response = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-checks",
         headers=headers,
         json={},
@@ -182,7 +185,8 @@ async def test_priority_skips_missing_incompatible_and_budget_exhausted_provider
         auth_client, device="mobile"
     )
 
-    response = await auth_client.post(
+    response = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-checks",
         headers=headers,
         json={},
@@ -208,7 +212,8 @@ async def test_fixed_strategy_and_fallback_limit_are_enforced(
         max_fallbacks=1,
     )
     headers, project_id, keyword_id = await keyword_endpoint(auth_client)
-    response = await auth_client.post(
+    response = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-checks",
         headers=headers,
         json={},
@@ -231,7 +236,8 @@ async def test_priority_fallback_limit_and_no_provider_error_are_stable(
         max_fallbacks=0,
     )
     headers, project_id, keyword_id = await keyword_endpoint(auth_client)
-    limited = await auth_client.post(
+    limited = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-checks",
         headers=headers,
         json={},
@@ -249,7 +255,8 @@ async def test_priority_fallback_limit_and_no_provider_error_are_stable(
             f"/api/v1/projects/{second_project['id']}/keywords", headers=headers
         )
     ).json()["items"]
-    missing = await auth_client.post(
+    missing = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{second_project['id']}/keywords/"
         f"{second_keywords[0]['id']}/rank-checks",
         headers=headers,
@@ -271,7 +278,8 @@ async def test_priority_fallback_limit_and_no_provider_error_are_stable(
             f"/api/v1/projects/{fixed_project['id']}/keywords", headers=headers
         )
     ).json()["items"][0]
-    fixed = await auth_client.post(
+    fixed = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{fixed_project['id']}/keywords/"
         f"{fixed_keyword['id']}/rank-checks",
         headers=headers,
@@ -313,7 +321,8 @@ async def test_all_budgets_exhausted_uses_no_upstream_requests(
             assert await repository.reserve_request("first", 1)
             assert await repository.reserve_request("second", 1)
     headers, project_id, keyword_id = await keyword_endpoint(auth_client)
-    response = await auth_client.post(
+    response = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-checks",
         headers=headers,
         json={},
@@ -341,7 +350,8 @@ async def test_serper_secret_never_appears_in_logs_api_or_attempts(
         use_router(auth_app, [registration(provider)], strategy="fixed")
         headers, project_id, keyword_id = await keyword_endpoint(auth_client)
         with caplog.at_level(logging.INFO):
-            response = await auth_client.post(
+            response = await execute_engine(
+                auth_app,
                 f"/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-checks",
                 headers=headers,
                 json={},
@@ -416,7 +426,8 @@ async def test_real_adapters_produce_provider_independent_ranking_results(
         outputs = []
         for adapter in adapters:
             use_router(auth_app, [registration(adapter)], strategy="fixed")
-            response = await auth_client.post(
+            response = await execute_engine(
+                auth_app,
                 f"/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-checks",
                 headers=headers,
                 json={},

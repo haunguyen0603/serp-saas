@@ -55,7 +55,7 @@ def test_fresh_database_upgrade_and_forward_only_boundary(
 
     try:
         command.upgrade(config, "head")
-        assert asyncio.run(revision()) == "0006_multi_provider_routing"
+        assert asyncio.run(revision()) == "0007_async_rank_check_jobs"
 
         async def tables() -> set[str]:
             async with engine.connect() as connection:
@@ -76,14 +76,17 @@ def test_fresh_database_upgrade_and_forward_only_boundary(
             "rankings",
             "provider_usage",
             "rank_check_provider_attempts",
+            "rank_check_batches",
+            "rank_check_jobs",
+            "project_rank_schedules",
         }
         command.downgrade(config, "0005_rank_tracking")
         assert asyncio.run(revision()) == "0005_rank_tracking"
         command.upgrade(config, "head")
-        assert asyncio.run(revision()) == "0006_multi_provider_routing"
+        assert asyncio.run(revision()) == "0007_async_rank_check_jobs"
         with pytest.raises(RuntimeError, match="intentionally irreversible"):
             command.downgrade(config, "0003_projects_keywords")
-        assert asyncio.run(revision()) == "0006_multi_provider_routing"
+        assert asyncio.run(revision()) == "0007_async_rank_check_jobs"
     finally:
         asyncio.run(engine.dispose())
         asyncio.run(admin_sql(f'DROP SCHEMA "{schema}" CASCADE'))
@@ -589,10 +592,80 @@ def test_existing_milestone_4_history_survives_upgrade_and_round_trip(
                 )
 
         asyncio.run(verify_new_tables())
+
+        async def seed_m41_accounting() -> None:
+            async with engine.begin() as connection:
+                await connection.execute(
+                    text(
+                        "INSERT INTO provider_usage "
+                        "(id,provider,period_type,period_key,request_count,"
+                        "success_count,failure_count,fallback_count) "
+                        "VALUES (:id,'serpapi','monthly','2026-09',1,1,0,0)"
+                    ),
+                    {"id": uuid4()},
+                )
+                await connection.execute(
+                    text(
+                        "INSERT INTO rank_check_provider_attempts "
+                        "(id,rank_check_id,provider,attempt_number,status,"
+                        "started_at,completed_at,provider_request_count) "
+                        "VALUES (:id,:check,'serpapi',1,'succeeded',:now,:now,1)"
+                    ),
+                    {"id": uuid4(), "check": check_id, "now": now},
+                )
+
+        async def verify_m41_accounting() -> None:
+            async with engine.connect() as connection:
+                assert (
+                    await connection.scalar(
+                        text("SELECT request_count FROM provider_usage")
+                    )
+                    == 1
+                )
+                assert (
+                    await connection.scalar(
+                        text(
+                            "SELECT count(*) FROM rank_check_provider_attempts "
+                            "WHERE rank_check_id=:id"
+                        ),
+                        {"id": check_id},
+                    )
+                    == 1
+                )
+
+        # Seed the previous head, then verify actual M4.1 accounting survives M5.
+        command.downgrade(config, "0006_multi_provider_routing")
+        asyncio.run(seed_m41_accounting())
+        command.upgrade(config, "head")
+        asyncio.run(verify())
+        asyncio.run(verify_m41_accounting())
+        command.downgrade(config, "0006_multi_provider_routing")
+        asyncio.run(verify_m41_accounting())
+        command.upgrade(config, "head")
+        asyncio.run(verify_m41_accounting())
         command.downgrade(config, "0005_rank_tracking")
         asyncio.run(verify())
         command.upgrade(config, "head")
         asyncio.run(verify())
+    finally:
+        asyncio.run(engine.dispose())
+        asyncio.run(admin_sql(f'DROP SCHEMA "{schema}" CASCADE'))
+        asyncio.run(admin.dispose())
+
+
+@pytest.mark.integration
+def test_m5_round_trip_and_schema_drift(
+    settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    schema, admin, engine, admin_sql = isolated_migration_context(settings, monkeypatch)
+    config = Config("alembic.ini")
+    try:
+        command.upgrade(config, "0006_multi_provider_routing")
+        command.upgrade(config, "head")
+        command.check(config)
+        command.downgrade(config, "0006_multi_provider_routing")
+        command.upgrade(config, "head")
+        command.check(config)
     finally:
         asyncio.run(engine.dispose())
         asyncio.run(admin_sql(f'DROP SCHEMA "{schema}" CASCADE'))

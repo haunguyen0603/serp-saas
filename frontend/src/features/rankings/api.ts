@@ -1,7 +1,7 @@
+import type { BatchAccepted } from "./batches";
 import type { AuthenticatedRequest } from "@/features/auth/session";
 import type {
   LatestRankingResponse,
-  ProjectRankCheckResponse,
   RankCheckDetail,
   RankCheckListResponse,
   RankCheckStatus,
@@ -36,8 +36,8 @@ export const checkProject = (
   projectId: string,
   keywordIds: string[] | null = null,
 ) =>
-  request<ProjectRankCheckResponse>(
-    `/api/v1/projects/${projectId}/rank-checks`,
+  request<BatchAccepted>(
+    `/api/v1/projects/${projectId}/rank-check-batches`,
     json({ keyword_ids: keywordIds }),
   );
 
@@ -46,8 +46,8 @@ export const checkKeyword = (
   projectId: string,
   keywordId: string,
 ) =>
-  request<RankCheckDetail>(
-    `/api/v1/projects/${projectId}/keywords/${keywordId}/rank-checks`,
+  request<BatchAccepted>(
+    `/api/v1/projects/${projectId}/keywords/${keywordId}/rank-check-batches`,
     json({}),
   );
 

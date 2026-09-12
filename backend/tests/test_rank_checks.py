@@ -25,6 +25,7 @@ from tests.business_helpers import (
     project_body,
     register,
 )
+from tests.ranking_helpers import execute_engine
 from tests.test_auth import auth_app, auth_client
 
 __all__ = ["auth_app", "auth_client"]
@@ -122,7 +123,8 @@ async def test_full_fake_pipeline_snapshots_history_and_tenant_isolation(
     )
     use_fake(auth_app, provider)
 
-    checked = await auth_client.post(
+    checked = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project['id']}/keywords/{keyword['id']}/rank-checks",
         headers=headers_a,
         json={},
@@ -248,7 +250,8 @@ async def test_zero_match_empty_results_and_provider_failure_are_distinct(
     )
     use_fake(auth_app, provider)
     for name, count in [("no match", 1), ("empty", 0)]:
-        response = await auth_client.post(
+        response = await execute_engine(
+            auth_app,
             f"/api/v1/projects/{project['id']}/keywords/{by_name[name]['id']}/rank-checks",
             headers=headers,
             json={},
@@ -257,7 +260,8 @@ async def test_zero_match_empty_results_and_provider_failure_are_distinct(
         assert response.json()["status"] == "succeeded"
         assert response.json()["result_count"] == count
         assert response.json()["rankings"] == []
-    failed = await auth_client.post(
+    failed = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project['id']}/keywords/{by_name['timeout']['id']}/rank-checks",
         headers=headers,
         json={},
@@ -273,7 +277,8 @@ async def test_zero_match_empty_results_and_provider_failure_are_distinct(
     )
     assert history.json()["items"][0]["status"] == "failed"
     assert history.json()["items"][0]["provider_request_count"] == 1
-    aggregate = await auth_client.post(
+    aggregate = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project['id']}/rank-checks",
         headers=headers,
         json={
@@ -326,12 +331,16 @@ async def test_project_check_subset_cap_status_and_input_security(
         )
     ).json()["items"]
     use_fake(auth_app, FakeSerpProvider())
-    over_cap = await auth_client.post(
-        f"/api/v1/projects/{project['id']}/rank-checks", headers=headers, json={}
+    over_cap = await execute_engine(
+        auth_app,
+        f"/api/v1/projects/{project['id']}/rank-checks",
+        headers=headers,
+        json={},
     )
     assert over_cap.status_code == 400
     assert over_cap.json()["error"]["code"] == "RANK_CHECK_LIMIT_EXCEEDED"
-    selected = await auth_client.post(
+    selected = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project['id']}/rank-checks",
         headers=headers,
         json={"keyword_ids": [keywords[0]["id"], keywords[1]["id"]]},
@@ -345,7 +354,8 @@ async def test_project_check_subset_cap_status_and_input_security(
         {"provider": "serpapi"},
         {"serper_request_budget": 999999},
     ]:
-        injected = await auth_client.post(
+        injected = await execute_engine(
+            auth_app,
             f"/api/v1/projects/{project['id']}/keywords/"
             f"{keywords[2]['id']}/rank-checks",
             headers=headers,
@@ -357,7 +367,8 @@ async def test_project_check_subset_cap_status_and_input_security(
         headers=headers,
         json={"status": "archived"},
     )
-    archived = await auth_client.post(
+    archived = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project['id']}/keywords/{keywords[2]['id']}/rank-checks",
         headers=headers,
         json={},
@@ -374,7 +385,8 @@ async def test_project_check_subset_cap_status_and_input_security(
         headers=headers,
         json={"active": False},
     )
-    paused = await auth_client.post(
+    paused = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project['id']}/keywords/{keywords[2]['id']}/rank-checks",
         headers=headers,
         json={},
@@ -427,7 +439,8 @@ async def test_inactive_alias_and_archived_site_do_not_match(
         ],
     )
     use_fake(auth_app, provider)
-    response = await auth_client.post(
+    response = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project['id']}/keywords/{keyword['id']}/rank-checks",
         headers=headers,
         json={},
@@ -454,7 +467,8 @@ async def test_concurrent_checks_execute_provider_once(
     use_fake(auth_app, provider)
 
     async def run() -> object:
-        return await auth_client.post(
+        return await execute_engine(
+            auth_app,
             f"/api/v1/projects/{project['id']}/keywords/{keyword['id']}/rank-checks",
             headers=headers,
             json={},
@@ -490,7 +504,8 @@ async def test_success_persistence_rolls_back_atomically_and_marks_failed(
         raise RuntimeError("database detail that must not escape")
 
     monkeypatch.setattr(RankingRepository, "create_many", fail_rankings)
-    response = await auth_client.post(
+    response = await execute_engine(
+        auth_app,
         f"/api/v1/projects/{project['id']}/keywords/{keyword['id']}/rank-checks",
         headers=headers,
         json={},

@@ -105,6 +105,9 @@ it("creates a Project with initial keywords and no domain", async () => {
 
 function detailApi() {
   request.mockImplementation(async (path: string, options?: RequestInit) => {
+    if (path.includes("rank-check-batches?") || path.includes("/jobs?"))
+      return { items: [], next_cursor: null, has_more: false };
+    if (path.endsWith("rank-schedule")) return null;
     if (path === "/api/v1/projects/project-1" && !options) return project;
     if (path.endsWith("/rankings/latest"))
       return {
@@ -144,7 +147,9 @@ it("renders query-only Keyword columns and project-wide settings warning", async
   detailApi();
   view(<ProjectDetail projectId="project-1" />);
   await screen.findByText("rank tracker");
-  const table = screen.getByRole("table");
+  const table = screen
+    .getAllByRole("table")
+    .find((item) => !item.getAttribute("aria-label"))!;
   expect(within(table).getByText("rank tracker")).toBeVisible();
   for (const heading of [
     "Keyword",

@@ -263,7 +263,7 @@ async def test_openapi_documents_milestone_3_1_contract(
         "/api/v1/tracked-sites/{site_id}",
         "/api/v1/tracked-sites/{site_id}/domains",
         "/api/v1/tracked-sites/{site_id}/domains/{domain_id}",
-        "/api/v1/projects/{project_id}/rank-checks",
+        "/api/v1/projects/{project_id}/rank-check-batches",
         "/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-checks",
         "/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-checks/{check_id}",
         "/api/v1/projects/{project_id}/rankings/latest",
@@ -281,9 +281,9 @@ async def test_openapi_documents_milestone_3_1_contract(
     } & set(keyword)
     assert not {"user_id", "tracked_site_id"} & set(domain)
     for path, method in (
-        ("/api/v1/projects/{project_id}/rank-checks", "post"),
+        ("/api/v1/projects/{project_id}/rank-check-batches", "post"),
         (
-            "/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-checks",
+            "/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-check-batches",
             "post",
         ),
         (
@@ -297,10 +297,10 @@ async def test_openapi_documents_milestone_3_1_contract(
         ("/api/v1/projects/{project_id}/rankings/latest", "get"),
     ):
         documented = set(paths[path][method]["responses"])
-        assert {"200" if method == "get" else "201", "401", "404", "422"} <= documented
+        assert {"200" if method == "get" else "202", "401", "404", "422"} <= documented
 
 
-@pytest.mark.parametrize("method", ["GET", "POST", "PATCH", "DELETE"])
+@pytest.mark.parametrize("method", ["GET", "POST", "PUT", "PATCH", "DELETE"])
 async def test_business_cors_preflight(auth_client: AsyncClient, method: str) -> None:
     response = await auth_client.options(
         "/api/v1/tracked-sites/00000000-0000-0000-0000-000000000000",

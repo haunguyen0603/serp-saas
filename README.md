@@ -8,8 +8,9 @@ domain registry. Milestone 4 adds manual provider-independent rank checks,
 normalized Top-10 organic results, domain matching, and durable ranking history.
 Milestone 4.1 adds internal Serper/SerpApi routing, safe fallback, persisted provider
 attempts, and optional operational request budgets.
-**The authenticated user is the tenant boundary.** Workers, scheduling, and billing
-remain deferred.
+**The authenticated user is the tenant boundary.** Milestone 5 adds durable Batch/Job
+queues, a private Cloud Run worker, progress/history, cancellation and daily/weekly
+Project schedules. Billing remains deferred.
 
 ## Architecture
 
@@ -21,6 +22,29 @@ Browser → Next.js UI → HTTP → FastAPI → async SQLAlchemy → PostgreSQL
 Frontend and backend are independently executable. See
 [architecture](docs/architecture/overview.md), [API](docs/api/health.md), and the
 [milestone specification](docs/milestone-1-spec.md).
+
+## Asynchronous ranking (M5)
+
+Check Rankings and Check now return a queued batch immediately. The UI polls progress
+and refreshes rankings on completion. Docker Compose starts a local PostgreSQL-backed
+worker automatically; no GCP or Redis queue is needed. Use `SERP_PROVIDER=fake` for
+zero-credit development and keep the enabled/fixed provider settings consistent.
+
+- [Architecture and recovery](docs/architecture/async-ranking.md)
+- [Batch and schedule APIs](docs/api/rank-check-batches.md)
+- [Cloud Tasks / Cloud Run IAM and configuration](docs/architecture/cloud-tasks-deployment.md)
+- [M5 verification report](docs/verification-milestone-5.md)
+
+```sh
+make async-ranking-smoke
+make cloud-tasks-contract-smoke
+make recover-rank-jobs
+```
+
+Local worker command: `python -m scripts.rank_jobs --loop`. Private cloud worker:
+`uvicorn app.worker_main:app --host 0.0.0.0 --port 8080`. Scheduled dispatch uses one
+Cloud Scheduler job every five minutes, through the same private worker service.
+Old synchronous rank-check POST routes are retired; GET ranking history is preserved.
 
 ## Requirements
 

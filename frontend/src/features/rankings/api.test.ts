@@ -23,8 +23,8 @@ it("uses only authenticated nested ranking routes and typed request bodies", asy
   await getLatestRankings(request, "project-1");
   const calls = vi.mocked(request).mock.calls;
   expect(calls.map((call) => call[0])).toEqual([
-    "/api/v1/projects/project-1/rank-checks",
-    "/api/v1/projects/project-1/keywords/keyword-1/rank-checks",
+    "/api/v1/projects/project-1/rank-check-batches",
+    "/api/v1/projects/project-1/keywords/keyword-1/rank-check-batches",
     "/api/v1/projects/project-1/keywords/keyword-1/rank-checks?status=succeeded&limit=25&cursor=opaque",
     "/api/v1/projects/project-1/keywords/keyword-1/rank-checks/check-1",
     "/api/v1/projects/project-1/rankings/latest",

@@ -6,6 +6,7 @@ from sqlalchemy import and_, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.rank_check import RankCheck, RankCheckStatus
+from app.models.rank_job import ProjectRankSchedule, RankCheckBatch, RankCheckJob
 
 
 class RankCheckRepository:
@@ -130,6 +131,13 @@ class RankCheckRepository:
         return list((await self.session.scalars(statement)).all())
 
     async def has_for_project(self, project_id: UUID, user_id: UUID) -> bool:
+        for model in (RankCheckBatch, ProjectRankSchedule):
+            if await self.session.scalar(
+                select(model.id)
+                .where(model.project_id == project_id, model.user_id == user_id)
+                .limit(1)
+            ):
+                return True
         return bool(
             await self.session.scalar(
                 select(RankCheck.id)
@@ -144,6 +152,16 @@ class RankCheckRepository:
     async def has_for_keyword(
         self, keyword_id: UUID, project_id: UUID, user_id: UUID
     ) -> bool:
+        if await self.session.scalar(
+            select(RankCheckJob.id)
+            .where(
+                RankCheckJob.keyword_id == keyword_id,
+                RankCheckJob.project_id == project_id,
+                RankCheckJob.user_id == user_id,
+            )
+            .limit(1)
+        ):
+            return True
         return bool(
             await self.session.scalar(
                 select(RankCheck.id)

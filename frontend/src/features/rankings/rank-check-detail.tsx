@@ -1,7 +1,4 @@
-import {
-  providerName,
-  type RankCheckDetail as RankCheckDetailData,
-} from "./types";
+import type { RankCheckDetail as RankCheckDetailData } from "./types";
 
 export function RankCheckDetail({ check }: { check: RankCheckDetailData }) {
   const matched = new Map(
