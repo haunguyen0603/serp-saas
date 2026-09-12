@@ -1,0 +1,103 @@
+services:
+  postgres:
+    image: postgres:16.13-bookworm
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?Set POSTGRES_DB in .env}
+      POSTGRES_USER: ${POSTGRES_USER:?Set POSTGRES_USER in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  redis:
+    image: redis:7.4.8-bookworm
+    ports:
+      - "127.0.0.1:6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/backend.Dockerfile
+      target: development
+    environment:
+      APP_ENV: ${APP_ENV:?Set APP_ENV in .env}
+      APP_NAME: ${APP_NAME:?Set APP_NAME in .env}
+      APP_VERSION: ${APP_VERSION:?Set APP_VERSION in .env}
+      DEBUG: ${DEBUG:?Set DEBUG in .env}
+      BACKEND_HOST: ${BACKEND_HOST:?Set BACKEND_HOST in .env}
+      BACKEND_PORT: ${BACKEND_PORT:?Set BACKEND_PORT in .env}
+      DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in .env}
+      REDIS_URL: ${REDIS_URL:?Set REDIS_URL in .env}
+      CORS_ORIGINS: ${CORS_ORIGINS:?Set CORS_ORIGINS in .env}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?Set JWT_SECRET_KEY in .env}
+      JWT_ALGORITHM: ${JWT_ALGORITHM:-HS256}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-15}
+      REFRESH_TOKEN_EXPIRE_DAYS: ${REFRESH_TOKEN_EXPIRE_DAYS:-30}
+      AUTH_COOKIE_NAME: ${AUTH_COOKIE_NAME:-serp_refresh_token}
+      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-false}
+      AUTH_COOKIE_SAMESITE: ${AUTH_COOKIE_SAMESITE:-lax}
+      SERP_PROVIDER: ${SERP_PROVIDER:-fake}
+      SERP_ENABLED_PROVIDERS: ${SERP_ENABLED_PROVIDERS:-}
+      SERP_PROVIDER_STRATEGY: ${SERP_PROVIDER_STRATEGY:-priority}
+      SERP_PROVIDER_PRIORITY: ${SERP_PROVIDER_PRIORITY:-serper,serpapi}
+      SERP_FIXED_PROVIDER: ${SERP_FIXED_PROVIDER:-}
+      SERP_MAX_PROVIDER_FALLBACKS: ${SERP_MAX_PROVIDER_FALLBACKS:-1}
+      SERPER_API_KEY: ${SERPER_API_KEY:-}
+      SERPER_BASE_URL: ${SERPER_BASE_URL:-https://google.serper.dev/search}
+      SERPER_REQUEST_BUDGET: ${SERPER_REQUEST_BUDGET:-}
+      SERPAPI_API_KEY: ${SERPAPI_API_KEY:-}
+      SERPAPI_BASE_URL: ${SERPAPI_BASE_URL:-https://serpapi.com/search}
+      SERPAPI_REQUEST_BUDGET: ${SERPAPI_REQUEST_BUDGET:-}
+      SERP_REQUEST_TIMEOUT_SECONDS: ${SERP_REQUEST_TIMEOUT_SECONDS:-10}
+      SERP_DEFAULT_RESULT_LIMIT: ${SERP_DEFAULT_RESULT_LIMIT:-10}
+      SERP_MAX_CONCURRENT_REQUESTS: ${SERP_MAX_CONCURRENT_REQUESTS:-3}
+      SERP_MANUAL_PROJECT_KEYWORD_LIMIT: ${SERP_MANUAL_PROJECT_KEYWORD_LIMIT:-25}
+    command: ["sh", "-c", "alembic upgrade head && exec python -m app"]
+    ports:
+      - "127.0.0.1:8000:${BACKEND_PORT:-8000}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; from app.core.config import get_settings; urllib.request.urlopen('http://127.0.0.1:' + str(get_settings().backend_port) + '/health', timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/frontend.Dockerfile
+      target: production
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:?Set NEXT_PUBLIC_API_BASE_URL in .env}
+        NEXT_PUBLIC_APP_ENV: ${NEXT_PUBLIC_APP_ENV:?Set NEXT_PUBLIC_APP_ENV in .env}
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  postgres_data:

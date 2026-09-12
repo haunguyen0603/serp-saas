@@ -1,0 +1,9 @@
+# Tooling override. The standard frontend service uses the production image.
+services:
+  frontend:
+    image: serp-saas-frontend-checks:local
+    build:
+      target: development
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:?Set NEXT_PUBLIC_API_BASE_URL in .env}
+      NEXT_PUBLIC_APP_ENV: ${NEXT_PUBLIC_APP_ENV:?Set NEXT_PUBLIC_APP_ENV in .env}

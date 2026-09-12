@@ -1,0 +1,219 @@
+from functools import lru_cache
+from typing import Literal, Self
+from urllib.parse import urlsplit
+
+from pydantic import Field, SecretStr, field_validator, model_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=("../.env", ".env"),
+        case_sensitive=False,
+        extra="ignore",
+        hide_input_in_errors=True,
+        frozen=True,
+    )
+
+    app_name: str = Field(min_length=1)
+    app_version: str = Field(min_length=1)
+    app_env: Literal["development", "test", "production"]
+    debug: bool
+    backend_host: str = "0.0.0.0"
+    backend_port: int = Field(default=8000, ge=1, le=65535)
+    database_url: SecretStr
+    redis_url: SecretStr
+    cors_origins: list[str]
+    jwt_secret_key: SecretStr
+    jwt_algorithm: Literal["HS256"] = "HS256"
+    access_token_expire_minutes: int = Field(default=15, ge=1, le=60)
+    refresh_token_expire_days: int = Field(default=30, ge=1, le=90)
+    auth_cookie_name: str = Field(
+        default="serp_refresh_token", pattern=r"^[A-Za-z0-9_]+$"
+    )
+    auth_cookie_secure: bool = False
+    auth_cookie_samesite: Literal["lax", "strict", "none"] = "lax"
+    # SERP_PROVIDER remains as a compatibility fallback for existing M4 installs.
+    serp_provider: Literal["serpapi", "serper", "fake"] = "serpapi"
+    serp_enabled_providers: str | None = None
+    serp_provider_strategy: Literal["fixed", "priority"] = "priority"
+    serp_provider_priority: str = "serper,serpapi"
+    serp_fixed_provider: Literal["serpapi", "serper", "fake"] | None = None
+    serp_max_provider_fallbacks: int = Field(default=1, ge=0, le=10)
+    serpapi_api_key: SecretStr | None = None
+    serpapi_base_url: str = "https://serpapi.com/search"
+    serpapi_request_budget: int | None = Field(default=None, ge=1)
+    serper_api_key: SecretStr | None = None
+    serper_base_url: str = "https://google.serper.dev/search"
+    serper_request_budget: int | None = Field(default=None, ge=1)
+    serp_request_timeout_seconds: float = Field(default=10.0, ge=0.1, le=60)
+    serp_default_result_limit: int = Field(default=10, ge=1, le=100)
+    serp_max_concurrent_requests: int = Field(default=3, ge=1, le=10)
+    serp_manual_project_keyword_limit: int = Field(default=25, ge=1, le=100)
+
+    @field_validator("jwt_secret_key")
+    @classmethod
+    def validate_jwt_secret(cls, value: SecretStr) -> SecretStr:
+        if len(value.get_secret_value().encode()) < 32:
+            raise ValueError("JWT_SECRET_KEY must contain at least 32 bytes")
+        return value
+
+    @field_validator("database_url")
+    @classmethod
+    def validate_database_url(cls, value: SecretStr) -> SecretStr:
+        url = urlsplit(value.get_secret_value())
+        if url.scheme != "postgresql+asyncpg" or not url.hostname or not url.path:
+            raise ValueError("DATABASE_URL must be a PostgreSQL asyncpg URL")
+        return value
+
+    @field_validator("redis_url")
+    @classmethod
+    def validate_redis_url(cls, value: SecretStr) -> SecretStr:
+        url = urlsplit(value.get_secret_value())
+        if url.scheme not in {"redis", "rediss"} or not url.hostname:
+            raise ValueError("REDIS_URL must be a Redis URL")
+        return value
+
+    @field_validator("serpapi_base_url", "serper_base_url")
+    @classmethod
+    def validate_serpapi_base_url(cls, value: str) -> str:
+        url = urlsplit(value)
+        if (
+            url.scheme not in {"http", "https"}
+            or not url.hostname
+            or url.username
+            or url.password
+            or url.fragment
+        ):
+            raise ValueError("SERP provider base URLs must be HTTP(S) URLs")
+        return value
+
+    @field_validator(
+        "serpapi_request_budget",
+        "serper_request_budget",
+        mode="before",
+    )
+    @classmethod
+    def empty_optional_integer(cls, value: object) -> object:
+        return None if value == "" else value
+
+    @field_validator("serp_fixed_provider", mode="before")
+    @classmethod
+    def empty_optional_provider(cls, value: object) -> object:
+        return None if value == "" else value
+
+    @staticmethod
+    def _provider_names(value: str, field: str) -> tuple[str, ...]:
+        names = tuple(part.strip().lower() for part in value.split(",") if part.strip())
+        if not names:
+            raise ValueError(f"{field} must contain at least one provider")
+        if len(names) != len(set(names)):
+            raise ValueError(f"{field} must not contain duplicate providers")
+        unknown = set(names) - {"serper", "serpapi", "fake"}
+        if unknown:
+            raise ValueError(
+                f"{field} contains unknown providers: {', '.join(sorted(unknown))}"
+            )
+        return names
+
+    @property
+    def enabled_provider_names(self) -> tuple[str, ...]:
+        if (
+            self.serp_enabled_providers is None
+            or not self.serp_enabled_providers.strip()
+        ):
+            return (self.serp_provider,)
+        return self._provider_names(
+            self.serp_enabled_providers, "SERP_ENABLED_PROVIDERS"
+        )
+
+    @property
+    def provider_priority_names(self) -> tuple[str, ...]:
+        return self._provider_names(
+            self.serp_provider_priority, "SERP_PROVIDER_PRIORITY"
+        )
+
+    @property
+    def effective_provider_strategy(self) -> Literal["fixed", "priority"]:
+        if (
+            self.serp_enabled_providers is None
+            or not self.serp_enabled_providers.strip()
+        ):
+            return "fixed"
+        return self.serp_provider_strategy
+
+    @property
+    def effective_fixed_provider(self) -> str:
+        return self.serp_fixed_provider or self.serp_provider
+
+    @field_validator("cors_origins")
+    @classmethod
+    def validate_origins(cls, origins: list[str]) -> list[str]:
+        for origin in origins:
+            url = urlsplit(origin)
+            if (
+                url.scheme not in {"http", "https"}
+                or not url.hostname
+                or url.username
+                or url.password
+                or url.path
+                or url.query
+                or url.fragment
+                or "*" in origin
+            ):
+                raise ValueError("CORS_ORIGINS must contain explicit HTTP(S) origins")
+        return origins
+
+    @model_validator(mode="after")
+    def validate_production(self) -> Self:
+        enabled = self.enabled_provider_names
+        priority = self.provider_priority_names
+        if self.effective_provider_strategy == "fixed":
+            if self.effective_fixed_provider not in enabled:
+                raise ValueError("SERP_FIXED_PROVIDER must be enabled")
+        elif not set(priority).intersection(enabled):
+            raise ValueError("SERP_PROVIDER_PRIORITY must include an enabled provider")
+        if self.app_env == "production" and self.debug:
+            raise ValueError("DEBUG must be false in production")
+        if self.app_env == "production":
+            secret = self.jwt_secret_key.get_secret_value().lower()
+            if (
+                any(
+                    marker in secret
+                    for marker in ("placeholder", "change-me", "development")
+                )
+                or len(set(secret)) < 16
+            ):
+                raise ValueError(
+                    "Production requires a randomly generated JWT_SECRET_KEY"
+                )
+            if not self.auth_cookie_secure:
+                raise ValueError("AUTH_COOKIE_SECURE must be true in production")
+            if "fake" in enabled:
+                raise ValueError("The fake SERP provider is not allowed in production")
+            configured = {
+                "serper": bool(
+                    self.serper_api_key and self.serper_api_key.get_secret_value()
+                ),
+                "serpapi": bool(
+                    self.serpapi_api_key and self.serpapi_api_key.get_secret_value()
+                ),
+            }
+            if not any(configured.get(name, False) for name in enabled):
+                raise ValueError(
+                    "Production requires at least one configured enabled SERP provider"
+                )
+            if self.effective_provider_strategy == "fixed" and not configured.get(
+                self.effective_fixed_provider, False
+            ):
+                raise ValueError(
+                    "Production fixed strategy requires its provider credentials"
+                )
+        if self.auth_cookie_samesite == "none" and not self.auth_cookie_secure:
+            raise ValueError("SameSite=None requires AUTH_COOKIE_SECURE=true")
+        return self
+
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()
