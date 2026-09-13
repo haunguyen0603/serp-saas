@@ -13,6 +13,25 @@ export class ApiError extends Error {
 }
 
 const errorMessages: Record<string, string> = {
+  PLAN_NOT_FOUND: "Plan is unavailable.",
+  NO_ACTIVE_SUBSCRIPTION: "Subscription not found.",
+  SUBSCRIPTION_EXPIRED: "Subscription expired. Activate a new Plan.",
+  SUBSCRIPTION_CONFLICT:
+    "A subscription already exists or overlaps. Use Change Plan or adjust the dates.",
+  INVALID_SUBSCRIPTION_PERIOD: "Check the subscription start and end dates.",
+  PROJECT_LIMIT_EXCEEDED:
+    "Project limit reached for this device. Review Billing & Usage.",
+  KEYWORD_LIMIT_EXCEEDED:
+    "Keyword limit reached for this device. Review Billing & Usage.",
+  USAGE_LIMIT_EXCEEDED:
+    "Monthly check quota is insufficient. Review Billing & Usage.",
+  SCHEDULE_NOT_INCLUDED: "Scheduled checks are not included in this Plan.",
+  SCHEDULE_FREQUENCY_NOT_ALLOWED: "This Plan allows weekly schedules only.",
+  PLAN_DEVICE_MISMATCH:
+    "Device change is unavailable while checks are pending.",
+  ADMIN_REQUIRED: "Platform administrator access is required.",
+  USER_NOT_FOUND: "Customer not found.",
+
   INVALID_CREDENTIALS: "Invalid email or password.",
   EMAIL_ALREADY_REGISTERED: "This email is already registered.",
   PASSWORD_POLICY_VIOLATION: "Password must contain 10 to 128 characters.",

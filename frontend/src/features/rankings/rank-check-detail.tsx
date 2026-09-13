@@ -1,3 +1,4 @@
+import { Card, Badge, StatusBadge } from "@/design-system/ui";
 import type { RankCheckDetail as RankCheckDetailData } from "./types";
 
 export function RankCheckDetail({ check }: { check: RankCheckDetailData }) {
@@ -8,28 +9,29 @@ export function RankCheckDetail({ check }: { check: RankCheckDetailData }) {
     ]),
   );
   return (
-    <section
+    <Card
       aria-label="Rank Check detail"
-      className="mt-6 rounded-xl border border-slate-700 p-5"
+      className="mt-6 rounded-xl border border-border p-5"
     >
       <h3 className="text-xl font-semibold">Rank Check detail</h3>
-      <p className="mt-2 text-sm text-slate-400">
+      <p className="mt-2 text-sm text-secondary">
         {/* Data source: {providerName(check.provider)} ·{" "} */}
         {check.search_engine_snapshot} · {check.country_code_snapshot} ·{" "}
         {check.language_code_snapshot} · {check.device_snapshot}
         {check.location_snapshot ? ` · ${check.location_snapshot}` : ""} · Top{" "}
         {check.result_limit}
       </p>
-      {check.provider_attempts.length > 1 && (
-        <p className="mt-2 text-sm text-slate-400">
-          {check.provider_attempts.length} provider attempts
-        </p>
-      )}
+      <p className="mt-3">
+        <StatusBadge status={check.status} /> ·{" "}
+        {new Date(check.requested_at).toLocaleString()}
+        {check.completed_at &&
+          ` · Completed ${new Date(check.completed_at).toLocaleString()}`}
+      </p>
       <h4 className="mt-6 font-semibold">
         Top {check.result_limit} Organic Results
       </h4>
       {check.organic_results.length === 0 ? (
-        <p className="mt-3 text-slate-400">No organic results were returned.</p>
+        <p className="mt-3 text-secondary">No organic results were returned.</p>
       ) : (
         <ol className="mt-3 space-y-3">
           {check.organic_results.map((result) => {
@@ -37,20 +39,16 @@ export function RankCheckDetail({ check }: { check: RankCheckDetailData }) {
             return (
               <li
                 key={`${result.position}:${result.url}`}
-                className="rounded-lg bg-slate-900 p-3"
+                className="rounded-lg bg-surface p-3"
               >
                 <span className="font-semibold">#{result.position}</span>{" "}
                 <span>{result.hostname}</span>
-                {site && (
-                  <span className="ml-3 rounded bg-teal-900 px-2 py-1 text-xs text-teal-200">
-                    Tracked · {site}
-                  </span>
-                )}
+                {site && <Badge tone="success">Tracked · {site}</Badge>}
                 <p className="mt-1 text-sm">
                   {result.title || "Untitled result"}
                 </p>
                 <a
-                  className="break-all text-sm text-teal-300 underline"
+                  className="break-all text-sm text-brand underline"
                   href={result.url}
                 >
                   {result.url}
@@ -60,6 +58,6 @@ export function RankCheckDetail({ check }: { check: RankCheckDetailData }) {
           })}
         </ol>
       )}
-    </section>
+    </Card>
   );
 }

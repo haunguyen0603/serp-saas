@@ -1,10 +1,20 @@
 "use client";
+import {
+  Button,
+  Input,
+  Select,
+  Skeleton,
+  Card,
+  StatusBadge,
+  EmptyState,
+} from "@/design-system/ui";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
 import { listProjects, projectKeys } from "./api";
 import { ProtectedStatus, useProtectedAuth } from "./protected";
+import { ProjectActivity } from "./project-activity";
 import type { ProjectStatus } from "./types";
 
 export function ProjectList() {
@@ -35,23 +45,20 @@ export function ProjectList() {
     <main>
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-sm uppercase tracking-widest text-teal-400">
+          <p className="text-sm uppercase tracking-widest text-brand">
             SERP SaaS
           </p>
           <h1 className="mt-2 text-4xl font-semibold">Projects</h1>
         </div>
-        <Link
-          href="/app/projects/new"
-          className="rounded-lg bg-teal-400 px-5 py-3 font-semibold text-slate-950"
-        >
+        <Link href="/app/projects/new" className="ui-link-button">
           Create Project
         </Link>
       </div>
       <div className="mb-8 grid gap-4 sm:grid-cols-2">
         <label>
           Search projects
-          <input
-            className="mt-2 w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3"
+          <Input
+            className="mt-2 w-full"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Project name"
@@ -59,8 +66,8 @@ export function ProjectList() {
         </label>
         <label>
           Project status
-          <select
-            className="mt-2 w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3"
+          <Select
+            className="mt-2 w-full"
             value={status}
             onChange={(event) =>
               setStatus(event.target.value as ProjectStatus | "all")
@@ -69,49 +76,52 @@ export function ProjectList() {
             <option value="active">Active</option>
             <option value="archived">Archived</option>
             <option value="all">All</option>
-          </select>
+          </Select>
         </label>
       </div>
-      {projects.isPending && <p role="status">Loading projects…</p>}
+      {projects.isPending && <Skeleton label="Loading projects…" />}
       {projects.isError && (
-        <div role="alert" className="rounded-lg border border-red-400/30 p-5">
+        <div role="alert" className="rounded-lg border border-danger p-5">
           <p>Projects could not be loaded.</p>
-          <button
-            className="mt-3 text-teal-300 underline"
-            onClick={() => void projects.refetch()}
-          >
+          <Button className="mt-3" onClick={() => void projects.refetch()}>
             Retry
-          </button>
+          </Button>
         </div>
       )}
       {!projects.isPending && !projects.isError && items.length === 0 && (
-        <div className="rounded-xl border border-slate-700 p-8 text-center">
-          <h2 className="text-2xl">No projects yet.</h2>
-          <p className="my-4 text-slate-400">
-            Create your first project to start organizing keywords.
-          </p>
-          <Link className="text-teal-300 underline" href="/app/projects/new">
-            Create Project
-          </Link>
-        </div>
+        <EmptyState
+          title={
+            search || status !== "active"
+              ? "No matching projects"
+              : "No projects yet."
+          }
+          action={
+            <Link className="ui-link-button" href="/app/projects/new">
+              Create Project
+            </Link>
+          }
+        >
+          Create your first project to start organizing keywords, or change your
+          filters.
+        </EmptyState>
       )}
       <div className="space-y-4">
         {items.map((project) => (
-          <article
+          <Card
             key={project.id}
-            className="rounded-xl border border-slate-700 bg-slate-900/50 p-5"
+            className="rounded-xl border border-border bg-surface p-5"
           >
             <div className="flex flex-wrap justify-between gap-4">
               <div>
                 <h2 className="text-xl font-semibold">
                   <Link
-                    className="hover:text-teal-300"
+                    className="hover:text-brand"
                     href={`/app/projects/${project.id}`}
                   >
                     {project.name}
                   </Link>
                 </h2>
-                <p className="mt-1 text-slate-400">
+                <p className="mt-1 text-secondary">
                   {project.search_engine === "google"
                     ? "Google"
                     : project.search_engine}{" "}
@@ -119,45 +129,40 @@ export function ProjectList() {
                   <span className="capitalize">{project.device}</span>
                 </p>
               </div>
-              <span
-                className={
-                  project.status === "active"
-                    ? "text-teal-300"
-                    : "text-amber-300"
-                }
-              >
-                {project.status === "active" ? "Active" : "Archived"}
-              </span>
+              <StatusBadge status={project.status} />
             </div>
             <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
               <div>
-                <dt className="text-slate-500">Country</dt>
+                <dt className="text-secondary">Country</dt>
                 <dd>{project.country_code}</dd>
               </div>
               <div>
-                <dt className="text-slate-500">Language</dt>
-                <dd>{project.language_code}</dd>
+                <dt className="text-secondary">Language / Location</dt>
+                <dd>
+                  {project.language_code} · {project.location || "Country-wide"}
+                </dd>
               </div>
               <div>
-                <dt className="text-slate-500">Device</dt>
+                <dt className="text-secondary">Device</dt>
                 <dd className="capitalize">{project.device}</dd>
               </div>
               <div>
-                <dt className="text-slate-500">Keywords</dt>
+                <dt className="text-secondary">Keywords</dt>
                 <dd>{project.keyword_count}</dd>
               </div>
             </dl>
-          </article>
+            <ProjectActivity projectId={project.id} />
+          </Card>
         ))}
       </div>
       {projects.hasNextPage && (
-        <button
-          className="mt-6 rounded-lg border border-slate-600 px-5 py-3"
+        <Button
+          className="mt-6"
           disabled={projects.isFetchingNextPage}
           onClick={() => void projects.fetchNextPage()}
         >
           {projects.isFetchingNextPage ? "Loading…" : "Load more projects"}
-        </button>
+        </Button>
       )}
     </main>
   );

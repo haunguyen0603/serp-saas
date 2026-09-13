@@ -39,3 +39,25 @@ async def create_project(
 
 def project_body(response: Response) -> dict[str, object]:
     return response.json()["project"]
+
+
+async def grant_plan(app, account, code="desktop_pro"):
+    """Commercial setup for regressions that require paid resource/schedule limits."""
+    from datetime import UTC, datetime, timedelta
+    from uuid import UUID
+
+    from app.services.billing.subscriptions import SubscriptionService
+
+    user_id = UUID(account.json()["user"]["id"])
+    async with app.state.session_factory() as session, session.begin():
+        await SubscriptionService(session).activate(
+            user_id,
+            user_id,
+            code,
+            datetime.now(UTC),
+            datetime.now(UTC) + timedelta(days=90),
+            "manual_bank_transfer",
+            "test-fixture",
+            None,
+            True,
+        )

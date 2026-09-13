@@ -7,6 +7,7 @@ from sqlalchemy import func, select, tuple_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
+from app.models.billing import UsageReservation
 from app.models.rank_job import RankCheckBatch, RankCheckJob
 from app.repositories.project import ProjectRepository
 from app.schemas.rank_job import BatchResponse
@@ -85,6 +86,19 @@ class RankJobRepository:
         if batch is None:
             return
         await self.session.flush()
+        from app.services.billing.usage import UsageService
+
+        terminal_jobs = await self.session.scalars(
+            select(RankCheckJob.id)
+            .join(UsageReservation, UsageReservation.job_id == RankCheckJob.id)
+            .where(
+                RankCheckJob.batch_id == batch_id,
+                RankCheckJob.status.in_(TERMINAL_JOBS),
+                UsageReservation.status == "reserved",
+            )
+        )
+        for job_id in terminal_jobs:
+            await UsageService(self.session).settle(job_id, False)
         counts = (await self.counts([batch_id]))[batch_id]
         now = datetime.now(UTC)
         terminal = sum(counts.get(s, 0) for s in TERMINAL_JOBS)

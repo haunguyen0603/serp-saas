@@ -10,7 +10,15 @@ class DependencyUnavailable(Exception):
 
 
 class AppError(Exception):
-    def __init__(self, status: int, code: str, message: str) -> None:
+    def __init__(
+        self,
+        status: int,
+        code: str,
+        message: str,
+        *,
+        details: dict[str, int] | None = None,
+    ) -> None:
+        self.details = details
         self.status = status
         self.code = code
         self.message = message
@@ -28,7 +36,17 @@ def error_response(status: int, code: str, message: str) -> JSONResponse:
 def register_error_handlers(app: FastAPI) -> None:
     @app.exception_handler(AppError)
     async def application_error(request: Request, exc: AppError) -> JSONResponse:
-        response = error_response(exc.status, exc.code, exc.message)
+        response = JSONResponse(
+            status_code=exc.status,
+            content={
+                "error": {
+                    "code": exc.code,
+                    "message": exc.message,
+                    **(exc.details or {}),
+                }
+            },
+            headers={"Cache-Control": "no-store"},
+        )
         if exc.status == 401:
             response.headers["WWW-Authenticate"] = "Bearer"
         return response

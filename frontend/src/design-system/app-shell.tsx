@@ -1,0 +1,150 @@
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState, type ReactNode } from "react";
+import { useAuth } from "@/features/auth/auth-provider";
+import { Drawer, DropdownMenu, Icon, IconButton } from "./ui";
+const routes = [
+  { label: "Overview", href: "/app", icon: "grid", group: "" },
+  {
+    label: "Projects",
+    href: "/app/projects",
+    icon: "folder",
+    group: "Rank tracking",
+  },
+  { label: "Rankings", href: "/app/rankings", icon: "chart", group: "" },
+  {
+    label: "Tracked Sites",
+    href: "/app/tracked-sites",
+    icon: "globe",
+    group: "",
+  },
+  {
+    label: "Billing & Usage",
+    href: "/settings/billing",
+    icon: "wallet",
+    group: "Usage & billing",
+  },
+  { label: "Settings", href: "/app/settings", icon: "user", group: "Account" },
+];
+export function AppShell({ children }: { children: ReactNode }) {
+  const path = usePathname();
+  const auth = useAuth();
+  const [mobile, setMobile] = useState(false);
+  const customer =
+    path === "/app" ||
+    path.startsWith("/app/") ||
+    path === "/settings/billing" ||
+    path.startsWith("/admin/");
+  if (!customer)
+    return (
+      <div className="mx-auto max-w-3xl px-6 py-12">
+        <nav
+          aria-label="Main navigation"
+          className="mb-16 flex flex-wrap gap-6 text-sm text-slate-400"
+        >
+          {[
+            ["/", "Home"],
+            ["/health", "Health"],
+            ["/signup", "Sign up"],
+            ["/login", "Log in"],
+            ["/app", "Account"],
+            ["/app/projects", "Projects"],
+            ["/app/tracked-sites", "Tracked Sites"],
+          ].map(([href, label]) => (
+            <Link href={href} key={href}>
+              {label}
+            </Link>
+          ))}
+        </nav>
+        {children}
+      </div>
+    );
+  const active = routes.find((route) =>
+    route.href === "/app" ? path === "/app" : path.startsWith(route.href),
+  );
+  const navigation = (
+    <nav aria-label="Customer navigation">
+      {routes.map((route) => (
+        <div key={route.href}>
+          {route.group && <p className="app-nav-group">{route.group}</p>}
+          <Link
+            className="app-nav-link"
+            href={route.href}
+            aria-current={active?.href === route.href ? "page" : undefined}
+            onClick={() => setMobile(false)}
+          >
+            <Icon name={route.icon} />
+            {route.label}
+          </Link>
+        </div>
+      ))}
+      {auth.user?.is_platform_admin && (
+        <>
+          <p className="app-nav-group">Administration</p>
+          <Link
+            href="/admin/customers"
+            className="app-nav-link"
+            aria-current={path.startsWith("/admin/") ? "page" : undefined}
+            onClick={() => setMobile(false)}
+          >
+            <Icon name="user" />
+            Customers
+          </Link>
+        </>
+      )}
+    </nav>
+  );
+  return (
+    <div className="app-shell">
+      <a className="app-skip" href="#main-content">
+        Skip to content
+      </a>
+      <aside className="app-sidebar">
+        <Link href="/app" className="app-logo">
+          <span className="app-logo-mark">
+            <Icon name="chart" />
+          </span>
+          SERP SaaS
+        </Link>
+        {navigation}
+        <div className="app-sidebar-foot">
+          Your search visibility,
+          <br />
+          in one place.
+        </div>
+      </aside>
+      <div className="app-frame">
+        <header className="app-topbar">
+          <div className="app-breadcrumb">
+            <IconButton
+              className="app-mobile-trigger"
+              label="Open navigation"
+              icon="menu"
+              variant="ghost"
+              onClick={() => setMobile(true)}
+            />
+            <span>Workspace</span>
+            <Icon name="chevron" width={14} />
+            <span>{active?.label ?? "Customer billing"}</span>
+          </div>
+          <div className="app-account">
+            <span className="app-account-email text-secondary text-xs">
+              {auth.user?.email}
+            </span>
+            <DropdownMenu label="Account">
+              <Link href="/app/settings">Profile & settings</Link>
+              <Link href="/settings/billing">Billing & Usage</Link>
+            </DropdownMenu>
+          </div>
+        </header>
+        <div id="main-content" tabIndex={-1} className="app-content">
+          {children}
+        </div>
+      </div>
+      <Drawer open={mobile} onClose={() => setMobile(false)} title="SERP SaaS">
+        {navigation}
+      </Drawer>
+    </div>
+  );
+}

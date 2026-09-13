@@ -1,7 +1,9 @@
 from fastapi import APIRouter
 
 from app.api.v1.auth import router as auth_router
+from app.api.v1.billing import router as billing_router
 from app.api.v1.keywords import router as keywords_router
+from app.api.v1.overview import router as overview_router
 from app.api.v1.projects import router as projects_router
 from app.api.v1.rank_batches import router as rank_batches_router
 from app.api.v1.rank_checks import router as rank_checks_router
@@ -19,3 +21,7 @@ router.include_router(rank_checks_router)
 router.include_router(rankings_router)
 router.include_router(keywords_router)
 router.include_router(tracked_sites_router)
+
+router.include_router(billing_router)
+
+router.include_router(overview_router)

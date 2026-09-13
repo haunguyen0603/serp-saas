@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 from enum import StrEnum
 from uuid import UUID, uuid4
 
-from sqlalchemy import CheckConstraint, DateTime, Enum, String, Text, func
+from sqlalchemy import Boolean, CheckConstraint, DateTime, Enum, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -20,6 +20,9 @@ class User(Base):
     )
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    is_platform_admin: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default="false"
+    )
     email: Mapped[str] = mapped_column(String(320), unique=True)
     password_hash: Mapped[str] = mapped_column(Text)
     status: Mapped[UserStatus] = mapped_column(

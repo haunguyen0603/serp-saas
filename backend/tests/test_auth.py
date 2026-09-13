@@ -115,6 +115,7 @@ async def test_registration_and_persistence(
         "email",
         "status",
         "email_verified",
+        "is_platform_admin",
         "terms_accepted_at",
         "last_login_at",
         "created_at",

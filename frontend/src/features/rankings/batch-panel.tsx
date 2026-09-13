@@ -1,4 +1,15 @@
 "use client";
+import {
+  Alert,
+  Button,
+  Input,
+  Select,
+  Table,
+  Toast,
+  StatusBadge,
+  EmptyState,
+  Skeleton,
+} from "@/design-system/ui";
 
 import {
   useInfiniteQuery,
@@ -19,6 +30,8 @@ import {
   type Schedule,
 } from "./batches";
 import { rankingKeys } from "./api";
+import type { BillingSummary } from "@/features/billing/types";
+import { ApiError } from "@/lib/api/client";
 
 export function BatchPanel({
   projectId,
@@ -93,7 +106,8 @@ export function BatchPanel({
   const batch = progress.data;
   return (
     <section
-      className="my-8 rounded-xl border border-slate-700 p-5"
+      className="my-8 rounded-xl border border-border p-5"
+      id="batches"
       aria-label="Ranking batches"
     >
       <h3 className="text-xl font-semibold">Ranking progress</h3>
@@ -101,13 +115,11 @@ export function BatchPanel({
         progress.isError ||
         jobs.isError ||
         cancel.isError) && (
-        <p role="alert">
-          Ranking progress could not be updated. Please try again.
-        </p>
+        <Alert>Ranking progress could not be updated. Please try again.</Alert>
       )}
       {batch && (
         <div role="status" className="my-4">
-          <p className="capitalize">{batch.status.replaceAll("_", " ")}</p>
+          <StatusBadge status={batch.status} />
           <progress
             aria-label="Batch progress"
             max={100}
@@ -125,19 +137,29 @@ export function BatchPanel({
             <p>Some keyword checks could not be completed.</p>
           )}
           {!terminalBatch(batch.status) && (
-            <button
+            <Button
               disabled={cancel.isPending}
+              confirmation="Cancel checks that have not started? Completed and running checks will keep their usage."
               onClick={() => cancel.mutate()}
-              className="mt-2 text-red-300"
+              className="mt-2 text-danger"
             >
               Cancel pending checks
-            </button>
+            </Button>
           )}
         </div>
       )}
+      {history.isPending && <Skeleton label="Loading batch history…" />}
+      {!history.isPending &&
+        !history.isError &&
+        !history.data?.pages[0]?.items.length && (
+          <EmptyState title="No ranking history yet">
+            Run Check Rankings to start a batch. Its progress and results will
+            appear here.
+          </EmptyState>
+        )}
       <h3 className="mt-5 font-semibold">Recent batches</h3>
       <div className="overflow-x-auto">
-        <table aria-label="Batch history" className="w-full text-left">
+        <Table aria-label="Batch history" className="w-full">
           <thead>
             <tr>
               {[
@@ -161,15 +183,14 @@ export function BatchPanel({
               .map((item) => (
                 <tr key={item.id}>
                   <td className="p-2">
-                    <button
-                      className="text-teal-300 underline"
-                      onClick={() => onSelect(item.id)}
-                    >
+                    <Button onClick={() => onSelect(item.id)}>
                       {new Date(item.requested_at).toLocaleString()}
-                    </button>
+                    </Button>
                   </td>
                   <td>{item.trigger_type.replaceAll("_", " ")}</td>
-                  <td>{item.status.replaceAll("_", " ")}</td>
+                  <td>
+                    <StatusBadge status={item.status} />
+                  </td>
                   <td>{item.requested_keyword_count}</td>
                   <td>{item.succeeded_keyword_count}</td>
                   <td>{item.failed_keyword_count}</td>
@@ -181,12 +202,12 @@ export function BatchPanel({
                 </tr>
               ))}
           </tbody>
-        </table>
+        </Table>
       </div>
       {history.hasNextPage && (
-        <button onClick={() => void history.fetchNextPage()}>
+        <Button onClick={() => void history.fetchNextPage()}>
           Load more batches
-        </button>
+        </Button>
       )}
       {!!jobs.data?.pages[0]?.items.length && (
         <details className="mt-4">
@@ -204,9 +225,9 @@ export function BatchPanel({
               ))}
           </ul>
           {jobs.hasNextPage && (
-            <button onClick={() => void jobs.fetchNextPage()}>
+            <Button onClick={() => void jobs.fetchNextPage()}>
               Load more checks
-            </button>
+            </Button>
           )}
         </details>
       )}
@@ -217,15 +238,30 @@ export function BatchPanel({
 export function SchedulePanel({
   projectId,
   archived,
+  device,
 }: {
   projectId: string;
   archived: boolean;
+  device?: string;
 }) {
   const auth = useProtectedAuth();
   const client = useQueryClient();
   const key = ["projects", projectId, "rank-schedule"];
   const url = `/api/v1/projects/${projectId}/rank-schedule`;
   const [notice, setNotice] = useState("");
+  const [frequency, setFrequency] = useState<string | null>(null);
+  const billing = useQuery({
+    queryKey: ["billing", auth.user?.id],
+    queryFn: () => auth.request<BillingSummary>("/api/v1/billing/me"),
+    enabled: auth.isAuthenticated && !!auth.user?.id,
+    refetchInterval: 5000,
+  });
+  const entitlement = billing.data?.devices?.find(
+    (item) => item.device_scope === device,
+  )?.plan;
+  const planBlocked = entitlement
+    ? !entitlement.scheduled_checks_enabled
+    : false;
   const query = useQuery({
     queryKey: key,
     queryFn: () => auth.request<Schedule | null>(url),
@@ -263,47 +299,82 @@ export function SchedulePanel({
   }
   const schedule = query.data;
   return (
-    <section className="my-8 rounded-xl border border-slate-700 p-5">
+    <section id="schedule" className="ui-card my-8">
       <h3 className="text-xl font-semibold">Schedule</h3>
       {(save.isError || remove.isError || query.isError) && (
-        <p role="alert">
-          Schedule could not be updated. Check the time and timezone.
+        <Alert>
+          {save.error instanceof ApiError
+            ? save.error.message
+            : "Schedule could not be updated. Check the time and timezone."}
+        </Alert>
+      )}
+      {notice && <Toast key={notice}>{notice}</Toast>}
+      {query.isPending && <Skeleton label="Loading schedule…" rows={2} />}
+      {planBlocked ? (
+        <p className="text-secondary mt-3">
+          <StatusBadge status="Disabled by Plan" /> Scheduled checks are not
+          included in this Plan. Visit Billing &amp; Usage to see upgrade
+          options.
+        </p>
+      ) : !schedule && !query.isPending ? (
+        <p className="text-secondary mt-3">
+          Not configured. Choose a time to check your keywords automatically.
+        </p>
+      ) : null}
+      {entitlement?.max_scheduled_frequency === "weekly" && (
+        <p className="text-secondary mt-3">
+          Your Plan includes weekly scheduled checks.
         </p>
       )}
-      {notice && <p role="status">{notice}</p>}
       {!query.isPending && (
         <form
-          key={schedule ? JSON.stringify(schedule) : "new"}
+          key={`${schedule ? JSON.stringify(schedule) : "new"}:${planBlocked}`}
           onSubmit={submit}
           aria-label="Rank schedule"
           className="mt-4 flex flex-wrap items-end gap-4"
         >
           <label>
-            <input
+            <Input
               name="enabled"
               type="checkbox"
-              defaultChecked={schedule?.enabled ?? true}
+              defaultChecked={schedule?.enabled ?? !planBlocked}
+              disabled={planBlocked}
             />{" "}
             Enabled
           </label>
           <label>
             Frequency{" "}
-            <select
-              className="bg-slate-950 p-2"
+            <Select
               name="frequency"
-              defaultValue={schedule?.frequency ?? "daily"}
+              value={
+                frequency ??
+                schedule?.frequency ??
+                (entitlement?.max_scheduled_frequency === "weekly"
+                  ? "weekly"
+                  : "daily")
+              }
+              onChange={(e) => setFrequency(e.target.value)}
             >
-              <option value="daily">Daily</option>
+              <option
+                value="daily"
+                disabled={entitlement?.max_scheduled_frequency === "weekly"}
+              >
+                Daily
+              </option>
               <option value="weekly">Weekly</option>
-            </select>
+            </Select>
           </label>
-          <label>
+          <label
+            hidden={
+              (frequency ??
+                schedule?.frequency ??
+                (entitlement?.max_scheduled_frequency === "weekly"
+                  ? "weekly"
+                  : "daily")) !== "weekly"
+            }
+          >
             Weekly day{" "}
-            <select
-              className="bg-slate-950 p-2"
-              name="weekday"
-              defaultValue={schedule?.weekday ?? 0}
-            >
+            <Select name="weekday" defaultValue={schedule?.weekday ?? 0}>
               {[
                 "Monday",
                 "Tuesday",
@@ -317,12 +388,11 @@ export function SchedulePanel({
                   {day}
                 </option>
               ))}
-            </select>
+            </Select>
           </label>
           <label>
             Local time{" "}
-            <input
-              className="bg-slate-950 p-2"
+            <Input
               type="time"
               name="local_time"
               defaultValue={schedule?.local_time ?? "07:00"}
@@ -331,8 +401,7 @@ export function SchedulePanel({
           </label>
           <label>
             Timezone{" "}
-            <input
-              className="bg-slate-950 p-2"
+            <Input
               name="timezone"
               defaultValue={
                 schedule?.timezone ??
@@ -341,20 +410,18 @@ export function SchedulePanel({
               required
             />
           </label>
-          <button
-            className="rounded border border-teal-500 px-4 py-2"
-            disabled={archived || save.isPending}
-          >
+          <Button disabled={archived || save.isPending || planBlocked}>
             Save schedule
-          </button>
+          </Button>
           {schedule && (
-            <button
+            <Button
               type="button"
               disabled={remove.isPending}
+              confirmation="Delete this schedule? Automatic checks will stop; existing results are kept."
               onClick={() => remove.mutate()}
             >
               Delete schedule
-            </button>
+            </Button>
           )}
         </form>
       )}

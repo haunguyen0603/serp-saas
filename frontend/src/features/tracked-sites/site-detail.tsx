@@ -1,4 +1,5 @@
 "use client";
+import { Alert, Button, Input, Skeleton } from "@/design-system/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
@@ -15,8 +16,7 @@ import {
   updateTrackedDomain,
   updateTrackedSite,
 } from "./api";
-const field =
-  "mt-2 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2";
+const field = "";
 export function TrackedSiteDetail({ siteId }: { siteId: string }) {
   const auth = useProtectedAuth();
   const queryClient = useQueryClient();
@@ -65,14 +65,14 @@ export function TrackedSiteDetail({ siteId }: { siteId: string }) {
         retry={() => void auth.refresh().catch(() => {})}
       />
     );
-  if (site.isPending) return <p role="status">Loading Tracked Site…</p>;
+  if (site.isPending) return <Skeleton label="Loading Tracked Site…" />;
   if (site.isError)
     return (
-      <p role="alert">
+      <Alert>
         {site.error instanceof ApiError
           ? site.error.message
           : "Tracked Site could not be loaded."}
-      </p>
+      </Alert>
     );
   const value = site.data;
   function addDomain(event: FormEvent<HTMLFormElement>) {
@@ -98,7 +98,7 @@ export function TrackedSiteDetail({ siteId }: { siteId: string }) {
   }
   return (
     <main>
-      <Link className="text-teal-300 underline" href="/app/tracked-sites">
+      <Link className="text-brand underline" href="/app/tracked-sites">
         ← Tracked Sites
       </Link>
       <div className="my-8 flex justify-between gap-4">
@@ -109,35 +109,52 @@ export function TrackedSiteDetail({ siteId }: { siteId: string }) {
           </p>
           <p className="mt-2 capitalize">Status: {value.status}</p>
         </div>
-        <button
+        <Button
           onClick={() =>
             status.mutate(value.status === "active" ? "archived" : "active")
           }
         >
           {value.status === "active" ? "Archive Site" : "Reactivate Site"}
-        </button>
+        </Button>
       </div>
+      {(updateDomain.isError || remove.isError || status.isError) && (
+        <Alert>
+          {(updateDomain.error ?? remove.error ?? status.error) instanceof
+          ApiError
+            ? (updateDomain.error ?? remove.error ?? status.error)?.message
+            : "The site action could not be completed. Please try again."}
+        </Alert>
+      )}
       <section>
         <h2 className="text-2xl font-semibold">Domain aliases</h2>
+        <p className="text-secondary mt-2">
+          Moved your site with a 301 redirect? Keep the old domain as an alias
+          so ranking matches remain connected to this site.
+        </p>
         <div className="mt-5 space-y-3">
           {value.domains.map((domain) => (
             <article
               key={domain.id}
-              className="rounded-lg border border-slate-700 p-4"
+              className="rounded-lg border border-border p-4"
             >
               <div className="flex flex-wrap justify-between gap-4">
                 <div>
                   <strong>{domain.domain}</strong>
                   <p className="mt-1 text-sm">
                     {domain.is_primary && (
-                      <span className="mr-3 text-teal-300">PRIMARY</span>
+                      <span className="mr-3 text-brand">PRIMARY</span>
                     )}
-                    <span>{domain.active ? "ACTIVE" : "INACTIVE"}</span>
+                    {!domain.is_primary && (
+                      <span className="ui-badge mr-2">Alias</span>
+                    )}
+                    <span className="ui-badge">
+                      {domain.active ? "ACTIVE" : "INACTIVE"}
+                    </span>
                   </p>
                 </div>
                 <div className="flex gap-3">
                   {!domain.is_primary && (
-                    <button
+                    <Button
                       onClick={() =>
                         updateDomain.mutate({
                           id: domain.id,
@@ -146,10 +163,15 @@ export function TrackedSiteDetail({ siteId }: { siteId: string }) {
                       }
                     >
                       Make primary
-                    </button>
+                    </Button>
                   )}
-                  <button
-                    disabled={domain.is_primary}
+                  <Button
+                    disabled={domain.is_primary || updateDomain.isPending}
+                    confirmation={
+                      domain.active
+                        ? "Deactivate this alias? Future checks will no longer match it until you activate it again."
+                        : undefined
+                    }
                     onClick={() =>
                       updateDomain.mutate({
                         id: domain.id,
@@ -158,13 +180,14 @@ export function TrackedSiteDetail({ siteId }: { siteId: string }) {
                     }
                   >
                     {domain.active ? "Deactivate" : "Activate"}
-                  </button>
-                  <button
-                    className="text-red-300"
+                  </Button>
+                  <Button
+                    variant="danger"
+                    confirmation="Remove this domain alias? Future checks will no longer match it to this site."
                     onClick={() => remove.mutate(domain.id)}
                   >
                     Delete
-                  </button>
+                  </Button>
                 </div>
               </div>
             </article>
@@ -173,12 +196,12 @@ export function TrackedSiteDetail({ siteId }: { siteId: string }) {
         <form
           aria-label="Add domain"
           onSubmit={addDomain}
-          className="mt-8 rounded-xl border border-slate-700 p-5"
+          className="mt-8 rounded-xl border border-border p-5"
         >
           <h3 className="text-xl">Add Domain</h3>
           <label className="mt-4 block">
             Domain
-            <input
+            <Input
               name="domain"
               required
               className={field}
@@ -186,20 +209,13 @@ export function TrackedSiteDetail({ siteId }: { siteId: string }) {
             />
           </label>
           <label className="mt-4 flex gap-3">
-            <input name="makePrimary" type="checkbox" />
+            <Input name="makePrimary" type="checkbox" />
             Make primary
           </label>
-          {error && (
-            <p role="alert" className="mt-3 text-red-300">
-              {error}
-            </p>
-          )}
-          <button
-            disabled={add.isPending}
-            className="mt-4 rounded-lg bg-teal-400 px-5 py-2 font-semibold text-slate-950"
-          >
+          {error && <Alert className="mt-3 text-danger">{error}</Alert>}
+          <Button disabled={add.isPending} className="mt-4" variant="primary">
             {add.isPending ? "Adding…" : "Add Domain"}
-          </button>
+          </Button>
         </form>
       </section>
     </main>

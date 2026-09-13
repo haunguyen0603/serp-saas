@@ -1,3 +1,4 @@
+import { Button, Table } from "@/design-system/ui";
 import type { RankCheck } from "./types";
 
 export function RankCheckHistory({
@@ -12,16 +13,16 @@ export function RankCheckHistory({
   return (
     <section
       aria-label="Ranking history"
-      className="mt-8 rounded-xl border border-slate-700 p-5"
+      className="mt-8 rounded-xl border border-border p-5"
     >
       <h3 className="text-xl font-semibold">Ranking history · {keyword}</h3>
       {checks.length === 0 ? (
-        <p className="mt-4 text-slate-400">No Rank Checks yet.</p>
+        <p className="mt-4 text-secondary">No Rank Checks yet.</p>
       ) : (
         <div className="mt-4 overflow-x-auto">
-          <table className="w-full text-left">
+          <Table className="w-full">
             <thead>
-              <tr className="border-b border-slate-700">
+              <tr className="border-b border-border">
                 <th className="p-2">Check time</th>
                 <th className="p-2">Environment snapshot</th>
                 <th className="p-2">Depth</th>
@@ -32,7 +33,7 @@ export function RankCheckHistory({
             </thead>
             <tbody>
               {checks.map((check) => (
-                <tr key={check.id} className="border-b border-slate-800">
+                <tr key={check.id} className="border-b border-border">
                   <td className="p-2">
                     {new Date(check.requested_at).toLocaleString()}
                   </td>
@@ -60,17 +61,12 @@ export function RankCheckHistory({
                   </td>
                   <td className="p-2 capitalize">{check.status}</td>
                   <td className="p-2">
-                    <button
-                      className="text-teal-300 underline"
-                      onClick={() => onOpen(check)}
-                    >
-                      View results
-                    </button>
+                    <Button onClick={() => onOpen(check)}>View results</Button>
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         </div>
       )}
     </section>

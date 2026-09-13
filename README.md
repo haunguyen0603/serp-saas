@@ -10,7 +10,8 @@ Milestone 4.1 adds internal Serper/SerpApi routing, safe fallback, persisted pro
 attempts, and optional operational request budgets.
 **The authenticated user is the tenant boundary.** Milestone 5 adds durable Batch/Job
 queues, a private Cloud Run worker, progress/history, cancellation and daily/weekly
-Project schedules. Billing remains deferred.
+Project schedules. Milestone 6A adds device-scoped Plans, manual subscriptions,
+logical usage limits and platform Admin billing.
 
 ## Architecture
 
@@ -45,6 +46,46 @@ Local worker command: `python -m scripts.rank_jobs --loop`. Private cloud worker
 `uvicorn app.worker_main:app --host 0.0.0.0 --port 8080`. Scheduled dispatch uses one
 Cloud Scheduler job every five minutes, through the same private worker service.
 Old synchronous rank-check POST routes are retired; GET ranking history is preserved.
+
+## Billing and manual subscriptions (M6A)
+
+Customers can open `/settings/billing` to view independent Desktop and Mobile Plans,
+resource limits, monthly checks, reservations and reset dates. `/pricing` lists the
+six seeded Plans. Paid activation requires external bank-transfer confirmation by
+an administrator; there is no checkout or payment-provider integration.
+
+An operator can grant platform Admin access to an existing account:
+
+```sh
+docker compose exec -T backend python -m scripts.platform_admin admin@example.com
+# Revoke access:
+docker compose exec -T backend python -m scripts.platform_admin admin@example.com --revoke
+```
+
+Log in again after granting access to refresh navigation. Open `/admin/customers`,
+search for the customer, and select a device Plan, period, reference and internal note.
+For an immediate change, select **Replace current Plan immediately**. For a future
+change, set the start at or after the current subscription end. Extending a subscription
+preserves the current monthly usage; an immediate replacement starts fresh quota.
+Admin notes and payment references are hidden from customer billing responses.
+
+All accounts have Desktop Free and Mobile Free fallback. Migration preserves existing
+resources/history and disables schedules incompatible with Free, with audit events.
+Over-limit resources remain readable; expansion requires reducing usage or changing Plan.
+Monthly usage is subscription-anchored for paid Plans, calendar-month for Free.
+Quota is reserved before enqueue; worker execution commits once and unused cancelled
+or permanently failed work releases its reservation. Provider retries use the same
+logical check. Temporary enqueue failures retain reservations for bounded recovery.
+
+```sh
+make billing-smoke
+```
+
+Normal verification uses `SERP_ENABLED_PROVIDERS=fake`, `SERP_PROVIDER=fake`,
+`SERP_FIXED_PROVIDER=fake`, `SERP_PROVIDER_STRATEGY=fixed`,
+`SERP_PROVIDER_PRIORITY=fake`, `TASK_QUEUE_PROVIDER=local`, and `DEBUG=false`.
+See [M6A verification](docs/verification-milestone-6a.md) for architecture, commands,
+security coverage and limitations.
 
 ## Requirements
 

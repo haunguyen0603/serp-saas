@@ -186,6 +186,22 @@ class RankCheckWorker:
                     .limit(limit)
                 )
             )
+        for pending_id in pending:
+            async with self.batches.factory() as session, session.begin():
+                repo = RankJobRepository(session)
+                stranded = await repo.locked_job(pending_id)
+                if (
+                    stranded
+                    and stranded.status == "pending"
+                    and stranded.created_at
+                    < now
+                    - timedelta(
+                        seconds=self.batches.settings.task_max_retry_duration_seconds
+                    )
+                ):
+                    stranded.status, stranded.completed_at = "failed", now
+                    stranded.last_error_code = "TASK_ENQUEUE_EXHAUSTED"
+                    await repo.reconcile(stranded.batch_id)
         for offset in range(0, len(pending), 10):
             await asyncio.gather(
                 *(
@@ -225,7 +241,7 @@ class RankCheckWorker:
                     await session.scalars(
                         select(RankCheckJob.id)
                         .where(
-                            RankCheckJob.status.in_(["queued", "running"]),
+                            RankCheckJob.status.in_(["pending", "queued", "running"]),
                             RankCheckJob.updated_at
                             < now
                             - timedelta(

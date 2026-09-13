@@ -5,7 +5,13 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from google.api_core.exceptions import AlreadyExists
+from google.api_core.exceptions import (
+    AlreadyExists,
+    InvalidArgument,
+    NotFound,
+    PermissionDenied,
+    Unauthenticated,
+)
 from google.cloud import tasks_v2
 
 from app.core.config import Settings
@@ -55,6 +61,8 @@ class CloudTasksRankCheckQueue:
         except AlreadyExists:
             logger.info("cloud_task_already_exists", extra={"job_id": str(job_id)})
             return TaskEnqueueResult(name, already_exists=True)
+        except (InvalidArgument, NotFound, PermissionDenied, Unauthenticated):
+            raise TaskQueueError("TASK_ENQUEUE_FAILED", permanent=True) from None
         except Exception:
             logger.warning(
                 "cloud_task_enqueue_failed",

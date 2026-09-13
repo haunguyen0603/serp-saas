@@ -61,3 +61,7 @@ recover-rank-jobs:
 	$(COMPOSE) run --rm backend python -m scripts.rank_jobs
 cloud-tasks-smoke:
 	$(COMPOSE) run --rm -e RUN_REAL_CLOUD_TASKS_SMOKE=$(RUN_REAL_CLOUD_TASKS_SMOKE) -e CLOUD_TASKS_SMOKE_JOB_ID=$(CLOUD_TASKS_SMOKE_JOB_ID) backend python -m scripts.smoke_cloud_tasks
+
+.PHONY: billing-smoke
+billing-smoke:
+	$(COMPOSE) exec -T backend python -m scripts.smoke_billing

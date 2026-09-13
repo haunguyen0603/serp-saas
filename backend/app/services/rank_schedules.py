@@ -8,9 +8,12 @@ from sqlalchemy import select
 from app.core.errors import AppError
 from app.models.project import ProjectStatus
 from app.models.rank_job import ProjectRankSchedule, RankCheckBatch
+from app.repositories.billing import BillingRepository
 from app.repositories.project import ProjectRepository
 from app.repositories.rank_job import TERMINAL_BATCHES, RankJobRepository
 from app.schemas.rank_job import ScheduleRequest, ScheduleResponse
+from app.services.billing.entitlements import EntitlementService
+from app.services.billing.reconciliation import reconcile_subscriptions
 from app.services.rank_batches import RankBatchService
 
 logger = logging.getLogger(__name__)
@@ -52,9 +55,14 @@ class RankScheduleService:
         self, project_id: UUID, user_id: UUID, request: ScheduleRequest
     ) -> ScheduleResponse:
         async with self.batches.factory() as session, session.begin():
+            await BillingRepository(session).lock(user_id)
             project = await ProjectRepository(session).get_for_user(project_id, user_id)
             if project is None:
                 raise AppError(404, "PROJECT_NOT_FOUND", "Project not found.")
+            if request.enabled:
+                await EntitlementService(session).schedule(
+                    user_id, project.device, request.frequency
+                )
             # Serialize first-time schedule creation by locking the parent.
             await session.refresh(project, with_for_update={"key_share": True})
             if project.status != ProjectStatus.ACTIVE:
@@ -99,6 +107,8 @@ class RankScheduleService:
     async def dispatch(self, now: datetime | None = None, limit: int = 100) -> int:
         now = now or datetime.now(UTC)
         count = 0
+        async with self.batches.factory() as session, session.begin():
+            await reconcile_subscriptions(session, now)
         # Each transaction contains only DB operations; queue I/O is recovery's job.
         for _ in range(limit):
             async with self.batches.factory() as session, session.begin():
@@ -109,11 +119,14 @@ class RankScheduleService:
                         ProjectRankSchedule.next_run_at <= now,
                     )
                     .order_by(ProjectRankSchedule.next_run_at)
-                    .with_for_update(skip_locked=True)
                     .limit(1)
                 )
                 if schedule is None:
                     break
+                await BillingRepository(session).lock(schedule.user_id)
+                await session.refresh(schedule, with_for_update=True)
+                if not schedule.enabled or schedule.next_run_at > now:
+                    continue
                 occurrence = schedule.next_run_at
                 schedule.next_run_at = next_run(
                     now,

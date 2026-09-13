@@ -195,3 +195,15 @@ def test_production_rejects_local_queue(settings: Settings):
     )
     with pytest.raises(ValidationError, match="Production requires Cloud Tasks"):
         Settings.model_validate(configured)
+
+
+async def test_permanent_enqueue_error_is_safe_and_compensatable(settings: Settings):
+    from google.api_core.exceptions import PermissionDenied
+
+    client = Mock()
+    client.create_task.side_effect = PermissionDenied("private SDK credentials")
+    queue = CloudTasksRankCheckQueue(cloud_settings(settings), client)
+    with pytest.raises(TaskQueueError) as error:
+        await queue.enqueue_rank_check_job(uuid4())
+    assert error.value.permanent
+    assert str(error.value) == "TASK_ENQUEUE_FAILED"

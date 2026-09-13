@@ -16,6 +16,12 @@ from app.models.user import User
 
 __all__ = [
     "Base",
+    "Plan",
+    "Subscription",
+    "UsagePeriod",
+    "UsageReservation",
+    "UsageEvent",
+    "BillingAuditEvent",
     "RankCheckBatch",
     "RankCheckJob",
     "ProjectRankSchedule",
@@ -31,3 +37,12 @@ __all__ = [
     "TrackedSite",
     "TrackedDomain",
 ]
+
+from app.models.billing import (
+    BillingAuditEvent,
+    Plan,
+    Subscription,
+    UsageEvent,
+    UsagePeriod,
+    UsageReservation,
+)

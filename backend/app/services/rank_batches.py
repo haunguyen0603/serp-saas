@@ -20,6 +20,8 @@ from app.schemas.rank_job import (
     JobList,
     JobResponse,
 )
+from app.services.billing.entitlements import EntitlementService
+from app.services.billing.usage import UsageService
 from app.services.normalization import decode_cursor, encode_cursor
 from app.services.task_queue import RankCheckTaskQueue, TaskQueueError
 
@@ -46,6 +48,7 @@ class RankBatchService:
         schedule_id: UUID | None = None,
         scheduled_for: datetime | None = None,
     ) -> tuple[RankCheckBatch, list[RankCheckJob]]:
+        await UsageService(session).subscriptions.repo.lock(user_id)
         project = await ProjectRepository(session).get_for_user(project_id, user_id)
         if project is None:
             raise AppError(404, "PROJECT_NOT_FOUND", "Project not found.")
@@ -73,6 +76,18 @@ class RankBatchService:
             )
         if not keywords:
             raise AppError(400, "NO_ACTIVE_KEYWORDS", "Add an active Keyword first.")
+        if trigger == "scheduled":
+            from app.models.rank_job import ProjectRankSchedule
+
+            schedule = await session.get(ProjectRankSchedule, schedule_id)
+            if schedule is None:
+                raise AppError(404, "SCHEDULE_NOT_INCLUDED", "Schedule not found.")
+            await EntitlementService(session).schedule(
+                user_id, project.device, schedule.frequency
+            )
+        period = await UsageService(session).reserve(
+            user_id, project.device, len(keywords)
+        )
         batch = RankCheckBatch(
             project_id=project_id,
             user_id=user_id,
@@ -94,6 +109,8 @@ class RankBatchService:
             for k in keywords
         ]
         session.add_all(jobs)
+        await session.flush()
+        UsageService(session).attach(period, jobs)
         await session.flush()
         logger.info(
             "rank_check_batch_created",
@@ -142,7 +159,15 @@ class RankBatchService:
             result = await self.queue.enqueue_rank_check_job(
                 job_id, schedule_time=schedule_time
             )
-        except TaskQueueError:
+        except TaskQueueError as error:
+            if getattr(error, "permanent", False):
+                async with self.factory() as session, session.begin():
+                    repo = RankJobRepository(session)
+                    failed = await repo.locked_job(job_id)
+                    if failed and failed.status == "pending":
+                        failed.status, failed.completed_at = "failed", datetime.now(UTC)
+                        failed.last_error_code = "TASK_ENQUEUE_FAILED"
+                        await repo.reconcile(failed.batch_id)
             return False
         async with self.factory() as session, session.begin():
             repo = RankJobRepository(session)

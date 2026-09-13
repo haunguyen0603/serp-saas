@@ -102,6 +102,7 @@ it("shows safe failure text, batch history, and cancellation", async () => {
   fireEvent.click(
     screen.getByRole("button", { name: "Cancel pending checks" }),
   );
+  fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
   await waitFor(() =>
     expect(request).toHaveBeenCalledWith(
       "/api/v1/projects/project/rank-check-batches/batch-1/cancel",
@@ -144,6 +145,7 @@ it("creates, pauses and deletes a timezone-aware schedule", async () => {
     timezone: "Asia/Ho_Chi_Minh",
   });
   fireEvent.click(screen.getByRole("button", { name: "Delete schedule" }));
+  fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
   await screen.findByText("Schedule deleted.");
 });
 

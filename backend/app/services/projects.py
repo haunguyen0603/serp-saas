@@ -15,6 +15,7 @@ from app.schemas.project import (
     ProjectStatusFilter,
     ProjectUpdate,
 )
+from app.services.billing.entitlements import EntitlementService
 from app.services.keywords import prepare_keyword_values
 from app.services.normalization import (
     decode_cursor,
@@ -49,6 +50,9 @@ class ProjectService:
                 "PROJECT_REQUIRES_KEYWORDS",
                 "A Project requires at least one valid keyword.",
             )
+        await EntitlementService(self.projects.session).expansion(
+            user_id, normalize_device(data.device), projects=1, keywords=len(values)
+        )
         project = await self.projects.create_for_user(
             user_id,
             name=normalize_name(data.name),
@@ -140,6 +144,9 @@ class ProjectService:
             values["location"] = normalize_location(data.location)
         if "status" in fields and data.status is not None:
             values["status"] = data.status
+        await EntitlementService(self.projects.session).project_change(
+            user_id, project_id, values.get("device"), values.get("status")
+        )
         project = await self.projects.update_for_user(project_id, user_id, values)
         if project is None:
             raise AppError(404, "PROJECT_NOT_FOUND", "Project not found.")

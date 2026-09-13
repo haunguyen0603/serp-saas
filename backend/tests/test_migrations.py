@@ -55,7 +55,7 @@ def test_fresh_database_upgrade_and_forward_only_boundary(
 
     try:
         command.upgrade(config, "head")
-        assert asyncio.run(revision()) == "0007_async_rank_check_jobs"
+        assert asyncio.run(revision()) == "0008_billing_usage_limits"
 
         async def tables() -> set[str]:
             async with engine.connect() as connection:
@@ -65,6 +65,12 @@ def test_fresh_database_upgrade_and_forward_only_boundary(
 
         assert asyncio.run(tables()) == {
             "alembic_version",
+            "plans",
+            "subscriptions",
+            "usage_periods",
+            "usage_reservations",
+            "usage_events",
+            "billing_audit_events",
             "users",
             "refresh_tokens",
             "projects",
@@ -83,10 +89,10 @@ def test_fresh_database_upgrade_and_forward_only_boundary(
         command.downgrade(config, "0005_rank_tracking")
         assert asyncio.run(revision()) == "0005_rank_tracking"
         command.upgrade(config, "head")
-        assert asyncio.run(revision()) == "0007_async_rank_check_jobs"
+        assert asyncio.run(revision()) == "0008_billing_usage_limits"
         with pytest.raises(RuntimeError, match="intentionally irreversible"):
             command.downgrade(config, "0003_projects_keywords")
-        assert asyncio.run(revision()) == "0007_async_rank_check_jobs"
+        assert asyncio.run(revision()) == "0008_billing_usage_limits"
     finally:
         asyncio.run(engine.dispose())
         asyncio.run(admin_sql(f'DROP SCHEMA "{schema}" CASCADE'))
@@ -664,6 +670,108 @@ def test_m5_round_trip_and_schema_drift(
         command.upgrade(config, "head")
         command.check(config)
         command.downgrade(config, "0006_multi_provider_routing")
+        command.upgrade(config, "head")
+        command.check(config)
+    finally:
+        asyncio.run(engine.dispose())
+        asyncio.run(admin_sql(f'DROP SCHEMA "{schema}" CASCADE'))
+        asyncio.run(admin.dispose())
+
+
+@pytest.mark.integration
+def test_m6a_existing_users_schedules_and_pending_jobs(settings, monkeypatch):
+    schema, admin, engine, admin_sql = isolated_migration_context(settings, monkeypatch)
+    config = Config("alembic.ini")
+    user, project, keyword, batch, job, schedule = [uuid4() for _ in range(6)]
+
+    async def seed():
+        async with engine.begin() as connection:
+            for sql, params in [
+                (
+                    "INSERT INTO users (id,email,password_hash,terms_accepted_at) VALUES (:id,'legacy@example.com','hash',now())",  # noqa: E501
+                    {"id": user},
+                ),
+                (
+                    "INSERT INTO projects (id,user_id,name,country_code,language_code,device) VALUES (:id,:user,'Legacy','VN','vi','desktop')",  # noqa: E501
+                    {"id": project, "user": user},
+                ),
+                (
+                    "INSERT INTO keywords (id,project_id,keyword,keyword_normalized) VALUES (:id,:project,'old','old')",  # noqa: E501
+                    {"id": keyword, "project": project},
+                ),
+                (
+                    "INSERT INTO project_rank_schedules (id,user_id,project_id,enabled,frequency,timezone,local_time,weekday,next_run_at) VALUES (:id,:user,:project,true,'daily','UTC','07:00',0,now())",  # noqa: E501
+                    {"id": schedule, "user": user, "project": project},
+                ),
+                (
+                    "INSERT INTO rank_check_batches (id,user_id,project_id,trigger_type,status,requested_keyword_count) VALUES (:id,:user,:project,'manual_project','pending',1)",  # noqa: E501
+                    {"id": batch, "user": user, "project": project},
+                ),
+                (
+                    "INSERT INTO rank_check_jobs (id,user_id,project_id,keyword_id,batch_id,status,attempt_count,max_attempts) VALUES (:id,:user,:project,:keyword,:batch,'pending',0,5)",  # noqa: E501
+                    {
+                        "id": job,
+                        "user": user,
+                        "project": project,
+                        "keyword": keyword,
+                        "batch": batch,
+                    },
+                ),
+            ]:
+                await connection.execute(text(sql), params)
+
+    async def verify():
+        async with engine.connect() as connection:
+            assert (
+                await connection.scalar(
+                    text("SELECT count(*) FROM subscriptions WHERE status='active'")
+                )
+                == 2
+            )
+            assert await connection.scalar(text("SELECT count(*) FROM plans")) == 6
+            assert not await connection.scalar(
+                text("SELECT enabled FROM project_rank_schedules")
+            )
+            assert (
+                await connection.scalar(
+                    text(
+                        "SELECT count(*) FROM billing_audit_events WHERE event_type='schedule_disabled_due_to_plan'"  # noqa: E501
+                    )
+                )
+                == 1
+            )
+            assert (
+                await connection.scalar(
+                    text(
+                        "SELECT count(*) FROM usage_reservations WHERE status='reserved'"  # noqa: E501
+                    )
+                )
+                == 1
+            )
+            assert (
+                await connection.scalar(
+                    text("SELECT sum(reserved_keyword_checks) FROM usage_periods")
+                )
+                == 1
+            )
+            assert (
+                await connection.scalar(text("SELECT status FROM rank_check_jobs"))
+                == "pending"
+            )
+            assert (
+                await connection.scalar(text("SELECT keyword FROM keywords")) == "old"
+            )
+            assert not await connection.scalar(
+                text("SELECT is_platform_admin FROM users")
+            )
+
+    try:
+        command.upgrade(config, "0007_async_rank_check_jobs")
+        asyncio.run(seed())
+        command.upgrade(config, "head")
+        asyncio.run(verify())
+        command.check(config)
+        command.downgrade(config, "0007_async_rank_check_jobs")
         command.upgrade(config, "head")
         command.check(config)
     finally:

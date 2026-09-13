@@ -41,7 +41,13 @@ async def verify(project: UUID, user: UUID) -> None:
                 )
             )
         for job in jobs:
-            assert await worker.execute(job)
+            # The Compose local worker may already hold this Job's lease.
+            for _ in range(300):
+                if await worker.execute(job):
+                    break
+                await asyncio.sleep(0.1)
+            else:
+                raise AssertionError("Local Job did not reach a terminal state")
             assert await worker.execute(job)
         detail = await batches.detail(project, user, batch.batch_id)
         assert detail.status == "completed" and detail.succeeded_keyword_count == 2

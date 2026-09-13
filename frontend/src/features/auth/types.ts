@@ -1,5 +1,6 @@
 export interface User {
   id: string;
+  is_platform_admin?: boolean;
   email: string;
   status: "active" | "disabled";
   email_verified: boolean;

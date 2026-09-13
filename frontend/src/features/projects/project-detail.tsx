@@ -1,4 +1,12 @@
 "use client";
+import {
+  Alert,
+  Button,
+  Input,
+  Select,
+  Skeleton,
+  Toast,
+} from "@/design-system/ui";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
@@ -10,8 +18,7 @@ import { KeywordManager } from "./keyword-manager";
 import { ProtectedStatus, useProtectedAuth } from "./protected";
 import type { Device, Project, ProjectUpdate } from "./types";
 
-const field =
-  "mt-2 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2";
+const field = "";
 
 function ProjectSettings({ project }: { project: Project }) {
   const auth = useProtectedAuth();
@@ -42,9 +49,9 @@ function ProjectSettings({ project }: { project: Project }) {
   }
 
   return (
-    <section id="settings" className="mt-12 border-t border-slate-700 pt-10">
+    <section id="settings" className="mt-12 border-t border-border pt-10">
       <h2 className="text-2xl font-semibold">Project Settings</h2>
-      <p className="mt-2 text-sm text-slate-400">
+      <p className="mt-2 text-sm text-secondary">
         These settings apply to every keyword in this project.
       </p>
       <form
@@ -54,7 +61,7 @@ function ProjectSettings({ project }: { project: Project }) {
       >
         <label>
           Project name
-          <input
+          <Input
             className={field}
             name="name"
             defaultValue={project.name}
@@ -64,7 +71,7 @@ function ProjectSettings({ project }: { project: Project }) {
         </label>
         <label>
           Country
-          <input
+          <Input
             className={field}
             name="country"
             defaultValue={project.country_code}
@@ -73,7 +80,7 @@ function ProjectSettings({ project }: { project: Project }) {
         </label>
         <label>
           Language
-          <input
+          <Input
             className={field}
             name="language"
             defaultValue={project.language_code}
@@ -82,14 +89,14 @@ function ProjectSettings({ project }: { project: Project }) {
         </label>
         <label>
           Device
-          <select className={field} name="device" defaultValue={project.device}>
+          <Select className={field} name="device" defaultValue={project.device}>
             <option value="desktop">Desktop</option>
             <option value="mobile">Mobile</option>
-          </select>
+          </Select>
         </label>
         <label>
           Location
-          <input
+          <Input
             className={field}
             name="location"
             defaultValue={project.location ?? ""}
@@ -97,23 +104,16 @@ function ProjectSettings({ project }: { project: Project }) {
         </label>
         <div className="sm:col-span-2">
           {mutation.isError && (
-            <p role="alert" className="mb-3 text-red-300">
+            <Alert className="mb-3 text-danger">
               {mutation.error instanceof ApiError
                 ? mutation.error.message
                 : "Project settings could not be saved."}
-            </p>
+            </Alert>
           )}
-          {message && (
-            <p role="status" className="mb-3 text-teal-300">
-              {message}
-            </p>
-          )}
-          <button
-            disabled={mutation.isPending}
-            className="rounded-lg border border-teal-500 px-5 py-3 text-teal-200"
-          >
+          {message && <Toast key={message}>{message}</Toast>}
+          <Button disabled={mutation.isPending}>
             {mutation.isPending ? "Saving…" : "Save Project Settings"}
-          </button>
+          </Button>
         </div>
       </form>
     </section>
@@ -158,47 +158,41 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
         retry={() => void auth.refresh().catch(() => {})}
       />
     );
-  if (project.isPending) return <p role="status">Loading project…</p>;
+  if (project.isPending) return <Skeleton label="Loading project…" />;
   if (project.isError)
     return (
       <main>
         <h1 className="text-3xl">Project unavailable</h1>
-        <p role="alert" className="my-5 text-red-300">
+        <Alert className="my-5 text-danger">
           {project.error instanceof ApiError
             ? project.error.message
             : "Project could not be loaded."}
-        </p>
-        <button
-          className="text-teal-300 underline"
-          onClick={() => void project.refetch()}
-        >
-          Retry
-        </button>
+        </Alert>
+        <Button onClick={() => void project.refetch()}>Retry</Button>
       </main>
     );
 
   const value = project.data;
   return (
     <main>
-      <Link className="text-teal-300 underline" href="/app/projects">
+      <Link className="text-brand underline" href="/app/projects">
         ← Projects
       </Link>
       <div className="my-8 flex flex-wrap items-start justify-between gap-5">
         <div>
           <h1 className="text-4xl font-semibold">{value.name}</h1>
-          <p className="mt-2 text-slate-400">
+          <p className="mt-2 text-secondary">
             Google · {value.country_code} · {value.language_code} ·{" "}
             <span className="capitalize">{value.device}</span>
             {value.location ? ` · ${value.location}` : ""}
           </p>
           <p className="mt-2">
             Status:{" "}
-            <span className="capitalize text-teal-300">{value.status}</span>
+            <span className="capitalize text-brand">{value.status}</span>
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <button
-            className="rounded-lg border border-slate-600 px-4 py-2"
+          <Button
             disabled={statusMutation.isPending}
             onClick={() =>
               statusMutation.mutate(
@@ -209,33 +203,30 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
             {value.status === "active"
               ? "Archive Project"
               : "Reactivate Project"}
-          </button>
-          <button
-            className="rounded-lg border border-red-500/70 px-4 py-2 text-red-300"
+          </Button>
+          <Button
+            variant="danger"
             disabled={deleteMutation.isPending}
-            onClick={() => {
-              if (
-                window.confirm(
-                  "Deleting this project will also delete its keywords. Continue?",
-                )
-              )
-                deleteMutation.mutate();
-            }}
+            confirmation="Delete this Project and its Keywords? Ranking history may require archiving instead."
+            onClick={() => deleteMutation.mutate()}
           >
             Delete Project
-          </button>
+          </Button>
         </div>
       </div>
       {(statusMutation.isError || deleteMutation.isError) && (
-        <p role="alert" className="mb-5 text-red-300">
+        <Alert className="mb-5 text-danger">
           The project action could not be completed.
-        </p>
+        </Alert>
       )}
-      <nav className="mb-8 flex gap-5 border-b border-slate-700 pb-4">
-        <a className="text-teal-300" href="#keywords">
+      <nav aria-label="Project sections" className="ui-section-nav">
+        <a className="text-brand" href="#keywords">
           Keywords
         </a>
-        <a className="text-teal-300" href="#settings">
+        <a href="#rankings">Rankings</a>
+        <a href="#batches">Batch History</a>
+        <a href="#schedule">Schedule</a>
+        <a className="text-brand" href="#settings">
           Project Settings
         </a>
       </nav>

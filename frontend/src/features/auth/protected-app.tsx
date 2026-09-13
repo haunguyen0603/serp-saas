@@ -1,5 +1,6 @@
 "use client";
 
+import { Button, Card, StatusBadge, Skeleton } from "@/design-system/ui";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -43,14 +44,14 @@ export function ProtectedApp() {
         <p role="alert" className="my-6">
           {auth.error}
         </p>
-        <button
+        <Button
           onClick={() => {
             void auth.refresh().catch(() => {});
           }}
-          className="text-teal-300 underline"
+          className="text-brand underline"
         >
           Retry
-        </button>
+        </Button>
       </main>
     );
   if (!auth.isAuthenticated)
@@ -64,7 +65,7 @@ export function ProtectedApp() {
   if (me.isPending)
     return (
       <main>
-        <p role="status">Loading your account…</p>
+        <Skeleton label="Loading your account…" />
       </main>
     );
   if (me.isError)
@@ -76,63 +77,79 @@ export function ProtectedApp() {
             ? me.error.message
             : "The service is unavailable."}
         </p>
-        <button
+        <Button
           onClick={() => {
             void me.refetch();
           }}
-          className="mr-6 text-teal-300 underline"
+          className="mr-6 text-brand underline"
         >
           Retry
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => {
             void logout();
           }}
           disabled={loggingOut}
         >
           Logout
-        </button>
+        </Button>
         {logoutError && <p role="alert">{logoutError}</p>}
       </main>
     );
   return (
     <main>
-      <h1 className="mb-8 text-4xl font-semibold">SERP SaaS</h1>
-      <dl className="space-y-6 rounded-xl border border-slate-700 bg-slate-900/50 p-6">
-        <div>
-          <dt className="text-slate-400">Signed in as:</dt>
-          <dd className="mt-2 text-xl">{me.data.email}</dd>
-        </div>
-        <div>
-          <dt className="text-slate-400">Account status:</dt>
-          <dd className="mt-2 text-teal-300">
-            {me.data.status === "active" ? "Active" : "Disabled"}
-          </dd>
-        </div>
-      </dl>
+      <h1 className="mb-8">Account settings</h1>
+      <Card>
+        <dl className="space-y-6">
+          <div>
+            <dt className="text-secondary">Signed in as:</dt>
+            <dd className="mt-2 text-xl">{me.data.email}</dd>
+          </div>
+          <div>
+            <dt className="text-secondary">Account status:</dt>
+            <dd className="mt-2 text-brand">
+              <StatusBadge status={me.data.status} />
+            </dd>
+          </div>
+        </dl>
+      </Card>
       <Link
         href="/app/projects"
-        className="mt-8 mr-4 inline-block rounded-lg bg-teal-400 px-5 py-3 font-semibold text-slate-950"
+        className="mt-8 mr-4 inline-block rounded-lg bg-brand px-5 py-3 font-semibold text-white"
       >
         Projects
       </Link>
       <Link
         href="/app/tracked-sites"
-        className="mt-8 mr-4 inline-block rounded-lg border border-teal-500 px-5 py-3 text-teal-200"
+        className="mt-8 mr-4 inline-block rounded-lg border border-brand px-5 py-3 text-brand"
       >
         Tracked Sites
       </Link>
-      <button
+      <Link
+        href="/settings/billing"
+        className="mt-8 mr-4 inline-block text-brand underline"
+      >
+        Billing &amp; Usage
+      </Link>
+      {me.data.is_platform_admin && (
+        <Link
+          href="/admin/customers"
+          className="mt-8 mr-4 inline-block text-brand underline"
+        >
+          Customers
+        </Link>
+      )}
+      <Button
         onClick={() => {
           void logout();
         }}
         disabled={loggingOut}
-        className="mt-8 rounded-lg border border-slate-500 px-5 py-3 hover:bg-slate-800 disabled:opacity-50"
+        className="mt-8 rounded-lg border border-border px-5 py-3 hover:bg-surface-muted disabled:opacity-50"
       >
         {loggingOut ? "Logging out…" : "Logout"}
-      </button>
+      </Button>
       {logoutError && (
-        <p role="alert" className="mt-4 text-red-300">
+        <p role="alert" className="mt-4 text-danger">
           {logoutError}
         </p>
       )}

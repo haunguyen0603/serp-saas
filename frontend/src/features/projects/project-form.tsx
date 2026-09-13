@@ -1,4 +1,5 @@
 "use client";
+import { Alert, Button, Input, Select, Textarea } from "@/design-system/ui";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
@@ -9,8 +10,7 @@ import { createProject, projectKeys } from "./api";
 import { ProtectedStatus, useProtectedAuth } from "./protected";
 import type { Device, ProjectCreate } from "./types";
 
-const field =
-  "mt-2 w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3";
+const field = "";
 
 export function ProjectForm() {
   const auth = useProtectedAuth();
@@ -63,25 +63,25 @@ export function ProjectForm() {
   }
   return (
     <main className="max-w-xl">
-      <Link className="text-teal-300 underline" href="/app/projects">
+      <Link className="text-brand underline" href="/app/projects">
         ← Projects
       </Link>
       <h1 className="my-8 text-4xl font-semibold">Create Project</h1>
       <form onSubmit={submit} className="space-y-5" aria-label="Create project">
         <label className="block">
           Project name
-          <input name="name" required maxLength={200} className={field} />
+          <Input name="name" required maxLength={200} className={field} />
         </label>
         <label className="block">
           Search engine
-          <select name="searchEngine" className={field} defaultValue="google">
+          <Select name="searchEngine" className={field} defaultValue="google">
             <option value="google">Google</option>
-          </select>
+          </Select>
         </label>
         <div className="grid gap-5 sm:grid-cols-2">
           <label>
             Country
-            <input
+            <Input
               name="country"
               required
               defaultValue="VN"
@@ -90,7 +90,7 @@ export function ProjectForm() {
           </label>
           <label>
             Language
-            <input
+            <Input
               name="language"
               required
               defaultValue="vi"
@@ -99,19 +99,19 @@ export function ProjectForm() {
           </label>
           <label>
             Device
-            <select name="device" defaultValue="desktop" className={field}>
+            <Select name="device" defaultValue="desktop" className={field}>
               <option value="desktop">Desktop</option>
               <option value="mobile">Mobile</option>
-            </select>
+            </Select>
           </label>
           <label>
             Location (optional)
-            <input name="location" className={field} />
+            <Input name="location" className={field} />
           </label>
         </div>
         <label className="block">
           Keywords, one per line
-          <textarea
+          <Textarea
             name="keywords"
             required
             className={`${field} min-h-44`}
@@ -124,21 +124,14 @@ export function ProjectForm() {
             }
           />
         </label>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-secondary">
           {keywordCount} {keywordCount === 1 ? "keyword" : "keywords"}. Empty
           and duplicate lines are cleaned automatically.
         </p>
-        {error && (
-          <p role="alert" className="text-red-300">
-            {error}
-          </p>
-        )}
-        <button
-          disabled={mutation.isPending}
-          className="rounded-lg bg-teal-400 px-6 py-3 font-semibold text-slate-950 disabled:opacity-50"
-        >
+        {error && <Alert className="text-danger">{error}</Alert>}
+        <Button disabled={mutation.isPending} variant="primary">
           {mutation.isPending ? "Creating…" : "Create Project"}
-        </button>
+        </Button>
       </form>
     </main>
   );

@@ -356,6 +356,15 @@ class RankCheckExecutionService:
                         raise AppError(
                             400, "KEYWORD_NOT_ACTIVE", "The Keyword is paused."
                         )
+                    if job is not None:
+                        from app.services.billing.usage import UsageService
+
+                        if not await UsageService(session).settle(job.id, True):
+                            raise AppError(
+                                409,
+                                "USAGE_LIMIT_EXCEEDED",
+                                "No valid usage reservation exists for this Job.",
+                            )
                     requested_at = datetime.now(UTC)
                     previous = (
                         await session.get(RankCheck, job.rank_check_id)

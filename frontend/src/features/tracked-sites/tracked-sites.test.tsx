@@ -160,6 +160,7 @@ it("allows an alias to deactivate and reactivate", async () => {
   );
   expect(target).toBeDefined();
   fireEvent.click(within(target!).getByRole("button", { name: "Deactivate" }));
+  fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
   const activate = await screen.findByRole("button", { name: "Activate" });
   fireEvent.click(activate);
   await waitFor(() =>

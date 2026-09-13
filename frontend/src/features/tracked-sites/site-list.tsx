@@ -1,4 +1,5 @@
 "use client";
+import { Alert, Button, Input, Select, Skeleton } from "@/design-system/ui";
 import {
   useInfiniteQuery,
   useMutation,
@@ -17,8 +18,7 @@ import {
   updateTrackedSite,
 } from "./api";
 import type { TrackedSiteStatus } from "./types";
-const field =
-  "mt-2 w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3";
+const field = "";
 export function TrackedSiteList() {
   const auth = useProtectedAuth();
   const queryClient = useQueryClient();
@@ -57,17 +57,14 @@ export function TrackedSiteList() {
     <main>
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-4xl font-semibold">Tracked Sites</h1>
-        <Link
-          href="/app/tracked-sites/new"
-          className="rounded-lg bg-teal-400 px-5 py-3 font-semibold text-slate-950"
-        >
+        <Link href="/app/tracked-sites/new" className="ui-link-button">
           Add Tracked Site
         </Link>
       </div>
       <div className="mb-8 grid gap-4 sm:grid-cols-2">
         <label>
           Search tracked sites
-          <input
+          <Input
             className={field}
             value={search}
             onChange={(event) => setSearch(event.target.value)}
@@ -75,7 +72,7 @@ export function TrackedSiteList() {
         </label>
         <label>
           Site status
-          <select
+          <Select
             className={field}
             value={status}
             onChange={(event) => setStatus(event.target.value as typeof status)}
@@ -83,43 +80,43 @@ export function TrackedSiteList() {
             <option value="active">Active</option>
             <option value="archived">Archived</option>
             <option value="all">All</option>
-          </select>
+          </Select>
         </label>
       </div>
-      {sites.isPending && <p role="status">Loading tracked sites…</p>}
-      {sites.isError && <p role="alert">Tracked Sites could not be loaded.</p>}
+      {sites.isPending && <Skeleton label="Loading tracked sites…" />}
+      {sites.isError && <Alert>Tracked Sites could not be loaded.</Alert>}
       {!sites.isPending && items.length === 0 && <p>No tracked sites yet.</p>}
       <div className="space-y-4">
         {items.map((site) => (
           <article
             key={site.id}
-            className="rounded-xl border border-slate-700 p-5"
+            className="rounded-xl border border-border p-5"
           >
             <h2 className="text-xl font-semibold">
               <Link href={`/app/tracked-sites/${site.id}`}>{site.name}</Link>
             </h2>
             <dl className="mt-3 grid grid-cols-3 gap-3">
               <div>
-                <dt className="text-slate-500">Primary Domain</dt>
+                <dt className="text-secondary">Primary Domain</dt>
                 <dd>{site.primary_domain ?? "None"}</dd>
               </div>
               <div>
-                <dt className="text-slate-500">Aliases</dt>
+                <dt className="text-secondary">Aliases</dt>
                 <dd>{site.domain_alias_count}</dd>
               </div>
               <div>
-                <dt className="text-slate-500">Status</dt>
+                <dt className="text-secondary">Status</dt>
                 <dd className="capitalize">{site.status}</dd>
               </div>
             </dl>
             <div className="mt-4 flex gap-4">
               <Link
-                className="text-teal-300"
+                className="text-brand"
                 href={`/app/tracked-sites/${site.id}`}
               >
                 Open
               </Link>
-              <button
+              <Button
                 onClick={() =>
                   statusMutation.mutate({
                     id: site.id,
@@ -128,31 +125,22 @@ export function TrackedSiteList() {
                 }
               >
                 {site.status === "active" ? "Archive" : "Reactivate"}
-              </button>
-              <button
-                className="text-red-300"
-                onClick={() => {
-                  if (
-                    window.confirm(
-                      "Delete this Tracked Site and all its domains?",
-                    )
-                  )
-                    remove.mutate(site.id);
-                }}
+              </Button>
+              <Button
+                variant="danger"
+                confirmation="Delete this Tracked Site and all its aliases? Ranking history remains unchanged."
+                onClick={() => remove.mutate(site.id)}
               >
                 Delete
-              </button>
+              </Button>
             </div>
           </article>
         ))}
       </div>
       {sites.hasNextPage && (
-        <button
-          className="mt-6 rounded-lg border border-slate-600 px-5 py-3"
-          onClick={() => void sites.fetchNextPage()}
-        >
+        <Button className="mt-6" onClick={() => void sites.fetchNextPage()}>
           Load more tracked sites
-        </button>
+        </Button>
       )}
     </main>
   );

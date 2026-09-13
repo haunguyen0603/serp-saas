@@ -41,6 +41,7 @@ try {
   await page.reload();
   await page.getByText(email, { exact: true }).waitFor();
   assert.equal(new URL(page.url()).pathname, "/app");
+  await page.goto(`${base}/app/settings`);
   await page.getByRole("button", { name: "Logout", exact: true }).click();
   await page.waitForURL(`${base}/login`);
   await page.waitForLoadState("networkidle");
@@ -53,6 +54,7 @@ try {
   await page.getByRole("button", { name: "Log in", exact: true }).click();
   await page.waitForURL(`${base}/app`);
   await page.getByText(email, { exact: true }).waitFor();
+  await page.goto(`${base}/app/settings`);
   await page.getByRole("button", { name: "Logout", exact: true }).click();
   await page.waitForURL(`${base}/login`);
   await page.waitForLoadState("networkidle");

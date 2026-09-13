@@ -1,5 +1,7 @@
+import { verifyResponsive } from "./browser-responsive.mjs";
 // Deterministic real-browser Milestone 4 rank-check and history journey.
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { randomBytes, randomUUID } from "node:crypto";
 import { pathToFileURL } from "node:url";
 
@@ -112,12 +114,14 @@ try {
   await detail.getByText("competitor.example", { exact: true }).waitFor();
   assert.equal(await detail.getByText(/Data source:/).count(), 0);
 
+  execFileSync(process.env.DOCKER_BIN ?? "docker", ["compose", "exec", "-T", "backend", "python", "-m", "scripts.verification_plan", email], { env: process.env, stdio: "pipe" });
   const schedule = page.getByRole("form", { name: "Rank schedule" });
   await schedule.getByLabel("Local time").fill("07:00");
   await schedule.getByLabel("Timezone").fill("Asia/Ho_Chi_Minh");
   await schedule.getByRole("button", { name: "Save schedule" }).click();
   await page.getByText("Schedule saved.", { exact: true }).waitFor();
   await page.getByText(/Next check:/).waitFor();
+  await verifyResponsive(page,"batch-daily-schedule");
   await schedule.getByLabel("Frequency").selectOption("weekly");
   await schedule.getByLabel("Weekly day").selectOption("2");
   await schedule.getByLabel("Local time").fill("08:30");
@@ -129,19 +133,38 @@ try {
   assert.equal(saved.frequency, "weekly");
   assert.equal(saved.weekday, 2);
   assert.equal(saved.local_time, "08:30");
+  await verifyResponsive(page,"batch-weekly-schedule");
   const deletedSchedule = page.waitForResponse((response) => response.request().method() === "DELETE" && response.url().endsWith("/rank-schedule"));
   await schedule.getByRole("button", { name: "Delete schedule" }).click();
+  await page.getByRole("button", { name: "Confirm action" }).click();
   assert.equal((await deletedSchedule).status(), 204);
   await page.getByText("Schedule deleted.", { exact: true }).waitFor();
   assert.equal(await page.getByText(/Next check:/).count(), 0);
   assert.equal(await page.getByRole("combobox", { name: /provider/i }).count(), 0);
   assert(!/gserviceaccount|cloud tasks|gcp_project|rank-checks queue/i.test(await page.locator("body").innerText()));
-  await page.getByRole("table", { name: "Batch history" }).getByText("completed", { exact: true }).waitFor();
+  await page.getByRole("table", { name: "Batch history" }).getByText("Completed", { exact: true }).waitFor();
   await page.reload();
   await page.getByText("Browser Owned Site #2", { exact: true }).waitFor();
   await page.getByRole("button", { name: "History" }).click();
   await page.getByRole("region", { name: "Ranking history" }).waitFor();
 
+  const overviewResponse = page.waitForResponse(r => r.url().endsWith("/api/v1/overview") && r.status() === 200);
+  await page.goto(`${base}/app`);
+  const overview = await (await overviewResponse).json();
+  assert.equal(overview.active_tracked_sites, 1);
+  assert.equal(overview.billing.devices.reduce((n,d)=>n+d.projects_used,0), 1);
+  assert.equal(overview.billing.devices.reduce((n,d)=>n+d.keywords_used,0), 1);
+  assert(overview.billing.devices.every(d=>d.usage.used >= 0));
+  assert(overview.recent_batches.some(b=>b.id === batchId && b.succeeded_keyword_count === 1));
+  await page.getByRole("table",{name:"Recent ranking activity"}).waitFor();
+  await verifyResponsive(page,"overview-populated");
+  const billingResponse = page.waitForResponse(r => r.url().endsWith("/api/v1/billing/me") && r.status() === 200);
+  await page.goto(`${base}/settings/billing`);
+  const currentBilling = await (await billingResponse).json();
+  assert.deepEqual(overview.billing, currentBilling, "Overview must preserve existing billing counters after Plan activation");
+  await page.goto(`${base}/app/rankings`);
+  await page.getByRole("table",{name:"Latest rankings"}).waitFor();
+  await verifyResponsive(page,"rankings-populated");
   assert.deepEqual(exceptions, []);
   // Chromium can report a bodyless 204 DELETE as ERR_ABORTED. Accept it only
   // after observing the successful response and the deleted UI state above.

@@ -13,6 +13,10 @@ class TaskEnqueueResult:
 class TaskQueueError(Exception):
     """Safe infrastructure error; never includes SDK exception text."""
 
+    def __init__(self, code: str, *, permanent: bool = False) -> None:
+        super().__init__(code)
+        self.permanent = permanent
+
 
 class RankCheckTaskQueue(Protocol):
     async def enqueue_rank_check_job(

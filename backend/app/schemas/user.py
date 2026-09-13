@@ -8,6 +8,7 @@ from app.models.user import User, UserStatus
 
 class UserResponse(BaseModel):
     id: UUID
+    is_platform_admin: bool = False
     email: str
     status: UserStatus
     email_verified: bool
@@ -20,6 +21,7 @@ class UserResponse(BaseModel):
     def from_user(cls, user: User) -> "UserResponse":
         return cls(
             id=user.id,
+            is_platform_admin=user.is_platform_admin,
             email=user.email,
             status=user.status,
             email_verified=user.email_verified_at is not None,

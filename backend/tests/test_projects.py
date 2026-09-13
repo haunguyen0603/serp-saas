@@ -113,8 +113,13 @@ async def test_unexpected_initial_keyword_failure_rolls_back_project(
 
 async def test_project_list_search_status_cursor_and_counts(
     auth_client: AsyncClient,
+    auth_app: FastAPI,
 ) -> None:
-    headers = authorization(await register(auth_client))
+    from tests.business_helpers import grant_plan
+
+    account = await register(auth_client)
+    await grant_plan(auth_app, account)
+    headers = authorization(account)
     first = await create_project(auth_client, headers, name="Alpha")
     second = await create_project(
         auth_client, headers, name="Beta", keywords=["a", "b"]
@@ -201,7 +206,11 @@ async def test_project_settings_update_without_mutating_keywords(
 async def test_duplicate_names_allowed_and_delete_cascades(
     auth_client: AsyncClient, auth_app: FastAPI
 ) -> None:
-    headers = authorization(await register(auth_client))
+    from tests.business_helpers import grant_plan
+
+    account = await register(auth_client)
+    await grant_plan(auth_app, account)
+    headers = authorization(account)
     one = await create_project(auth_client, headers)
     two = await create_project(auth_client, headers)
     assert one.status_code == two.status_code == 201

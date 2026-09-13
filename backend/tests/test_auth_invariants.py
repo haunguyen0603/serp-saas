@@ -26,6 +26,12 @@ async def test_migration_matches_models(auth_app: FastAPI) -> None:
             inspector = inspect(sync_connection)
             assert set(inspector.get_table_names()) == {
                 "alembic_version",
+                "plans",
+                "subscriptions",
+                "usage_periods",
+                "usage_reservations",
+                "usage_events",
+                "billing_audit_events",
                 "users",
                 "refresh_tokens",
                 "projects",

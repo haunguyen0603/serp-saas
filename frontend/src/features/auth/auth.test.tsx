@@ -4,7 +4,7 @@ import { Providers } from "@/components/providers";
 import { AuthProvider } from "./auth-provider";
 import SignupPage from "@/app/signup/page";
 import LoginPage from "@/app/login/page";
-import ApplicationPage from "@/app/app/page";
+import ApplicationPage from "@/app/app/settings/page";
 import * as api from "./api";
 import { ApiError } from "@/lib/api/client";
 import type { AuthResponse } from "./types";

@@ -1,4 +1,5 @@
 "use client";
+import { Alert, Button, Input, Textarea } from "@/design-system/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -10,8 +11,7 @@ import {
 } from "@/features/projects/protected";
 import { createTrackedSite, trackedSiteKeys } from "./api";
 import type { TrackedSiteCreate } from "./types";
-const field =
-  "mt-2 w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3";
+const field = "";
 export function TrackedSiteForm() {
   const auth = useProtectedAuth();
   const router = useRouter();
@@ -58,7 +58,7 @@ export function TrackedSiteForm() {
   }
   return (
     <main className="max-w-xl">
-      <Link className="text-teal-300 underline" href="/app/tracked-sites">
+      <Link className="text-brand underline" href="/app/tracked-sites">
         ← Tracked Sites
       </Link>
       <h1 className="my-8 text-4xl font-semibold">Add Tracked Site</h1>
@@ -69,11 +69,11 @@ export function TrackedSiteForm() {
       >
         <label className="block">
           Site Name
-          <input name="name" className={field} required maxLength={200} />
+          <Input name="name" className={field} required maxLength={200} />
         </label>
         <label className="block">
           Primary Domain
-          <input
+          <Input
             name="primaryDomain"
             className={field}
             required
@@ -82,23 +82,16 @@ export function TrackedSiteForm() {
         </label>
         <label className="block">
           Previous / Alias Domains
-          <textarea
+          <Textarea
             name="aliases"
             className={`${field} min-h-36`}
             placeholder={"old-domain.com\nsecond-domain.com"}
           />
         </label>
-        {error && (
-          <p role="alert" className="text-red-300">
-            {error}
-          </p>
-        )}
-        <button
-          disabled={mutation.isPending}
-          className="rounded-lg bg-teal-400 px-6 py-3 font-semibold text-slate-950"
-        >
+        {error && <Alert className="text-danger">{error}</Alert>}
+        <Button disabled={mutation.isPending} variant="primary">
           {mutation.isPending ? "Creating…" : "Create Site"}
-        </button>
+        </Button>
       </form>
     </main>
   );

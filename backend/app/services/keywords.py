@@ -21,6 +21,7 @@ from app.schemas.keyword import (
     KeywordResponse,
     KeywordUpdate,
 )
+from app.services.billing.entitlements import EntitlementService
 from app.services.normalization import decode_cursor, encode_cursor, normalize_keyword
 
 logger = logging.getLogger(__name__)
@@ -66,6 +67,9 @@ class KeywordService:
     ) -> Keyword:
         await self._require_project(project_id, user_id)
         display, normalized = normalize_keyword(data.keyword)
+        await EntitlementService(self.keywords.session).keyword_add(
+            user_id, project_id, [normalized]
+        )
         keyword = await self.keywords.create_for_project(
             project_id,
             KeywordValues(keyword=display, keyword_normalized=normalized),
@@ -80,6 +84,9 @@ class KeywordService:
     ) -> KeywordBulkResult:
         await self._require_project(project_id, user_id)
         values, skipped_empty = prepare_keyword_values(data.keywords)
+        await EntitlementService(self.keywords.session).keyword_add(
+            user_id, project_id, [v["keyword_normalized"] for v in values]
+        )
         created = await self.keywords.bulk_create_for_project(project_id, values)
         skipped_duplicates = len(data.keywords) - skipped_empty - len(created)
         logger.info(
@@ -145,6 +152,13 @@ class KeywordService:
         user_id: UUID,
         data: KeywordUpdate,
     ) -> Keyword:
+        entitlements = EntitlementService(self.keywords.session)
+        await entitlements.subscriptions.repo.lock(user_id)
+        current = await self.get(keyword_id, project_id, user_id)
+        if data.active is True and not current.active:
+            project = await self.projects.get_for_user(project_id, user_id)
+            if project and project.status == "active":
+                await entitlements.expansion(user_id, project.device, keywords=1)
         values = KeywordUpdateValues()
         if "keyword" in data.model_fields_set and data.keyword is not None:
             display, normalized = normalize_keyword(data.keyword)

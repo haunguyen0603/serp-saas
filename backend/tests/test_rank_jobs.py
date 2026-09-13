@@ -184,6 +184,23 @@ async def test_schedule_overlap_catchup_and_delete_preserves_history(
     auth_client: AsyncClient, auth_app: FastAPI
 ):
     headers, user, project, _, batches, worker = await setup(auth_client, auth_app)
+    from datetime import timedelta
+
+    from app.models.project import Project
+    from app.services.billing.subscriptions import SubscriptionService
+
+    async with auth_app.state.session_factory() as session, session.begin():
+        owner = (await session.get(Project, project)).user_id
+        await SubscriptionService(session).activate(
+            owner,
+            owner,
+            "desktop_pro",
+            datetime.now(UTC),
+            datetime.now(UTC) + timedelta(days=90),
+            "manual_bank_transfer",
+            "fixture",
+            None,
+        )
     url = f"/api/v1/projects/{project}/rank-schedule"
     response = await auth_client.put(
         url,
@@ -430,6 +447,23 @@ async def test_not_due_and_empty_project_schedule_are_safe(
     auth_client: AsyncClient, auth_app: FastAPI
 ):
     headers, _, project, provider, batches, _ = await setup(auth_client, auth_app)
+    from datetime import timedelta
+
+    from app.models.project import Project
+    from app.services.billing.subscriptions import SubscriptionService
+
+    async with auth_app.state.session_factory() as session, session.begin():
+        owner = (await session.get(Project, project)).user_id
+        await SubscriptionService(session).activate(
+            owner,
+            owner,
+            "desktop_pro",
+            datetime.now(UTC),
+            datetime.now(UTC) + timedelta(days=90),
+            "manual_bank_transfer",
+            "fixture",
+            None,
+        )
     root = f"/api/v1/projects/{project}"
     response = await auth_client.put(
         f"{root}/rank-schedule",

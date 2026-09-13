@@ -1,4 +1,16 @@
 "use client";
+import {
+  Alert,
+  Button,
+  Input,
+  Select,
+  Skeleton,
+  Table,
+  StatusBadge,
+  EmptyState,
+  Textarea,
+  Toast,
+} from "@/design-system/ui";
 
 import {
   useInfiniteQuery,
@@ -37,8 +49,7 @@ import type {
   Project,
 } from "./types";
 
-const field =
-  "mt-2 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2";
+const field = "";
 const message = (error: unknown, fallback: string) =>
   error instanceof ApiError ? error.message : fallback;
 
@@ -188,13 +199,13 @@ export function KeywordManager({ project }: { project: Project }) {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold">
           Keywords{" "}
-          <span className="text-base text-slate-400">
+          <span className="text-base text-secondary">
             ({project.keyword_count})
           </span>
         </h2>
         <div className="flex flex-wrap gap-3">
-          <button
-            className="rounded-lg bg-teal-400 px-4 py-2 font-semibold text-slate-950"
+          <Button
+            variant="primary"
             disabled={project.status !== "active" || projectCheck.isPending}
             onClick={() => {
               setError(null);
@@ -202,87 +213,65 @@ export function KeywordManager({ project }: { project: Project }) {
             }}
           >
             {projectCheck.isPending ? "Queueing…" : "Check Rankings"}
-          </button>
-          <button
-            className="rounded-lg bg-teal-400 px-4 py-2 font-semibold text-slate-950"
+          </Button>
+          <Button
+            variant="secondary"
             onClick={() => setPanel(panel === "single" ? null : "single")}
           >
             Add Keyword
-          </button>
-          <button
-            className="rounded-lg border border-slate-600 px-4 py-2"
-            onClick={() => setPanel(panel === "bulk" ? null : "bulk")}
-          >
+          </Button>
+          <Button onClick={() => setPanel(panel === "bulk" ? null : "bulk")}>
             Bulk Add
-          </button>
+          </Button>
         </div>
       </div>
-      <BatchPanel
-        projectId={project.id}
-        selectedBatch={selectedBatch}
-        onSelect={setSelectedBatch}
-      />
-      <SchedulePanel
-        projectId={project.id}
-        archived={project.status !== "active"}
-      />
       {panel === "single" && (
         <form
           aria-label="Add keyword"
           onSubmit={submitSingle}
-          className="mt-5 rounded-xl border border-slate-700 p-5"
+          className="mt-5 rounded-xl border border-border p-5"
         >
           <label>
             Keyword
-            <input className={field} name="keyword" required maxLength={512} />
+            <Input className={field} name="keyword" required maxLength={512} />
           </label>
-          <button
+          <Button
             disabled={single.isPending}
-            className="mt-4 rounded-lg bg-teal-400 px-5 py-2 font-semibold text-slate-950"
+            className="mt-4"
+            variant="primary"
           >
             {single.isPending ? "Adding…" : "Add keyword"}
-          </button>
+          </Button>
         </form>
       )}
       {panel === "bulk" && (
         <form
           aria-label="Bulk add keywords"
           onSubmit={submitBulk}
-          className="mt-5 rounded-xl border border-slate-700 p-5"
+          className="mt-5 rounded-xl border border-border p-5"
         >
           <label>
             Keywords, one per line
-            <textarea
+            <Textarea
               className={`${field} min-h-40`}
               name="keywords"
               required
             />
           </label>
-          <p className="mt-2 text-sm text-slate-400">
+          <p className="mt-2 text-sm text-secondary">
             Maximum 1000 lines. Empty and duplicate lines are cleaned.
           </p>
-          <button
-            disabled={bulk.isPending}
-            className="mt-4 rounded-lg bg-teal-400 px-5 py-2 font-semibold text-slate-950"
-          >
+          <Button disabled={bulk.isPending} className="mt-4" variant="primary">
             {bulk.isPending ? "Adding…" : "Add keywords"}
-          </button>
+          </Button>
         </form>
       )}
-      {error && (
-        <p role="alert" className="mt-4 text-red-300">
-          {error}
-        </p>
-      )}
-      {notice && (
-        <p role="status" className="mt-4 rounded-lg bg-teal-950/60 p-4">
-          {notice}
-        </p>
-      )}
+      {error && <Alert className="mt-4 text-danger">{error}</Alert>}
+      {notice && <Toast key={notice}>{notice}</Toast>}
       <div className="my-6 grid gap-3 sm:grid-cols-2">
         <label>
           Search keywords
-          <input
+          <Input
             className={field}
             value={search}
             onChange={(event) => setSearch(event.target.value)}
@@ -290,7 +279,7 @@ export function KeywordManager({ project }: { project: Project }) {
         </label>
         <label>
           Keyword state
-          <select
+          <Select
             className={field}
             value={active}
             onChange={(event) => setActive(event.target.value as typeof active)}
@@ -298,15 +287,15 @@ export function KeywordManager({ project }: { project: Project }) {
             <option value="true">Active</option>
             <option value="false">Paused</option>
             <option value="all">All</option>
-          </select>
+          </Select>
         </label>
       </div>
-      {keywords.isPending && <p role="status">Loading keywords…</p>}
-      {keywords.isError && <p role="alert">Keywords could not be loaded.</p>}
+      {keywords.isPending && <Skeleton label="Loading keywords…" />}
+      {keywords.isError && <Alert>Keywords could not be loaded.</Alert>}
       {editing && (
         <form
           aria-label="Edit keyword"
-          className="mb-5 rounded-xl border border-teal-500/50 p-5"
+          className="mb-5 rounded-xl border border-brand p-5"
           onSubmit={(event) => {
             event.preventDefault();
             const values = new FormData(event.currentTarget);
@@ -321,7 +310,7 @@ export function KeywordManager({ project }: { project: Project }) {
         >
           <label>
             Edit keyword
-            <input
+            <Input
               className={field}
               name="keyword"
               defaultValue={editing.keyword}
@@ -329,29 +318,35 @@ export function KeywordManager({ project }: { project: Project }) {
             />
           </label>
           <label className="mt-4 flex gap-3">
-            <input
+            <Input
               name="active"
               type="checkbox"
               defaultChecked={editing.active}
             />
             Active
           </label>
-          <button className="mt-4 rounded-lg bg-teal-400 px-4 py-2 text-slate-950">
+          <Button className="mt-4" variant="primary">
             Save Keyword
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className="ml-3 px-4 py-2"
+            className="ml-3"
             onClick={() => setEditing(null)}
           >
             Cancel
-          </button>
+          </Button>
         </form>
       )}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left">
+      {!keywords.isPending && !keywords.isError && !items.length && (
+        <EmptyState title="No keywords in this view">
+          Add keywords to start tracking, or adjust the search and state
+          filters.
+        </EmptyState>
+      )}
+      <div id="rankings" className="overflow-x-auto">
+        <Table className="w-full">
           <thead>
-            <tr className="border-b border-slate-700">
+            <tr className="border-b border-border">
               <th className="p-3">Keyword</th>
               <th className="p-3">Status</th>
               <th className="p-3">Last checked</th>
@@ -361,9 +356,11 @@ export function KeywordManager({ project }: { project: Project }) {
           </thead>
           <tbody>
             {items.map((item) => (
-              <tr key={item.id} className="border-b border-slate-800">
+              <tr key={item.id} className="border-b border-border">
                 <td className="p-3">{item.keyword}</td>
-                <td className="p-3">{item.active ? "Active" : "Paused"}</td>
+                <td className="p-3">
+                  <StatusBadge status={item.active ? "active" : "paused"} />
+                </td>
                 <td className="p-3">
                   {(() => {
                     const check = latestByKeyword.get(item.id);
@@ -392,8 +389,8 @@ export function KeywordManager({ project }: { project: Project }) {
                   })()}
                 </td>
                 <td className="p-3">
-                  <button
-                    className="mr-3 text-teal-300"
+                  <Button
+                    className="mr-3"
                     disabled={
                       !item.active ||
                       (keywordCheck.isPending &&
@@ -408,47 +405,53 @@ export function KeywordManager({ project }: { project: Project }) {
                     keywordCheck.variables === item.id
                       ? "Queueing…"
                       : "Check now"}
-                  </button>
-                  <button
-                    className="mr-3 text-teal-300"
+                  </Button>
+                  <Button
+                    className="mr-3"
                     onClick={() => {
                       setHistoryKeyword(item);
                       setDetailCheck(null);
                     }}
                   >
                     History
-                  </button>
-                  <button
-                    className="mr-3 text-teal-300"
-                    onClick={() => setEditing(item)}
-                  >
+                  </Button>
+                  <Button className="mr-3" onClick={() => setEditing(item)}>
                     Edit
-                  </button>
-                  <button
-                    className="text-red-300"
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() =>
+                      update.mutate({
+                        id: item.id,
+                        input: { active: !item.active },
+                      })
+                    }
+                  >
+                    {item.active ? "Pause" : "Resume"}
+                  </Button>
+                  <Button
+                    variant="danger"
+                    confirmation="Delete this Keyword? Its checks will stop. Keywords with ranking history must be paused instead."
                     onClick={() => remove.mutate(item.id)}
                   >
                     Delete
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       </div>
       {keywords.hasNextPage && (
-        <button
-          className="mt-5 rounded-lg border border-slate-600 px-4 py-2"
-          onClick={() => void keywords.fetchNextPage()}
-        >
+        <Button className="mt-5" onClick={() => void keywords.fetchNextPage()}>
           Load more keywords
-        </button>
+        </Button>
       )}
       {historyKeyword && (
         <>
-          {history.isPending && <p role="status">Loading ranking history…</p>}
+          {history.isPending && <Skeleton label="Loading ranking history…" />}
           {history.isError && (
-            <p role="alert">Ranking history could not be loaded.</p>
+            <Alert>Ranking history could not be loaded.</Alert>
           )}
           {history.data && (
             <RankCheckHistory
@@ -458,14 +461,24 @@ export function KeywordManager({ project }: { project: Project }) {
             />
           )}
           {detail.isPending && detailCheck && (
-            <p role="status">Loading Rank Check detail…</p>
+            <Skeleton label="Loading Rank Check detail…" />
           )}
           {detail.isError && (
-            <p role="alert">Rank Check detail could not be loaded.</p>
+            <Alert>Rank Check detail could not be loaded.</Alert>
           )}
           {detail.data && <RankCheckDetail check={detail.data} />}
         </>
       )}
+      <BatchPanel
+        projectId={project.id}
+        selectedBatch={selectedBatch}
+        onSelect={setSelectedBatch}
+      />
+      <SchedulePanel
+        projectId={project.id}
+        archived={project.status !== "active"}
+        device={project.device}
+      />
     </section>
   );
 }

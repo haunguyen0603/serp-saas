@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from uuid import UUID
 
 import httpx
 import pytest
@@ -236,6 +237,23 @@ async def test_priority_fallback_limit_and_no_provider_error_are_stable(
         max_fallbacks=0,
     )
     headers, project_id, keyword_id = await keyword_endpoint(auth_client)
+    from datetime import UTC, datetime, timedelta
+
+    from app.models.project import Project
+    from app.services.billing.subscriptions import SubscriptionService
+
+    async with auth_app.state.session_factory() as session, session.begin():
+        owner = (await session.get(Project, UUID(project_id))).user_id
+        await SubscriptionService(session).activate(
+            owner,
+            owner,
+            "desktop_pro",
+            datetime.now(UTC),
+            datetime.now(UTC) + timedelta(days=90),
+            "manual_bank_transfer",
+            "fixture",
+            None,
+        )
     limited = await execute_engine(
         auth_app,
         f"/api/v1/projects/{project_id}/keywords/{keyword_id}/rank-checks",

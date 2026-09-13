@@ -1,4 +1,5 @@
 "use client";
+import { Alert, Button } from "@/design-system/ui";
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -26,12 +27,8 @@ export function ProtectedStatus({
     return (
       <main>
         <h1 className="text-3xl">Session unavailable</h1>
-        <p role="alert" className="my-5 text-red-300">
-          {error}
-        </p>
-        <button className="text-teal-300 underline" onClick={retry}>
-          Retry
-        </button>
+        <Alert className="my-5 text-danger">{error}</Alert>
+        <Button onClick={retry}>Retry</Button>
       </main>
     );
   return (
