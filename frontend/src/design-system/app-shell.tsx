@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { useAuth } from "@/features/auth/auth-provider";
 import { Drawer, DropdownMenu, Icon, IconButton } from "./ui";
+import { PublicShell } from "./public-shell";
 const routes = [
   { label: "Overview", href: "/app", icon: "grid", group: "" },
   {
@@ -36,6 +37,14 @@ export function AppShell({ children }: { children: ReactNode }) {
     path.startsWith("/app/") ||
     path === "/settings/billing" ||
     path.startsWith("/admin/");
+  const publicSite = [
+    "/",
+    "/pricing",
+    "/login",
+    "/register",
+    "/signup",
+  ].includes(path);
+  if (publicSite) return <PublicShell>{children}</PublicShell>;
   if (!customer)
     return (
       <div className="mx-auto max-w-3xl px-6 py-12">

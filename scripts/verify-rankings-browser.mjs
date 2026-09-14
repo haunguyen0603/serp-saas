@@ -94,7 +94,7 @@ try {
   assert.equal(accepted.status(), 202);
   const batchId = (await accepted.json()).batch_id;
   await page.getByText("Ranking checks queued.", { exact: true }).waitFor();
-  await page.getByText("Browser Owned Site #2", { exact: true }).waitFor();
+  await page.getByText("Browser Owned Site #2", { exact: true }).first().waitFor();
   await page.getByRole("progressbar", { name: "Batch progress" }).evaluate((element) => {
     if (element.value !== 100) throw new Error("Batch is not terminal");
   });
@@ -105,14 +105,41 @@ try {
   const settledCount = batchGets.length;
   await page.waitForTimeout(2500);
   assert.equal(batchGets.length, settledCount, "Batch polling continued after terminal state");
-  await page.getByRole("button", { name: "History" }).click();
-  await page.getByRole("region", { name: "Ranking history" }).waitFor();
-  await page.getByRole("button", { name: "View results" }).click();
-  const detail = page.getByRole("region", { name: "Rank Check detail" });
+  const history = page.getByRole("region", { name: "Ranking history" });
+  await history.waitFor();
+  assert.equal(await page.getByRole("button", { name: "History" }).count(), 0);
+  const viewResults = history.getByRole("button", { name: "View results" });
+  await viewResults.scrollIntoViewIfNeeded();
+  const scrollBeforeDetail = await page.evaluate(() => scrollY);
+  await viewResults.click();
+  const detailDialog = page.getByRole("dialog", { name: "Rank Check detail" });
+  await detailDialog.waitFor();
+  assert.equal(await page.evaluate(() => scrollY), scrollBeforeDetail);
+  const dialogPresentation = await detailDialog.evaluate((element) => {
+    const style = getComputedStyle(element);
+    const backdrop = getComputedStyle(element, "::backdrop");
+    const box = element.getBoundingClientRect();
+    return {
+      background: style.backgroundColor,
+      animation: style.animationName,
+      backdropFilter: backdrop.backdropFilter,
+      withinViewport:
+        box.left >= 0 &&
+        box.top >= 0 &&
+        box.right <= innerWidth &&
+        box.bottom <= innerHeight,
+    };
+  });
+  assert.equal(dialogPresentation.background, "rgb(255, 255, 255)");
+  assert.notEqual(dialogPresentation.animation, "none");
+  assert(dialogPresentation.backdropFilter.includes("blur"));
+  assert(dialogPresentation.withinViewport);
+  const detail = detailDialog.getByRole("region", { name: "Rank Check detail" });
   await detail.getByText("Top 10 Organic Results").waitFor();
   await detail.getByText("Tracked · Browser Owned Site").waitFor();
   await detail.getByText("competitor.example", { exact: true }).waitFor();
   assert.equal(await detail.getByText(/Data source:/).count(), 0);
+  await detailDialog.getByRole("button", { name: "Close dialog" }).click();
 
   execFileSync(process.env.DOCKER_BIN ?? "docker", ["compose", "exec", "-T", "backend", "python", "-m", "scripts.verification_plan", email], { env: process.env, stdio: "pipe" });
   const schedule = page.getByRole("form", { name: "Rank schedule" });
@@ -144,8 +171,7 @@ try {
   assert(!/gserviceaccount|cloud tasks|gcp_project|rank-checks queue/i.test(await page.locator("body").innerText()));
   await page.getByRole("table", { name: "Batch history" }).getByText("Completed", { exact: true }).waitFor();
   await page.reload();
-  await page.getByText("Browser Owned Site #2", { exact: true }).waitFor();
-  await page.getByRole("button", { name: "History" }).click();
+  await page.getByText("Browser Owned Site #2", { exact: true }).first().waitFor();
   await page.getByRole("region", { name: "Ranking history" }).waitFor();
 
   const overviewResponse = page.waitForResponse(r => r.url().endsWith("/api/v1/overview") && r.status() === 200);

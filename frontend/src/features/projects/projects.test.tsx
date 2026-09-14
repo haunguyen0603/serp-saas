@@ -119,6 +119,8 @@ function detailApi() {
           },
         ],
       };
+    if (path.includes("/rank-checks"))
+      return { items: [], next_cursor: null, has_more: false };
     if (path.includes("/keywords") && !options)
       return { items: [keyword], next_cursor: null, has_more: false };
     if (path.endsWith("/keywords/bulk"))

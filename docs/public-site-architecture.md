@@ -1,0 +1,63 @@
+# M6.5B public site architecture
+
+The public site uses a dedicated `PublicShell` for `/`, `/pricing`, `/login`, `/register` and the existing `/signup` alias. It lives inside the existing top-level providers so navigation can adapt after login, but it does not render the authenticated sidebar, account navigation or Admin controls. `/app`, `/settings/billing` and `/admin` continue to use the M6.5A `AppShell`; `/health` keeps its small diagnostic layout.
+
+## Route ownership
+
+| Route | Rendering and responsibility |
+| --- | --- |
+| `/` | Static Home page and accurate synthetic product preview |
+| `/pricing` | Static page metadata plus a client catalog query to `GET /api/v1/billing/plans` |
+| `/login` | Existing login form inside the public shell |
+| `/register` | Existing signup workflow exposed at the requested public route |
+| `/robots.txt` | Next.js metadata route with public allowance and private-path exclusions |
+| `/sitemap.xml` | Next.js metadata route containing only Home, Pricing, Login and Register |
+
+`frontend/src/lib/site.ts` provides the canonical origin from `NEXT_PUBLIC_SITE_URL`. Local and Docker development default to `http://localhost:3000`; deployments should set the public HTTPS origin.
+
+## Public shell
+
+The shell owns the sticky header, logo, Home/Pricing navigation, login/account link, primary start/app link, mobile drawer, skip link and footer. It reuses the M6.5A `Drawer`, `Icon`, `IconButton`, button styles and focus-management behavior. One shared navigation definition supplies desktop and mobile active-route state. The footer only links to implemented Product and Account routes, so there are no placeholder Docs, Terms or Privacy links.
+
+Logged-out users see Log in and Get Started. Logged-in users see Account and Open App. The mobile drawer traps keyboard focus, closes with Escape or navigation, restores trigger focus and releases page scrolling.
+
+## Home
+
+Home remains a server/static component. Its ordered sections are:
+
+1. Hero with Start Free and View Pricing actions.
+2. A concise product-benefit strip.
+3. The real four-step site, project, keyword and check workflow.
+4. Core feature cards.
+5. Separate Desktop and Mobile search experiences.
+6. Tracked Site and historical domain-alias continuity.
+7. manual, weekly and daily scheduling with Plan-qualified language.
+8. Project, Keyword, monthly logical-check and schedule limits.
+9. A future-facing customer API/developer-documentation teaser that explicitly says it is unavailable.
+10. Final registration and Pricing actions.
+
+The product preview is code-native and uses synthetic `seo-demo.com` data. It contains no customer identity, bank reference, provider metadata, Admin notes or secrets. Public copy does not market provider routing, queue infrastructure, automatic billing, analytics or unimplemented API access.
+
+## Pricing
+
+`PricingCatalog` uses TanStack Query and `requestJson` to read the public authoritative Plan catalog. `groupPlans` filters by backend `device_scope` and orders Free, Starter and Pro within separate Desktop and Mobile sections. Each card renders the API price, currency, Project limit, Keyword limit, monthly logical-check limit and scheduling entitlement. Frontend constants contain only tier order and audience copy; they do not contain fallback prices or limits.
+
+While loading, Pricing uses the shared `Skeleton`. A failed catalog request shows the shared retryable `ErrorState` and explicitly withholds fallback prices. The pricing page therefore cannot silently drift from M6A Plan values.
+
+Free CTAs lead logged-out visitors to `/register` and authenticated visitors to `/app`. Paid cards say Request Activation: logged-out visitors register first, while authenticated visitors go to `/settings/billing`. The page explains manual bank-transfer confirmation by an administrator. It has no checkout, payment provider, self-activation or Admin action.
+
+## SEO and public boundary
+
+Root metadata defines the product title template and `metadataBase`. Home and Pricing each supply a description, canonical URL, Open Graph fields and Twitter summary metadata. Home emits a limited `SoftwareApplication` JSON-LD object with no invented offers, reviews or ratings.
+
+The sitemap contains only `/`, `/pricing`, `/login` and `/register`. Robots rules disallow `/app`, `/admin`, `/settings` and `/api`. Backend authorization and route guards remain responsible for security; robots directives only guide crawlers.
+
+## Responsive and accessibility rules
+
+Public CSS shares the light M6.5A tokens, strong type, navy surfaces, blue actions, borders, radii and restrained shadows. The Hero changes from two columns to a stack below 980px. Pricing changes from three columns to two below 980px and one below 760px. Details, usage, footer and feature grids stack at the same responsive boundaries. At 760px and below, desktop navigation is replaced by the accessible drawer.
+
+Pages use header, navigation, main, section, article and footer landmarks; a single page-level `h1`; ordered `h2`/`h3` structure; textual Plan/status labels; real links for navigation and buttons only for actions. Shared `:focus-visible` styling and Drawer focus management apply to public controls.
+
+## Future hooks
+
+M6.5C may add the customer API and API keys, and M6.5D may add developer documentation. At that point their routes can be linked from the header/footer and advertised in the sitemap. M6.5B creates no placeholder routes or public `/api/v1` contract. Payment integration remains reserved for M6B.

@@ -9,12 +9,8 @@ export function RankCheckDetail({ check }: { check: RankCheckDetailData }) {
     ]),
   );
   return (
-    <Card
-      aria-label="Rank Check detail"
-      className="mt-6 rounded-xl border border-border p-5"
-    >
-      <h3 className="text-xl font-semibold">Rank Check detail</h3>
-      <p className="mt-2 text-sm text-secondary">
+    <Card aria-label="Rank Check detail" className="rank-check-detail-content">
+      <p className="text-sm text-secondary">
         {/* Data source: {providerName(check.provider)} ·{" "} */}
         {check.search_engine_snapshot} · {check.country_code_snapshot} ·{" "}
         {check.language_code_snapshot} · {check.device_snapshot}

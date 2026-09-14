@@ -152,6 +152,7 @@ not production credentials. Supply real secrets through deployment configuration
 | `CORS_ORIGINS` | JSON array of explicit origins, e.g. `["http://localhost:3000"]` |
 | `NEXT_PUBLIC_API_BASE_URL` | Browser-reachable API URL, not Docker's `backend` hostname |
 | `NEXT_PUBLIC_APP_ENV` | Public environment label; keep aligned with `APP_ENV` |
+| `NEXT_PUBLIC_SITE_URL` | Public website origin used for canonical, sitemap and robots URLs |
 | `JWT_SECRET_KEY` | Required signing secret, at least 32 bytes; replace the local placeholder for production |
 | `JWT_ALGORITHM` | `HS256` only |
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | Access JWT lifetime, default 15 (1–60) |

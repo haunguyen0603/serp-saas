@@ -1,5 +1,14 @@
 "use client";
-import { Alert, Button, Input, Skeleton, Table } from "@/design-system/ui";
+import {
+  Alert,
+  Button,
+  EmptyState,
+  Input,
+  PageHeader,
+  Skeleton,
+  StatusBadge,
+  Table,
+} from "@/design-system/ui";
 import Link from "next/link";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -33,7 +42,7 @@ export function CustomerList() {
   return (
     <main className="space-y-6">
       <Link href="/app">← Account</Link>
-      <h1 className="text-3xl">Customers</h1>
+      <PageHeader title="Customers" />
       <label>
         Search email
         <Input
@@ -74,13 +83,19 @@ export function CustomerList() {
                     {device.usage.limit} ({device.usage.reserved} reserved)
                   </td>
                 ))}
-                <td>{customer.account_status}</td>
+                <td>
+                  <StatusBadge status={customer.account_status} />
+                </td>
               </tr>
             ))}
           </tbody>
         </Table>
       </div>
-      {customers.data?.items.length === 0 && <p>No customers found.</p>}
+      {customers.data?.items.length === 0 && (
+        <EmptyState title="No customers found">
+          Try a different email search.
+        </EmptyState>
+      )}
       <div className="flex gap-3">
         <Button
           className={button}

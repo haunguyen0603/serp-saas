@@ -331,106 +331,117 @@ export function SchedulePanel({
           key={`${schedule ? JSON.stringify(schedule) : "new"}:${planBlocked}`}
           onSubmit={submit}
           aria-label="Rank schedule"
-          className="mt-4 flex flex-wrap items-end gap-4"
+          className="mt-5"
         >
-          <label>
+          <label className="inline-flex items-center gap-2">
             <Input
               name="enabled"
               type="checkbox"
               defaultChecked={schedule?.enabled ?? !planBlocked}
               disabled={planBlocked}
-            />{" "}
-            Enabled
+            />
+            <span>Enabled</span>
           </label>
-          <label>
-            Frequency{" "}
-            <Select
-              name="frequency"
-              value={
-                frequency ??
-                schedule?.frequency ??
-                (entitlement?.max_scheduled_frequency === "weekly"
-                  ? "weekly"
-                  : "daily")
-              }
-              onChange={(e) => setFrequency(e.target.value)}
-            >
-              <option
-                value="daily"
-                disabled={entitlement?.max_scheduled_frequency === "weekly"}
+          <div className="mt-4 grid items-start gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <label>
+              Frequency
+              <Select
+                name="frequency"
+                value={
+                  frequency ??
+                  schedule?.frequency ??
+                  (entitlement?.max_scheduled_frequency === "weekly"
+                    ? "weekly"
+                    : "daily")
+                }
+                onChange={(e) => setFrequency(e.target.value)}
               >
-                Daily
-              </option>
-              <option value="weekly">Weekly</option>
-            </Select>
-          </label>
-          <label
-            hidden={
-              (frequency ??
-                schedule?.frequency ??
-                (entitlement?.max_scheduled_frequency === "weekly"
-                  ? "weekly"
-                  : "daily")) !== "weekly"
-            }
-          >
-            Weekly day{" "}
-            <Select name="weekday" defaultValue={schedule?.weekday ?? 0}>
-              {[
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-                "Sunday",
-              ].map((day, index) => (
-                <option value={index} key={day}>
-                  {day}
+                <option
+                  value="daily"
+                  disabled={entitlement?.max_scheduled_frequency === "weekly"}
+                >
+                  Daily
                 </option>
-              ))}
-            </Select>
-          </label>
-          <label>
-            Local time{" "}
-            <Input
-              type="time"
-              name="local_time"
-              defaultValue={schedule?.local_time ?? "07:00"}
-              required
-            />
-          </label>
-          <label>
-            Timezone{" "}
-            <Input
-              name="timezone"
-              defaultValue={
-                schedule?.timezone ??
-                Intl.DateTimeFormat().resolvedOptions().timeZone
+                <option value="weekly">Weekly</option>
+              </Select>
+            </label>
+            <label
+              hidden={
+                (frequency ??
+                  schedule?.frequency ??
+                  (entitlement?.max_scheduled_frequency === "weekly"
+                    ? "weekly"
+                    : "daily")) !== "weekly"
               }
-              required
-            />
-          </label>
-          <Button disabled={archived || save.isPending || planBlocked}>
-            Save schedule
-          </Button>
-          {schedule && (
-            <Button
-              type="button"
-              disabled={remove.isPending}
-              confirmation="Delete this schedule? Automatic checks will stop; existing results are kept."
-              onClick={() => remove.mutate()}
             >
-              Delete schedule
-            </Button>
+              Weekly day
+              <Select name="weekday" defaultValue={schedule?.weekday ?? 0}>
+                {[
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday",
+                  "Sunday",
+                ].map((day, index) => (
+                  <option value={index} key={day}>
+                    {day}
+                  </option>
+                ))}
+              </Select>
+            </label>
+            <label>
+              Local time
+              <Input
+                type="time"
+                name="local_time"
+                defaultValue={schedule?.local_time ?? "07:00"}
+                required
+              />
+            </label>
+            <label>
+              Timezone
+              <Input
+                name="timezone"
+                defaultValue={
+                  schedule?.timezone ??
+                  Intl.DateTimeFormat().resolvedOptions().timeZone
+                }
+                required
+              />
+            </label>
+          </div>
+          {schedule && (
+            <p className="mt-4">
+              {schedule.enabled
+                ? `Next check: ${new Date(schedule.next_run_at).toLocaleString()} (${schedule.timezone})`
+                : "Schedule paused"}
+            </p>
           )}
+          <div className="mt-6 flex flex-wrap justify-end gap-3 border-t border-border pt-5">
+            <Button
+              type="submit"
+              variant="primary"
+              className="w-full sm:w-auto"
+              disabled={archived || save.isPending || planBlocked}
+            >
+              Save schedule
+            </Button>
+            {schedule && (
+              <Button
+                type="button"
+                variant="danger"
+                className="w-full sm:w-auto"
+                disabled={remove.isPending}
+                confirmation="Delete this schedule? Automatic checks will stop; existing results are kept."
+                onClick={() => remove.mutate()}
+              >
+                Delete schedule
+              </Button>
+            )}
+          </div>
         </form>
-      )}
-      {schedule && (
-        <p className="mt-4">
-          {schedule.enabled
-            ? `Next check: ${new Date(schedule.next_run_at).toLocaleString()} (${schedule.timezone})`
-            : "Schedule paused"}
-        </p>
       )}
     </section>
   );

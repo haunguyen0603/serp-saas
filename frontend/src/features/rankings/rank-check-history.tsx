@@ -1,13 +1,31 @@
-import { Button, Table } from "@/design-system/ui";
+import { Alert, Button, Select, Skeleton, Table } from "@/design-system/ui";
 import type { RankCheck } from "./types";
 
 export function RankCheckHistory({
   keyword,
+  keywordId,
+  keywordOptions,
   checks,
+  loading,
+  error,
+  page,
+  hasNextPage,
+  onKeywordChange,
+  onPreviousPage,
+  onNextPage,
   onOpen,
 }: {
-  keyword: string;
+  keyword: string | null;
+  keywordId: string | null;
+  keywordOptions: { id: string; keyword: string }[];
   checks: RankCheck[];
+  loading: boolean;
+  error: boolean;
+  page: number;
+  hasNextPage: boolean;
+  onKeywordChange: (keywordId: string) => void;
+  onPreviousPage: () => void;
+  onNextPage: () => void;
   onOpen: (check: RankCheck) => void;
 }) {
   return (
@@ -15,10 +33,40 @@ export function RankCheckHistory({
       aria-label="Ranking history"
       className="mt-8 rounded-xl border border-border p-5"
     >
-      <h3 className="text-xl font-semibold">Ranking history · {keyword}</h3>
-      {checks.length === 0 ? (
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <h3 className="text-xl font-semibold">
+          Ranking history{keyword ? ` · ${keyword}` : ""}
+        </h3>
+        {keywordOptions.length > 1 && keywordId && (
+          <label className="min-w-52 text-sm">
+            Keyword
+            <Select
+              aria-label="Ranking history keyword"
+              value={keywordId}
+              onChange={(event) => onKeywordChange(event.target.value)}
+            >
+              {keywordOptions.map((option) => (
+                <option value={option.id} key={option.id}>
+                  {option.keyword}
+                </option>
+              ))}
+            </Select>
+          </label>
+        )}
+      </div>
+      {loading && <Skeleton label="Loading ranking history…" />}
+      {error && (
+        <Alert className="mt-4">Ranking history could not be loaded.</Alert>
+      )}
+      {!loading && !error && !keyword && (
+        <p className="mt-4 text-secondary">
+          Add a keyword to start building ranking history.
+        </p>
+      )}
+      {!loading && !error && keyword && checks.length === 0 && (
         <p className="mt-4 text-secondary">No Rank Checks yet.</p>
-      ) : (
+      )}
+      {!loading && !error && checks.length > 0 && (
         <div className="mt-4 overflow-x-auto">
           <Table className="w-full">
             <thead>
@@ -68,6 +116,22 @@ export function RankCheckHistory({
             </tbody>
           </Table>
         </div>
+      )}
+      {!loading && !error && (page > 0 || hasNextPage) && (
+        <nav
+          className="mt-4 flex items-center justify-end gap-3"
+          aria-label="Ranking history pagination"
+        >
+          <Button disabled={page === 0} onClick={onPreviousPage}>
+            Previous page
+          </Button>
+          <span className="text-sm text-secondary" aria-live="polite">
+            Page {page + 1}
+          </span>
+          <Button disabled={!hasNextPage} onClick={onNextPage}>
+            Next page
+          </Button>
+        </nav>
       )}
     </section>
   );

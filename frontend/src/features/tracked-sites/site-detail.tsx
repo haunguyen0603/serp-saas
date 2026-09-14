@@ -1,5 +1,13 @@
 "use client";
-import { Alert, Button, Input, Skeleton } from "@/design-system/ui";
+import {
+  Alert,
+  Badge,
+  Button,
+  ErrorState,
+  Input,
+  Skeleton,
+  StatusBadge,
+} from "@/design-system/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
@@ -68,11 +76,11 @@ export function TrackedSiteDetail({ siteId }: { siteId: string }) {
   if (site.isPending) return <Skeleton label="Loading Tracked Site…" />;
   if (site.isError)
     return (
-      <Alert>
+      <ErrorState onRetry={() => void site.refetch()}>
         {site.error instanceof ApiError
           ? site.error.message
           : "Tracked Site could not be loaded."}
-      </Alert>
+      </ErrorState>
     );
   const value = site.data;
   function addDomain(event: FormEvent<HTMLFormElement>) {
@@ -101,13 +109,15 @@ export function TrackedSiteDetail({ siteId }: { siteId: string }) {
       <Link className="text-brand underline" href="/app/tracked-sites">
         ← Tracked Sites
       </Link>
-      <div className="my-8 flex justify-between gap-4">
+      <div className="my-8 flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-4xl font-semibold">{value.name}</h1>
           <p className="mt-3">
             Primary: <strong>{value.primary_domain ?? "None"}</strong>
           </p>
-          <p className="mt-2 capitalize">Status: {value.status}</p>
+          <div className="mt-2 flex items-center gap-2">
+            <span>Status:</span> <StatusBadge status={value.status} />
+          </div>
         </div>
         <Button
           onClick={() =>
@@ -142,17 +152,19 @@ export function TrackedSiteDetail({ siteId }: { siteId: string }) {
                   <strong>{domain.domain}</strong>
                   <p className="mt-1 text-sm">
                     {domain.is_primary && (
-                      <span className="mr-3 text-brand">PRIMARY</span>
+                      <Badge tone="info" className="mr-2">
+                        PRIMARY
+                      </Badge>
                     )}
                     {!domain.is_primary && (
-                      <span className="ui-badge mr-2">Alias</span>
+                      <Badge className="mr-2">Alias</Badge>
                     )}
-                    <span className="ui-badge">
+                    <Badge tone={domain.active ? "success" : "neutral"}>
                       {domain.active ? "ACTIVE" : "INACTIVE"}
-                    </span>
+                    </Badge>
                   </p>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
                   {!domain.is_primary && (
                     <Button
                       onClick={() =>

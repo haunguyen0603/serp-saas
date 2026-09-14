@@ -7,6 +7,8 @@ import {
   Card,
   StatusBadge,
   EmptyState,
+  ErrorState,
+  PageHeader,
 } from "@/design-system/ui";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -43,17 +45,15 @@ export function ProjectList() {
   const items = projects.data?.pages.flatMap((page) => page.items) ?? [];
   return (
     <main>
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <p className="text-sm uppercase tracking-widest text-brand">
-            SERP SaaS
-          </p>
-          <h1 className="mt-2 text-4xl font-semibold">Projects</h1>
-        </div>
-        <Link href="/app/projects/new" className="ui-link-button">
-          Create Project
-        </Link>
-      </div>
+      <PageHeader
+        eyebrow="SERP SaaS"
+        title="Projects"
+        actions={
+          <Link href="/app/projects/new" className="ui-link-button">
+            Create Project
+          </Link>
+        }
+      />
       <div className="mb-8 grid gap-4 sm:grid-cols-2">
         <label>
           Search projects
@@ -81,12 +81,9 @@ export function ProjectList() {
       </div>
       {projects.isPending && <Skeleton label="Loading projects…" />}
       {projects.isError && (
-        <div role="alert" className="rounded-lg border border-danger p-5">
-          <p>Projects could not be loaded.</p>
-          <Button className="mt-3" onClick={() => void projects.refetch()}>
-            Retry
-          </Button>
-        </div>
+        <ErrorState onRetry={() => void projects.refetch()}>
+          Projects could not be loaded.
+        </ErrorState>
       )}
       {!projects.isPending && !projects.isError && items.length === 0 && (
         <EmptyState
@@ -107,10 +104,7 @@ export function ProjectList() {
       )}
       <div className="space-y-4">
         {items.map((project) => (
-          <Card
-            key={project.id}
-            className="rounded-xl border border-border bg-surface p-5"
-          >
+          <Card key={project.id}>
             <div className="flex flex-wrap justify-between gap-4">
               <div>
                 <h2 className="text-xl font-semibold">

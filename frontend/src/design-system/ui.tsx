@@ -214,6 +214,30 @@ export function Card({
 }: HTMLAttributes<HTMLElement>) {
   return <section className={`ui-card ${className}`} {...props} />;
 }
+export function PageHeader({
+  title,
+  description,
+  eyebrow,
+  actions,
+}: {
+  title: ReactNode;
+  description?: ReactNode;
+  eyebrow?: ReactNode;
+  actions?: ReactNode;
+}) {
+  return (
+    <div className="app-heading">
+      <div>
+        {eyebrow && <p className="ui-caption app-heading-eyebrow">{eyebrow}</p>}
+        <h1>{title}</h1>
+        {description && (
+          <p className="app-heading-description">{description}</p>
+        )}
+      </div>
+      {actions && <div className="app-heading-actions">{actions}</div>}
+    </div>
+  );
+}
 export function StatCard({
   label,
   value,
@@ -365,12 +389,14 @@ export function Dialog({
   title,
   children,
   drawer = false,
+  className = "",
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
   children: ReactNode;
   drawer?: boolean;
+  className?: string;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -389,7 +415,7 @@ export function Dialog({
     <dialog
       ref={ref}
       aria-labelledby={titleId}
-      className={`ui-dialog${drawer ? " ui-drawer" : ""}`}
+      className={`ui-dialog${drawer ? " ui-drawer" : ""} ${className}`}
       onKeyDown={(e) => {
         if (e.key !== "Tab") return;
         const controls = Array.from(

@@ -12,6 +12,7 @@ import {
   EmptyState,
   ErrorState,
   Icon,
+  PageHeader,
   Skeleton,
   StatCard,
   StatusBadge,
@@ -48,17 +49,17 @@ export function Overview() {
   const data = query.data;
   return (
     <main>
-      <div className="app-heading">
-        <div>
-          <p className="ui-caption mb-2">YOUR WORKSPACE</p>
-          <h1>Overview</h1>
-          <p>A clear view of your rank tracking and monthly usage.</p>
-        </div>
-        <Link className="ui-link-button self-start" href="/app/projects/new">
-          <Icon name="plus" />
-          Create Project
-        </Link>
-      </div>
+      <PageHeader
+        eyebrow="YOUR WORKSPACE"
+        title="Overview"
+        description="A clear view of your rank tracking and monthly usage."
+        actions={
+          <Link className="ui-link-button" href="/app/projects/new">
+            <Icon name="plus" />
+            Create Project
+          </Link>
+        }
+      />
       {query.isPending && <Skeleton label="Loading overview…" rows={4} />}
       {query.isError && (
         <ErrorState onRetry={() => void query.refetch()}>

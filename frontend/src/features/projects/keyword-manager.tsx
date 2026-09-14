@@ -2,6 +2,7 @@
 import {
   Alert,
   Button,
+  Dialog,
   Input,
   Select,
   Skeleton,
@@ -18,6 +19,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import {
   checkKeyword,
@@ -63,7 +65,11 @@ export function KeywordManager({ project }: { project: Project }) {
   const [editing, setEditing] = useState<Keyword | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [historyKeyword, setHistoryKeyword] = useState<Keyword | null>(null);
+  const [historyKeywordId, setHistoryKeywordId] = useState<string | null>(null);
+  const [historyPage, setHistoryPage] = useState(0);
+  const [historyCursors, setHistoryCursors] = useState<(string | null)[]>([
+    null,
+  ]);
   const [detailCheck, setDetailCheck] = useState<RankCheck | null>(null);
   const filters = { search, active, limit: 50 } as const;
   const keywords = useInfiniteQuery({
@@ -79,11 +85,22 @@ export function KeywordManager({ project }: { project: Project }) {
     queryFn: () => getLatestRankings(auth.request, project.id),
     enabled: auth.isAuthenticated,
   });
+  const items = keywords.data?.pages.flatMap((page) => page.items) ?? [];
+  const historyKeyword =
+    items.find((item) => item.id === historyKeywordId) ?? items[0] ?? null;
+  const effectiveHistoryPage =
+    historyKeyword?.id === historyKeywordId ? historyPage : 0;
+  const historyCursor = historyCursors[effectiveHistoryPage] ?? null;
   const history = useQuery({
-    queryKey: rankingKeys.history(project.id, historyKeyword?.id ?? ""),
+    queryKey: [
+      ...rankingKeys.history(project.id, historyKeyword?.id ?? ""),
+      historyCursor ?? "first",
+      10,
+    ],
     queryFn: () =>
       listRankChecks(auth.request, project.id, historyKeyword?.id ?? "", {
-        limit: 50,
+        limit: 10,
+        cursor: historyCursor,
       }),
     enabled: auth.isAuthenticated && historyKeyword !== null,
   });
@@ -165,7 +182,6 @@ export function KeywordManager({ project }: { project: Project }) {
     onError: (failure) =>
       setError(message(failure, "Keyword ranking could not be checked.")),
   });
-  const items = keywords.data?.pages.flatMap((page) => page.items) ?? [];
   const latestByKeyword = new Map(
     latest.data?.items.map((item) => [item.keyword_id, item.latest_check]) ??
       [],
@@ -380,12 +396,28 @@ export function KeywordManager({ project }: { project: Project }) {
                       return "Running";
                     if (!check.rankings.length)
                       return `Not found in Top ${check.result_limit}`;
-                    return check.rankings
-                      .map(
-                        (ranking) =>
-                          `${ranking.tracked_site_name} #${ranking.position}`,
-                      )
-                      .join(", ");
+                    return (
+                      <div className="flex flex-wrap gap-2">
+                        {check.rankings.map((ranking) => {
+                          const label = `${ranking.matched_domain} #${ranking.position}`;
+                          return ranking.tracked_site_id ? (
+                            <Link
+                              key={`${ranking.tracked_site_id}:${ranking.position}`}
+                              className="ui-text-link"
+                              href={`/app/tracked-sites/${ranking.tracked_site_id}`}
+                            >
+                              {label}
+                            </Link>
+                          ) : (
+                            <span
+                              key={`${ranking.tracked_site_name}:${ranking.position}`}
+                            >
+                              {label}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    );
                   })()}
                 </td>
                 <td className="p-3">
@@ -406,20 +438,11 @@ export function KeywordManager({ project }: { project: Project }) {
                       ? "Queueing…"
                       : "Check now"}
                   </Button>
-                  <Button
-                    className="mr-3"
-                    onClick={() => {
-                      setHistoryKeyword(item);
-                      setDetailCheck(null);
-                    }}
-                  >
-                    History
-                  </Button>
                   <Button className="mr-3" onClick={() => setEditing(item)}>
                     Edit
                   </Button>
                   <Button
-                    size="sm"
+                    size="md"
                     onClick={() =>
                       update.mutate({
                         id: item.id,
@@ -447,28 +470,57 @@ export function KeywordManager({ project }: { project: Project }) {
           Load more keywords
         </Button>
       )}
-      {historyKeyword && (
-        <>
-          {history.isPending && <Skeleton label="Loading ranking history…" />}
-          {history.isError && (
-            <Alert>Ranking history could not be loaded.</Alert>
-          )}
-          {history.data && (
-            <RankCheckHistory
-              keyword={historyKeyword.keyword}
-              checks={history.data.items}
-              onOpen={setDetailCheck}
-            />
-          )}
-          {detail.isPending && detailCheck && (
-            <Skeleton label="Loading Rank Check detail…" />
-          )}
-          {detail.isError && (
-            <Alert>Rank Check detail could not be loaded.</Alert>
-          )}
-          {detail.data && <RankCheckDetail check={detail.data} />}
-        </>
-      )}
+      <RankCheckHistory
+        keyword={historyKeyword?.keyword ?? null}
+        keywordId={historyKeyword?.id ?? null}
+        keywordOptions={items.map((item) => ({
+          id: item.id,
+          keyword: item.keyword,
+        }))}
+        checks={history.data?.items ?? []}
+        loading={
+          keywords.isPending || (historyKeyword !== null && history.isPending)
+        }
+        error={history.isError}
+        page={effectiveHistoryPage}
+        hasNextPage={history.data?.has_more ?? false}
+        onKeywordChange={(keywordId) => {
+          setHistoryKeywordId(keywordId);
+          setHistoryPage(0);
+          setHistoryCursors([null]);
+          setDetailCheck(null);
+        }}
+        onPreviousPage={() => {
+          setHistoryPage((current) => Math.max(0, current - 1));
+          setDetailCheck(null);
+        }}
+        onNextPage={() => {
+          const cursor = history.data?.next_cursor;
+          if (!cursor || !historyKeyword) return;
+          setHistoryKeywordId(historyKeyword.id);
+          setHistoryCursors((current) => [
+            ...current.slice(0, effectiveHistoryPage + 1),
+            cursor,
+          ]);
+          setHistoryPage(effectiveHistoryPage + 1);
+          setDetailCheck(null);
+        }}
+        onOpen={setDetailCheck}
+      />
+      <Dialog
+        open={detailCheck !== null}
+        onClose={() => setDetailCheck(null)}
+        title="Rank Check detail"
+        className="rank-check-dialog"
+      >
+        {detail.isPending && detailCheck && (
+          <Skeleton label="Loading Rank Check detail…" />
+        )}
+        {detail.isError && (
+          <Alert>Rank Check detail could not be loaded.</Alert>
+        )}
+        {detail.data && <RankCheckDetail check={detail.data} />}
+      </Dialog>
       <BatchPanel
         projectId={project.id}
         selectedBatch={selectedBatch}

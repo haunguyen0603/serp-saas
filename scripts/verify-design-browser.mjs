@@ -6,17 +6,19 @@ import {pathToFileURL} from 'node:url';
 const {chromium}=await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE).href);
 const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_EXECUTABLE});
 const base=process.env.FRONTEND_URL ?? 'http://localhost:3000';
-const shots='docs/screenshots/milestone-6.5a';await mkdir(shots,{recursive:true});
+const shots=process.env.SCREENSHOT_DIR ?? 'docs/screenshots/milestone-6.5a';await mkdir(shots,{recursive:true});
 try {
  const page=await browser.newPage(); const errors=[]; const failures=[]; const harmless=[];
  page.on('pageerror',e=>errors.push(e.message));
  page.on('requestfailed',r=>{const item={url:new URL(r.url()).pathname,error:r.failure()?.errorText};(item.error==='net::ERR_ABORTED' && r.method()==='GET' ? harmless:failures).push(item);});
  await page.goto(base+'/signup');await page.getByLabel('Email',{exact:true}).fill(`design-${randomUUID()}@example.com`);await page.getByLabel('Password',{exact:true}).fill('M65-browser-safe-password-123!');await page.getByLabel('Confirm Password',{exact:true}).fill('M65-browser-safe-password-123!');await page.getByRole('checkbox').check();await page.getByRole('button',{name:'Create Account'}).click();await page.waitForURL(base+'/app');await page.getByText('Your first check starts here').waitFor();
  const routes=['/app','/app/projects','/app/projects/new','/app/tracked-sites','/app/tracked-sites/new','/app/rankings','/settings/billing','/app/settings'];
+ const routeNames={'/app':'overview','/app/projects':'projects','/app/projects/new':'create-project','/app/tracked-sites':'tracked-sites','/app/tracked-sites/new':'create-tracked-site','/app/rankings':'rankings','/settings/billing':'billing','/app/settings':'account'};
  const widths=[1440,1280,1024,768,375];let views=0;
  for(const width of widths){await page.setViewportSize({width,height:900});for(const route of routes){await page.goto(base+route);await page.locator('main h1').waitFor();await page.waitForLoadState('networkidle');const overflow=await page.evaluate(()=>document.documentElement.scrollWidth > window.innerWidth+1);assert(!overflow,`${width}: overflow at ${route}`);assert(await page.locator('main').isVisible());views++;
  if(route==='/app')await page.screenshot({path:`${shots}/overview-${width}.png`,fullPage:true});
  if(width===375 && route==='/settings/billing')await page.screenshot({path:`${shots}/billing-mobile.png`,fullPage:true});
+ if(process.env.SCREENSHOT_DIR && [375,768,1024,1440].includes(width))await page.screenshot({path:`${shots}/${routeNames[route]}-${width}.png`,fullPage:true});
  }
  if(width<=768){await page.getByRole('button',{name:'Open navigation'}).click();const dialog=page.getByRole('dialog');await dialog.waitFor();if(width===375)await page.screenshot({path:`${shots}/navigation-mobile.png`});assert.equal(await dialog.getByRole('link',{name:'Settings',exact:true}).getAttribute('aria-current'),'page');assert(await dialog.getByRole('link',{name:'Projects',exact:true}).isVisible());for(let i=0;i<14;i++){await page.keyboard.press('Tab');assert(await dialog.evaluate(el=>el.contains(document.activeElement)),'focus escaped drawer');}await page.keyboard.press('Escape');assert.equal(await dialog.count(),0);assert(await page.getByRole('button',{name:'Open navigation'}).evaluate(el=>el===document.activeElement));await page.getByRole('button',{name:'Open navigation'}).click();await page.getByRole('dialog').getByRole('link',{name:'Projects',exact:true}).click();await page.waitForURL(base+'/app/projects');assert.equal(await page.getByRole('dialog').count(),0);await page.evaluate(()=>scrollTo(0,document.body.scrollHeight));assert(await page.evaluate(()=>getComputedStyle(document.body).overflow!=='hidden'));}
  }

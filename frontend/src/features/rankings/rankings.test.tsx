@@ -253,11 +253,14 @@ it("hides provider and fallback metadata from ranking history", async () => {
       <ProjectDetail projectId="project-1" />
     </Providers>,
   );
-  await screen.findByText("ranked keyword");
-  fireEvent.click(screen.getAllByRole("button", { name: "History" })[0]);
+  await screen.findAllByText("ranked keyword");
   const history = await screen.findByRole("region", {
     name: "Ranking history",
   });
+  await within(history).findByText("Owned Site #2");
+  expect(
+    screen.queryByRole("button", { name: "History" }),
+  ).not.toBeInTheDocument();
   expect(within(history).queryByText(/Serper/)).not.toBeInTheDocument();
   expect(within(history).queryByText(/attempts/)).not.toBeInTheDocument();
   expect(screen.queryByLabelText(/provider/i)).not.toBeInTheDocument();
@@ -273,7 +276,12 @@ it("renders latest ranking, no-match, and failed states from real API data", asy
   const table = screen
     .getAllByRole("table")
     .find((item) => !item.getAttribute("aria-label"))!;
-  expect(within(table).getByText("Owned Site #2")).toBeVisible();
+  const trackedSiteLink = within(table).getByRole("link", {
+    name: "Owned Site #2",
+  });
+  expect(trackedSiteLink).toHaveAttribute("href", "/app/tracked-sites/site-1");
+  expect(trackedSiteLink).toHaveClass("ui-text-link");
+  expect(trackedSiteLink).not.toHaveClass("ui-link-button");
   expect(within(table).getByText("Not found in Top 10")).toBeVisible();
   expect(within(table).getByText("Check failed")).toBeVisible();
 });
@@ -284,7 +292,7 @@ it("runs project and single Keyword checks with loading-safe actions", async () 
       <ProjectDetail projectId="project-1" />
     </Providers>,
   );
-  await screen.findByText("ranked keyword");
+  await screen.findAllByText("ranked keyword");
   fireEvent.click(screen.getByRole("button", { name: "Check Rankings" }));
   expect(await screen.findByText("Ranking checks queued.")).toBeVisible();
   fireEvent.click(screen.getAllByRole("button", { name: "Check now" })[0]);
@@ -295,23 +303,26 @@ it("runs project and single Keyword checks with loading-safe actions", async () 
   );
 });
 
-it("opens history and detail with snapshots and tracked result labels", async () => {
+it("shows history automatically and opens Rank Check detail in a dialog", async () => {
   render(
     <Providers>
       <ProjectDetail projectId="project-1" />
     </Providers>,
   );
-  await screen.findByText("ranked keyword");
-  fireEvent.click(screen.getAllByRole("button", { name: "History" })[0]);
+  await screen.findAllByText("ranked keyword");
   const history = await screen.findByRole("region", {
     name: "Ranking history",
   });
   expect(within(history).queryByText("SerpApi")).not.toBeInTheDocument();
-  expect(within(history).getByText("Owned Site #2")).toBeVisible();
+  expect(await within(history).findByText("Owned Site #2")).toBeVisible();
   fireEvent.click(
     within(history).getByRole("button", { name: "View results" }),
   );
-  const checkDetail = await screen.findByRole("region", {
+  const dialog = await screen.findByRole("dialog", {
+    name: "Rank Check detail",
+  });
+  expect(dialog).toHaveClass("rank-check-dialog");
+  const checkDetail = await within(dialog).findByRole("region", {
     name: "Rank Check detail",
   });
   expect(within(checkDetail).getByText("competitor.example")).toBeVisible();
@@ -325,4 +336,63 @@ it("opens history and detail with snapshots and tracked result labels", async ()
       "/api/v1/projects/project-1/keywords/keyword-1/rank-checks/check-1",
     ),
   );
+});
+
+it("limits ranking history to 10 records and pages forward and backward", async () => {
+  const fallback = request.getMockImplementation()!;
+  const firstPage = Array.from({ length: 10 }, (_, index) => ({
+    ...check,
+    id: `check-page-1-${index}`,
+    rankings: [
+      {
+        ...ranking,
+        tracked_site_name: `Page one site ${index + 1}`,
+        position: index + 1,
+      },
+    ],
+  }));
+  const secondPage = [
+    {
+      ...check,
+      id: "check-page-2-1",
+      rankings: [
+        {
+          ...ranking,
+          tracked_site_name: "Page two site",
+          position: 1,
+        },
+      ],
+    },
+  ];
+  request.mockImplementation(async (path: string, options?: RequestInit) => {
+    if (path.includes("keyword-1/rank-checks") && !options) {
+      return path.includes("cursor=page-2")
+        ? { items: secondPage, next_cursor: null, has_more: false }
+        : { items: firstPage, next_cursor: "page-2", has_more: true };
+    }
+    return fallback(path, options);
+  });
+  render(
+    <Providers>
+      <ProjectDetail projectId="project-1" />
+    </Providers>,
+  );
+  const history = await screen.findByRole("region", {
+    name: "Ranking history",
+  });
+  expect(
+    await within(history).findByText("Page one site 10 #10"),
+  ).toBeVisible();
+  expect(within(history).getAllByRole("row")).toHaveLength(11);
+  expect(request).toHaveBeenCalledWith(
+    expect.stringContaining("keyword-1/rank-checks?limit=10"),
+  );
+  fireEvent.click(within(history).getByRole("button", { name: "Next page" }));
+  expect(await within(history).findByText("Page two site #1")).toBeVisible();
+  expect(within(history).getByText("Page 2")).toBeVisible();
+  fireEvent.click(
+    within(history).getByRole("button", { name: "Previous page" }),
+  );
+  expect(await within(history).findByText("Page one site 1 #1")).toBeVisible();
+  expect(within(history).getByText("Page 1")).toBeVisible();
 });

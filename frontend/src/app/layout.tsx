@@ -3,9 +3,14 @@ import { AppShell } from "@/design-system/app-shell";
 import { Providers } from "@/components/providers";
 import { AuthProvider } from "@/features/auth/auth-provider";
 import "./globals.css";
+import { getSiteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "SERP SaaS",
+  metadataBase: getSiteUrl(),
+  title: {
+    default: "SERP SaaS",
+    template: "%s | SERP SaaS",
+  },
   description:
     "Track keyword rankings, manage projects and monitor your usage.",
 };

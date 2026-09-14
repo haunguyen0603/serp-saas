@@ -160,6 +160,29 @@
   background: var(--ds-brand-hover);
   color: white;
 }
+.ui-link-button--secondary {
+  background: var(--ds-surface);
+  border-color: var(--ds-border);
+  box-shadow: none;
+  color: var(--ds-text);
+}
+.app-shell .ui-link-button--secondary:hover {
+  background: var(--ds-surface-muted);
+  border-color: var(--ds-border-strong);
+  color: var(--ds-text);
+}
+.ui-text-link {
+  border-radius: 2px;
+  color: var(--ds-brand);
+  font-size: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+.ui-text-link:hover {
+  color: var(--ds-brand-hover);
+  text-decoration: underline;
+}
 .ui-button--ghost {
   border-color: transparent;
   background: transparent;
@@ -363,6 +386,48 @@
 }
 .ui-dialog::backdrop {
   background: #101b32a6;
+}
+.rank-check-dialog {
+  max-width: min(820px, calc(100vw - 32px));
+  border-color: #dbe3ef;
+  background: #fff;
+  box-shadow: 0 24px 80px #101b3240;
+  animation: rank-check-dialog-enter 180ms ease-out;
+}
+.rank-check-dialog::backdrop {
+  background: #101b327a;
+  backdrop-filter: blur(5px);
+  animation: rank-check-backdrop-enter 180ms ease-out;
+}
+.rank-check-detail-content {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+@keyframes rank-check-dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes rank-check-backdrop-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rank-check-dialog,
+  .rank-check-dialog::backdrop {
+    animation: none;
+  }
 }
 .ui-dialog-header {
   display: flex;
@@ -679,9 +744,18 @@
   gap: 16px;
   margin-bottom: 28px;
 }
-.app-heading p {
+.app-heading-eyebrow {
+  margin-bottom: 8px;
+}
+.app-heading-description {
   margin-top: 8px;
   color: var(--ds-secondary);
+}
+.app-heading-actions {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 .overview-stats {
   display: grid;

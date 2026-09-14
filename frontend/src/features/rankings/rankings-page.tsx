@@ -13,6 +13,7 @@ import {
   CursorPagination,
   EmptyState,
   ErrorState,
+  PageHeader,
   Select,
   Skeleton,
   StatusBadge,
@@ -52,20 +53,20 @@ export function RankingsPage() {
     );
   return (
     <main>
-      <div className="app-heading">
-        <div>
-          <h1>Rankings</h1>
-          <p>Your latest keyword positions, matched to your Tracked Sites.</p>
-        </div>
-        {projectId && (
-          <Link
-            href={`/app/projects/${projectId}#keywords`}
-            className="ui-link-button"
-          >
-            Check Rankings
-          </Link>
-        )}
-      </div>
+      <PageHeader
+        title="Rankings"
+        description="Your latest keyword positions, matched to your Tracked Sites."
+        actions={
+          projectId && (
+            <Link
+              href={`/app/projects/${projectId}#keywords`}
+              className="ui-link-button"
+            >
+              Check Rankings
+            </Link>
+          )
+        }
+      />
       {projects.isError && (
         <ErrorState onRetry={() => void projects.refetch()}>
           Projects could not be loaded.

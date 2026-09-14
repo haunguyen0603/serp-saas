@@ -1,6 +1,12 @@
 "use client";
 
-import { Button, Card, StatusBadge, Skeleton } from "@/design-system/ui";
+import {
+  Button,
+  Card,
+  PageHeader,
+  StatusBadge,
+  Skeleton,
+} from "@/design-system/ui";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -98,7 +104,7 @@ export function ProtectedApp() {
     );
   return (
     <main>
-      <h1 className="mb-8">Account settings</h1>
+      <PageHeader title="Account settings" />
       <Card>
         <dl className="space-y-6">
           <div>
@@ -113,41 +119,42 @@ export function ProtectedApp() {
           </div>
         </dl>
       </Card>
-      <Link
-        href="/app/projects"
-        className="mt-8 mr-4 inline-block rounded-lg bg-brand px-5 py-3 font-semibold text-white"
-      >
-        Projects
-      </Link>
-      <Link
-        href="/app/tracked-sites"
-        className="mt-8 mr-4 inline-block rounded-lg border border-brand px-5 py-3 text-brand"
-      >
-        Tracked Sites
-      </Link>
-      <Link
-        href="/settings/billing"
-        className="mt-8 mr-4 inline-block text-brand underline"
-      >
-        Billing &amp; Usage
-      </Link>
-      {me.data.is_platform_admin && (
+      <div className="mt-8 flex flex-wrap gap-3">
         <Link
-          href="/admin/customers"
-          className="mt-8 mr-4 inline-block text-brand underline"
+          href="/app/projects"
+          className="ui-link-button ui-link-button--secondary"
         >
-          Customers
+          Projects
         </Link>
-      )}
-      <Button
-        onClick={() => {
-          void logout();
-        }}
-        disabled={loggingOut}
-        className="mt-8 rounded-lg border border-border px-5 py-3 hover:bg-surface-muted disabled:opacity-50"
-      >
-        {loggingOut ? "Logging out…" : "Logout"}
-      </Button>
+        <Link
+          href="/app/tracked-sites"
+          className="ui-link-button ui-link-button--secondary"
+        >
+          Tracked Sites
+        </Link>
+        <Link
+          href="/settings/billing"
+          className="ui-link-button ui-link-button--secondary"
+        >
+          Billing &amp; Usage
+        </Link>
+        {me.data.is_platform_admin && (
+          <Link
+            href="/admin/customers"
+            className="ui-link-button ui-link-button--secondary"
+          >
+            Customers
+          </Link>
+        )}
+        <Button
+          onClick={() => {
+            void logout();
+          }}
+          disabled={loggingOut}
+        >
+          {loggingOut ? "Logging out…" : "Logout"}
+        </Button>
+      </div>
       {logoutError && (
         <p role="alert" className="mt-4 text-danger">
           {logoutError}

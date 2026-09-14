@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { useAuth } from "./auth-provider";
 import { ApiError } from "@/lib/api/client";
+import { Button } from "@/design-system/ui";
 
-const inputStyle =
-  "mt-2 w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-slate-100 focus:outline-2 focus:outline-teal-400";
+const inputStyle = "ui-input auth-input";
 
 export function AuthForm({ mode }: { mode: "signup" | "login" }) {
   const signup = mode === "signup";
@@ -59,9 +59,6 @@ export function AuthForm({ mode }: { mode: "signup" | "login" }) {
 
   return (
     <main className="mx-auto max-w-md">
-      <p className="mb-3 text-sm uppercase tracking-widest text-teal-400">
-        SERP SaaS
-      </p>
       <h1 className="mb-8 text-3xl font-semibold">
         {signup ? "Create your account" : "Log in"}
       </h1>
@@ -129,25 +126,24 @@ export function AuthForm({ mode }: { mode: "signup" | "login" }) {
             {error}
           </p>
         )}
-        <button
+        <Button
           type="submit"
+          variant="primary"
+          size="lg"
           disabled={submitting || auth.isLoading || auth.isAuthenticated}
-          className="w-full rounded-lg bg-teal-400 px-4 py-3 font-semibold text-slate-950 hover:bg-teal-300 disabled:opacity-50"
+          className="w-full"
         >
           {submitting ? "Please wait…" : signup ? "Create Account" : "Log in"}
-        </button>
+        </Button>
         {auth.isLoading && (
           <p role="status" className="text-sm text-slate-400">
             Checking your session…
           </p>
         )}
       </form>
-      <p className="mt-6 text-slate-400">
+      <p className="mt-6 text-sm text-secondary">
         {signup ? "Already have an account?" : "Don't have an account?"}{" "}
-        <Link
-          className="text-teal-300 underline"
-          href={signup ? "/login" : "/signup"}
-        >
+        <Link className="ui-text-link" href={signup ? "/login" : "/signup"}>
           {signup ? "Log in" : "Create account"}
         </Link>
       </p>

@@ -144,7 +144,14 @@ it("creates, pauses and deletes a timezone-aware schedule", async () => {
     frequency: "weekly",
     timezone: "Asia/Ho_Chi_Minh",
   });
-  fireEvent.click(screen.getByRole("button", { name: "Delete schedule" }));
+  expect(screen.getByRole("button", { name: "Save schedule" })).toHaveClass(
+    "ui-button--primary",
+  );
+  const deleteButton = screen.getByRole("button", {
+    name: "Delete schedule",
+  });
+  expect(deleteButton).toHaveClass("ui-button--danger");
+  fireEvent.click(deleteButton);
   fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
   await screen.findByText("Schedule deleted.");
 });

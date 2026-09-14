@@ -86,6 +86,27 @@ it("renders the signup fields", async () => {
   expect(screen.getByRole("checkbox")).toBeRequired();
 });
 
+it.each([
+  [SignupPage, "Create Account"],
+  [LoginPage, "Log in"],
+])("uses the primary CTA style for %s", async (Page, name) => {
+  view(Page);
+  const button = screen.getByRole("button", { name });
+  await waitFor(() => expect(button).toBeEnabled());
+  expect(button).toHaveClass("ui-button--primary");
+});
+
+it.each([
+  [SignupPage, "Log in", "/login"],
+  [LoginPage, "Create account", "/signup"],
+])("uses the secondary text-link style for %s", async (Page, name, href) => {
+  view(Page);
+  const link = await screen.findByRole("link", { name });
+  expect(link).toHaveAttribute("href", href);
+  expect(link).toHaveClass("ui-text-link");
+  expect(link).not.toHaveClass("ui-link-button");
+});
+
 it("rejects mismatching confirmation before making a request", async () => {
   await fill();
   fireEvent.change(screen.getByLabelText("Confirm Password"), {

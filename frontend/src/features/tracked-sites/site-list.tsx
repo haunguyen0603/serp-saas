@@ -1,5 +1,15 @@
 "use client";
-import { Alert, Button, Input, Select, Skeleton } from "@/design-system/ui";
+import {
+  Button,
+  Card,
+  EmptyState,
+  ErrorState,
+  Input,
+  PageHeader,
+  Select,
+  Skeleton,
+  StatusBadge,
+} from "@/design-system/ui";
 import {
   useInfiniteQuery,
   useMutation,
@@ -55,12 +65,14 @@ export function TrackedSiteList() {
   const items = sites.data?.pages.flatMap((page) => page.items) ?? [];
   return (
     <main>
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-4xl font-semibold">Tracked Sites</h1>
-        <Link href="/app/tracked-sites/new" className="ui-link-button">
-          Add Tracked Site
-        </Link>
-      </div>
+      <PageHeader
+        title="Tracked Sites"
+        actions={
+          <Link href="/app/tracked-sites/new" className="ui-link-button">
+            Add Tracked Site
+          </Link>
+        }
+      />
       <div className="mb-8 grid gap-4 sm:grid-cols-2">
         <label>
           Search tracked sites
@@ -84,14 +96,26 @@ export function TrackedSiteList() {
         </label>
       </div>
       {sites.isPending && <Skeleton label="Loading tracked sites…" />}
-      {sites.isError && <Alert>Tracked Sites could not be loaded.</Alert>}
-      {!sites.isPending && items.length === 0 && <p>No tracked sites yet.</p>}
+      {sites.isError && (
+        <ErrorState onRetry={() => void sites.refetch()}>
+          Tracked Sites could not be loaded.
+        </ErrorState>
+      )}
+      {!sites.isPending && !sites.isError && items.length === 0 && (
+        <EmptyState
+          title={
+            search || status !== "active"
+              ? "No matching sites"
+              : "No tracked sites yet."
+          }
+        >
+          Add a site to connect current and previous domains with ranking
+          results, or change your filters.
+        </EmptyState>
+      )}
       <div className="space-y-4">
         {items.map((site) => (
-          <article
-            key={site.id}
-            className="rounded-xl border border-border p-5"
-          >
+          <Card key={site.id}>
             <h2 className="text-xl font-semibold">
               <Link href={`/app/tracked-sites/${site.id}`}>{site.name}</Link>
             </h2>
@@ -106,12 +130,14 @@ export function TrackedSiteList() {
               </div>
               <div>
                 <dt className="text-secondary">Status</dt>
-                <dd className="capitalize">{site.status}</dd>
+                <dd>
+                  <StatusBadge status={site.status} />
+                </dd>
               </div>
             </dl>
             <div className="mt-4 flex gap-4">
               <Link
-                className="text-brand"
+                className="ui-link-button"
                 href={`/app/tracked-sites/${site.id}`}
               >
                 Open
@@ -134,7 +160,7 @@ export function TrackedSiteList() {
                 Delete
               </Button>
             </div>
-          </article>
+          </Card>
         ))}
       </div>
       {sites.hasNextPage && (

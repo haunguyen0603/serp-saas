@@ -163,7 +163,7 @@ export function CustomerBilling({ userId }: { userId: string }) {
                     required
                   />
                 </label>
-                <Button className={button} disabled={busy}>
+                <Button variant="primary" className={button} disabled={busy}>
                   Extend {device.device_scope}
                 </Button>
               </form>
@@ -244,7 +244,11 @@ export function CustomerBilling({ userId }: { userId: string }) {
           Internal note
           <Textarea className={control} name="note" maxLength={2000} />
         </label>
-        <Button className={button} disabled={busy || !selected}>
+        <Button
+          variant="primary"
+          className={button}
+          disabled={busy || !selected}
+        >
           Activate Plan
         </Button>
       </form>
@@ -283,7 +287,7 @@ export function CustomerBilling({ userId }: { userId: string }) {
           Adjustment reason
           <Input className={control} name="note" required maxLength={2000} />
         </label>
-        <Button className={button} disabled={busy}>
+        <Button variant="primary" className={button} disabled={busy}>
           Adjust usage
         </Button>
       </form>

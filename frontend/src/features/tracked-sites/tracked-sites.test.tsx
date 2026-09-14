@@ -64,6 +64,9 @@ it("lists tracked sites with primary domain, alias count, and actions", async ()
   view(<TrackedSiteList />);
   expect(await screen.findByText("SEO Site A")).toBeVisible();
   expect(screen.getByText("old.example")).toBeVisible();
+  expect(screen.getByRole("link", { name: "Open" })).toHaveClass(
+    "ui-link-button",
+  );
   expect(screen.getByRole("button", { name: "Archive" })).toBeVisible();
   expect(screen.getByRole("button", { name: "Delete" })).toBeVisible();
 });

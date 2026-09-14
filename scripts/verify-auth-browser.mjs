@@ -58,18 +58,16 @@ try {
   await page.getByRole("button", { name: "Logout", exact: true }).click();
   await page.waitForURL(`${base}/login`);
   await page.waitForLoadState("networkidle");
-  for (const path of ["/", "/health"]) {
-    await page.goto(`${base}${path}`);
-    for (const service of ["API", "Database", "Redis"]) {
-      await page.getByLabel(`${service}: connected`, { exact: true }).waitFor();
-    }
+  await page.goto(`${base}/health`);
+  for (const service of ["API", "Database", "Redis"]) {
+    await page.getByLabel(`${service}: connected`, { exact: true }).waitFor();
   }
   assert.deepEqual(exceptions, []);
   assert.deepEqual(failures, []);
   assert(responses.some(value => value.path.endsWith("/register") && value.status === 201));
   assert(responses.some(value => value.path.endsWith("/refresh") && value.status === 200));
   assert(responses.every(value => value.status < 400 || (value.path.endsWith("/refresh") && value.status === 401)), "Unexpected API failure");
-  process.stdout.write(JSON.stringify({ browser_authentication: "passed", checks: ["signup", "protected_account", "reload_restoration", "logout", "anonymous_redirect", "login", "cookie_flags", "no_token_storage", "milestone_1_health_pages"], browserExceptions: 0, networkFailures: 0 }) + "\n");
+  process.stdout.write(JSON.stringify({ browser_authentication: "passed", checks: ["signup", "protected_account", "reload_restoration", "logout", "anonymous_redirect", "login", "cookie_flags", "no_token_storage", "milestone_1_health_page"], browserExceptions: 0, networkFailures: 0 }) + "\n");
 } finally {
   await browser.close();
 }

@@ -111,7 +111,7 @@ function ProjectSettings({ project }: { project: Project }) {
             </Alert>
           )}
           {message && <Toast key={message}>{message}</Toast>}
-          <Button disabled={mutation.isPending}>
+          <Button variant="primary" disabled={mutation.isPending}>
             {mutation.isPending ? "Saving…" : "Save Project Settings"}
           </Button>
         </div>
