@@ -168,6 +168,8 @@ function mockApi() {
     if (path.endsWith("/rank-checks/check-1")) return detail;
     if (path.includes("keyword-1/rank-checks") && !options)
       return { items: [check], next_cursor: null, has_more: false };
+    if (path.includes("/rank-checks") && !options)
+      return { items: [], next_cursor: null, has_more: false };
     if (path.includes("/keywords") && !options)
       return { items: keywords, next_cursor: null, has_more: false };
     if (path.endsWith("/rank-check-batches") && options?.method === "POST") {
@@ -253,11 +255,18 @@ it("hides provider and fallback metadata from ranking history", async () => {
       <ProjectDetail projectId="project-1" />
     </Providers>,
   );
-  await screen.findAllByText("ranked keyword");
+  const keywordTrigger = await screen.findByRole("button", {
+    name: "ranked keyword",
+  });
+  expect(keywordTrigger).toHaveAttribute("aria-expanded", "false");
+  expect(
+    request.mock.calls.some(([path]) => path.includes("/rank-checks?")),
+  ).toBe(false);
+  fireEvent.click(keywordTrigger);
   const history = await screen.findByRole("region", {
     name: "Ranking history",
   });
-  await within(history).findByText("Owned Site #2");
+  await within(history).findByText("old.example #2");
   expect(
     screen.queryByRole("button", { name: "History" }),
   ).not.toBeInTheDocument();
@@ -272,12 +281,12 @@ it("renders latest ranking, no-match, and failed states from real API data", asy
       <ProjectDetail projectId="project-1" />
     </Providers>,
   );
-  await screen.findByText("Owned Site #2");
+  await screen.findByText("old.example #2");
   const table = screen
     .getAllByRole("table")
     .find((item) => !item.getAttribute("aria-label"))!;
   const trackedSiteLink = within(table).getByRole("link", {
-    name: "Owned Site #2",
+    name: "old.example #2",
   });
   expect(trackedSiteLink).toHaveAttribute("href", "/app/tracked-sites/site-1");
   expect(trackedSiteLink).toHaveClass("ui-text-link");
@@ -303,18 +312,39 @@ it("runs project and single Keyword checks with loading-safe actions", async () 
   );
 });
 
-it("shows history automatically and opens Rank Check detail in a dialog", async () => {
+it("expands and collapses inline history and opens Rank Check detail", async () => {
   render(
     <Providers>
       <ProjectDetail projectId="project-1" />
     </Providers>,
   );
-  await screen.findAllByText("ranked keyword");
-  const history = await screen.findByRole("region", {
+  const trigger = await screen.findByRole("button", {
+    name: "ranked keyword",
+  });
+  expect(trigger).toHaveAttribute("aria-expanded", "false");
+  expect(screen.queryByRole("region", { name: "Ranking history" })).toBeNull();
+  fireEvent.click(trigger);
+  let history = await screen.findByRole("region", {
     name: "Ranking history",
   });
+  expect(trigger).toHaveAttribute("aria-expanded", "true");
+  expect(history.closest("td")).toHaveAttribute("colspan", "5");
   expect(within(history).queryByText("SerpApi")).not.toBeInTheDocument();
-  expect(await within(history).findByText("Owned Site #2")).toBeVisible();
+  expect(await within(history).findByText("old.example #2")).toBeVisible();
+  const historyCalls = request.mock.calls.filter(([path]) =>
+    path.includes("keyword-1/rank-checks?"),
+  ).length;
+  fireEvent.click(trigger);
+  expect(screen.queryByRole("region", { name: "Ranking history" })).toBeNull();
+  expect(trigger).toHaveAttribute("aria-expanded", "false");
+  fireEvent.click(trigger);
+  history = await screen.findByRole("region", { name: "Ranking history" });
+  expect(await within(history).findByText("old.example #2")).toBeVisible();
+  expect(
+    request.mock.calls.filter(([path]) =>
+      path.includes("keyword-1/rank-checks?"),
+    ),
+  ).toHaveLength(historyCalls);
   fireEvent.click(
     within(history).getByRole("button", { name: "View results" }),
   );
@@ -338,6 +368,85 @@ it("shows history automatically and opens Rank Check detail in a dialog", async 
   );
 });
 
+it("switches one expanded keyword at a time and shows local empty and error states", async () => {
+  const fallback = request.getMockImplementation()!;
+  let failedAttempts = 0;
+  request.mockImplementation(async (path: string, options?: RequestInit) => {
+    if (path.includes("keyword-3/rank-checks") && !options) {
+      failedAttempts += 1;
+      if (failedAttempts === 1) throw new Error("History unavailable");
+      return { items: [], next_cursor: null, has_more: false };
+    }
+    return fallback(path, options);
+  });
+  render(
+    <Providers>
+      <ProjectDetail projectId="project-1" />
+    </Providers>,
+  );
+  const ranked = await screen.findByRole("button", { name: "ranked keyword" });
+  const missing = screen.getByRole("button", { name: "missing keyword" });
+  const failed = screen.getByRole("button", { name: "failed keyword" });
+
+  fireEvent.click(ranked);
+  expect(
+    await screen.findByText("Ranking history · ranked keyword"),
+  ).toBeVisible();
+  fireEvent.click(missing);
+  expect(ranked).toHaveAttribute("aria-expanded", "false");
+  expect(missing).toHaveAttribute("aria-expanded", "true");
+  expect(
+    screen.getAllByRole("region", { name: "Ranking history" }),
+  ).toHaveLength(1);
+  expect(await screen.findByText("No ranking history yet.")).toBeVisible();
+
+  fireEvent.click(failed);
+  const history = await screen.findByRole("region", {
+    name: "Ranking history",
+  });
+  expect(failed).toHaveAttribute("aria-expanded", "true");
+  expect(
+    await within(history).findByText("Ranking history could not be loaded."),
+  ).toBeVisible();
+  fireEvent.click(within(history).getByRole("button", { name: "Retry" }));
+  expect(
+    await within(history).findByText("No ranking history yet."),
+  ).toBeVisible();
+  expect(failedAttempts).toBe(2);
+});
+
+it("shows a local skeleton while expanded history loads", async () => {
+  const fallback = request.getMockImplementation()!;
+  let resolveHistory!: (value: {
+    items: RankCheck[];
+    next_cursor: null;
+    has_more: false;
+  }) => void;
+  request.mockImplementation(async (path: string, options?: RequestInit) => {
+    if (path.includes("keyword-1/rank-checks") && !options)
+      return new Promise((resolve) => {
+        resolveHistory = resolve;
+      });
+    return fallback(path, options);
+  });
+  render(
+    <Providers>
+      <ProjectDetail projectId="project-1" />
+    </Providers>,
+  );
+  fireEvent.click(
+    await screen.findByRole("button", { name: "ranked keyword" }),
+  );
+  const history = await screen.findByRole("region", {
+    name: "Ranking history",
+  });
+  expect(
+    within(history).getByRole("status", { name: "Loading ranking history…" }),
+  ).toBeVisible();
+  resolveHistory({ items: [check], next_cursor: null, has_more: false });
+  expect(await within(history).findByText("old.example #2")).toBeVisible();
+});
+
 it("limits ranking history to 10 records and pages forward and backward", async () => {
   const fallback = request.getMockImplementation()!;
   const firstPage = Array.from({ length: 10 }, (_, index) => ({
@@ -347,6 +456,7 @@ it("limits ranking history to 10 records and pages forward and backward", async 
       {
         ...ranking,
         tracked_site_name: `Page one site ${index + 1}`,
+        matched_domain: `page-one-${index + 1}.example`,
         position: index + 1,
       },
     ],
@@ -359,6 +469,7 @@ it("limits ranking history to 10 records and pages forward and backward", async 
         {
           ...ranking,
           tracked_site_name: "Page two site",
+          matched_domain: "page-two.example",
           position: 1,
         },
       ],
@@ -377,22 +488,27 @@ it("limits ranking history to 10 records and pages forward and backward", async 
       <ProjectDetail projectId="project-1" />
     </Providers>,
   );
+  fireEvent.click(
+    await screen.findByRole("button", { name: "ranked keyword" }),
+  );
   const history = await screen.findByRole("region", {
     name: "Ranking history",
   });
   expect(
-    await within(history).findByText("Page one site 10 #10"),
+    await within(history).findByText("page-one-10.example #10"),
   ).toBeVisible();
   expect(within(history).getAllByRole("row")).toHaveLength(11);
   expect(request).toHaveBeenCalledWith(
     expect.stringContaining("keyword-1/rank-checks?limit=10"),
   );
   fireEvent.click(within(history).getByRole("button", { name: "Next page" }));
-  expect(await within(history).findByText("Page two site #1")).toBeVisible();
+  expect(await within(history).findByText("page-two.example #1")).toBeVisible();
   expect(within(history).getByText("Page 2")).toBeVisible();
   fireEvent.click(
     within(history).getByRole("button", { name: "Previous page" }),
   );
-  expect(await within(history).findByText("Page one site 1 #1")).toBeVisible();
+  expect(
+    await within(history).findByText("page-one-1.example #1"),
+  ).toBeVisible();
   expect(within(history).getByText("Page 1")).toBeVisible();
 });

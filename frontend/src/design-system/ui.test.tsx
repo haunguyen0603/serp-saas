@@ -5,12 +5,25 @@ import {
   Button,
   FormField,
   Input,
+  Select,
   Table,
   Tabs,
   StatusBadge,
   ErrorState,
   UsageMeter,
 } from "./ui";
+
+it("uses the shared fixed-height style for select controls", () => {
+  render(
+    <Select aria-label="Device" defaultValue="desktop">
+      <option value="desktop">Desktop</option>
+    </Select>,
+  );
+  expect(screen.getByRole("combobox", { name: "Device" })).toHaveClass(
+    "ui-input",
+    "ui-select",
+  );
+});
 
 it("defers destructive work until confirmation and restores trigger focus", () => {
   const action = vi.fn();

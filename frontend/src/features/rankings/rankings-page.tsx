@@ -159,7 +159,7 @@ export function RankingsPage() {
                         <td>
                           {check?.rankings.map((r) => (
                             <div key={r.tracked_site_id ?? r.tracked_site_name}>
-                              {r.tracked_site_name}
+                              {r.matched_domain}
                             </div>
                           )) || "—"}
                           {check && !check.rankings.length && "—"}

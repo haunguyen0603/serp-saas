@@ -127,7 +127,7 @@ export function Select({
   className = "",
   ...props
 }: SelectHTMLAttributes<HTMLSelectElement>) {
-  return <select className={`ui-input ${className}`} {...props} />;
+  return <select className={`ui-input ui-select ${className}`} {...props} />;
 }
 export function Textarea({
   className = "",

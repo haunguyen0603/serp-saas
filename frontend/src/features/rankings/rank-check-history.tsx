@@ -1,70 +1,52 @@
-import { Alert, Button, Select, Skeleton, Table } from "@/design-system/ui";
+import { Button, Card, ErrorState, Skeleton, Table } from "@/design-system/ui";
 import type { RankCheck } from "./types";
 
 export function RankCheckHistory({
+  id,
   keyword,
-  keywordId,
-  keywordOptions,
   checks,
   loading,
   error,
   page,
   hasNextPage,
-  onKeywordChange,
   onPreviousPage,
   onNextPage,
   onOpen,
+  onRetry,
 }: {
-  keyword: string | null;
-  keywordId: string | null;
-  keywordOptions: { id: string; keyword: string }[];
+  id: string;
+  keyword: string;
   checks: RankCheck[];
   loading: boolean;
   error: boolean;
   page: number;
   hasNextPage: boolean;
-  onKeywordChange: (keywordId: string) => void;
   onPreviousPage: () => void;
   onNextPage: () => void;
   onOpen: (check: RankCheck) => void;
+  onRetry: () => void;
 }) {
   return (
-    <section
+    <Card
+      id={id}
       aria-label="Ranking history"
-      className="mt-8 rounded-xl border border-border p-5"
+      className="keyword-history-panel"
     >
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <h3 className="text-xl font-semibold">
-          Ranking history{keyword ? ` · ${keyword}` : ""}
-        </h3>
-        {keywordOptions.length > 1 && keywordId && (
-          <label className="min-w-52 text-sm">
-            Keyword
-            <Select
-              aria-label="Ranking history keyword"
-              value={keywordId}
-              onChange={(event) => onKeywordChange(event.target.value)}
-            >
-              {keywordOptions.map((option) => (
-                <option value={option.id} key={option.id}>
-                  {option.keyword}
-                </option>
-              ))}
-            </Select>
-          </label>
-        )}
-      </div>
-      {loading && <Skeleton label="Loading ranking history…" />}
+      <h3 className="text-xl font-semibold">Ranking history · {keyword}</h3>
+      {loading && (
+        <div className="mt-4">
+          <Skeleton label="Loading ranking history…" />
+        </div>
+      )}
       {error && (
-        <Alert className="mt-4">Ranking history could not be loaded.</Alert>
+        <div className="mt-4">
+          <ErrorState onRetry={onRetry}>
+            Ranking history could not be loaded.
+          </ErrorState>
+        </div>
       )}
-      {!loading && !error && !keyword && (
-        <p className="mt-4 text-secondary">
-          Add a keyword to start building ranking history.
-        </p>
-      )}
-      {!loading && !error && keyword && checks.length === 0 && (
-        <p className="mt-4 text-secondary">No Rank Checks yet.</p>
+      {!loading && !error && checks.length === 0 && (
+        <p className="mt-4 text-secondary">No ranking history yet.</p>
       )}
       {!loading && !error && checks.length > 0 && (
         <div className="mt-4 overflow-x-auto">
@@ -100,7 +82,7 @@ export function RankCheckHistory({
                       ? check.rankings
                           .map(
                             (ranking) =>
-                              `${ranking.tracked_site_name} #${ranking.position}`,
+                              `${ranking.matched_domain} #${ranking.position}`,
                           )
                           .join(", ")
                       : check.status === "succeeded"
@@ -133,6 +115,6 @@ export function RankCheckHistory({
           </Button>
         </nav>
       )}
-    </section>
+    </Card>
   );
 }

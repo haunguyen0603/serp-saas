@@ -94,7 +94,7 @@ try {
   assert.equal(accepted.status(), 202);
   const batchId = (await accepted.json()).batch_id;
   await page.getByText("Ranking checks queued.", { exact: true }).waitFor();
-  await page.getByText("Browser Owned Site #2", { exact: true }).first().waitFor();
+  await page.getByText("tracked.example #2", { exact: true }).first().waitFor();
   await page.getByRole("progressbar", { name: "Batch progress" }).evaluate((element) => {
     if (element.value !== 100) throw new Error("Batch is not terminal");
   });
@@ -105,9 +105,26 @@ try {
   const settledCount = batchGets.length;
   await page.waitForTimeout(2500);
   assert.equal(batchGets.length, settledCount, "Batch polling continued after terminal state");
-  const history = page.getByRole("region", { name: "Ranking history" });
+  const keywordTrigger = page.getByRole("button", { name: "browser rank query" });
+  assert.equal(await keywordTrigger.getAttribute("aria-expanded"), "false");
+  assert.equal(await page.getByRole("region", { name: "Ranking history" }).count(), 0);
+  await keywordTrigger.scrollIntoViewIfNeeded();
+  const scrollBeforeHistory = await page.evaluate(() => scrollY);
+  await keywordTrigger.click();
+  assert.equal(await keywordTrigger.getAttribute("aria-expanded"), "true");
+  assert.equal(await page.evaluate(() => scrollY), scrollBeforeHistory);
+  let history = page.getByRole("region", { name: "Ranking history" });
   await history.waitFor();
   assert.equal(await page.getByRole("button", { name: "History" }).count(), 0);
+  await history.getByText("Ranking history · browser rank query", { exact: true }).waitFor();
+  await verifyResponsive(page,"keyword-inline-history");
+  await keywordTrigger.focus();
+  await keywordTrigger.press("Enter");
+  assert.equal(await page.getByRole("region", { name: "Ranking history" }).count(), 0);
+  assert.equal(await keywordTrigger.getAttribute("aria-expanded"), "false");
+  await keywordTrigger.press("Enter");
+  history = page.getByRole("region", { name: "Ranking history" });
+  await history.waitFor();
   const viewResults = history.getByRole("button", { name: "View results" });
   await viewResults.scrollIntoViewIfNeeded();
   const scrollBeforeDetail = await page.evaluate(() => scrollY);
@@ -171,7 +188,8 @@ try {
   assert(!/gserviceaccount|cloud tasks|gcp_project|rank-checks queue/i.test(await page.locator("body").innerText()));
   await page.getByRole("table", { name: "Batch history" }).getByText("Completed", { exact: true }).waitFor();
   await page.reload();
-  await page.getByText("Browser Owned Site #2", { exact: true }).first().waitFor();
+  await page.getByText("tracked.example #2", { exact: true }).first().waitFor();
+  await page.getByRole("button", { name: "browser rank query" }).click();
   await page.getByRole("region", { name: "Ranking history" }).waitFor();
 
   const overviewResponse = page.waitForResponse(r => r.url().endsWith("/api/v1/overview") && r.status() === 200);

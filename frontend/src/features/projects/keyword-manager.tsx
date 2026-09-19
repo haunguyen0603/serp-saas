@@ -20,7 +20,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { Fragment, useState, type FormEvent } from "react";
 import {
   checkKeyword,
   checkProject,
@@ -87,10 +87,8 @@ export function KeywordManager({ project }: { project: Project }) {
   });
   const items = keywords.data?.pages.flatMap((page) => page.items) ?? [];
   const historyKeyword =
-    items.find((item) => item.id === historyKeywordId) ?? items[0] ?? null;
-  const effectiveHistoryPage =
-    historyKeyword?.id === historyKeywordId ? historyPage : 0;
-  const historyCursor = historyCursors[effectiveHistoryPage] ?? null;
+    items.find((item) => item.id === historyKeywordId) ?? null;
+  const historyCursor = historyCursors[historyPage] ?? null;
   const history = useQuery({
     queryKey: [
       ...rankingKeys.history(project.id, historyKeyword?.id ?? ""),
@@ -103,6 +101,7 @@ export function KeywordManager({ project }: { project: Project }) {
         cursor: historyCursor,
       }),
     enabled: auth.isAuthenticated && historyKeyword !== null,
+    staleTime: 30_000,
   });
   const detail = useQuery({
     queryKey: rankingKeys.detail(
@@ -209,6 +208,13 @@ export function KeywordManager({ project }: { project: Project }) {
       onError: (failure) =>
         setError(message(failure, "Keywords could not be added.")),
     });
+  }
+  function toggleHistory(keyword: Keyword) {
+    const opening = historyKeywordId !== keyword.id;
+    setHistoryKeywordId(opening ? keyword.id : null);
+    setHistoryPage(0);
+    setHistoryCursors([null]);
+    setDetailCheck(null);
   }
   return (
     <section id="keywords">
@@ -371,97 +377,147 @@ export function KeywordManager({ project }: { project: Project }) {
             </tr>
           </thead>
           <tbody>
-            {items.map((item) => (
-              <tr key={item.id} className="border-b border-border">
-                <td className="p-3">{item.keyword}</td>
-                <td className="p-3">
-                  <StatusBadge status={item.active ? "active" : "paused"} />
-                </td>
-                <td className="p-3">
-                  {(() => {
-                    const check = latestByKeyword.get(item.id);
-                    if (!check) return "Never checked";
-                    return new Date(check.requested_at).toLocaleString();
-                  })()}
-                </td>
-                <td className="p-3">
-                  {(() => {
-                    const check = latestByKeyword.get(item.id);
-                    if (!check) return "—";
-                    if (check.status === "failed") return "Check failed";
-                    if (
-                      check.status === "pending" ||
-                      check.status === "running"
-                    )
-                      return "Running";
-                    if (!check.rankings.length)
-                      return `Not found in Top ${check.result_limit}`;
-                    return (
-                      <div className="flex flex-wrap gap-2">
-                        {check.rankings.map((ranking) => {
-                          const label = `${ranking.matched_domain} #${ranking.position}`;
-                          return ranking.tracked_site_id ? (
-                            <Link
-                              key={`${ranking.tracked_site_id}:${ranking.position}`}
-                              className="ui-text-link"
-                              href={`/app/tracked-sites/${ranking.tracked_site_id}`}
-                            >
-                              {label}
-                            </Link>
-                          ) : (
-                            <span
-                              key={`${ranking.tracked_site_name}:${ranking.position}`}
-                            >
-                              {label}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    );
-                  })()}
-                </td>
-                <td className="p-3">
-                  <Button
-                    className="mr-3"
-                    disabled={
-                      !item.active ||
-                      (keywordCheck.isPending &&
-                        keywordCheck.variables === item.id)
-                    }
-                    onClick={() => {
-                      setError(null);
-                      keywordCheck.mutate(item.id);
-                    }}
-                  >
-                    {keywordCheck.isPending &&
-                    keywordCheck.variables === item.id
-                      ? "Queueing…"
-                      : "Check now"}
-                  </Button>
-                  <Button className="mr-3" onClick={() => setEditing(item)}>
-                    Edit
-                  </Button>
-                  <Button
-                    size="md"
-                    onClick={() =>
-                      update.mutate({
-                        id: item.id,
-                        input: { active: !item.active },
-                      })
-                    }
-                  >
-                    {item.active ? "Pause" : "Resume"}
-                  </Button>
-                  <Button
-                    variant="danger"
-                    confirmation="Delete this Keyword? Its checks will stop. Keywords with ranking history must be paused instead."
-                    onClick={() => remove.mutate(item.id)}
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
+            {items.map((item) => {
+              const expanded = historyKeyword?.id === item.id;
+              const historyRegionId = `keyword-history-${item.id}`;
+              return (
+                <Fragment key={item.id}>
+                  <tr className="border-b border-border">
+                    <td className="p-3">
+                      <button
+                        type="button"
+                        className="ui-text-link keyword-history-trigger text-sm font-medium"
+                        aria-expanded={expanded}
+                        aria-controls={historyRegionId}
+                        onClick={() => toggleHistory(item)}
+                      >
+                        <span>{item.keyword}</span>
+                        <span aria-hidden="true">{expanded ? "▴" : "▸"}</span>
+                      </button>
+                    </td>
+                    <td className="p-3">
+                      <StatusBadge status={item.active ? "active" : "paused"} />
+                    </td>
+                    <td className="p-3">
+                      {(() => {
+                        const check = latestByKeyword.get(item.id);
+                        if (!check) return "Never checked";
+                        return new Date(check.requested_at).toLocaleString();
+                      })()}
+                    </td>
+                    <td className="p-3">
+                      {(() => {
+                        const check = latestByKeyword.get(item.id);
+                        if (!check) return "—";
+                        if (check.status === "failed") return "Check failed";
+                        if (
+                          check.status === "pending" ||
+                          check.status === "running"
+                        )
+                          return "Running";
+                        if (!check.rankings.length)
+                          return `Not found in Top ${check.result_limit}`;
+                        return (
+                          <div className="flex flex-wrap gap-2">
+                            {check.rankings.map((ranking) => {
+                              const label = `${ranking.matched_domain} #${ranking.position}`;
+                              return ranking.tracked_site_id ? (
+                                <Link
+                                  key={`${ranking.tracked_site_id}:${ranking.position}`}
+                                  className="ui-text-link"
+                                  href={`/app/tracked-sites/${ranking.tracked_site_id}`}
+                                >
+                                  {label}
+                                </Link>
+                              ) : (
+                                <span
+                                  key={`${ranking.tracked_site_name}:${ranking.position}`}
+                                >
+                                  {label}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        );
+                      })()}
+                    </td>
+                    <td className="p-3">
+                      <Button
+                        className="mr-3"
+                        disabled={
+                          !item.active ||
+                          (keywordCheck.isPending &&
+                            keywordCheck.variables === item.id)
+                        }
+                        onClick={() => {
+                          setError(null);
+                          keywordCheck.mutate(item.id);
+                        }}
+                      >
+                        {keywordCheck.isPending &&
+                        keywordCheck.variables === item.id
+                          ? "Queueing…"
+                          : "Check now"}
+                      </Button>
+                      <Button className="mr-3" onClick={() => setEditing(item)}>
+                        Edit
+                      </Button>
+                      <Button
+                        size="md"
+                        onClick={() =>
+                          update.mutate({
+                            id: item.id,
+                            input: { active: !item.active },
+                          })
+                        }
+                      >
+                        {item.active ? "Pause" : "Resume"}
+                      </Button>
+                      <Button
+                        variant="danger"
+                        confirmation="Delete this Keyword? Its checks will stop. Keywords with ranking history must be paused instead."
+                        onClick={() => remove.mutate(item.id)}
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                  {expanded && (
+                    <tr className="keyword-history-row">
+                      <td className="keyword-history-cell" colSpan={5}>
+                        <RankCheckHistory
+                          id={historyRegionId}
+                          keyword={item.keyword}
+                          checks={history.data?.items ?? []}
+                          loading={history.isPending}
+                          error={history.isError}
+                          page={historyPage}
+                          hasNextPage={history.data?.has_more ?? false}
+                          onPreviousPage={() => {
+                            setHistoryPage((current) =>
+                              Math.max(0, current - 1),
+                            );
+                            setDetailCheck(null);
+                          }}
+                          onNextPage={() => {
+                            const cursor = history.data?.next_cursor;
+                            if (!cursor) return;
+                            setHistoryCursors((current) => [
+                              ...current.slice(0, historyPage + 1),
+                              cursor,
+                            ]);
+                            setHistoryPage((current) => current + 1);
+                            setDetailCheck(null);
+                          }}
+                          onOpen={setDetailCheck}
+                          onRetry={() => void history.refetch()}
+                        />
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              );
+            })}
           </tbody>
         </Table>
       </div>
@@ -470,43 +526,6 @@ export function KeywordManager({ project }: { project: Project }) {
           Load more keywords
         </Button>
       )}
-      <RankCheckHistory
-        keyword={historyKeyword?.keyword ?? null}
-        keywordId={historyKeyword?.id ?? null}
-        keywordOptions={items.map((item) => ({
-          id: item.id,
-          keyword: item.keyword,
-        }))}
-        checks={history.data?.items ?? []}
-        loading={
-          keywords.isPending || (historyKeyword !== null && history.isPending)
-        }
-        error={history.isError}
-        page={effectiveHistoryPage}
-        hasNextPage={history.data?.has_more ?? false}
-        onKeywordChange={(keywordId) => {
-          setHistoryKeywordId(keywordId);
-          setHistoryPage(0);
-          setHistoryCursors([null]);
-          setDetailCheck(null);
-        }}
-        onPreviousPage={() => {
-          setHistoryPage((current) => Math.max(0, current - 1));
-          setDetailCheck(null);
-        }}
-        onNextPage={() => {
-          const cursor = history.data?.next_cursor;
-          if (!cursor || !historyKeyword) return;
-          setHistoryKeywordId(historyKeyword.id);
-          setHistoryCursors((current) => [
-            ...current.slice(0, effectiveHistoryPage + 1),
-            cursor,
-          ]);
-          setHistoryPage(effectiveHistoryPage + 1);
-          setDetailCheck(null);
-        }}
-        onOpen={setDetailCheck}
-      />
       <Dialog
         open={detailCheck !== null}
         onClose={() => setDetailCheck(null)}

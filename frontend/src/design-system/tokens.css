@@ -34,6 +34,7 @@
   --ds-radius-lg: 16px;
   --ds-shadow-sm: 0 2px 5px #18243a05;
   --ds-shadow-md: 0 16px 48px #18243a1a;
+  --ds-control-height: 42px;
   --ds-space-1: 4px;
   --ds-space-2: 8px;
   --ds-space-3: 12px;
@@ -210,9 +211,10 @@
   cursor: not-allowed;
 }
 .ui-input {
+  box-sizing: border-box;
   display: block;
   width: 100%;
-  min-height: 42px;
+  min-height: var(--ds-control-height);
   padding: 9px 12px;
   margin-top: 6px;
   border: 1px solid var(--ds-border-strong);
@@ -221,6 +223,9 @@
   color: var(--ds-text);
   font: inherit;
   font-weight: 400;
+}
+.ui-select {
+  height: var(--ds-control-height);
 }
 .ui-input::placeholder {
   color: var(--ds-muted);
@@ -345,6 +350,24 @@
 }
 .ui-table td:last-child .ui-button {
   margin: 2px;
+}
+.keyword-history-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+.ui-table .keyword-history-cell,
+.ui-table .keyword-history-row:hover > .keyword-history-cell {
+  padding: 12px 16px 16px;
+  background: var(--ds-surface-muted);
+}
+.keyword-history-panel {
+  background: var(--ds-surface);
 }
 .ui-pagination {
   display: flex;
@@ -851,6 +874,9 @@
   }
 }
 @media (max-width: 600px) {
+  :root {
+    --ds-control-height: 44px;
+  }
   .app-content {
     padding: 24px 16px;
   }
@@ -898,6 +924,16 @@
     color: var(--ds-muted);
     font-size: 0.75rem;
     font-weight: 550;
+  }
+  .ui-table .keyword-history-row {
+    padding-top: 0;
+  }
+  .ui-table .keyword-history-cell {
+    display: block !important;
+    padding: 0 !important;
+  }
+  .ui-table .keyword-history-cell::before {
+    content: none;
   }
   .ui-table td:first-child {
     font-weight: 600;
