@@ -415,6 +415,40 @@ it("switches one expanded keyword at a time and shows local empty and error stat
   expect(failedAttempts).toBe(2);
 });
 
+it("links history domains to Google using the checked query in a new tab", async () => {
+  const fallback = request.getMockImplementation()!;
+  const query = "vinfast Việt Nam & VF6 + giá?";
+  request.mockImplementation(async (path: string, options?: RequestInit) => {
+    if (path.includes("keyword-1/rank-checks") && !options)
+      return {
+        items: [{ ...check, query_snapshot: query }],
+        next_cursor: null,
+        has_more: false,
+      };
+    return fallback(path, options);
+  });
+  render(
+    <Providers>
+      <ProjectDetail projectId="project-1" />
+    </Providers>,
+  );
+  fireEvent.click(
+    await screen.findByRole("button", { name: "ranked keyword" }),
+  );
+  const history = screen.getByRole("region", { name: "Ranking history" });
+  const link = await within(history).findByRole("link", {
+    name: "old.example #2",
+  });
+  const url = new URL(link.getAttribute("href")!);
+  expect(url.origin).toBe("https://www.google.com");
+  expect(url.pathname).toBe("/search");
+  expect(url.searchParams.get("q")).toBe(query);
+  expect([...url.searchParams.keys()]).toEqual(["q"]);
+  expect(link).toHaveAttribute("target", "_blank");
+  expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  expect(link).toHaveClass("ui-text-link");
+});
+
 it("shows a local skeleton while expanded history loads", async () => {
   const fallback = request.getMockImplementation()!;
   let resolveHistory!: (value: {

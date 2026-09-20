@@ -13,6 +13,9 @@ export class ApiError extends Error {
 }
 
 const errorMessages: Record<string, string> = {
+  PLAN_CHANGED: "This Plan has changed. Reload the catalog before saving.",
+  INVALID_PLAN_PRICE:
+    "Free Plans must stay at $0; paid Plans need a positive price.",
   PLAN_NOT_FOUND: "Plan is unavailable.",
   NO_ACTIVE_SUBSCRIPTION: "Subscription not found.",
   SUBSCRIPTION_EXPIRED: "Subscription expired. Activate a new Plan.",

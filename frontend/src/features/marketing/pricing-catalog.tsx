@@ -31,7 +31,8 @@ function planPrice(plan: Plan) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: plan.currency,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: plan.price_monthly_minor_units % 100 ? 2 : 0,
+    maximumFractionDigits: 2,
   }).format(plan.price_monthly_minor_units / 100);
 }
 

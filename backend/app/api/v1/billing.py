@@ -10,10 +10,14 @@ from app.repositories.billing import BillingRepository
 from app.schemas.billing import (
     ActivationRequest,
     AdjustmentRequest,
+    AdminPlanResponse,
     ExtendRequest,
+    PlanChangeResponse,
     PlanResponse,
+    PlanUpdateRequest,
     SubscriptionResponse,
 )
+from app.services.billing.catalog import PlanCatalogService
 from app.services.billing.subscriptions import SubscriptionService
 from app.services.billing.usage import UsageService
 from app.services.billing.views import BillingViewService
@@ -42,6 +46,31 @@ async def plans(session: DBSession) -> list[PlanResponse]:
 @router.get("/billing/me")
 async def me(user: CurrentUser, session: DBSession) -> dict[str, Any]:
     return await BillingViewService(session).summary(user.id)
+
+
+@router.get("/admin/plans")
+async def admin_plans(admin: Admin, session: DBSession) -> list[AdminPlanResponse]:
+    return [
+        AdminPlanResponse.model_validate(p)
+        for p in await BillingRepository(session).plans()
+    ]
+
+
+@router.get("/admin/plans/history")
+async def plan_history(admin: Admin, session: DBSession) -> list[PlanChangeResponse]:
+    return [
+        PlanChangeResponse.model_validate(change)
+        for change in await PlanCatalogService(session).history()
+    ]
+
+
+@router.patch("/admin/plans/{code}")
+async def update_plan(
+    code: str, data: PlanUpdateRequest, admin: Admin, session: DBSession
+) -> AdminPlanResponse:
+    return AdminPlanResponse.model_validate(
+        await PlanCatalogService(session).update(code, admin.id, data)
+    )
 
 
 @router.get("/billing/me/usage")

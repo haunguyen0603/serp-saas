@@ -17,6 +17,7 @@ from app.models.user import User
 __all__ = [
     "Base",
     "Plan",
+    "PlanChange",
     "Subscription",
     "UsagePeriod",
     "UsageReservation",
@@ -41,6 +42,7 @@ __all__ = [
 from app.models.billing import (
     BillingAuditEvent,
     Plan,
+    PlanChange,
     Subscription,
     UsageEvent,
     UsagePeriod,

@@ -94,11 +94,22 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Link
             href="/admin/customers"
             className="app-nav-link"
-            aria-current={path.startsWith("/admin/") ? "page" : undefined}
+            aria-current={
+              path.startsWith("/admin/customers") ? "page" : undefined
+            }
             onClick={() => setMobile(false)}
           >
             <Icon name="user" />
             Customers
+          </Link>
+          <Link
+            href="/admin/plans"
+            className="app-nav-link"
+            aria-current={path === "/admin/plans" ? "page" : undefined}
+            onClick={() => setMobile(false)}
+          >
+            <Icon name="wallet" />
+            Plans &amp; Pricing
           </Link>
         </>
       )}
@@ -135,7 +146,12 @@ export function AppShell({ children }: { children: ReactNode }) {
             />
             <span>Workspace</span>
             <Icon name="chevron" width={14} />
-            <span>{active?.label ?? "Customer billing"}</span>
+            <span>
+              {active?.label ??
+                (path === "/admin/plans"
+                  ? "Plans & Pricing"
+                  : "Customer billing")}
+            </span>
           </div>
           <div className="app-account">
             <span className="app-account-email text-secondary text-xs">

@@ -78,16 +78,26 @@ export function RankCheckHistory({
                   </td>
                   <td className="p-2">Top {check.result_limit}</td>
                   <td className="p-2">
-                    {check.rankings.length
-                      ? check.rankings
-                          .map(
-                            (ranking) =>
-                              `${ranking.matched_domain} #${ranking.position}`,
-                          )
-                          .join(", ")
-                      : check.status === "succeeded"
-                        ? `Not found in Top ${check.result_limit}`
-                        : "—"}
+                    {check.rankings.length ? (
+                      <div className="flex flex-wrap gap-2">
+                        {check.rankings.map((ranking) => (
+                          <a
+                            key={`${ranking.tracked_site_id}:${ranking.matched_domain}:${ranking.position}`}
+                            className="ui-text-link"
+                            href={`https://www.google.com/search?${new URLSearchParams({ q: check.query_snapshot })}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title={`Search Google for “${check.query_snapshot}” (opens in a new tab)`}
+                          >
+                            {ranking.matched_domain} #{ranking.position}
+                          </a>
+                        ))}
+                      </div>
+                    ) : check.status === "succeeded" ? (
+                      `Not found in Top ${check.result_limit}`
+                    ) : (
+                      "—"
+                    )}
                   </td>
                   <td className="p-2 capitalize">{check.status}</td>
                   <td className="p-2">

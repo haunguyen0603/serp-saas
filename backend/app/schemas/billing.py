@@ -45,6 +45,29 @@ class PlanResponse(BaseModel):
     max_scheduled_frequency: str
 
 
+class AdminPlanResponse(PlanResponse):
+    updated_at: datetime
+
+
+class PlanUpdateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    expected_updated_at: AwareDatetime
+    price_monthly_minor_units: int = Field(strict=True, ge=0, le=2147483647)
+    max_projects: int = Field(strict=True, ge=0, le=2147483647)
+    max_keywords: int = Field(strict=True, ge=0, le=2147483647)
+    monthly_keyword_checks: int = Field(strict=True, ge=0, le=2147483647)
+
+
+class PlanChangeResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: UUID
+    plan_id: UUID
+    actor_user_id: UUID | None
+    before: dict[str, Any]
+    after: dict[str, Any]
+    created_at: datetime
+
+
 class SubscriptionResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: UUID

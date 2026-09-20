@@ -50,6 +50,18 @@ beforeEach(() => {
   state.request.mockReset();
 });
 
+it("preserves fractional catalog prices on public Pricing", async () => {
+  state.request.mockResolvedValue(
+    plans.map((plan) => ({
+      ...plan,
+      price_monthly_minor_units:
+        plan.code === "desktop_starter" ? 2950 : plan.price_monthly_minor_units,
+    })),
+  );
+  view(<PricingCatalog />);
+  expect(await screen.findByText("$29.50")).toBeVisible();
+});
+
 it("renders truthful Home sections and safe preview data", () => {
   render(<HomePage />);
   expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(

@@ -61,6 +61,17 @@ class Plan(IdentityTime, Base):
     display_order: Mapped[int] = mapped_column(Integer)
 
 
+class PlanChange(IdentityTime, Base):
+    __tablename__ = "plan_changes"
+    __table_args__ = (Index("ix_plan_changes_created", "created_at", "id"),)
+    plan_id: Mapped[UUID] = mapped_column(ForeignKey("plans.id"))
+    actor_user_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL")
+    )
+    before: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    after: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
 class Subscription(IdentityTime, Base):
     __tablename__ = "subscriptions"
     __table_args__ = (
