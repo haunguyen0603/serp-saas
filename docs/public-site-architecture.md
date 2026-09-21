@@ -50,14 +50,23 @@ Free CTAs lead logged-out visitors to `/register` and authenticated visitors to 
 
 Root metadata defines the product title template and `metadataBase`. Home and Pricing each supply a description, canonical URL, Open Graph fields and Twitter summary metadata. Home emits a limited `SoftwareApplication` JSON-LD object with no invented offers, reviews or ratings.
 
-The sitemap contains only `/`, `/pricing`, `/login` and `/register`. Robots rules disallow `/app`, `/admin`, `/settings` and `/api`. Backend authorization and route guards remain responsible for security; robots directives only guide crawlers.
+The sitemap contains only `/`, `/pricing`, `/login`, `/register` and `/terms`. Robots rules disallow `/app`, `/admin`, `/settings` and `/api`. Backend authorization and route guards remain responsible for security; robots directives only guide crawlers.
 
 ## Responsive and accessibility rules
 
-Public CSS shares the light M6.5A tokens, strong type, navy surfaces, blue actions, borders, radii and restrained shadows. The Hero changes from two columns to a stack below 980px. Pricing changes from three columns to two below 980px and one below 760px. Details, usage, footer and feature grids stack at the same responsive boundaries. At 760px and below, desktop navigation is replaced by the accessible drawer.
+Public CSS shares the light M6.5A tokens, strong type, navy surfaces, blue actions, borders, radii and restrained shadows. The Hero changes from two columns to a stack below 980px. Pricing changes from three columns to two below 980px and one below 760px. Details, usage, footer and feature grids stack at the same responsive boundaries. At 960px and below, desktop navigation is replaced by the accessible drawer.
 
 Pages use header, navigation, main, section, article and footer landmarks; a single page-level `h1`; ordered `h2`/`h3` structure; textual Plan/status labels; real links for navigation and buttons only for actions. Shared `:focus-visible` styling and Drawer focus management apply to public controls.
 
 ## Future hooks
 
 M6.5C may add the customer API and API keys, and M6.5D may add developer documentation. At that point their routes can be linked from the header/footer and advertised in the sitemap. M6.5B creates no placeholder routes or public `/api/v1` contract. Payment integration remains reserved for M6B.
+
+
+## Terms of Service (2026-09-20)
+
+`/terms` is a public, static page with English service terms, a revision date, canonical URL and Open Graph metadata. Its content lives in `frontend/src/app/terms/page.tsx` for the product owner to review and maintain. Header navigation, the mobile drawer and the footer link to the page.
+
+The registration checkbox keeps its existing required acceptance behavior. Its inline Terms of Service link opens `/terms` in a separate tab with `noopener noreferrer`, preserving the in-progress registration form. Opening the link does not check the checkbox or submit the form. The same AuthForm covers `/register` and `/signup`.
+
+Verification: 94 frontend tests in 18 files passed, along with ESLint, Prettier, strict TypeScript and the production Docker frontend build. Chrome checked the public page, header/footer/drawer links, metadata, sitemap, and registration popup/form preservation at 375, 768, 1024 and 1440px. Screenshots are local artifacts under `.tools/terms/`. Header navigation switches to the shared drawer at tablet widths to accommodate the additional link without wrapping the account actions. Backend authentication and acceptance persistence are unchanged.

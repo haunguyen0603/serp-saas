@@ -40,6 +40,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const publicSite = [
     "/",
     "/pricing",
+    "/terms",
     "/login",
     "/register",
     "/signup",

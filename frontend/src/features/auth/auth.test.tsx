@@ -84,6 +84,12 @@ it("renders the signup fields", async () => {
     "password",
   );
   expect(screen.getByRole("checkbox")).toBeRequired();
+  const terms = screen.getByRole("link", { name: /Terms of Service/ });
+  expect(terms).toHaveAttribute("href", "/terms");
+  expect(terms).toHaveAttribute("target", "_blank");
+  expect(terms).toHaveAttribute("rel", "noopener noreferrer");
+  expect(terms).toHaveClass("ui-text-link");
+  expect(screen.getByRole("checkbox")).not.toBeChecked();
 });
 
 it.each([

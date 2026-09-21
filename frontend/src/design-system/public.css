@@ -770,12 +770,7 @@
     gap: 45px;
   }
 }
-@media (max-width: 760px) {
-  .public-header-inner,
-  .public-footer-inner,
-  .public-main {
-    width: min(100% - 32px, 1180px);
-  }
+@media (max-width: 960px) {
   .public-header-inner {
     min-height: 66px;
     display: flex;
@@ -787,6 +782,13 @@
   .public-menu-button {
     display: inline-flex;
     margin-left: auto;
+  }
+}
+@media (max-width: 760px) {
+  .public-header-inner,
+  .public-footer-inner,
+  .public-main {
+    width: min(100% - 32px, 1180px);
   }
   .public-hero {
     min-height: 0;

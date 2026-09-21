@@ -94,11 +94,24 @@ it("provides an accessible public mobile menu and accurate CTAs", () => {
     "href",
     "/register",
   );
+  expect(
+    within(screen.getByRole("banner")).getByRole("link", {
+      name: "Terms of Service",
+    }),
+  ).toHaveAttribute("href", "/terms");
+  expect(
+    within(screen.getByRole("contentinfo")).getByRole("link", {
+      name: "Terms of Service",
+    }),
+  ).toHaveAttribute("href", "/terms");
   fireEvent.click(
     screen.getByRole("button", { name: "Open public navigation" }),
   );
   const dialog = screen.getByRole("dialog", { name: "SERP SaaS" });
   expect(dialog).toBeVisible();
+  expect(
+    within(dialog).getByRole("link", { name: "Terms of Service" }),
+  ).toHaveAttribute("href", "/terms");
   expect(within(dialog).getByRole("link", { name: "Pricing" })).toHaveAttribute(
     "aria-current",
     "page",

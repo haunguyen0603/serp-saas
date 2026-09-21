@@ -16,5 +16,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     { url: new URL("/login", site).toString(), priority: 0.3 },
     { url: new URL("/register", site).toString(), priority: 0.7 },
+    { url: new URL("/terms", site).toString(), priority: 0.3 },
   ];
 }

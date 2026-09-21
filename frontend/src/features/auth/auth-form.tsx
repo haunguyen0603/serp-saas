@@ -112,9 +112,20 @@ export function AuthForm({ mode }: { mode: "signup" | "login" }) {
                 name="acceptTerms"
                 type="checkbox"
                 required
-                className="mt-1 accent-teal-400"
+                className="ui-checkbox"
               />
-              I accept the Terms of Service
+              <span>
+                I accept the{" "}
+                <Link
+                  href="/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ui-text-link"
+                >
+                  Terms of Service
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </Link>
+              </span>
             </label>
           </>
         )}

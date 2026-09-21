@@ -9,6 +9,7 @@ import { Drawer, Icon, IconButton } from "./ui";
 const links = [
   { href: "/", label: "Home" },
   { href: "/pricing", label: "Pricing" },
+  { href: "/terms", label: "Terms of Service" },
 ];
 
 export function PublicShell({ children }: { children: ReactNode }) {
@@ -84,6 +85,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
             <strong>Product</strong>
             <Link href="/">Home</Link>
             <Link href="/pricing">Pricing</Link>
+            <Link href="/terms">Terms of Service</Link>
           </nav>
           <nav aria-label="Account links">
             <strong>Account</strong>
