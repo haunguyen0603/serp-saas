@@ -1,4 +1,17 @@
-import { Button, Card, ErrorState, Skeleton, Table } from "@/design-system/ui";
+import {
+  Button,
+  Card,
+  ErrorState,
+  Select,
+  Skeleton,
+  Table,
+} from "@/design-system/ui";
+import { AnalyticsRangeSelector } from "@/features/analytics/range-selector";
+import { RankingChart } from "@/features/analytics/ranking-chart";
+import type {
+  AnalyticsRange,
+  KeywordRankingHistory,
+} from "@/features/analytics/types";
 import type { RankCheck } from "./types";
 
 export function RankCheckHistory({
@@ -13,6 +26,15 @@ export function RankCheckHistory({
   onNextPage,
   onOpen,
   onRetry,
+  chart,
+  chartLoading = false,
+  chartError = false,
+  chartRange = "30d",
+  trackedSites = [],
+  trackedSiteId = "",
+  onChartRangeChange,
+  onTrackedSiteChange,
+  onChartRetry,
 }: {
   id: string;
   keyword: string;
@@ -25,6 +47,15 @@ export function RankCheckHistory({
   onNextPage: () => void;
   onOpen: (check: RankCheck) => void;
   onRetry: () => void;
+  chart?: KeywordRankingHistory;
+  chartLoading?: boolean;
+  chartError?: boolean;
+  chartRange?: AnalyticsRange;
+  trackedSites?: { id: string; name: string }[];
+  trackedSiteId?: string;
+  onChartRangeChange?: (value: AnalyticsRange) => void;
+  onTrackedSiteChange?: (value: string) => void;
+  onChartRetry?: () => void;
 }) {
   return (
     <Card
@@ -33,6 +64,37 @@ export function RankCheckHistory({
       className="keyword-history-panel"
     >
       <h3 className="text-xl font-semibold">Ranking history · {keyword}</h3>
+      {!!trackedSites.length && onChartRangeChange && onTrackedSiteChange && (
+        <div className="mt-4">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <label>
+              Tracked site
+              <Select
+                value={trackedSiteId}
+                onChange={(event) => onTrackedSiteChange(event.target.value)}
+              >
+                {trackedSites.map((site) => (
+                  <option key={site.id} value={site.id}>
+                    {site.name}
+                  </option>
+                ))}
+              </Select>
+            </label>
+            <AnalyticsRangeSelector
+              value={chartRange}
+              onChange={onChartRangeChange}
+              label="Ranking history range"
+            />
+          </div>
+          {chartLoading && <Skeleton label="Loading ranking chart…" />}
+          {chartError && (
+            <ErrorState onRetry={onChartRetry ?? (() => {})}>
+              Ranking chart could not be loaded.
+            </ErrorState>
+          )}
+          {chart && <RankingChart history={chart} />}
+        </div>
+      )}
       {loading && (
         <div className="mt-4">
           <Skeleton label="Loading ranking history…" />

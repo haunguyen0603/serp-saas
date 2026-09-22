@@ -4,16 +4,19 @@ from fastapi import Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.dependencies.auth import DBSession
+from app.repositories.analytics import AnalyticsRepository
 from app.repositories.keyword import KeywordRepository
 from app.repositories.project import ProjectRepository
 from app.repositories.rank_check import RankCheckRepository
 from app.repositories.ranking import RankingRepository
 from app.repositories.tracked_domain import TrackedDomainRepository
 from app.repositories.tracked_site import TrackedSiteRepository
+from app.services.analytics import ProjectAnalyticsService
 from app.services.domain_matching import DomainMatcher
 from app.services.keywords import KeywordService
 from app.services.projects import ProjectService
 from app.services.rank_checks import RankCheckExecutionService, RankCheckQueryService
+from app.services.ranking_explorer import RankingExplorerService
 from app.services.serp.factory import get_provider_router
 from app.services.serp.router import ProviderRouter
 from app.services.tracked_sites import TrackedSiteService
@@ -67,6 +70,23 @@ def get_rank_check_query_service(session: DBSession) -> RankCheckQueryService:
     return RankCheckQueryService(session)
 
 
+def get_project_analytics_service(session: DBSession) -> ProjectAnalyticsService:
+    return ProjectAnalyticsService(
+        AnalyticsRepository(session),
+        ProjectRepository(session),
+        KeywordRepository(session),
+        TrackedSiteRepository(session),
+    )
+
+
+def get_ranking_explorer_service(session: DBSession) -> RankingExplorerService:
+    return RankingExplorerService(
+        AnalyticsRepository(session),
+        ProjectRepository(session),
+        TrackedSiteRepository(session),
+    )
+
+
 Projects = Annotated[ProjectService, Depends(get_project_service)]
 Keywords = Annotated[KeywordService, Depends(get_keyword_service)]
 TrackedSites = Annotated[TrackedSiteService, Depends(get_tracked_site_service)]
@@ -75,4 +95,10 @@ RankCheckExecution = Annotated[
 ]
 RankCheckQueries = Annotated[
     RankCheckQueryService, Depends(get_rank_check_query_service)
+]
+ProjectAnalytics = Annotated[
+    ProjectAnalyticsService, Depends(get_project_analytics_service)
+]
+RankingExplorer = Annotated[
+    RankingExplorerService, Depends(get_ranking_explorer_service)
 ]

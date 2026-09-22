@@ -105,6 +105,13 @@ it("creates a Project with initial keywords and no domain", async () => {
 
 function detailApi() {
   request.mockImplementation(async (path: string, options?: RequestInit) => {
+    if (path.includes("/analytics/summary"))
+      return {
+        ...summaryFixture,
+        project_id: project.id,
+        device: project.device,
+      };
+    if (path.includes("/analytics/movers")) return { winners: [], losers: [] };
     if (path.includes("rank-check-batches?") || path.includes("/jobs?"))
       return { items: [], next_cursor: null, has_more: false };
     if (path.endsWith("rank-schedule")) return null;
@@ -144,6 +151,31 @@ function detailApi() {
     return undefined;
   });
 }
+
+const summaryFixture = {
+  range: "30d",
+  as_of: "2026-09-22T00:00:00Z",
+  comparison_basis: "none",
+  total_keywords: 1,
+  observed_keywords: 0,
+  never_checked: 1,
+  ranked_keywords: 0,
+  not_found_in_depth: 0,
+  top_3: 0,
+  top_10: 0,
+  improved: 0,
+  declined: 0,
+  unchanged: 0,
+  newly_ranked: 0,
+  lost_ranking: 0,
+  entered_checked_depth: 0,
+  left_checked_depth: 0,
+  no_previous_data: 1,
+  distribution: {
+    effective_depth: 10,
+    buckets: { top_3: 0, positions_4_10: 0, not_found_in_depth: 0 },
+  },
+};
 
 it("renders query-only Keyword columns and project-wide settings warning", async () => {
   detailApi();

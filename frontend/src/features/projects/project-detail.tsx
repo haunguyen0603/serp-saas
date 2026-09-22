@@ -17,6 +17,7 @@ import { deleteProject, getProject, projectKeys, updateProject } from "./api";
 import { KeywordManager } from "./keyword-manager";
 import { ProtectedStatus, useProtectedAuth } from "./protected";
 import type { Device, Project, ProjectUpdate } from "./types";
+import { ProjectAnalytics } from "@/features/analytics/project-analytics";
 
 const field = "";
 
@@ -220,6 +221,10 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
         </Alert>
       )}
       <nav aria-label="Project sections" className="ui-section-nav">
+        <a href="#analytics">Analytics</a>
+        <Link href={`/app/projects/${projectId}/rankings`}>
+          Ranking Explorer
+        </Link>
         <a className="text-brand" href="#keywords">
           Keywords
         </a>
@@ -230,6 +235,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           Project Settings
         </a>
       </nav>
+      <ProjectAnalytics project={value} />
       <KeywordManager project={value} />
       <ProjectSettings project={value} />
     </main>

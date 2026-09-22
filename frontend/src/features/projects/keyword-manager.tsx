@@ -34,6 +34,15 @@ import { RankCheckHistory } from "@/features/rankings/rank-check-history";
 import { BatchPanel, SchedulePanel } from "@/features/rankings/batch-panel";
 import { batchKey } from "@/features/rankings/batches";
 import type { RankCheck } from "@/features/rankings/types";
+import {
+  getKeywordRankingHistory,
+  projectAnalytics,
+} from "@/features/analytics/api";
+import type { AnalyticsRange } from "@/features/analytics/types";
+import {
+  listTrackedSites,
+  trackedSiteKeys,
+} from "@/features/tracked-sites/api";
 import { ApiError } from "@/lib/api/client";
 import {
   bulkCreateKeywords,
@@ -71,6 +80,8 @@ export function KeywordManager({ project }: { project: Project }) {
     null,
   ]);
   const [detailCheck, setDetailCheck] = useState<RankCheck | null>(null);
+  const [historyRange, setHistoryRange] = useState<AnalyticsRange>("30d");
+  const [historySiteId, setHistorySiteId] = useState<string | null>(null);
   const filters = { search, active, limit: 50 } as const;
   const keywords = useInfiniteQuery({
     queryKey: projectKeys.keywordList(project.id, filters),
@@ -101,6 +112,38 @@ export function KeywordManager({ project }: { project: Project }) {
         cursor: historyCursor,
       }),
     enabled: auth.isAuthenticated && historyKeyword !== null,
+    staleTime: 30_000,
+  });
+  const trackedSites = useQuery({
+    queryKey: trackedSiteKeys.list({ status: "active", limit: 200 }),
+    queryFn: () =>
+      listTrackedSites(auth.request, { status: "active", limit: 200 }),
+    enabled: auth.isAuthenticated && historyKeyword !== null,
+    staleTime: 60_000,
+  });
+  const selectedHistorySiteId =
+    historySiteId ?? trackedSites.data?.items[0]?.id ?? null;
+  const chart = useQuery({
+    queryKey: projectAnalytics.history(
+      project.id,
+      historyKeyword?.id ?? "",
+      selectedHistorySiteId ?? "",
+      project.device,
+      historyRange,
+    ),
+    queryFn: () =>
+      getKeywordRankingHistory(
+        auth.request,
+        project.id,
+        historyKeyword?.id ?? "",
+        selectedHistorySiteId ?? "",
+        project.device,
+        historyRange,
+      ),
+    enabled:
+      auth.isAuthenticated &&
+      historyKeyword !== null &&
+      selectedHistorySiteId !== null,
     staleTime: 30_000,
   });
   const detail = useQuery({
@@ -215,6 +258,7 @@ export function KeywordManager({ project }: { project: Project }) {
     setHistoryPage(0);
     setHistoryCursors([null]);
     setDetailCheck(null);
+    setHistorySiteId(null);
   }
   return (
     <section id="keywords">
@@ -382,7 +426,10 @@ export function KeywordManager({ project }: { project: Project }) {
               const historyRegionId = `keyword-history-${item.id}`;
               return (
                 <Fragment key={item.id}>
-                  <tr className="border-b border-border">
+                  <tr
+                    id={`keyword-${item.id}`}
+                    className="border-b border-border"
+                  >
                     <td className="p-3">
                       <button
                         type="button"
@@ -511,6 +558,22 @@ export function KeywordManager({ project }: { project: Project }) {
                           }}
                           onOpen={setDetailCheck}
                           onRetry={() => void history.refetch()}
+                          chart={chart.data}
+                          chartLoading={
+                            chart.isPending && !!selectedHistorySiteId
+                          }
+                          chartError={chart.isError}
+                          chartRange={historyRange}
+                          trackedSites={
+                            trackedSites.data?.items.map((site) => ({
+                              id: site.id,
+                              name: site.name,
+                            })) ?? []
+                          }
+                          trackedSiteId={selectedHistorySiteId ?? ""}
+                          onChartRangeChange={setHistoryRange}
+                          onTrackedSiteChange={setHistorySiteId}
+                          onChartRetry={() => void chart.refetch()}
                         />
                       </td>
                     </tr>

@@ -60,6 +60,16 @@ const errorMessages: Record<string, string> = {
   INVALID_DEVICE: "Device is invalid.",
   INVALID_LOCATION: "Location is invalid.",
   INVALID_CURSOR: "Pagination cursor is invalid.",
+  INVALID_ANALYTICS_RANGE: "Select a supported analytics range.",
+  INVALID_MOVEMENT_FILTER: "The movement filter is invalid.",
+  INVALID_STATUS_FILTER: "The ranking status filter is invalid.",
+  INVALID_POSITION_BUCKET:
+    "The position filter is unavailable for this checked depth.",
+  INVALID_SORT_FIELD: "The ranking sort field is invalid.",
+  INVALID_SORT_ORDER: "The ranking sort order is invalid.",
+  INVALID_DATE_RANGE:
+    "Choose valid UTC dates. From date must not be after To date.",
+  INVALID_DEVICE_SCOPE: "Analytics must use the Project device.",
   BULK_KEYWORD_LIMIT_EXCEEDED:
     "A bulk request may contain at most 1000 keywords.",
   TRACKED_SITE_NOT_FOUND: "Tracked Site not found.",

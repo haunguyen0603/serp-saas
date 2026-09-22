@@ -32,6 +32,8 @@ import {
 import { rankingKeys } from "./api";
 import type { BillingSummary } from "@/features/billing/types";
 import { ApiError } from "@/lib/api/client";
+import { projectAnalytics } from "@/features/analytics/api";
+import { rankingExplorerKeys } from "@/features/ranking-explorer/api";
 
 export function BatchPanel({
   projectId,
@@ -86,6 +88,12 @@ export function BatchPanel({
   useEffect(() => {
     if (progressStatus && terminalBatch(progressStatus)) {
       void client.invalidateQueries({ queryKey: rankingKeys.all(projectId) });
+      void client.invalidateQueries({
+        queryKey: projectAnalytics.all(projectId),
+      });
+      void client.invalidateQueries({
+        queryKey: rankingExplorerKeys.all(projectId),
+      });
       void client.invalidateQueries({
         queryKey: ["projects", projectId, "keywords"],
       });
