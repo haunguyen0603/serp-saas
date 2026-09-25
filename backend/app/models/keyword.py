@@ -6,12 +6,13 @@ from sqlalchemy import (
     CheckConstraint,
     DateTime,
     ForeignKey,
+    ForeignKeyConstraint,
     Index,
     Text,
     UniqueConstraint,
     func,
 )
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
 
@@ -32,6 +33,11 @@ class Keyword(Base):
             name="uq_keywords_project_keyword_normalized",
         ),
         UniqueConstraint("id", "project_id", name="uq_keywords_id_project_id"),
+        ForeignKeyConstraint(
+            ["keyword_group_id", "project_id"],
+            ["keyword_groups.id", "keyword_groups.project_id"],
+            name="fk_keywords_group_project",
+        ),
         Index("ix_keywords_project_id", "project_id"),
         Index("ix_keywords_project_id_active", "project_id", "active"),
         Index("ix_keywords_project_id_created_at", "project_id", "created_at"),
@@ -39,6 +45,11 @@ class Keyword(Base):
             "ix_keywords_project_id_keyword_normalized",
             "project_id",
             "keyword_normalized",
+        ),
+        Index(
+            "ix_keywords_project_id_keyword_group_id",
+            "project_id",
+            "keyword_group_id",
         ),
     )
 
@@ -48,6 +59,7 @@ class Keyword(Base):
     )
     keyword: Mapped[str] = mapped_column(Text, nullable=False)
     keyword_normalized: Mapped[str] = mapped_column(Text, nullable=False)
+    keyword_group_id: Mapped[UUID | None] = mapped_column(nullable=True)
     active: Mapped[bool] = mapped_column(
         Boolean, nullable=False, default=True, server_default="true"
     )
@@ -59,4 +71,12 @@ class Keyword(Base):
         nullable=False,
         server_default=func.now(),
         onupdate=lambda: datetime.now(UTC),
+    )
+    group = relationship("KeywordGroup", lazy="raise")
+    tags = relationship(
+        "KeywordTag",
+        secondary="keyword_tag_assignments",
+        viewonly=True,
+        lazy="raise",
+        order_by="(KeywordTag.normalized_name, KeywordTag.id)",
     )

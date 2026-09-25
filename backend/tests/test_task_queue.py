@@ -75,6 +75,21 @@ async def test_cloud_task_contract_and_deduplication(settings: Settings):
         await queue.enqueue_rank_check_job(job)
 
 
+async def test_cloud_report_task_identity_advances_per_attempt(settings: Settings):
+    client = Mock()
+    queue = CloudTasksRankCheckQueue(cloud_settings(settings), client)
+    report_id = uuid4()
+    result = await queue.enqueue_report_job(report_id, attempt=2)
+    task = client.create_task.call_args.kwargs["request"]["task"]
+    assert task["name"].endswith(f"/{report_id}-report-2")
+    assert json.loads(task["http_request"]["body"]) == {
+        "version": 1,
+        "report_id": str(report_id),
+    }
+    assert task["http_request"]["url"].endswith("/internal/tasks/report")
+    assert result.task_name == task["name"]
+
+
 @pytest.mark.parametrize(
     "extra",
     [

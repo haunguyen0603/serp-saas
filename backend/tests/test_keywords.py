@@ -32,6 +32,8 @@ async def test_query_only_create_and_duplicate_normalization(
         "id",
         "keyword",
         "active",
+        "group",
+        "tags",
         "created_at",
         "updated_at",
     }

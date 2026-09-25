@@ -1,0 +1,4 @@
+project_name,device,keyword,keyword_id,tracked_site_name,tracked_site_id,checked_at_utc,position,checked_depth,status,rank_check_id,keyword_group,keyword_tags
+Báo cáo Responsive QA,desktop,cà phê ngon,2bdb5a5d-b8cc-4e9e-b699-a7fb8e0541f2,QA Tracked Site,865b775f-88f5-4aad-87f1-8d3cca2220c5,2026-09-24T15:42:32.396535Z,2,10,ranked,8227c62d-d753-4ead-9acf-d88dc65b8f17,Commercial,Priority;Vietnamese
+Báo cáo Responsive QA,desktop,dịch vụ SEO,1cacf370-e796-4384-ace5-c6f6d55a94ff,QA Tracked Site,865b775f-88f5-4aad-87f1-8d3cca2220c5,2026-09-24T15:42:32.674724Z,2,10,ranked,30f4eec2-c840-46ad-8fac-295cc8156367,Commercial,Priority;Vietnamese
+Báo cáo Responsive QA,desktop,xếp hạng website,7e93cece-a96f-4820-99ef-33238b4764f5,QA Tracked Site,865b775f-88f5-4aad-87f1-8d3cca2220c5,2026-09-24T15:42:32.927801Z,2,10,ranked,c3c4caed-7bad-4330-aab2-03273739effa,Commercial,Priority;Vietnamese

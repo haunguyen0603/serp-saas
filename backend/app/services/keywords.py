@@ -10,6 +10,7 @@ from app.repositories.keyword import (
     KeywordUpdateValues,
     KeywordValues,
 )
+from app.repositories.keyword_organization import KeywordOrganizationRepository
 from app.repositories.project import ProjectRepository
 from app.repositories.rank_check import RankCheckRepository
 from app.schemas.keyword import (
@@ -53,10 +54,12 @@ class KeywordService:
         keywords: KeywordRepository,
         projects: ProjectRepository,
         rank_checks: RankCheckRepository | None = None,
+        organizations: KeywordOrganizationRepository | None = None,
     ) -> None:
         self.keywords = keywords
         self.projects = projects
         self.rank_checks = rank_checks
+        self.organizations = organizations
 
     async def _require_project(self, project_id: UUID, user_id: UUID) -> None:
         if await self.projects.get_for_user(project_id, user_id) is None:
@@ -66,18 +69,59 @@ class KeywordService:
         self, project_id: UUID, user_id: UUID, data: KeywordCreate
     ) -> Keyword:
         await self._require_project(project_id, user_id)
+        if self.organizations is None and (data.group_id or data.tag_ids):
+            raise AppError(
+                503, "ORGANIZATION_UNAVAILABLE", "Organization is unavailable."
+            )
+        if (
+            data.group_id is not None
+            and self.organizations is not None
+            and len(
+                await self.organizations.groups_for_project(project_id, {data.group_id})
+            )
+            != 1
+        ):
+            raise AppError(
+                422, "INVALID_GROUP_ASSIGNMENT", "Group must belong to this Project."
+            )
+        selected_tags = set(data.tag_ids)
+        if self.organizations is not None and len(
+            await self.organizations.tags_for_project(project_id, selected_tags)
+        ) != len(selected_tags):
+            raise AppError(
+                422, "INVALID_TAG_ASSIGNMENT", "Tags must belong to this Project."
+            )
         display, normalized = normalize_keyword(data.keyword)
         await EntitlementService(self.keywords.session).keyword_add(
             user_id, project_id, [normalized]
         )
-        keyword = await self.keywords.create_for_project(
-            project_id,
-            KeywordValues(keyword=display, keyword_normalized=normalized),
-        )
+        try:
+            async with self.keywords.session.begin_nested():
+                keyword = await self.keywords.create_for_project(
+                    project_id,
+                    KeywordValues(keyword=display, keyword_normalized=normalized),
+                )
+                if keyword is not None:
+                    keyword.keyword_group_id = data.group_id
+                    if self.organizations is not None:
+                        await self.organizations.replace_keyword_tags(
+                            project_id, keyword.id, selected_tags
+                        )
+                    await self.keywords.session.flush()
+        except IntegrityError:
+            raise AppError(
+                422,
+                "CROSS_PROJECT_ASSIGNMENT",
+                "Organization references must belong to this Project.",
+            ) from None
         if keyword is None:
             raise AppError(409, "KEYWORD_ALREADY_EXISTS", "Keyword already exists.")
+        refreshed = await self.keywords.get_for_user_project(
+            keyword.id, project_id, user_id
+        )
+        assert refreshed is not None
         logger.info("Keyword created", extra={"keyword_id": str(keyword.id)})
-        return keyword
+        return refreshed
 
     async def bulk_create(
         self, project_id: UUID, user_id: UUID, data: KeywordBulkCreate
@@ -123,14 +167,59 @@ class KeywordService:
         active: KeywordActiveFilter,
         limit: int,
         cursor: str | None,
+        group_id: str | None = None,
+        tag_ids: str | None = None,
+        tag_match: str = "any",
     ) -> KeywordListResponse:
         await self._require_project(project_id, user_id)
         selected_active = None if active == "all" else active == "true"
+        group_filter: UUID | str | None = None
+        if group_id == "none":
+            group_filter = "none"
+        elif group_id:
+            try:
+                selected_group = UUID(group_id)
+            except ValueError:
+                raise AppError(
+                    422, "INVALID_GROUP_ASSIGNMENT", "Group filter is invalid."
+                ) from None
+            if (
+                self.organizations is None
+                or len(
+                    await self.organizations.groups_for_project(
+                        project_id, {selected_group}
+                    )
+                )
+                != 1
+            ):
+                raise AppError(
+                    422, "INVALID_GROUP_ASSIGNMENT", "Group filter is invalid."
+                )
+            group_filter = selected_group
+        if tag_match not in {"any", "all"}:
+            raise AppError(422, "INVALID_TAG_MATCH", "Tag match mode is invalid.")
+        selected_tags: set[UUID] = set()
+        if tag_ids:
+            try:
+                selected_tags = {UUID(value) for value in tag_ids.split(",") if value}
+            except ValueError:
+                raise AppError(
+                    422, "INVALID_TAG_ASSIGNMENT", "Tag filter is invalid."
+                ) from None
+            if not selected_tags or len(selected_tags) > 100:
+                raise AppError(422, "INVALID_TAG_ASSIGNMENT", "Tag filter is invalid.")
+            if self.organizations is None or len(
+                await self.organizations.tags_for_project(project_id, selected_tags)
+            ) != len(selected_tags):
+                raise AppError(422, "INVALID_TAG_ASSIGNMENT", "Tag filter is invalid.")
         items, has_more = await self.keywords.list_for_user_project(
             project_id,
             user_id,
             search=search.strip() if search and search.strip() else None,
             active=selected_active,
+            group_filter=group_filter,  # type: ignore[arg-type]
+            tag_ids=selected_tags,
+            tag_match=tag_match,  # type: ignore[arg-type]
             limit=limit,
             cursor=decode_cursor(cursor),
         )
@@ -159,6 +248,34 @@ class KeywordService:
             project = await self.projects.get_for_user(project_id, user_id)
             if project and project.status == "active":
                 await entitlements.expansion(user_id, project.device, keywords=1)
+        organization_changed = bool(
+            {"group_id", "tag_ids"}.intersection(data.model_fields_set)
+        )
+        if organization_changed and self.organizations is None:
+            raise AppError(
+                503, "ORGANIZATION_UNAVAILABLE", "Organization is unavailable."
+            )
+        if (
+            data.group_id is not None
+            and self.organizations is not None
+            and len(
+                await self.organizations.groups_for_project(project_id, {data.group_id})
+            )
+            != 1
+        ):
+            raise AppError(
+                422, "INVALID_GROUP_ASSIGNMENT", "Group must belong to this Project."
+            )
+        selected_tags = set(data.tag_ids or [])
+        tags_valid = (
+            await self.organizations.tags_for_project(project_id, selected_tags)
+            if "tag_ids" in data.model_fields_set and self.organizations is not None
+            else []
+        )
+        if "tag_ids" in data.model_fields_set and len(tags_valid) != len(selected_tags):
+            raise AppError(
+                422, "INVALID_TAG_ASSIGNMENT", "Tags must belong to this Project."
+            )
         values = KeywordUpdateValues()
         if "keyword" in data.model_fields_set and data.keyword is not None:
             display, normalized = normalize_keyword(data.keyword)
@@ -171,14 +288,35 @@ class KeywordService:
                 keyword = await self.keywords.update_for_user_project(
                     keyword_id, project_id, user_id, values
                 )
+                if keyword is not None and "group_id" in data.model_fields_set:
+                    keyword.keyword_group_id = data.group_id
+                if (
+                    keyword is not None
+                    and "tag_ids" in data.model_fields_set
+                    and self.organizations is not None
+                ):
+                    await self.organizations.replace_keyword_tags(
+                        project_id, keyword.id, selected_tags
+                    )
+                await self.keywords.session.flush()
         except IntegrityError:
+            if organization_changed:
+                raise AppError(
+                    422,
+                    "CROSS_PROJECT_ASSIGNMENT",
+                    "Organization references must belong to this Project.",
+                ) from None
             raise AppError(
                 409, "KEYWORD_ALREADY_EXISTS", "Keyword already exists."
             ) from None
         if keyword is None:
             raise AppError(404, "KEYWORD_NOT_FOUND", "Keyword not found.")
+        refreshed = await self.keywords.get_for_user_project(
+            keyword.id, project_id, user_id
+        )
+        assert refreshed is not None
         logger.info("Keyword updated", extra={"keyword_id": str(keyword.id)})
-        return keyword
+        return refreshed
 
     async def delete(self, keyword_id: UUID, project_id: UUID, user_id: UUID) -> None:
         if self.rank_checks and await self.rank_checks.has_for_keyword(

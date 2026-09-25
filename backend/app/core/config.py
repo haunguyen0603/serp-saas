@@ -69,6 +69,29 @@ class Settings(BaseSettings):
     worker_db_pool_size: int = Field(default=2, ge=1, le=10)
     worker_db_max_overflow: int = Field(default=0, ge=0, le=10)
 
+    report_max_range_days: int = Field(default=365, ge=1, le=3660)
+    report_max_csv_rows: int = Field(default=100000, ge=1, le=1000000)
+    report_max_pdf_detail_rows: int = Field(default=1000, ge=1, le=10000)
+    report_artifact_retention_days: int = Field(default=30, ge=1, le=365)
+    report_max_concurrent_per_user: int = Field(default=2, ge=1, le=20)
+    report_max_active_schedules_per_project: int = Field(default=5, ge=1, le=50)
+    report_job_max_attempts: int = Field(default=3, ge=1, le=10)
+    report_job_lease_seconds: int = Field(default=300, ge=30, le=1800)
+    report_storage_provider: Literal["local", "gcs"] = "local"
+    report_storage_root: str = "/tmp/serp-saas-reports"
+    report_storage_bucket: str = ""
+    report_storage_prefix: str = "reports"
+    report_email_provider: Literal["disabled", "fake", "smtp"] = "disabled"
+    report_email_from: str = ""
+    report_email_attachment_max_bytes: int = Field(
+        default=5_000_000, ge=100_000, le=25_000_000
+    )
+    report_smtp_host: str = ""
+    report_smtp_port: int = Field(default=587, ge=1, le=65535)
+    report_smtp_username: str = ""
+    report_smtp_password: SecretStr | None = None
+    report_smtp_starttls: bool = True
+
     @field_validator("jwt_secret_key")
     @classmethod
     def validate_jwt_secret(cls, value: SecretStr) -> SecretStr:
@@ -260,7 +283,35 @@ class Settings(BaseSettings):
                 raise ValueError("Worker URL must be an HTTPS service origin")
         return self
 
+    @model_validator(mode="after")
+    def validate_reporting(self) -> Self:
+        if not self.report_storage_root.strip():
+            raise ValueError("REPORT_STORAGE_ROOT must not be empty")
+        if self.report_storage_provider == "gcs" and not self.report_storage_bucket:
+            raise ValueError("GCS report storage requires REPORT_STORAGE_BUCKET")
+        if self.app_env == "production" and self.report_storage_provider != "gcs":
+            raise ValueError("Production report storage requires GCS")
+        if not self.report_storage_prefix.strip().strip("/"):
+            raise ValueError("REPORT_STORAGE_PREFIX must not be empty")
+        if self.report_email_provider == "fake" and self.app_env == "production":
+            raise ValueError("Fake report email delivery is not allowed in production")
+        if self.report_email_provider == "smtp":
+            if not self.report_smtp_host or not self.report_email_from:
+                raise ValueError(
+                    "SMTP report delivery requires REPORT_SMTP_HOST and "
+                    "REPORT_EMAIL_FROM"
+                )
+            if bool(self.report_smtp_username) != bool(
+                self.report_smtp_password
+                and self.report_smtp_password.get_secret_value()
+            ):
+                raise ValueError(
+                    "REPORT_SMTP_USERNAME and REPORT_SMTP_PASSWORD must be "
+                    "configured together"
+                )
+        return self
+
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    return Settings()  # type: ignore[call-arg]

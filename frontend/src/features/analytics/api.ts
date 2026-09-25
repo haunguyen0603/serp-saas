@@ -28,6 +28,19 @@ export const projectAnalytics = {
       device,
       range,
     ] as const,
+  organization: (
+    projectId: string,
+    scope: string,
+    device: string,
+    range: AnalyticsRange,
+  ) =>
+    [
+      ...projectAnalytics.all(projectId),
+      "organization",
+      scope,
+      device,
+      range,
+    ] as const,
 };
 
 const parameters = (device: string, range: AnalyticsRange) =>
@@ -51,6 +64,19 @@ export const getProjectMovers = (
 ) =>
   request<RankingMovers>(
     `/api/v1/projects/${projectId}/analytics/movers?${parameters(device, range)}&limit=10`,
+  );
+
+export const getOrganizationAnalytics = (
+  request: AuthenticatedRequest,
+  projectId: string,
+  device: string,
+  range: AnalyticsRange,
+  scope: { group_id: string } | { tag_id: string },
+) =>
+  request<ProjectAnalyticsSummary>(
+    `/api/v1/projects/${projectId}/analytics/organization-summary?${new URLSearchParams(
+      { device, range, ...scope },
+    )}`,
   );
 
 export const getKeywordRankingHistory = (

@@ -47,9 +47,19 @@ const keyword: Keyword = {
   id: "keyword-1",
   keyword: "rank tracker",
   active: true,
+  group: null,
+  tags: [],
   created_at: "2026-01-01T00:00:00Z",
   updated_at: "2026-01-01T00:00:00Z",
 };
+const group = {
+  id: "group-1",
+  name: "Brand",
+  active_keyword_count: 1,
+  created_at: "2026-01-01T00:00:00Z",
+  updated_at: "2026-01-01T00:00:00Z",
+};
+const tag = { ...group, id: "tag-1", name: "Priority" };
 const view = (node: React.ReactNode) => render(<Providers>{node}</Providers>);
 beforeEach(() => {
   vi.resetAllMocks();
@@ -126,6 +136,10 @@ function detailApi() {
           },
         ],
       };
+    if (path.endsWith("/keyword-groups")) return { items: [group] };
+    if (path.endsWith("/keyword-tags")) return { items: [tag] };
+    if (path.includes("/analytics/organization-summary"))
+      return { ...summaryFixture, total_keywords: 1 };
     if (path.includes("/rank-checks"))
       return { items: [], next_cursor: null, has_more: false };
     if (path.includes("/keywords") && !options)
@@ -138,6 +152,13 @@ function detailApi() {
         skipped_duplicates: 1,
         skipped_empty: 0,
         items: [],
+      };
+    if (path.endsWith("/keywords/bulk-organize"))
+      return {
+        operation: "assign_group",
+        selected_count: 1,
+        affected_keyword_count: 1,
+        assignment_count: null,
       };
     if (options?.method === "PATCH" && path.includes("/keywords/"))
       return { ...keyword, ...JSON.parse(String(options.body)) };
@@ -212,7 +233,9 @@ it("adds and edits only Keyword query data", async () => {
   await waitFor(() =>
     expect(request).toHaveBeenCalledWith(
       "/api/v1/projects/project-1/keywords",
-      expect.objectContaining({ body: '{"keyword":"new keyword"}' }),
+      expect.objectContaining({
+        body: '{"keyword":"new keyword","group_id":null,"tag_ids":[]}',
+      }),
     ),
   );
   fireEvent.click(screen.getByRole("button", { name: "Edit" }));
@@ -228,8 +251,41 @@ it("adds and edits only Keyword query data", async () => {
     expect(JSON.parse(String(call?.[1].body))).toEqual({
       keyword: "updated",
       active: true,
+      group_id: null,
+      tag_ids: [],
     });
   });
+});
+
+it("manages organization and bulk assigns the current loaded rows", async () => {
+  detailApi();
+  view(<ProjectDetail projectId="project-1" />);
+  await screen.findByText("rank tracker");
+  fireEvent.click(screen.getByLabelText("Select rank tracker"));
+  expect(screen.getByText("1 selected on loaded rows")).toBeVisible();
+  fireEvent.change(
+    within(screen.getByLabelText("Bulk Keyword actions")).getByLabelText(
+      "Group",
+    ),
+    { target: { value: "group-1" } },
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Apply" }));
+  await waitFor(() => {
+    const call = request.mock.calls.find(([path]) =>
+      path.endsWith("/keywords/bulk-organize"),
+    );
+    expect(JSON.parse(String(call?.[1].body))).toEqual({
+      keyword_ids: ["keyword-1"],
+      operation: "assign_group",
+      group_id: "group-1",
+    });
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Manage Groups & Tags" }));
+  expect(
+    await screen.findByRole("heading", { name: "Manage Keyword organization" }),
+  ).toBeVisible();
+  expect(screen.getByDisplayValue("Brand")).toBeVisible();
+  expect(screen.getByDisplayValue("Priority")).toBeVisible();
 });
 
 it("bulk adds cleaned keyword lines and displays counts", async () => {

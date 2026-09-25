@@ -31,6 +31,29 @@ async def analytics_summary(
 
 
 @router.get(
+    "/{project_id}/analytics/organization-summary",
+    response_model=ProjectAnalyticsSummaryResponse,
+)
+async def organization_analytics_summary(
+    project_id: UUID,
+    current_user: CurrentUser,
+    service: ProjectAnalytics,
+    group_id: UUID | None = None,
+    tag_id: UUID | None = None,
+    device: str | None = None,
+    range: str = "30d",
+) -> ProjectAnalyticsSummaryResponse:
+    return await service.get_organization_summary(
+        project_id,
+        current_user.id,
+        device=device,
+        range_value=range,
+        group_id=group_id,
+        tag_id=tag_id,
+    )
+
+
+@router.get(
     "/{project_id}/analytics/distribution",
     response_model=RankingDistributionResponse,
 )

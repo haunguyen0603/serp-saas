@@ -22,3 +22,11 @@ class RankCheckTaskQueue(Protocol):
     async def enqueue_rank_check_job(
         self, job_id: UUID, *, schedule_time: datetime | None = None
     ) -> TaskEnqueueResult: ...
+
+    async def enqueue_report_job(
+        self,
+        report_id: UUID,
+        *,
+        schedule_time: datetime | None = None,
+        attempt: int = 0,
+    ) -> TaskEnqueueResult: ...

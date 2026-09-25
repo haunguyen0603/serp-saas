@@ -225,6 +225,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
         <Link href={`/app/projects/${projectId}/rankings`}>
           Ranking Explorer
         </Link>
+        <Link href={`/app/projects/${projectId}/reports`}>Reports</Link>
         <a className="text-brand" href="#keywords">
           Keywords
         </a>

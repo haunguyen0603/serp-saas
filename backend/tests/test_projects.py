@@ -198,6 +198,8 @@ async def test_project_settings_update_without_mutating_keywords(
         "id",
         "keyword",
         "active",
+        "group",
+        "tags",
         "created_at",
         "updated_at",
     }

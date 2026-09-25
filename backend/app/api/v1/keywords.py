@@ -57,6 +57,9 @@ async def list_keywords(
     keywords: Keywords,
     search: Annotated[str | None, Query(max_length=512)] = None,
     active: KeywordActiveFilter = "true",
+    group_id: Annotated[str | None, Query(max_length=64)] = None,
+    tag_ids: Annotated[str | None, Query(max_length=3700)] = None,
+    tag_match: str = "any",
     limit: Annotated[int, Query(ge=1, le=200)] = 50,
     cursor: Annotated[str | None, Query(max_length=1000)] = None,
 ) -> KeywordListResponse:
@@ -65,6 +68,9 @@ async def list_keywords(
         user.id,
         search=search,
         active=active,
+        group_id=group_id,
+        tag_ids=tag_ids,
+        tag_match=tag_match,
         limit=limit,
         cursor=cursor,
     )

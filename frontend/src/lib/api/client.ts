@@ -99,7 +99,53 @@ const errorMessages: Record<string, string> = {
     "This Project exceeds the manual check limit. Check individual Keywords.",
   HISTORY_EXISTS:
     "Ranking history exists. Archive or pause this item instead of deleting it.",
+  REPORT_NOT_FOUND: "Report not found.",
+  REPORT_NOT_READY: "Report is still being generated.",
+  INVALID_REPORT_RANGE: "Choose a valid report period.",
+  REPORT_TOO_LARGE: "Narrow the report filters or reporting period.",
+  REPORT_EXPIRED: "This report expired. Generate it again to download.",
+  REPORT_ARTIFACT_MISSING: "The report file is unavailable. Generate it again.",
+  REPORT_GENERATION_FAILED: "The report could not be generated.",
+  REPORT_DELIVERY_UNAVAILABLE: "Scheduled email delivery is not configured.",
+  REPORT_EMAIL_NOT_VERIFIED:
+    "Verify your account email before scheduling reports.",
+  REPORT_CONCURRENCY_LIMIT:
+    "Wait for an active report to finish before generating another.",
+  REPORT_SCHEDULE_LIMIT:
+    "This Project has reached its active report schedule limit.",
+  REPORT_SCHEDULE_NOT_FOUND: "Report schedule not found.",
+  REPORT_RETRY_NOT_ALLOWED:
+    "This report cannot be retried in its current state.",
+  REPORT_RETRY_EXHAUSTED: "This report has reached its retry limit.",
+  IDEMPOTENCY_CONFLICT:
+    "This report request was already used with different settings.",
 };
+
+async function responseError(response: Response): Promise<ApiError> {
+  let body: unknown;
+  try {
+    body = await response.json();
+  } catch {
+    body = null;
+  }
+  if (
+    typeof body === "object" &&
+    body !== null &&
+    "error" in body &&
+    typeof body.error === "object" &&
+    body.error !== null &&
+    "code" in body.error &&
+    typeof body.error.code === "string"
+  ) {
+    const code = body.error.code;
+    return new ApiError(
+      response.status,
+      code,
+      errorMessages[code] ?? "The request could not be completed.",
+    );
+  }
+  return new ApiError(response.status);
+}
 
 export async function requestJson<T>(
   path: string,
@@ -118,29 +164,7 @@ export async function requestJson<T>(
     throw new ApiError(0);
   }
   if (!response.ok) {
-    let body: unknown;
-    try {
-      body = await response.json();
-    } catch {
-      body = null;
-    }
-    if (
-      typeof body === "object" &&
-      body !== null &&
-      "error" in body &&
-      typeof body.error === "object" &&
-      body.error !== null &&
-      "code" in body.error &&
-      typeof body.error.code === "string" &&
-      Object.hasOwn(errorMessages, body.error.code)
-    ) {
-      throw new ApiError(
-        response.status,
-        body.error.code,
-        errorMessages[body.error.code],
-      );
-    }
-    throw new ApiError(response.status);
+    throw await responseError(response);
   }
   if (response.status === 204) return undefined as T;
   try {
@@ -148,6 +172,32 @@ export async function requestJson<T>(
   } catch {
     throw new ApiError(502);
   }
+}
+
+export interface DownloadedFile {
+  blob: Blob;
+  filename: string;
+}
+
+export async function requestFile(
+  path: string,
+  accessToken: string,
+): Promise<DownloadedFile> {
+  let response: Response;
+  try {
+    response = await fetch(`${config.apiBaseUrl}${path}`, {
+      credentials: "include",
+      cache: "no-store",
+      signal: AbortSignal.timeout(30000),
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  } catch {
+    throw new ApiError(0);
+  }
+  if (!response.ok) throw await responseError(response);
+  const disposition = response.headers.get("Content-Disposition") ?? "";
+  const filename = disposition.match(/filename="([^"]+)"/)?.[1] ?? "report";
+  return { blob: await response.blob(), filename };
 }
 
 async function getStatus(path: string): Promise<HealthResponse> {

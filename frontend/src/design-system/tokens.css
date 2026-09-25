@@ -14,6 +14,78 @@
   --color-danger: var(--ds-danger);
   --color-info: var(--ds-info);
 }
+
+.report-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.report-form-grid label {
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.875rem;
+}
+
+.report-checkbox {
+  display: flex !important;
+  align-items: center;
+  align-self: end;
+  min-height: 2.75rem;
+}
+
+.report-checkbox input {
+  width: 1rem;
+}
+
+.report-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.report-metric-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.report-metric-list > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.4rem;
+}
+
+.report-metric-list dd {
+  font-weight: 700;
+}
+
+.report-actions,
+.report-schedule-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.report-schedule-editor {
+  flex-basis: 100%;
+  border-top: 1px solid var(--color-border);
+  padding-top: 1rem;
+}
+
+@media (max-width: 640px) {
+  .report-form-grid,
+  .report-preview-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .report-actions > button {
+    width: 100%;
+  }
+}
 :root {
   --ds-background: #f5f7fb;
   --ds-surface: #fff;
@@ -590,6 +662,12 @@
   background: #fff;
   box-shadow: 0 24px 80px #101b3240;
   animation: rank-check-dialog-enter 180ms ease-out;
+}
+.keyword-organization-dialog {
+  max-width: min(960px, calc(100vw - 32px));
+}
+.keyword-organization-dialog select[multiple] {
+  min-height: 96px;
 }
 .rank-check-dialog::backdrop {
   background: #101b327a;

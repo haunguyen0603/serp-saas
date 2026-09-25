@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from app.dependencies.auth import DBSession
 from app.repositories.analytics import AnalyticsRepository
 from app.repositories.keyword import KeywordRepository
+from app.repositories.keyword_organization import KeywordOrganizationRepository
 from app.repositories.project import ProjectRepository
 from app.repositories.rank_check import RankCheckRepository
 from app.repositories.ranking import RankingRepository
@@ -13,6 +14,7 @@ from app.repositories.tracked_domain import TrackedDomainRepository
 from app.repositories.tracked_site import TrackedSiteRepository
 from app.services.analytics import ProjectAnalyticsService
 from app.services.domain_matching import DomainMatcher
+from app.services.keyword_organization import KeywordOrganizationService
 from app.services.keywords import KeywordService
 from app.services.projects import ProjectService
 from app.services.rank_checks import RankCheckExecutionService, RankCheckQueryService
@@ -35,6 +37,15 @@ def get_keyword_service(session: DBSession) -> KeywordService:
         KeywordRepository(session),
         ProjectRepository(session),
         RankCheckRepository(session),
+        KeywordOrganizationRepository(session),
+    )
+
+
+def get_keyword_organization_service(
+    session: DBSession,
+) -> KeywordOrganizationService:
+    return KeywordOrganizationService(
+        KeywordOrganizationRepository(session), ProjectRepository(session)
     )
 
 
@@ -76,6 +87,7 @@ def get_project_analytics_service(session: DBSession) -> ProjectAnalyticsService
         ProjectRepository(session),
         KeywordRepository(session),
         TrackedSiteRepository(session),
+        KeywordOrganizationRepository(session),
     )
 
 
@@ -84,11 +96,15 @@ def get_ranking_explorer_service(session: DBSession) -> RankingExplorerService:
         AnalyticsRepository(session),
         ProjectRepository(session),
         TrackedSiteRepository(session),
+        KeywordOrganizationRepository(session),
     )
 
 
 Projects = Annotated[ProjectService, Depends(get_project_service)]
 Keywords = Annotated[KeywordService, Depends(get_keyword_service)]
+KeywordOrganizations = Annotated[
+    KeywordOrganizationService, Depends(get_keyword_organization_service)
+]
 TrackedSites = Annotated[TrackedSiteService, Depends(get_tracked_site_service)]
 RankCheckExecution = Annotated[
     RankCheckExecutionService, Depends(get_rank_check_execution_service)

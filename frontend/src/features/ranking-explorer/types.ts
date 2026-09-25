@@ -75,4 +75,7 @@ export interface ExplorerParams {
   order?: ExplorerOrder;
   limit?: 25 | 50 | 100;
   cursor?: string;
+  group_id?: string;
+  tag_ids?: string;
+  tag_match?: "any" | "all";
 }

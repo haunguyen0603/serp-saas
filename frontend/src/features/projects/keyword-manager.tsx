@@ -1,6 +1,7 @@
 "use client";
 import {
   Alert,
+  Badge,
   Button,
   Dialog,
   Input,
@@ -21,6 +22,7 @@ import {
 } from "@tanstack/react-query";
 import Link from "next/link";
 import { Fragment, useState, type FormEvent } from "react";
+import { rankingExplorerKeys } from "@/features/ranking-explorer/api";
 import {
   checkKeyword,
   checkProject,
@@ -46,16 +48,21 @@ import {
 import { ApiError } from "@/lib/api/client";
 import {
   bulkCreateKeywords,
+  bulkOrganizeKeywords,
   createKeyword,
   deleteKeyword,
   listKeywords,
+  listKeywordGroups,
+  listKeywordTags,
   projectKeys,
   updateKeyword,
 } from "./api";
+import { KeywordOrganizationManager } from "./keyword-organization-manager";
 import { useProtectedAuth } from "./protected";
 import type {
   Keyword,
   KeywordBulkResult,
+  KeywordBulkOperation,
   KeywordUpdate,
   Project,
 } from "./types";
@@ -70,6 +77,15 @@ export function KeywordManager({ project }: { project: Project }) {
   const [selectedBatch, setSelectedBatch] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [active, setActive] = useState<"true" | "false" | "all">("true");
+  const [groupFilter, setGroupFilter] = useState("");
+  const [tagFilter, setTagFilter] = useState<string[]>([]);
+  const [tagMatch, setTagMatch] = useState<"any" | "all">("any");
+  const [organizationOpen, setOrganizationOpen] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkOperation, setBulkOperation] =
+    useState<KeywordBulkOperation>("assign_group");
+  const [bulkGroupId, setBulkGroupId] = useState("");
+  const [bulkTagIds, setBulkTagIds] = useState<string[]>([]);
   const [panel, setPanel] = useState<"single" | "bulk" | null>(null);
   const [editing, setEditing] = useState<Keyword | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -82,7 +98,14 @@ export function KeywordManager({ project }: { project: Project }) {
   const [detailCheck, setDetailCheck] = useState<RankCheck | null>(null);
   const [historyRange, setHistoryRange] = useState<AnalyticsRange>("30d");
   const [historySiteId, setHistorySiteId] = useState<string | null>(null);
-  const filters = { search, active, limit: 50 } as const;
+  const filters = {
+    search,
+    active,
+    group_id: groupFilter || undefined,
+    tag_ids: tagFilter.length ? tagFilter.join(",") : undefined,
+    tag_match: tagMatch,
+    limit: 50,
+  } as const;
   const keywords = useInfiniteQuery({
     queryKey: projectKeys.keywordList(project.id, filters),
     queryFn: ({ pageParam }) =>
@@ -94,6 +117,16 @@ export function KeywordManager({ project }: { project: Project }) {
   const latest = useQuery({
     queryKey: rankingKeys.latest(project.id),
     queryFn: () => getLatestRankings(auth.request, project.id),
+    enabled: auth.isAuthenticated,
+  });
+  const groups = useQuery({
+    queryKey: projectKeys.groups(project.id),
+    queryFn: () => listKeywordGroups(auth.request, project.id),
+    enabled: auth.isAuthenticated,
+  });
+  const tags = useQuery({
+    queryKey: projectKeys.tags(project.id),
+    queryFn: () => listKeywordTags(auth.request, project.id),
     enabled: auth.isAuthenticated,
   });
   const items = keywords.data?.pages.flatMap((page) => page.items) ?? [];
@@ -163,16 +196,31 @@ export function KeywordManager({ project }: { project: Project }) {
       auth.isAuthenticated && historyKeyword !== null && detailCheck !== null,
   });
   const invalidate = async () => {
-    await queryClient.invalidateQueries({
-      queryKey: projectKeys.keywords(project.id),
-    });
-    await queryClient.invalidateQueries({
-      queryKey: projectKeys.detail(project.id),
-    });
+    await Promise.all([
+      queryClient.invalidateQueries({
+        queryKey: projectKeys.keywords(project.id),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: projectKeys.detail(project.id),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: projectKeys.groups(project.id),
+      }),
+      queryClient.invalidateQueries({ queryKey: projectKeys.tags(project.id) }),
+      queryClient.invalidateQueries({
+        queryKey: rankingExplorerKeys.all(project.id),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: projectAnalytics.all(project.id),
+      }),
+    ]);
   };
   const single = useMutation({
-    mutationFn: (keyword: string) =>
-      createKeyword(auth.request, project.id, { keyword }),
+    mutationFn: (input: {
+      keyword: string;
+      group_id: string | null;
+      tag_ids: string[];
+    }) => createKeyword(auth.request, project.id, input),
     onSuccess: async () => {
       setPanel(null);
       setNotice("Keyword added.");
@@ -196,6 +244,38 @@ export function KeywordManager({ project }: { project: Project }) {
       setEditing(null);
       await invalidate();
     },
+  });
+  const organize = useMutation({
+    mutationFn: () => {
+      const base = {
+        keyword_ids: [...selected],
+        operation: bulkOperation,
+      };
+      if (bulkOperation === "assign_group")
+        return bulkOrganizeKeywords(auth.request, project.id, {
+          ...base,
+          group_id: bulkGroupId || null,
+        });
+      if (
+        bulkOperation === "add_tags" ||
+        bulkOperation === "remove_tags" ||
+        bulkOperation === "replace_tags"
+      )
+        return bulkOrganizeKeywords(auth.request, project.id, {
+          ...base,
+          tag_ids: bulkTagIds,
+        });
+      return bulkOrganizeKeywords(auth.request, project.id, base);
+    },
+    onSuccess: async (result) => {
+      setNotice(
+        `${result.affected_keyword_count} of ${result.selected_count} selected Keywords updated.`,
+      );
+      setSelected(new Set());
+      await invalidate();
+    },
+    onError: (failure) =>
+      setError(message(failure, "Selected Keywords could not be updated.")),
   });
   const remove = useMutation({
     mutationFn: (id: string) => deleteKeyword(auth.request, project.id, id),
@@ -232,10 +312,18 @@ export function KeywordManager({ project }: { project: Project }) {
     event.preventDefault();
     setError(null);
     const form = event.currentTarget;
-    single.mutate(String(new FormData(form).get("keyword") ?? ""), {
-      onError: (failure) =>
-        setError(message(failure, "Keyword could not be added.")),
-    });
+    const values = new FormData(form);
+    single.mutate(
+      {
+        keyword: String(values.get("keyword") ?? ""),
+        group_id: String(values.get("group_id") ?? "") || null,
+        tag_ids: values.getAll("tag_ids").map(String),
+      },
+      {
+        onError: (failure) =>
+          setError(message(failure, "Keyword could not be added.")),
+      },
+    );
   }
   function submitBulk(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -289,6 +377,9 @@ export function KeywordManager({ project }: { project: Project }) {
           <Button onClick={() => setPanel(panel === "bulk" ? null : "bulk")}>
             Bulk Add
           </Button>
+          <Button onClick={() => setOrganizationOpen(true)}>
+            Manage Groups &amp; Tags
+          </Button>
         </div>
       </div>
       {panel === "single" && (
@@ -301,6 +392,29 @@ export function KeywordManager({ project }: { project: Project }) {
             Keyword
             <Input className={field} name="keyword" required maxLength={512} />
           </label>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <label>
+              Group
+              <Select name="group_id" defaultValue="">
+                <option value="">No Group</option>
+                {groups.data?.items.map((group) => (
+                  <option key={group.id} value={group.id}>
+                    {group.name}
+                  </option>
+                ))}
+              </Select>
+            </label>
+            <label>
+              Tags
+              <Select name="tag_ids" multiple aria-label="Tags for new Keyword">
+                {tags.data?.items.map((tag) => (
+                  <option key={tag.id} value={tag.id}>
+                    {tag.name}
+                  </option>
+                ))}
+              </Select>
+            </label>
+          </div>
           <Button
             disabled={single.isPending}
             className="mt-4"
@@ -334,13 +448,16 @@ export function KeywordManager({ project }: { project: Project }) {
       )}
       {error && <Alert className="mt-4 text-danger">{error}</Alert>}
       {notice && <Toast key={notice}>{notice}</Toast>}
-      <div className="my-6 grid gap-3 sm:grid-cols-2">
+      <div className="my-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <label>
           Search keywords
           <Input
             className={field}
             value={search}
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={(event) => {
+              setSearch(event.target.value);
+              setSelected(new Set());
+            }}
           />
         </label>
         <label>
@@ -348,11 +465,69 @@ export function KeywordManager({ project }: { project: Project }) {
           <Select
             className={field}
             value={active}
-            onChange={(event) => setActive(event.target.value as typeof active)}
+            onChange={(event) => {
+              setActive(event.target.value as typeof active);
+              setSelected(new Set());
+            }}
           >
             <option value="true">Active</option>
             <option value="false">Paused</option>
             <option value="all">All</option>
+          </Select>
+        </label>
+        <label>
+          Group
+          <Select
+            value={groupFilter}
+            onChange={(event) => {
+              setGroupFilter(event.target.value);
+              setSelected(new Set());
+            }}
+          >
+            <option value="">All Groups</option>
+            <option value="none">No Group</option>
+            {groups.data?.items.map((group) => (
+              <option key={group.id} value={group.id}>
+                {group.name}
+              </option>
+            ))}
+          </Select>
+        </label>
+        <label>
+          Tags
+          <Select
+            multiple
+            aria-label="Filter Tags"
+            value={tagFilter}
+            onChange={(event) => {
+              setTagFilter(
+                Array.from(
+                  event.target.selectedOptions,
+                  (option) => option.value,
+                ),
+              );
+              setSelected(new Set());
+            }}
+          >
+            {tags.data?.items.map((tag) => (
+              <option key={tag.id} value={tag.id}>
+                {tag.name}
+              </option>
+            ))}
+          </Select>
+        </label>
+        <label>
+          Tag matching
+          <Select
+            value={tagMatch}
+            disabled={!tagFilter.length}
+            onChange={(event) => {
+              setTagMatch(event.target.value as "any" | "all");
+              setSelected(new Set());
+            }}
+          >
+            <option value="any">Any selected Tag</option>
+            <option value="all">All selected Tags</option>
           </Select>
         </label>
       </div>
@@ -370,6 +545,8 @@ export function KeywordManager({ project }: { project: Project }) {
               input: {
                 keyword: String(values.get("keyword") ?? ""),
                 active: values.get("active") === "on",
+                group_id: String(values.get("group_id") ?? "") || null,
+                tag_ids: values.getAll("tag_ids").map(String),
               },
             });
           }}
@@ -391,6 +568,34 @@ export function KeywordManager({ project }: { project: Project }) {
             />
             Active
           </label>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <label>
+              Group
+              <Select name="group_id" defaultValue={editing.group?.id ?? ""}>
+                <option value="">No Group</option>
+                {groups.data?.items.map((group) => (
+                  <option key={group.id} value={group.id}>
+                    {group.name}
+                  </option>
+                ))}
+              </Select>
+            </label>
+            <label>
+              Tags
+              <Select
+                name="tag_ids"
+                multiple
+                defaultValue={editing.tags.map((tag) => tag.id)}
+                aria-label="Keyword Tags"
+              >
+                {tags.data?.items.map((tag) => (
+                  <option key={tag.id} value={tag.id}>
+                    {tag.name}
+                  </option>
+                ))}
+              </Select>
+            </label>
+          </div>
           <Button className="mt-4" variant="primary">
             Save Keyword
           </Button>
@@ -409,11 +614,123 @@ export function KeywordManager({ project }: { project: Project }) {
           filters.
         </EmptyState>
       )}
+      {!!selected.size && (
+        <div
+          className="mb-4 rounded-xl border border-brand p-4"
+          aria-label="Bulk Keyword actions"
+        >
+          <div className="flex flex-wrap items-end gap-3">
+            <strong>{selected.size} selected on loaded rows</strong>
+            <label>
+              Operation
+              <Select
+                value={bulkOperation}
+                onChange={(event) => {
+                  setBulkOperation(event.target.value as KeywordBulkOperation);
+                  setBulkTagIds([]);
+                }}
+              >
+                <option value="assign_group">Assign Group</option>
+                <option value="add_tags">Add Tags</option>
+                <option value="remove_tags">Remove Tags</option>
+                <option value="replace_tags">Replace all Tags</option>
+                <option value="archive">Archive</option>
+                <option value="restore">Restore</option>
+              </Select>
+            </label>
+            {bulkOperation === "assign_group" && (
+              <label>
+                Group
+                <Select
+                  value={bulkGroupId}
+                  onChange={(event) => setBulkGroupId(event.target.value)}
+                >
+                  <option value="">No Group</option>
+                  {groups.data?.items.map((group) => (
+                    <option key={group.id} value={group.id}>
+                      {group.name}
+                    </option>
+                  ))}
+                </Select>
+              </label>
+            )}
+            {["add_tags", "remove_tags", "replace_tags"].includes(
+              bulkOperation,
+            ) && (
+              <label>
+                Tags
+                <Select
+                  multiple
+                  value={bulkTagIds}
+                  aria-label="Bulk Tags"
+                  onChange={(event) =>
+                    setBulkTagIds(
+                      Array.from(
+                        event.target.selectedOptions,
+                        (option) => option.value,
+                      ),
+                    )
+                  }
+                >
+                  {tags.data?.items.map((tag) => (
+                    <option key={tag.id} value={tag.id}>
+                      {tag.name}
+                    </option>
+                  ))}
+                </Select>
+              </label>
+            )}
+            <Button
+              variant="primary"
+              disabled={
+                organize.isPending ||
+                ((bulkOperation === "add_tags" ||
+                  bulkOperation === "remove_tags") &&
+                  !bulkTagIds.length)
+              }
+              confirmation={
+                bulkOperation === "archive"
+                  ? `Archive ${selected.size} selected Keywords? Future scheduled checks will skip them.`
+                  : bulkOperation === "replace_tags"
+                    ? `Replace every Tag on ${selected.size} selected Keywords? Existing Tags not selected here will be removed.`
+                    : undefined
+              }
+              onClick={() => organize.mutate()}
+            >
+              {organize.isPending ? "Applying…" : "Apply"}
+            </Button>
+            <Button variant="ghost" onClick={() => setSelected(new Set())}>
+              Clear selection
+            </Button>
+          </div>
+        </div>
+      )}
       <div id="rankings" className="overflow-x-auto">
         <Table className="w-full">
           <thead>
             <tr className="border-b border-border">
+              <th className="p-3">
+                <Input
+                  type="checkbox"
+                  aria-label="Select all loaded Keywords"
+                  aria-checked={
+                    selected.size > 0 && selected.size < items.length
+                      ? "mixed"
+                      : undefined
+                  }
+                  checked={!!items.length && selected.size === items.length}
+                  onChange={(event) =>
+                    setSelected(
+                      event.target.checked
+                        ? new Set(items.map((item) => item.id))
+                        : new Set(),
+                    )
+                  }
+                />
+              </th>
               <th className="p-3">Keyword</th>
+              <th className="p-3">Group</th>
+              <th className="p-3">Tags</th>
               <th className="p-3">Status</th>
               <th className="p-3">Last checked</th>
               <th className="p-3">Tracked rankings</th>
@@ -430,7 +747,22 @@ export function KeywordManager({ project }: { project: Project }) {
                     id={`keyword-${item.id}`}
                     className="border-b border-border"
                   >
-                    <td className="p-3">
+                    <td className="p-3" data-label="Select">
+                      <Input
+                        type="checkbox"
+                        aria-label={`Select ${item.keyword}`}
+                        checked={selected.has(item.id)}
+                        onChange={(event) =>
+                          setSelected((current) => {
+                            const next = new Set(current);
+                            if (event.target.checked) next.add(item.id);
+                            else next.delete(item.id);
+                            return next;
+                          })
+                        }
+                      />
+                    </td>
+                    <td className="p-3" data-label="Keyword">
                       <button
                         type="button"
                         className="ui-text-link keyword-history-trigger text-sm font-medium"
@@ -442,17 +774,40 @@ export function KeywordManager({ project }: { project: Project }) {
                         <span aria-hidden="true">{expanded ? "▴" : "▸"}</span>
                       </button>
                     </td>
-                    <td className="p-3">
+                    <td className="p-3" data-label="Group">
+                      {item.group ? <Badge>{item.group.name}</Badge> : "—"}
+                    </td>
+                    <td className="p-3" data-label="Tags">
+                      <div className="flex flex-wrap gap-1">
+                        {item.tags.slice(0, 3).map((tag) => (
+                          <Badge key={tag.id} title={tag.name}>
+                            {tag.name}
+                          </Badge>
+                        ))}
+                        {item.tags.length > 3 && (
+                          <Badge
+                            title={item.tags
+                              .slice(3)
+                              .map((tag) => tag.name)
+                              .join(", ")}
+                          >
+                            +{item.tags.length - 3}
+                          </Badge>
+                        )}
+                        {!item.tags.length && "—"}
+                      </div>
+                    </td>
+                    <td className="p-3" data-label="Status">
                       <StatusBadge status={item.active ? "active" : "paused"} />
                     </td>
-                    <td className="p-3">
+                    <td className="p-3" data-label="Last checked">
                       {(() => {
                         const check = latestByKeyword.get(item.id);
                         if (!check) return "Never checked";
                         return new Date(check.requested_at).toLocaleString();
                       })()}
                     </td>
-                    <td className="p-3">
+                    <td className="p-3" data-label="Tracked rankings">
                       {(() => {
                         const check = latestByKeyword.get(item.id);
                         if (!check) return "—";
@@ -488,7 +843,7 @@ export function KeywordManager({ project }: { project: Project }) {
                         );
                       })()}
                     </td>
-                    <td className="p-3">
+                    <td className="p-3" data-label="Actions">
                       <Button
                         className="mr-3"
                         disabled={
@@ -531,7 +886,7 @@ export function KeywordManager({ project }: { project: Project }) {
                   </tr>
                   {expanded && (
                     <tr className="keyword-history-row">
-                      <td className="keyword-history-cell" colSpan={5}>
+                      <td className="keyword-history-cell" colSpan={8}>
                         <RankCheckHistory
                           id={historyRegionId}
                           keyword={item.keyword}
@@ -603,6 +958,11 @@ export function KeywordManager({ project }: { project: Project }) {
         )}
         {detail.data && <RankCheckDetail check={detail.data} />}
       </Dialog>
+      <KeywordOrganizationManager
+        project={project}
+        open={organizationOpen}
+        onClose={() => setOrganizationOpen(false)}
+      />
       <BatchPanel
         projectId={project.id}
         selectedBatch={selectedBatch}

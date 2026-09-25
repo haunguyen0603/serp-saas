@@ -70,3 +70,59 @@ class CloudTasksRankCheckQueue:
             )
             raise TaskQueueError("TASK_ENQUEUE_FAILED") from None
         return TaskEnqueueResult(name)
+
+    async def enqueue_report_job(
+        self,
+        report_id: UUID,
+        *,
+        schedule_time: datetime | None = None,
+        attempt: int = 0,
+    ) -> TaskEnqueueResult:
+        s = self.settings
+        parent = (
+            f"projects/{s.gcp_project_id}/locations/{s.gcp_location}"
+            f"/queues/{s.cloud_tasks_queue}"
+        )
+        name = f"{parent}/tasks/{report_id}-report-{attempt}"
+        task: dict[str, Any] = {
+            "name": name,
+            "http_request": {
+                "http_method": tasks_v2.HttpMethod.POST,
+                "url": s.cloud_tasks_worker_url.rstrip("/") + "/internal/tasks/report",
+                "headers": {"Content-Type": "application/json"},
+                "body": json.dumps(
+                    {"version": 1, "report_id": str(report_id)}
+                ).encode(),
+                "oidc_token": {
+                    "service_account_email": s.cloud_tasks_service_account_email,
+                    "audience": s.cloud_tasks_worker_url.rstrip("/"),
+                },
+            },
+            "dispatch_deadline": {"seconds": s.report_job_lease_seconds},
+        }
+        if schedule_time:
+            task["schedule_time"] = schedule_time
+        try:
+            await asyncio.to_thread(
+                self.client.create_task,
+                request={"parent": parent, "task": task},
+                timeout=5,
+                retry=None,
+            )
+        except AlreadyExists:
+            logger.info(
+                "report_task_already_exists", extra={"report_id": str(report_id)}
+            )
+            return TaskEnqueueResult(name, already_exists=True)
+        except (InvalidArgument, NotFound, PermissionDenied, Unauthenticated):
+            raise TaskQueueError("REPORT_TASK_ENQUEUE_FAILED", permanent=True) from None
+        except Exception:
+            logger.warning(
+                "report_task_enqueue_failed",
+                extra={
+                    "report_id": str(report_id),
+                    "safe_error_code": "REPORT_TASK_ENQUEUE_FAILED",
+                },
+            )
+            raise TaskQueueError("REPORT_TASK_ENQUEUE_FAILED") from None
+        return TaskEnqueueResult(name)

@@ -6,12 +6,14 @@ from app.core.errors import AppError
 from app.models.project import Project
 from app.repositories.analytics import AnalyticsRepository, KeywordObservationPair
 from app.repositories.keyword import KeywordRepository
+from app.repositories.keyword_organization import KeywordOrganizationRepository
 from app.repositories.project import ProjectRepository
 from app.repositories.tracked_site import TrackedSiteRepository
 from app.schemas.analytics import (
     AnalyticsRange,
     HistoryTrackedSite,
     KeywordRankingHistoryResponse,
+    MovementBasis,
     ProjectAnalyticsSummaryResponse,
     RankingDistributionResponse,
     RankingHistoryPoint,
@@ -29,11 +31,13 @@ class ProjectAnalyticsService:
         projects: ProjectRepository,
         keywords: KeywordRepository,
         tracked_sites: TrackedSiteRepository,
+        organizations: KeywordOrganizationRepository | None = None,
     ) -> None:
         self.analytics = analytics
         self.projects = projects
         self.keywords = keywords
         self.tracked_sites = tracked_sites
+        self.organizations = organizations
 
     @staticmethod
     def _range(value: str) -> AnalyticsRange:
@@ -97,15 +101,24 @@ class ProjectAnalyticsService:
         *,
         device: str | None,
         range_value: str,
+        group_filter: UUID | None = None,
+        tag_ids: frozenset[UUID] = frozenset(),
     ) -> ProjectAnalyticsSummaryResponse:
         selected_range = self._range(range_value)
         _, selected_device = await self._scope(project_id, user_id, device)
         as_of = datetime.now(UTC)
         boundary = as_of - timedelta(days=_RANGE_DAYS[selected_range])
         observations = await self.analytics.keyword_observations(
-            project_id, user_id, selected_device, boundary
+            project_id,
+            user_id,
+            selected_device,
+            boundary,
+            group_filter=group_filter,
+            tag_ids=tag_ids,
         )
-        total_keywords = await self.analytics.active_keyword_count(project_id)
+        total_keywords = await self.analytics.active_keyword_count(
+            project_id, group_filter=group_filter, tag_ids=tag_ids
+        )
         effective_depth = min((item.current_depth for item in observations), default=10)
         buckets = self._buckets(observations, effective_depth)
         movement = {
@@ -163,7 +176,7 @@ class ProjectAnalyticsService:
             device=selected_device,
             range=selected_range,
             as_of=as_of,
-            comparison_basis=basis,
+            comparison_basis=cast(MovementBasis, basis),
             total_keywords=total_keywords,
             observed_keywords=len(observations),
             never_checked=total_keywords - len(observations),
@@ -182,6 +195,49 @@ class ProjectAnalyticsService:
             distribution=RankingDistributionResponse(
                 effective_depth=effective_depth, buckets=buckets
             ),
+        )
+
+    async def get_organization_summary(
+        self,
+        project_id: UUID,
+        user_id: UUID,
+        *,
+        device: str | None,
+        range_value: str,
+        group_id: UUID | None,
+        tag_id: UUID | None,
+    ) -> ProjectAnalyticsSummaryResponse:
+        if (group_id is None) == (tag_id is None):
+            raise AppError(
+                422,
+                "INVALID_ORGANIZATION_SCOPE",
+                "Select exactly one Group or Tag.",
+            )
+        await self._scope(project_id, user_id, device)
+        if self.organizations is None:
+            raise AppError(
+                503, "ORGANIZATION_UNAVAILABLE", "Organization is unavailable."
+            )
+        if (
+            group_id is not None
+            and len(await self.organizations.groups_for_project(project_id, {group_id}))
+            != 1
+        ):
+            raise AppError(422, "INVALID_GROUP_ASSIGNMENT", "Group filter is invalid.")
+        selected_tags = frozenset({tag_id}) if tag_id is not None else frozenset()
+        if (
+            tag_id is not None
+            and len(await self.organizations.tags_for_project(project_id, {tag_id}))
+            != 1
+        ):
+            raise AppError(422, "INVALID_TAG_ASSIGNMENT", "Tag filter is invalid.")
+        return await self.get_summary(
+            project_id,
+            user_id,
+            device=device,
+            range_value=range_value,
+            group_filter=group_id,
+            tag_ids=selected_tags,
         )
 
     async def get_distribution(

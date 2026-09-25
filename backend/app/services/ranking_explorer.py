@@ -6,6 +6,7 @@ from uuid import UUID
 
 from app.core.errors import AppError
 from app.repositories.analytics import AnalyticsRepository, ExplorerQuery, ExplorerRow
+from app.repositories.keyword_organization import KeywordOrganizationRepository
 from app.repositories.project import ProjectRepository
 from app.repositories.tracked_site import TrackedSiteRepository
 from app.schemas.analytics import AnalyticsRange
@@ -60,10 +61,12 @@ class RankingExplorerService:
         analytics: AnalyticsRepository,
         projects: ProjectRepository,
         tracked_sites: TrackedSiteRepository,
+        organizations: KeywordOrganizationRepository | None = None,
     ) -> None:
         self.analytics = analytics
         self.projects = projects
         self.tracked_sites = tracked_sites
+        self.organizations = organizations
 
     @staticmethod
     def _parse_date(value: str, field: str) -> date:
@@ -124,6 +127,9 @@ class RankingExplorerService:
         order: str,
         limit: int,
         cursor: str | None,
+        group_id: str | None = None,
+        tag_ids: str | None = None,
+        tag_match: str = "any",
     ) -> RankingExplorerResponse:
         project = await self.projects.get_for_user(project_id, user_id)
         if project is None:
@@ -144,6 +150,45 @@ class RankingExplorerService:
             await self.tracked_sites.get_for_user(tracked_site_id, user_id) is None
         ):
             raise AppError(404, "TRACKED_SITE_NOT_FOUND", "Tracked Site not found.")
+        group_filter: UUID | Literal["none"] | None = None
+        if group_id == "none":
+            group_filter = "none"
+        elif group_id:
+            try:
+                selected_group = UUID(group_id)
+            except ValueError:
+                raise AppError(
+                    422, "INVALID_GROUP_ASSIGNMENT", "Group filter is invalid."
+                ) from None
+            if (
+                self.organizations is None
+                or len(
+                    await self.organizations.groups_for_project(
+                        project_id, {selected_group}
+                    )
+                )
+                != 1
+            ):
+                raise AppError(
+                    422, "INVALID_GROUP_ASSIGNMENT", "Group filter is invalid."
+                )
+            group_filter = selected_group
+        if tag_match not in {"any", "all"}:
+            raise AppError(422, "INVALID_TAG_MATCH", "Tag match mode is invalid.")
+        selected_tags: set[UUID] = set()
+        if tag_ids:
+            try:
+                selected_tags = {UUID(value) for value in tag_ids.split(",") if value}
+            except ValueError:
+                raise AppError(
+                    422, "INVALID_TAG_ASSIGNMENT", "Tag filter is invalid."
+                ) from None
+            if not selected_tags or len(selected_tags) > 100:
+                raise AppError(422, "INVALID_TAG_ASSIGNMENT", "Tag filter is invalid.")
+            if self.organizations is None or len(
+                await self.organizations.tags_for_project(project_id, selected_tags)
+            ) != len(selected_tags):
+                raise AppError(422, "INVALID_TAG_ASSIGNMENT", "Tag filter is invalid.")
         custom = compare_from is not None or compare_to is not None
         now = datetime.now(UTC)
         from_value: str | None = None
@@ -201,6 +246,9 @@ class RankingExplorerService:
             position_bucket=position_bucket,
             status=status,
             tracked_site_id=tracked_site_id,
+            group_filter=group_filter,
+            tag_ids=frozenset(selected_tags),
+            tag_match=cast(Literal["any", "all"], tag_match),
             sort=sort,
             order=order,
             limit=limit,
@@ -231,10 +279,13 @@ class RankingExplorerService:
         return RankingExplorerResponse(
             project_id=project_id,
             device=project.device,
-            range=selected_range,
+            range=cast(AnalyticsRange | Literal["custom"], selected_range),
             compare_from=from_value,
             compare_to=to_value,
-            comparison_basis=basis,
+            comparison_basis=cast(
+                Literal["range_boundary", "earliest_in_range", "custom_dates", "none"],
+                basis,
+            ),
             effective_depth=depth,
             supported_position_buckets=supported,
             summary=ExplorerResultsSummary(

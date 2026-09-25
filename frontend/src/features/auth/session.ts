@@ -1,4 +1,9 @@
-import { ApiError, requestJson } from "@/lib/api/client";
+import {
+  ApiError,
+  requestFile,
+  requestJson,
+  type DownloadedFile,
+} from "@/lib/api/client";
 import * as api from "./api";
 import type { AuthResponse, LoginInput, RegisterInput, User } from "./types";
 
@@ -152,6 +157,30 @@ export class AuthSession {
         throw new ApiError(401, "AUTHENTICATION_REQUIRED");
       // Deliberately no recursive retry: at most one refresh and one retry.
       return await send(refreshed);
+    }
+  };
+
+  authenticatedDownload = async (path: string): Promise<DownloadedFile> => {
+    if (this.state.status === "loading") await this.refresh();
+    const generation = this.generation;
+    const token = this.state.accessToken;
+    if (!token) throw new ApiError(401, "AUTHENTICATION_REQUIRED");
+    try {
+      return await requestFile(path, token);
+    } catch (error) {
+      if (
+        !(error instanceof ApiError) ||
+        error.status !== 401 ||
+        generation !== this.generation
+      )
+        throw error;
+      const refreshed =
+        this.state.accessToken !== token && this.state.accessToken
+          ? this.state.accessToken
+          : (await this.refresh()).access_token;
+      if (generation !== this.generation)
+        throw new ApiError(401, "AUTHENTICATION_REQUIRED");
+      return requestFile(path, refreshed);
     }
   };
 

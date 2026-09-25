@@ -22,7 +22,12 @@ import {
   projectAnalytics,
 } from "@/features/analytics/api";
 import type { AnalyticsRange } from "@/features/analytics/types";
-import { getProject, projectKeys } from "@/features/projects/api";
+import {
+  getProject,
+  listKeywordGroups,
+  listKeywordTags,
+  projectKeys,
+} from "@/features/projects/api";
 import {
   ProtectedStatus,
   useProtectedAuth,
@@ -123,6 +128,9 @@ export function RankingExplorer({ projectId }: { projectId: string }) {
       order: (value.get("order") || "asc") as ExplorerOrder,
       limit: Number(value.get("limit") || 50) as 25 | 50 | 100,
       cursor: value.get("cursor") || undefined,
+      group_id: value.get("group_id") || undefined,
+      tag_ids: value.get("tag_ids") || undefined,
+      tag_match: (value.get("tag_match") || "any") as "any" | "all",
     };
   }, [serialized]);
   const [search, setSearch] = useState(params.q ?? "");
@@ -141,6 +149,16 @@ export function RankingExplorer({ projectId }: { projectId: string }) {
     queryKey: trackedSiteKeys.list({ status: "active", limit: 200 }),
     queryFn: () =>
       listTrackedSites(auth.request, { status: "active", limit: 200 }),
+    enabled: auth.isAuthenticated,
+  });
+  const groups = useQuery({
+    queryKey: projectKeys.groups(projectId),
+    queryFn: () => listKeywordGroups(auth.request, projectId),
+    enabled: auth.isAuthenticated,
+  });
+  const tags = useQuery({
+    queryKey: projectKeys.tags(projectId),
+    queryFn: () => listKeywordTags(auth.request, projectId),
     enabled: auth.isAuthenticated,
   });
   const explorer = useQuery({
@@ -270,6 +288,26 @@ export function RankingExplorer({ projectId }: { projectId: string }) {
       key: "status",
       label: params.status.replaceAll("_", " "),
     });
+  if (params.group_id)
+    activeFilters.push({
+      key: "group_id",
+      label:
+        params.group_id === "none"
+          ? "No Group"
+          : (groups.data?.items.find((group) => group.id === params.group_id)
+              ?.name ?? "Group"),
+    });
+  if (params.tag_ids) {
+    const selectedTagIds = params.tag_ids.split(",");
+    activeFilters.push({
+      key: "tag_ids",
+      label: `${params.tag_match === "all" ? "All" : "Any"}: ${selectedTagIds
+        .map(
+          (id) => tags.data?.items.find((tag) => tag.id === id)?.name ?? "Tag",
+        )
+        .join(", ")}`,
+    });
+  }
 
   const selectRange = (value: string) => {
     if (value === "custom")
@@ -408,6 +446,63 @@ export function RankingExplorer({ projectId }: { projectId: string }) {
                 Not found in checked depth
               </option>
               <option value="never_checked">Never checked</option>
+            </Select>
+          </label>
+          <label>
+            Keyword Group
+            <Select
+              value={params.group_id ?? ""}
+              onChange={(event) =>
+                updateUrl({ group_id: event.target.value || null })
+              }
+            >
+              <option value="">All Groups</option>
+              <option value="none">No Group</option>
+              {groups.data?.items.map((group) => (
+                <option key={group.id} value={group.id}>
+                  {group.name}
+                </option>
+              ))}
+            </Select>
+          </label>
+          <label>
+            Keyword Tags
+            <Select
+              multiple
+              aria-label="Keyword Tags"
+              value={params.tag_ids?.split(",") ?? []}
+              onChange={(event) => {
+                const values = Array.from(
+                  event.target.selectedOptions,
+                  (option) => option.value,
+                );
+                updateUrl({
+                  tag_ids: values.length ? values.join(",") : null,
+                  tag_match: values.length ? (params.tag_match ?? "any") : null,
+                });
+              }}
+            >
+              {tags.data?.items.map((tag) => (
+                <option key={tag.id} value={tag.id}>
+                  {tag.name}
+                </option>
+              ))}
+            </Select>
+          </label>
+          <label>
+            Tag matching
+            <Select
+              value={params.tag_match ?? "any"}
+              disabled={!params.tag_ids}
+              onChange={(event) =>
+                updateUrl({
+                  tag_match:
+                    event.target.value === "any" ? null : event.target.value,
+                })
+              }
+            >
+              <option value="any">Any selected Tag</option>
+              <option value="all">All selected Tags</option>
             </Select>
           </label>
           <label>

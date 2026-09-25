@@ -9,6 +9,10 @@ from app.db.session import create_engine, create_session_factory
 from app.services.rank_batches import RankBatchService
 from app.services.rank_schedules import RankScheduleService
 from app.services.rank_worker import RankCheckWorker
+from app.services.report_email import create_report_email_sender
+from app.services.report_storage import create_report_storage
+from app.services.report_worker import ReportWorker
+from app.services.reports import ReportService
 from app.services.serp.factory import get_provider_router
 from app.services.task_queue import create_task_queue
 
@@ -25,10 +29,21 @@ async def run(loop: bool) -> None:
         RankBatchService(factory, settings, create_task_queue(settings)),
         get_provider_router(settings, factory),
     )
+    report_worker = ReportWorker(
+        ReportService(
+            factory,
+            settings,
+            create_task_queue(settings),
+            create_report_storage(settings),
+            create_report_email_sender(settings),
+        )
+    )
     try:
         while True:
             await RankScheduleService(worker.batches).dispatch()
             await worker.recover(local=settings.task_queue_provider == "local")
+            await report_worker.dispatch_schedules()
+            await report_worker.recover(local=settings.task_queue_provider == "local")
             if not loop:
                 break
             await asyncio.sleep(2)

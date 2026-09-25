@@ -124,6 +124,16 @@ def normalize_keyword(value: str) -> tuple[str, str]:
     return display, display.casefold()
 
 
+def normalize_organization_name(
+    value: str, *, maximum: int, code: str
+) -> tuple[str, str]:
+    display = _whitespace.sub(" ", unicodedata.normalize("NFC", value)).strip()
+    normalized = display.casefold()
+    if not display or len(display) > maximum or len(normalized) > maximum:
+        raise AppError(422, code, "Organization name is invalid.")
+    return display, normalized
+
+
 def encode_cursor(created_at: datetime, item_id: UUID) -> str:
     payload = json.dumps(
         {"created_at": created_at.isoformat(), "id": str(item_id)},

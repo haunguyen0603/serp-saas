@@ -1,12 +1,14 @@
 from datetime import datetime
-from typing import TypedDict, cast
+from typing import Literal, TypedDict, cast
 from uuid import UUID
 
-from sqlalchemy import and_, or_, select
+from sqlalchemy import and_, func, or_, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.models.keyword import Keyword
+from app.models.keyword_organization import KeywordTagAssignment
 from app.models.project import Project
 
 
@@ -57,6 +59,8 @@ class KeywordRepository:
             Keyword | None,
             await self.session.scalar(
                 select(Keyword)
+                .options(selectinload(Keyword.group), selectinload(Keyword.tags))
+                .execution_options(populate_existing=True)
                 .join(Project, Project.id == Keyword.project_id)
                 .where(
                     Keyword.id == keyword_id,
@@ -74,6 +78,9 @@ class KeywordRepository:
         *,
         search: str | None,
         active: bool | None,
+        group_filter: UUID | Literal["none"] | None,
+        tag_ids: set[UUID],
+        tag_match: Literal["any", "all"],
         limit: int,
         cursor: tuple[datetime, UUID] | None,
     ) -> tuple[list[Keyword], bool]:
@@ -92,6 +99,26 @@ class KeywordRepository:
             )
         if active is not None:
             statement = statement.where(Keyword.active == active)
+        if group_filter == "none":
+            statement = statement.where(Keyword.keyword_group_id.is_(None))
+        elif group_filter is not None:
+            statement = statement.where(Keyword.keyword_group_id == group_filter)
+        if tag_ids:
+            matching_tags = (
+                select(func.count(func.distinct(KeywordTagAssignment.tag_id)))
+                .where(
+                    KeywordTagAssignment.project_id == project_id,
+                    KeywordTagAssignment.keyword_id == Keyword.id,
+                    KeywordTagAssignment.tag_id.in_(tag_ids),
+                )
+                .correlate(Keyword)
+                .scalar_subquery()
+            )
+            statement = statement.where(
+                matching_tags >= 1
+                if tag_match == "any"
+                else matching_tags == len(tag_ids)
+            )
         if cursor:
             created_at, item_id = cursor
             statement = statement.where(
@@ -100,9 +127,11 @@ class KeywordRepository:
                     and_(Keyword.created_at == created_at, Keyword.id < item_id),
                 )
             )
-        statement = statement.order_by(
-            Keyword.created_at.desc(), Keyword.id.desc()
-        ).limit(limit + 1)
+        statement = (
+            statement.options(selectinload(Keyword.group), selectinload(Keyword.tags))
+            .order_by(Keyword.created_at.desc(), Keyword.id.desc())
+            .limit(limit + 1)
+        )
         items = list((await self.session.scalars(statement)).all())
         return items[:limit], len(items) > limit
 

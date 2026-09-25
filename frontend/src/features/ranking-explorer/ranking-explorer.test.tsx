@@ -120,6 +120,30 @@ beforeEach(() => {
         next_cursor: null,
         has_more: false,
       };
+    if (path.endsWith("/keyword-groups"))
+      return {
+        items: [
+          {
+            id: "group-1",
+            name: "Brand",
+            active_keyword_count: 1,
+            created_at: "2026-01-01T00:00:00Z",
+            updated_at: "2026-01-01T00:00:00Z",
+          },
+        ],
+      };
+    if (path.endsWith("/keyword-tags"))
+      return {
+        items: [
+          {
+            id: "tag-1",
+            name: "Priority",
+            active_keyword_count: 1,
+            created_at: "2026-01-01T00:00:00Z",
+            updated_at: "2026-01-01T00:00:00Z",
+          },
+        ],
+      };
     if (path.includes("/ranking-explorer")) {
       if (explorerMode === "error") throw new Error("Explorer unavailable");
       if (explorerMode === "loading") return await new Promise(() => {});
@@ -212,12 +236,21 @@ it("renders depth-aware comparison rows, sorting, pagination, and history", asyn
 
 it("drives filters from URL, debounces search, exposes chips, and clears them", async () => {
   state.query =
-    "movement=improved&position_bucket=top_3&tracked_site_id=site-1&q=vinfast";
+    "movement=improved&position_bucket=top_3&tracked_site_id=site-1&q=vinfast&group_id=group-1&tag_ids=tag-1&tag_match=all";
   view();
   await screen.findByText("2 results");
   expect(screen.getByLabelText("Movement")).toHaveValue("improved");
   expect(screen.getByLabelText("Current position")).toHaveValue("top_3");
   expect(screen.getByLabelText("Tracked Site")).toHaveValue("site-1");
+  expect(screen.getByLabelText("Keyword Group")).toHaveValue("group-1");
+  expect(screen.getByLabelText("Keyword Tags")).toHaveValue(["tag-1"]);
+  expect(screen.getByLabelText("Tag matching")).toHaveValue("all");
+  expect(
+    screen.getByRole("button", { name: "Remove Brand filter" }),
+  ).toBeVisible();
+  expect(
+    screen.getByRole("button", { name: "Remove All: Priority filter" }),
+  ).toBeVisible();
   expect(
     screen.getByRole("button", { name: "Remove Improved filter" }),
   ).toBeVisible();

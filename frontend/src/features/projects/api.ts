@@ -2,10 +2,14 @@ import type { AuthenticatedRequest } from "@/features/auth/session";
 import type {
   Keyword,
   KeywordBulkCreate,
+  KeywordBulkOrganization,
+  KeywordBulkOrganizationResult,
   KeywordBulkResult,
   KeywordCreate,
   KeywordFilters,
   KeywordListResponse,
+  KeywordOrganization,
+  KeywordOrganizationList,
   KeywordUpdate,
   Project,
   ProjectCreate,
@@ -39,6 +43,8 @@ export const projectKeys = {
   keywords: (id: string) => ["projects", id, "keywords"] as const,
   keywordList: (id: string, filters: KeywordFilters) =>
     ["projects", id, "keywords", filters] as const,
+  groups: (id: string) => ["projects", id, "keyword-groups"] as const,
+  tags: (id: string) => ["projects", id, "keyword-tags"] as const,
 };
 export const createProject = (
   request: AuthenticatedRequest,
@@ -89,3 +95,49 @@ export const deleteKeyword = (
   id: string,
   keywordId: string,
 ) => request<void>(`${keywordPath(id)}/${keywordId}`, { method: "DELETE" });
+
+const organizationPath = (id: string, kind: "groups" | "tags") =>
+  `/api/v1/projects/${id}/keyword-${kind}`;
+export const listKeywordGroups = (request: AuthenticatedRequest, id: string) =>
+  request<KeywordOrganizationList>(organizationPath(id, "groups"));
+export const listKeywordTags = (request: AuthenticatedRequest, id: string) =>
+  request<KeywordOrganizationList>(organizationPath(id, "tags"));
+export const createKeywordOrganization = (
+  request: AuthenticatedRequest,
+  id: string,
+  kind: "groups" | "tags",
+  name: string,
+) =>
+  request<KeywordOrganization>(
+    organizationPath(id, kind),
+    json("POST", { name }),
+  );
+export const updateKeywordOrganization = (
+  request: AuthenticatedRequest,
+  id: string,
+  kind: "groups" | "tags",
+  entityId: string,
+  name: string,
+) =>
+  request<KeywordOrganization>(
+    `${organizationPath(id, kind)}/${entityId}`,
+    json("PATCH", { name }),
+  );
+export const deleteKeywordOrganization = (
+  request: AuthenticatedRequest,
+  id: string,
+  kind: "groups" | "tags",
+  entityId: string,
+) =>
+  request<void>(`${organizationPath(id, kind)}/${entityId}`, {
+    method: "DELETE",
+  });
+export const bulkOrganizeKeywords = (
+  request: AuthenticatedRequest,
+  id: string,
+  input: KeywordBulkOrganization,
+) =>
+  request<KeywordBulkOrganizationResult>(
+    `${keywordPath(id)}/bulk-organize`,
+    json("POST", input),
+  );

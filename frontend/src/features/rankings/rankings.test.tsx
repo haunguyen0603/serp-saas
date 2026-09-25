@@ -52,6 +52,8 @@ const keywords: Keyword[] = [
   id: `keyword-${index + 1}`,
   keyword,
   active: true,
+  group: null,
+  tags: [],
   created_at: "2026-01-01T00:00:00Z",
   updated_at: "2026-01-01T00:00:00Z",
 }));
@@ -328,7 +330,7 @@ it("expands and collapses inline history and opens Rank Check detail", async () 
     name: "Ranking history",
   });
   expect(trigger).toHaveAttribute("aria-expanded", "true");
-  expect(history.closest("td")).toHaveAttribute("colspan", "5");
+  expect(history.closest("td")).toHaveAttribute("colspan", "8");
   expect(within(history).queryByText("SerpApi")).not.toBeInTheDocument();
   expect(await within(history).findByText("old.example #2")).toBeVisible();
   const historyCalls = request.mock.calls.filter(([path]) =>

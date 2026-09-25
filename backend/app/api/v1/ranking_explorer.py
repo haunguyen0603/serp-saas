@@ -26,6 +26,9 @@ async def ranking_explorer(
     order: str = "asc",
     limit: int = 50,
     cursor: str | None = None,
+    group_id: str | None = None,
+    tag_ids: str | None = None,
+    tag_match: str = "any",
 ) -> RankingExplorerResponse:
     return await service.list(
         project_id,
@@ -42,4 +45,7 @@ async def ranking_explorer(
         order=order,
         limit=limit,
         cursor=cursor,
+        group_id=group_id,
+        tag_ids=tag_ids,
+        tag_match=tag_match,
     )

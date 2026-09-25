@@ -140,6 +140,8 @@ def test_production_cookie_and_secret(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("CLOUD_TASKS_WORKER_URL", "https://worker.example")
     monkeypatch.setenv("CLOUD_TASKS_SERVICE_ACCOUNT_EMAIL", "tasks@test.example")
     monkeypatch.setenv("SCHEDULER_SERVICE_ACCOUNT_EMAIL", "scheduler@test.example")
+    monkeypatch.setenv("REPORT_STORAGE_PROVIDER", "gcs")
+    monkeypatch.setenv("REPORT_STORAGE_BUCKET", "private-report-artifacts")
     assert Settings().auth_cookie_secure
 
 

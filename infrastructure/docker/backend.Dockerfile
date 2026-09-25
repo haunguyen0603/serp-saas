@@ -2,7 +2,13 @@ FROM python:3.12.12-slim-bookworm AS base
 COPY --from=ghcr.io/astral-sh/uv:0.12.12 /uv /usr/local/bin/uv
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 UV_LINK_MODE=copy
 WORKDIR /app
-RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --create-home app
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends fonts-dejavu-core \
+    && rm -rf /var/lib/apt/lists/*
+RUN groupadd --gid 10001 app \
+    && useradd --uid 10001 --gid app --create-home app \
+    && mkdir -p /var/lib/serp-saas/reports \
+    && chown -R app:app /var/lib/serp-saas
 COPY backend/pyproject.toml backend/uv.lock ./
 
 FROM base AS development

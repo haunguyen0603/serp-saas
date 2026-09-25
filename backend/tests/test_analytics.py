@@ -116,6 +116,61 @@ async def test_depth_aware_summary_movers_history_and_tenant_isolation(
         add_check("winner", now - timedelta(hours=2), 6)
         add_check("failed", current, 1, status=RankCheckStatus.FAILED)
 
+    group = (
+        await auth_client.post(
+            f"/api/v1/projects/{project_id}/keyword-groups",
+            headers=headers,
+            json={"name": "Analytics Group"},
+        )
+    ).json()
+    tag = (
+        await auth_client.post(
+            f"/api/v1/projects/{project_id}/keyword-tags",
+            headers=headers,
+            json={"name": "Analytics Tag"},
+        )
+    ).json()
+    for name in ("winner", "failed"):
+        assert (
+            await auth_client.patch(
+                f"/api/v1/projects/{project_id}/keywords/{keywords[name]}",
+                headers=headers,
+                json={"group_id": group["id"]},
+            )
+        ).status_code == 200
+    for name in ("winner", "loser"):
+        assert (
+            await auth_client.patch(
+                f"/api/v1/projects/{project_id}/keywords/{keywords[name]}",
+                headers=headers,
+                json={"tag_ids": [tag["id"]]},
+            )
+        ).status_code == 200
+
+    group_summary = await auth_client.get(
+        f"/api/v1/projects/{project_id}/analytics/organization-summary",
+        headers=headers,
+        params={"group_id": group["id"], "range": "30d"},
+    )
+    assert group_summary.status_code == 200
+    assert {
+        key: group_summary.json()[key]
+        for key in ("total_keywords", "observed_keywords", "top_3", "improved")
+    } == {
+        "total_keywords": 2,
+        "observed_keywords": 1,
+        "top_3": 1,
+        "improved": 1,
+    }
+    tag_summary = await auth_client.get(
+        f"/api/v1/projects/{project_id}/analytics/organization-summary",
+        headers=headers,
+        params={"tag_id": tag["id"], "range": "30d"},
+    )
+    assert tag_summary.status_code == 200
+    assert tag_summary.json()["total_keywords"] == 2
+    assert tag_summary.json()["improved"] == tag_summary.json()["declined"] == 1
+
     summary_response = await auth_client.get(
         f"/api/v1/projects/{project_id}/analytics/summary?range=30d&device=desktop",
         headers=headers,

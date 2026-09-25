@@ -33,6 +33,26 @@ services:
       target: development
     environment: &backend_environment
       TASK_QUEUE_PROVIDER: ${TASK_QUEUE_PROVIDER:-local}
+      REPORT_STORAGE_ROOT: ${REPORT_STORAGE_ROOT:-/var/lib/serp-saas/reports}
+      REPORT_STORAGE_PROVIDER: ${REPORT_STORAGE_PROVIDER:-local}
+      REPORT_STORAGE_BUCKET: ${REPORT_STORAGE_BUCKET:-}
+      REPORT_STORAGE_PREFIX: ${REPORT_STORAGE_PREFIX:-reports}
+      REPORT_MAX_RANGE_DAYS: ${REPORT_MAX_RANGE_DAYS:-365}
+      REPORT_MAX_CSV_ROWS: ${REPORT_MAX_CSV_ROWS:-100000}
+      REPORT_MAX_PDF_DETAIL_ROWS: ${REPORT_MAX_PDF_DETAIL_ROWS:-1000}
+      REPORT_ARTIFACT_RETENTION_DAYS: ${REPORT_ARTIFACT_RETENTION_DAYS:-30}
+      REPORT_MAX_CONCURRENT_PER_USER: ${REPORT_MAX_CONCURRENT_PER_USER:-2}
+      REPORT_MAX_ACTIVE_SCHEDULES_PER_PROJECT: ${REPORT_MAX_ACTIVE_SCHEDULES_PER_PROJECT:-5}
+      REPORT_JOB_MAX_ATTEMPTS: ${REPORT_JOB_MAX_ATTEMPTS:-3}
+      REPORT_JOB_LEASE_SECONDS: ${REPORT_JOB_LEASE_SECONDS:-300}
+      REPORT_EMAIL_PROVIDER: ${REPORT_EMAIL_PROVIDER:-disabled}
+      REPORT_EMAIL_FROM: ${REPORT_EMAIL_FROM:-}
+      REPORT_EMAIL_ATTACHMENT_MAX_BYTES: ${REPORT_EMAIL_ATTACHMENT_MAX_BYTES:-5000000}
+      REPORT_SMTP_HOST: ${REPORT_SMTP_HOST:-}
+      REPORT_SMTP_PORT: ${REPORT_SMTP_PORT:-587}
+      REPORT_SMTP_USERNAME: ${REPORT_SMTP_USERNAME:-}
+      REPORT_SMTP_PASSWORD: ${REPORT_SMTP_PASSWORD:-}
+      REPORT_SMTP_STARTTLS: ${REPORT_SMTP_STARTTLS:-true}
       RANK_CHECK_BATCH_MAX_KEYWORDS: ${RANK_CHECK_BATCH_MAX_KEYWORDS:-5000}
       RANK_CHECK_JOB_MAX_ATTEMPTS: ${RANK_CHECK_JOB_MAX_ATTEMPTS:-5}
       RANK_CHECK_JOB_LEASE_SECONDS: ${RANK_CHECK_JOB_LEASE_SECONDS:-300}
@@ -71,6 +91,8 @@ services:
     command: ["sh", "-c", "alembic upgrade head && exec python -m app"]
     ports:
       - "127.0.0.1:8000:${BACKEND_PORT:-8000}"
+    volumes:
+      - report_artifacts:/var/lib/serp-saas/reports
     depends_on:
       postgres:
         condition: service_healthy
@@ -91,6 +113,8 @@ services:
     environment:
       <<: *backend_environment
     command: ["python", "-m", "scripts.rank_jobs", "--loop"]
+    volumes:
+      - report_artifacts:/var/lib/serp-saas/reports
     depends_on:
       backend:
         condition: service_healthy
@@ -123,3 +147,4 @@ services:
 
 volumes:
   postgres_data:
+  report_artifacts:

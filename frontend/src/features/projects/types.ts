@@ -56,11 +56,15 @@ export interface Keyword {
   id: string;
   keyword: string;
   active: boolean;
+  group: KeywordOrganizationRef | null;
+  tags: KeywordOrganizationRef[];
   created_at: string;
   updated_at: string;
 }
 export interface KeywordCreate {
   keyword: string;
+  group_id?: string | null;
+  tag_ids?: string[];
 }
 export interface KeywordBulkCreate {
   keywords: string[];
@@ -71,6 +75,8 @@ export interface KeywordBulkResult extends InitialKeywordResult {
 export interface KeywordUpdate {
   keyword?: string;
   active?: boolean;
+  group_id?: string | null;
+  tag_ids?: string[];
 }
 export interface KeywordListResponse {
   items: Keyword[];
@@ -82,4 +88,44 @@ export interface KeywordFilters {
   active?: "true" | "false" | "all";
   limit?: number;
   cursor?: string | null;
+  group_id?: string;
+  tag_ids?: string;
+  tag_match?: "any" | "all";
+}
+
+export interface KeywordOrganizationRef {
+  id: string;
+  name: string;
+}
+
+export interface KeywordOrganization extends KeywordOrganizationRef {
+  active_keyword_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface KeywordOrganizationList {
+  items: KeywordOrganization[];
+}
+
+export type KeywordBulkOperation =
+  | "assign_group"
+  | "add_tags"
+  | "remove_tags"
+  | "replace_tags"
+  | "archive"
+  | "restore";
+
+export interface KeywordBulkOrganization {
+  keyword_ids: string[];
+  operation: KeywordBulkOperation;
+  group_id?: string | null;
+  tag_ids?: string[];
+}
+
+export interface KeywordBulkOrganizationResult {
+  operation: KeywordBulkOperation;
+  selected_count: number;
+  affected_keyword_count: number;
+  assignment_count: number | null;
 }

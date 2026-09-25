@@ -47,6 +47,12 @@ async def test_migration_matches_models(auth_app: FastAPI) -> None:
                 "rank_check_batches",
                 "rank_check_jobs",
                 "project_rank_schedules",
+                "keyword_groups",
+                "keyword_tags",
+                "keyword_tag_assignments",
+                "generated_reports",
+                "report_schedules",
+                "report_delivery_attempts",
             }
             indexes = inspector.get_indexes("refresh_tokens")
             indexed_columns = {tuple(index["column_names"]) for index in indexes}

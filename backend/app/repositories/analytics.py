@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any
+from typing import Any, Literal
 from uuid import UUID
 
 from sqlalchemy import String, and_, case, func, literal, select, true
@@ -9,6 +9,7 @@ from sqlalchemy.sql.elements import ColumnElement
 from sqlalchemy.sql.selectable import CTE
 
 from app.models.keyword import Keyword
+from app.models.keyword_organization import KeywordTagAssignment
 from app.models.rank_check import RankCheck, RankCheckStatus
 from app.models.ranking import Ranking
 from app.models.tracked_site import TrackedSite, TrackedSiteStatus
@@ -90,6 +91,9 @@ class ExplorerQuery:
     position_bucket: str | None
     status: str | None
     tracked_site_id: UUID | None
+    group_filter: UUID | Literal["none"] | None
+    tag_ids: frozenset[UUID]
+    tag_match: Literal["any", "all"]
     sort: str
     order: str
     limit: int
@@ -102,7 +106,46 @@ class AnalyticsRepository:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
-    def _successful_checks(self, project_id: UUID, user_id: UUID, device: str) -> CTE:
+    @staticmethod
+    def _organization_filters(
+        project_id: UUID,
+        group_filter: UUID | Literal["none"] | None,
+        tag_ids: set[UUID] | frozenset[UUID],
+        tag_match: Literal["any", "all"],
+    ) -> list[ColumnElement[bool]]:
+        filters: list[ColumnElement[bool]] = []
+        if group_filter == "none":
+            filters.append(Keyword.keyword_group_id.is_(None))
+        elif group_filter is not None:
+            filters.append(Keyword.keyword_group_id == group_filter)
+        if tag_ids:
+            matching_tags = (
+                select(func.count(func.distinct(KeywordTagAssignment.tag_id)))
+                .where(
+                    KeywordTagAssignment.project_id == project_id,
+                    KeywordTagAssignment.keyword_id == Keyword.id,
+                    KeywordTagAssignment.tag_id.in_(tag_ids),
+                )
+                .correlate(Keyword)
+                .scalar_subquery()
+            )
+            filters.append(
+                matching_tags >= 1
+                if tag_match == "any"
+                else matching_tags == len(tag_ids)
+            )
+        return filters
+
+    def _successful_checks(
+        self,
+        project_id: UUID,
+        user_id: UUID,
+        device: str,
+        *,
+        group_filter: UUID | Literal["none"] | None = None,
+        tag_ids: set[UUID] | frozenset[UUID] = frozenset(),
+        tag_match: Literal["any", "all"] = "any",
+    ) -> CTE:
         return (
             select(
                 RankCheck.id.label("check_id"),
@@ -119,6 +162,9 @@ class AnalyticsRepository:
                 RankCheck.device_snapshot == device,
                 RankCheck.status == RankCheckStatus.SUCCEEDED,
                 Keyword.active.is_(True),
+                *self._organization_filters(
+                    project_id, group_filter, tag_ids, tag_match
+                ),
             )
             .cte("successful_checks")
         )
@@ -187,11 +233,22 @@ class AnalyticsRepository:
         )
         return current, comparison
 
-    async def active_keyword_count(self, project_id: UUID) -> int:
+    async def active_keyword_count(
+        self,
+        project_id: UUID,
+        *,
+        group_filter: UUID | Literal["none"] | None = None,
+        tag_ids: set[UUID] | frozenset[UUID] = frozenset(),
+        tag_match: Literal["any", "all"] = "any",
+    ) -> int:
         return int(
             await self.session.scalar(
                 select(func.count(Keyword.id)).where(
-                    Keyword.project_id == project_id, Keyword.active.is_(True)
+                    Keyword.project_id == project_id,
+                    Keyword.active.is_(True),
+                    *self._organization_filters(
+                        project_id, group_filter, tag_ids, tag_match
+                    ),
                 )
             )
             or 0
@@ -203,8 +260,19 @@ class AnalyticsRepository:
         user_id: UUID,
         device: str,
         boundary: datetime,
+        *,
+        group_filter: UUID | Literal["none"] | None = None,
+        tag_ids: set[UUID] | frozenset[UUID] = frozenset(),
+        tag_match: Literal["any", "all"] = "any",
     ) -> list[KeywordObservationPair]:
-        checks = self._successful_checks(project_id, user_id, device)
+        checks = self._successful_checks(
+            project_id,
+            user_id,
+            device,
+            group_filter=group_filter,
+            tag_ids=tag_ids,
+            tag_match=tag_match,
+        )
         current, comparison = self._current_and_comparison(checks, boundary)
         active_site_ids = select(TrackedSite.id).where(
             TrackedSite.user_id == user_id,
@@ -409,6 +477,12 @@ class AnalyticsRepository:
                 Keyword.active.is_(True),
                 TrackedSite.user_id == query.user_id,
                 TrackedSite.status == TrackedSiteStatus.ACTIVE,
+                *self._organization_filters(
+                    query.project_id,
+                    query.group_filter,
+                    query.tag_ids,
+                    query.tag_match,
+                ),
             )
         )
         if query.search:
@@ -685,6 +759,12 @@ class AnalyticsRepository:
                 RankCheck.device_snapshot == query.device,
                 RankCheck.status == RankCheckStatus.SUCCEEDED,
                 Keyword.active.is_(True),
+                *self._organization_filters(
+                    query.project_id,
+                    query.group_filter,
+                    query.tag_ids,
+                    query.tag_match,
+                ),
             )
         )
         if query.search:

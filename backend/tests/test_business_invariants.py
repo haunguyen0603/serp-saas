@@ -89,6 +89,7 @@ async def test_database_constraints_indexes_and_schema_match(auth_app: FastAPI) 
                 ("project_id", "active"),
                 ("project_id", "created_at"),
                 ("project_id", "keyword_normalized"),
+                ("project_id", "keyword_group_id"),
             } <= indexes["keywords"]
             assert {
                 ("user_id",),
@@ -124,10 +125,12 @@ async def test_database_constraints_indexes_and_schema_match(auth_app: FastAPI) 
                 inspector.get_foreign_keys("projects")[0]["options"]["ondelete"]
                 == "CASCADE"
             )
-            assert (
-                inspector.get_foreign_keys("keywords")[0]["options"]["ondelete"]
-                == "CASCADE"
+            project_fk = next(
+                item
+                for item in inspector.get_foreign_keys("keywords")
+                if item["referred_table"] == "projects"
             )
+            assert project_fk["options"]["ondelete"] == "CASCADE"
             domain_fk = next(
                 item
                 for item in inspector.get_foreign_keys("tracked_domains")
