@@ -62,7 +62,7 @@ class GCSReportArtifactStorage:
     """Private Google Cloud Storage adapter; access remains behind the API."""
 
     def __init__(self, project_id: str, bucket_name: str, prefix: str) -> None:
-        from google.cloud import storage  # type: ignore[attr-defined,import-untyped]
+        from google.cloud import storage  # type: ignore[attr-defined]
 
         self.bucket = storage.Client(project=project_id or None).bucket(bucket_name)
         self.prefix = prefix.strip("/")

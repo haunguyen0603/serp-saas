@@ -5,6 +5,10 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.dependencies.auth import DBSession
 from app.repositories.analytics import AnalyticsRepository
+from app.repositories.competitor_analytics import (
+    CompetitorAnalyticsRepository,
+    CompetitorSelectionRepository,
+)
 from app.repositories.keyword import KeywordRepository
 from app.repositories.keyword_organization import KeywordOrganizationRepository
 from app.repositories.project import ProjectRepository
@@ -13,6 +17,7 @@ from app.repositories.ranking import RankingRepository
 from app.repositories.tracked_domain import TrackedDomainRepository
 from app.repositories.tracked_site import TrackedSiteRepository
 from app.services.analytics import ProjectAnalyticsService
+from app.services.competitor_analytics import CompetitorAnalyticsService
 from app.services.domain_matching import DomainMatcher
 from app.services.keyword_organization import KeywordOrganizationService
 from app.services.keywords import KeywordService
@@ -100,6 +105,19 @@ def get_ranking_explorer_service(session: DBSession) -> RankingExplorerService:
     )
 
 
+def get_competitor_analytics_service(
+    session: DBSession,
+) -> CompetitorAnalyticsService:
+    return CompetitorAnalyticsService(
+        CompetitorAnalyticsRepository(session),
+        CompetitorSelectionRepository(session),
+        ProjectRepository(session),
+        TrackedSiteRepository(session),
+        KeywordRepository(session),
+        KeywordOrganizationRepository(session),
+    )
+
+
 Projects = Annotated[ProjectService, Depends(get_project_service)]
 Keywords = Annotated[KeywordService, Depends(get_keyword_service)]
 KeywordOrganizations = Annotated[
@@ -117,4 +135,7 @@ ProjectAnalytics = Annotated[
 ]
 RankingExplorer = Annotated[
     RankingExplorerService, Depends(get_ranking_explorer_service)
+]
+CompetitorAnalytics = Annotated[
+    CompetitorAnalyticsService, Depends(get_competitor_analytics_service)
 ]

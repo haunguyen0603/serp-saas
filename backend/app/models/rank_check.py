@@ -47,6 +47,15 @@ class RankCheck(Base):
         Index("ix_rank_checks_user_id_created_at", "user_id", "created_at"),
         Index("ix_rank_checks_status", "status"),
         Index(
+            "ix_rank_checks_competitor_window",
+            "project_id",
+            "user_id",
+            "status",
+            "keyword_id",
+            "completed_at",
+            "id",
+        ),
+        Index(
             "uq_rank_checks_keyword_running",
             "keyword_id",
             unique=True,

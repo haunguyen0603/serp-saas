@@ -8,6 +8,7 @@ from app.models.keyword_organization import (
     KeywordTagAssignment,
 )
 from app.models.project import Project
+from app.models.project_competitor_site import ProjectCompetitorSite
 from app.models.provider_usage import ProviderUsage
 from app.models.rank_check import RankCheck
 from app.models.rank_check_provider_attempt import RankCheckProviderAttempt
@@ -38,6 +39,7 @@ __all__ = [
     "User",
     "RefreshToken",
     "Project",
+    "ProjectCompetitorSite",
     "Keyword",
     "KeywordGroup",
     "KeywordTag",

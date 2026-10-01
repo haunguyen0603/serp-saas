@@ -53,6 +53,7 @@ async def test_migration_matches_models(auth_app: FastAPI) -> None:
                 "generated_reports",
                 "report_schedules",
                 "report_delivery_attempts",
+                "project_competitor_sites",
             }
             indexes = inspector.get_indexes("refresh_tokens")
             indexed_columns = {tuple(index["column_names"]) for index in indexes}

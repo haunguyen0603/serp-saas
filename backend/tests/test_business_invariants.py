@@ -62,6 +62,7 @@ async def test_database_constraints_indexes_and_schema_match(auth_app: FastAPI) 
                 "rankings",
                 "provider_usage",
                 "rank_check_provider_attempts",
+                "project_competitor_sites",
             } <= set(inspector.get_table_names())
             indexes = {
                 table: {
