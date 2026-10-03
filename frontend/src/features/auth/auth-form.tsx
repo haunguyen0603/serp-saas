@@ -17,8 +17,9 @@ export function AuthForm({ mode }: { mode: "signup" | "login" }) {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (auth.isAuthenticated) router.replace("/app");
-  }, [auth.isAuthenticated, router]);
+    if (auth.isAuthenticated)
+      router.replace(auth.requiresEmailVerification ? "/verify-email" : "/app");
+  }, [auth.isAuthenticated, auth.requiresEmailVerification, router]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -43,9 +44,14 @@ export function AuthForm({ mode }: { mode: "signup" | "login" }) {
     }
     setSubmitting(true);
     try {
-      if (signup) await auth.register({ email, password, accept_terms: true });
-      else await auth.login({ email, password });
-      router.replace("/app");
+      const response = signup
+        ? await auth.register({ email, password, accept_terms: true })
+        : await auth.login({ email, password });
+      router.replace(
+        response.email_verification_required && !response.user.email_verified
+          ? "/verify-email"
+          : "/app",
+      );
     } catch (failure) {
       setError(
         failure instanceof ApiError
@@ -127,6 +133,19 @@ export function AuthForm({ mode }: { mode: "signup" | "login" }) {
                 </Link>
               </span>
             </label>
+            <p className="text-sm text-secondary">
+              Learn how we handle your information in our{" "}
+              <Link
+                href="/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ui-text-link"
+              >
+                Privacy Policy
+                <span className="sr-only"> (opens in a new tab)</span>
+              </Link>
+              .
+            </p>
           </>
         )}
         {error && (

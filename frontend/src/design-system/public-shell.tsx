@@ -9,6 +9,8 @@ import { Drawer, Icon, IconButton } from "./ui";
 const links = [
   { href: "/", label: "Home" },
   { href: "/pricing", label: "Pricing" },
+  { href: "/about", label: "About us" },
+  { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms of Service" },
 ];
 
@@ -16,8 +18,16 @@ export function PublicShell({ children }: { children: ReactNode }) {
   const path = usePathname();
   const auth = useAuth();
   const [open, setOpen] = useState(false);
-  const startHref = auth.isAuthenticated ? "/app" : "/register";
-  const startLabel = auth.isAuthenticated ? "Open App" : "Get Started";
+  const startHref = auth.isAuthenticated
+    ? auth.requiresEmailVerification
+      ? "/verify-email"
+      : "/app"
+    : "/register";
+  const startLabel = auth.isAuthenticated
+    ? auth.requiresEmailVerification
+      ? "Verify email"
+      : "Open App"
+    : "Get Started";
   const navigation = (
     <nav aria-label="Public navigation" className="public-nav">
       {links.map((link) => (
@@ -85,6 +95,8 @@ export function PublicShell({ children }: { children: ReactNode }) {
             <strong>Product</strong>
             <Link href="/">Home</Link>
             <Link href="/pricing">Pricing</Link>
+            <Link href="/about">About us</Link>
+            <Link href="/privacy">Privacy Policy</Link>
             <Link href="/terms">Terms of Service</Link>
           </nav>
           <nav aria-label="Account links">

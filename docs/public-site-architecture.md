@@ -1,6 +1,6 @@
 # M6.5B public site architecture
 
-The public site uses a dedicated `PublicShell` for `/`, `/pricing`, `/login`, `/register` and the existing `/signup` alias. It lives inside the existing top-level providers so navigation can adapt after login, but it does not render the authenticated sidebar, account navigation or Admin controls. `/app`, `/settings/billing` and `/admin` continue to use the M6.5A `AppShell`; `/health` keeps its small diagnostic layout.
+The public site uses a dedicated `PublicShell` for `/`, `/pricing`, `/about`, `/privacy`, `/terms`, `/login`, `/register` and the existing `/signup` alias. It lives inside the existing top-level providers so navigation can adapt after login, but it does not render the authenticated sidebar, account navigation or Admin controls. `/app`, `/settings/billing` and `/admin` continue to use the M6.5A `AppShell`; `/health` keeps its small diagnostic layout.
 
 ## Route ownership
 
@@ -8,16 +8,19 @@ The public site uses a dedicated `PublicShell` for `/`, `/pricing`, `/login`, `/
 | --- | --- |
 | `/` | Static Home page and accurate synthetic product preview |
 | `/pricing` | Static page metadata plus a client catalog query to `GET /api/v1/billing/plans` |
+| `/about` | Static product introduction and links to Plans, Terms and Privacy |
+| `/privacy` | Static privacy policy reflecting current data handling |
+| `/terms` | Static Terms of Service |
 | `/login` | Existing login form inside the public shell |
 | `/register` | Existing signup workflow exposed at the requested public route |
 | `/robots.txt` | Next.js metadata route with public allowance and private-path exclusions |
-| `/sitemap.xml` | Next.js metadata route containing only Home, Pricing, Login and Register |
+| `/sitemap.xml` | Next.js metadata route containing only implemented public pages |
 
 `frontend/src/lib/site.ts` provides the canonical origin from `NEXT_PUBLIC_SITE_URL`. Local and Docker development default to `http://localhost:3000`; deployments should set the public HTTPS origin.
 
 ## Public shell
 
-The shell owns the sticky header, logo, Home/Pricing navigation, login/account link, primary start/app link, mobile drawer, skip link and footer. It reuses the M6.5A `Drawer`, `Icon`, `IconButton`, button styles and focus-management behavior. One shared navigation definition supplies desktop and mobile active-route state. The footer only links to implemented Product and Account routes, so there are no placeholder Docs, Terms or Privacy links.
+The shell owns the sticky header, logo, Home/Pricing navigation, login/account link, primary start/app link, mobile drawer, skip link and footer. It reuses the M6.5A `Drawer`, `Icon`, `IconButton`, button styles and focus-management behavior. One shared navigation definition supplies desktop and mobile active-route state. The footer only links to implemented Product and Account routes, so there are no placeholder routes in navigation.
 
 Logged-out users see Log in and Get Started. Logged-in users see Account and Open App. The mobile drawer traps keyboard focus, closes with Escape or navigation, restores trigger focus and releases page scrolling.
 
@@ -50,11 +53,11 @@ Free CTAs lead logged-out visitors to `/register` and authenticated visitors to 
 
 Root metadata defines the product title template and `metadataBase`. Home and Pricing each supply a description, canonical URL, Open Graph fields and Twitter summary metadata. Home emits a limited `SoftwareApplication` JSON-LD object with no invented offers, reviews or ratings.
 
-The sitemap contains only `/`, `/pricing`, `/login`, `/register` and `/terms`. Robots rules disallow `/app`, `/admin`, `/settings` and `/api`. Backend authorization and route guards remain responsible for security; robots directives only guide crawlers.
+The sitemap contains only `/`, `/pricing`, `/login`, `/register`, `/terms`, `/privacy` and `/about`. Robots rules disallow `/app`, `/admin`, `/settings` and `/api`. Backend authorization and route guards remain responsible for security; robots directives only guide crawlers.
 
 ## Responsive and accessibility rules
 
-Public CSS shares the light M6.5A tokens, strong type, navy surfaces, blue actions, borders, radii and restrained shadows. The Hero changes from two columns to a stack below 980px. Pricing changes from three columns to two below 980px and one below 760px. Details, usage, footer and feature grids stack at the same responsive boundaries. At 960px and below, desktop navigation is replaced by the accessible drawer.
+Public CSS shares the light M6.5A tokens, strong type, navy surfaces, blue actions, borders, radii and restrained shadows. The Hero changes from two columns to a stack below 980px. Pricing changes from three columns to two below 980px and one below 760px. Details, usage, footer and feature grids stack at the same responsive boundaries. At 1100px and below, desktop navigation is replaced by the accessible drawer.
 
 Pages use header, navigation, main, section, article and footer landmarks; a single page-level `h1`; ordered `h2`/`h3` structure; textual Plan/status labels; real links for navigation and buttons only for actions. Shared `:focus-visible` styling and Drawer focus management apply to public controls.
 
@@ -70,3 +73,35 @@ M6.5C may add the customer API and API keys, and M6.5D may add developer documen
 The registration checkbox keeps its existing required acceptance behavior. Its inline Terms of Service link opens `/terms` in a separate tab with `noopener noreferrer`, preserving the in-progress registration form. Opening the link does not check the checkbox or submit the form. The same AuthForm covers `/register` and `/signup`.
 
 Verification: 94 frontend tests in 18 files passed, along with ESLint, Prettier, strict TypeScript and the production Docker frontend build. Chrome checked the public page, header/footer/drawer links, metadata, sitemap, and registration popup/form preservation at 375, 768, 1024 and 1440px. Screenshots are local artifacts under `.tools/terms/`. Header navigation switches to the shared drawer at tablet widths to accommodate the additional link without wrapping the account actions. Backend authentication and acceptance persistence are unchanged.
+## Privacy and About us (2026-10-03)
+
+`/privacy` and `/about` are public static pages using the same article layout as
+Terms of Service. Both provide descriptions, canonical URLs and Open Graph
+metadata, and appear in the shared desktop/mobile navigation, footer and sitemap.
+The public header switches to the drawer at 1100px to accommodate the added links.
+Registration also links to Privacy Policy in a separate tab, preserving form input
+and the existing Terms acceptance requirement.
+
+Privacy describes account, tracking, subscription and operational records,
+essential authentication cookies, search-data providers, report email delivery,
+retention and administrator-assisted requests. It reflects current implementation:
+report files expire (30 days by default); other records have no automatic deletion
+period. It does not promise self-service account deletion or a particular
+jurisdiction's compliance. About us describes the product purpose and implemented
+features without inventing team members, company history or customer counts.
+
+The owner has deferred the operator identity and contact email. Both pages currently
+refer account questions to the responsible administrator, consistent with Terms.
+Before public launch, add the confirmed operator/contact details and confirm actual
+hosting providers, data locations and retention policies against the deployment.
+Privacy notice structure was informed by the [ICO guidance on privacy information](https://cy.ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/individual-rights/the-right-to-be-informed/what-privacy-information-should-we-provide/);
+this is not a claim that UK GDPR applies to this service.
+
+Verification: all 109 existing frontend tests passed across 22 files using Node
+22.22.0, alongside ESLint, TypeScript, formatting checks and the production build.
+Chrome checked both pages at 375, 768, 1024 and 1440px: public layout, active
+navigation, footer links, canonical/Open Graph URLs, no horizontal overflow,
+mobile drawer and sitemap. Opening Privacy from registration preserved form
+values and left Terms unchecked. Browser checks mocked only session refresh;
+no registration request was submitted. Screenshots were inspected from temporary
+files rather than committed to the repository.

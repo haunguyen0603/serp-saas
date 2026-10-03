@@ -147,6 +147,18 @@ it("registers and redirects without submitting confirmation", async () => {
   });
 });
 
+it("redirects a new unverified signup to email verification", async () => {
+  vi.mocked(api.register).mockResolvedValue({
+    ...result,
+    email_verification_required: true,
+  });
+  await fill();
+  fireEvent.click(screen.getByRole("checkbox"));
+  fireEvent.submit(screen.getByRole("form"));
+  await waitFor(() => expect(replace).toHaveBeenCalledWith("/verify-email"));
+  expect(replace).not.toHaveBeenCalledWith("/app");
+});
+
 it.each([
   [409, "This email is already registered."],
   [0, "The service is unavailable."],

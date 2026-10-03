@@ -199,12 +199,16 @@ cookies, and DEBUG=true. Never put authentication secrets in `NEXT_PUBLIC_*`.
 
 ## Authentication
 
+See [email verification](docs/architecture/email-verification.md) for signup, resend,
+expiry, SMTP/TLS settings and production requirements. Existing unverified accounts
+can log in to request an email; their resources and history are preserved.
+
 Visit `/signup`, enter an email and a 10–128 character password, confirm the
-password, and accept the Terms checkbox. Registration immediately signs you in
-and opens `/app`. There is no separate tenant setup, email verification gate, or
-second login. `/login` signs in existing active accounts. Email is trimmed and
-lowercased without removing plus aliases or dots. No legal document is invented
-for the Terms checkbox in this milestone.
+password, and accept the Terms checkbox. Registration starts a limited session
+and opens `/verify-email`. Open the verification email, then confirm the address
+to access `/app`. Local mail is captured at `http://localhost:8025` (Mailpit).
+`/login` signs in existing active accounts. Email is trimmed and lowercased
+without removing plus aliases or dots. The Terms checkbox links to `/terms`.
 
 Passwords use Argon2id. A 15-minute signed access JWT lives only in frontend memory.
 A cryptographically random refresh token lives only in an HttpOnly cookie, with

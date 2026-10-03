@@ -49,6 +49,8 @@ def register_error_handlers(app: FastAPI) -> None:
         )
         if exc.status == 401:
             response.headers["WWW-Authenticate"] = "Bearer"
+        if exc.status == 429 and exc.details and "retry_after_seconds" in exc.details:
+            response.headers["Retry-After"] = str(exc.details["retry_after_seconds"])
         return response
 
     @app.exception_handler(DependencyUnavailable)

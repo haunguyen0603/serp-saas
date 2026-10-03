@@ -55,7 +55,7 @@ def test_fresh_database_upgrade_and_forward_only_boundary(
 
     try:
         command.upgrade(config, "head")
-        assert asyncio.run(revision()) == "0012_competitor_analytics"
+        assert asyncio.run(revision()) == "0013_email_verification"
 
         async def tables() -> set[str]:
             async with engine.connect() as connection:
@@ -74,6 +74,7 @@ def test_fresh_database_upgrade_and_forward_only_boundary(
             "billing_audit_events",
             "users",
             "refresh_tokens",
+            "email_verification_tokens",
             "projects",
             "keywords",
             "tracked_sites",
@@ -97,10 +98,10 @@ def test_fresh_database_upgrade_and_forward_only_boundary(
         command.downgrade(config, "0005_rank_tracking")
         assert asyncio.run(revision()) == "0005_rank_tracking"
         command.upgrade(config, "head")
-        assert asyncio.run(revision()) == "0012_competitor_analytics"
+        assert asyncio.run(revision()) == "0013_email_verification"
         with pytest.raises(RuntimeError, match="intentionally irreversible"):
             command.downgrade(config, "0003_projects_keywords")
-        assert asyncio.run(revision()) == "0012_competitor_analytics"
+        assert asyncio.run(revision()) == "0013_email_verification"
     finally:
         asyncio.run(engine.dispose())
         asyncio.run(admin_sql(f'DROP SCHEMA "{schema}" CASCADE'))

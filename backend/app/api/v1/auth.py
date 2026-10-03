@@ -1,9 +1,23 @@
-from fastapi import APIRouter, Request, Response
+from fastapi import APIRouter, BackgroundTasks, Request, Response
 
 from app.core.auth_http import clear_refresh_cookie, set_refresh_cookie
-from app.dependencies.auth import AppSettings, Authentication
+from app.dependencies.auth import (
+    AppSettings,
+    AuthenticatedUser,
+    Authentication,
+    DBSession,
+)
 from app.schemas.auth import AuthResponse, LoginRequest, RegisterRequest, SessionRequest
+from app.schemas.email_verification import (
+    VerificationStatus,
+    VerifiedEmailResponse,
+    VerifyEmailRequest,
+)
 from app.schemas.health import ErrorResponse, HealthResponse
+from app.services.email_verification import (
+    EmailVerificationService,
+    deliver_verification_email,
+)
 
 router = APIRouter(
     prefix="/auth",
@@ -23,10 +37,56 @@ async def register(
     response: Response,
     auth: Authentication,
     settings: AppSettings,
+    request: Request,
+    background: BackgroundTasks,
 ) -> AuthResponse:
     issued = await auth.register(data)
     set_refresh_cookie(response, issued.refresh_token, settings)
+    if issued.verification is not None:
+        background.add_task(
+            deliver_verification_email,
+            issued.verification,
+            request.app.state.auth_email_sender,
+            request.app.state.session_factory,
+        )
     return issued.response
+
+
+@router.get("/email-verification")
+async def verification_status(
+    user: AuthenticatedUser, session: DBSession, settings: AppSettings
+) -> VerificationStatus:
+    return await EmailVerificationService(session, settings).status(user)
+
+
+@router.post("/email-verification/resend")
+async def resend_verification(
+    user: AuthenticatedUser,
+    session: DBSession,
+    settings: AppSettings,
+    request: Request,
+    background: BackgroundTasks,
+) -> VerificationStatus:
+    service = EmailVerificationService(session, settings)
+    pending = await service.request(user.id)
+    if pending is not None:
+        background.add_task(
+            deliver_verification_email,
+            pending,
+            request.app.state.auth_email_sender,
+            request.app.state.session_factory,
+        )
+    return await service.status(user)
+
+
+@router.post("/verify-email")
+async def verify_email(
+    data: VerifyEmailRequest, session: DBSession, settings: AppSettings
+) -> VerifiedEmailResponse:
+    user = await EmailVerificationService(session, settings).verify(
+        data.token.get_secret_value()
+    )
+    return VerifiedEmailResponse(user_id=user.id)
 
 
 @router.post("/login")

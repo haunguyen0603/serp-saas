@@ -27,6 +27,9 @@ def test_environment(monkeypatch: pytest.MonkeyPatch) -> None:
         "JWT_SECRET_KEY", "test-only-placeholder-secret-at-least-32-bytes"
     )
     monkeypatch.setenv("AUTH_COOKIE_SECURE", "false")
+    monkeypatch.setenv("AUTH_EMAIL_PROVIDER", "fake")
+    # Existing feature fixtures test ownership/quota independently of verification.
+    monkeypatch.setenv("AUTH_REQUIRE_VERIFIED_EMAIL", "false")
 
 
 @pytest.fixture

@@ -35,6 +35,7 @@ async def test_migration_matches_models(auth_app: FastAPI) -> None:
                 "billing_audit_events",
                 "users",
                 "refresh_tokens",
+                "email_verification_tokens",
                 "projects",
                 "keywords",
                 "tracked_sites",

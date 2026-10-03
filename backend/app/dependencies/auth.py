@@ -39,7 +39,7 @@ def get_auth_service(
 Authentication = Annotated[AuthService, Depends(get_auth_service)]
 
 
-async def get_current_user(
+async def get_authenticated_user(
     session: DBSession,
     settings: AppSettings,
     credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)],
@@ -48,6 +48,17 @@ async def get_current_user(
         raise AppError(401, "AUTHENTICATION_REQUIRED", "Authentication is required.")
     user_id = decode_access_token(credentials.credentials, settings)
     return await UserService(UserRepository(session)).current_user(user_id)
+
+
+AuthenticatedUser = Annotated[User, Depends(get_authenticated_user)]
+
+
+async def get_current_user(user: AuthenticatedUser, settings: AppSettings) -> User:
+    if settings.auth_require_verified_email and user.email_verified_at is None:
+        raise AppError(
+            403, "EMAIL_NOT_VERIFIED", "Verify your email before using the application."
+        )
+    return user
 
 
 CurrentUser = Annotated[User, Depends(get_current_user)]

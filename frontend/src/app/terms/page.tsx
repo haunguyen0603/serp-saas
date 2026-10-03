@@ -54,8 +54,10 @@ export default function TermsPage() {
           <p>
             Provide accurate account information and keep your sign-in
             credentials secure. You are responsible for activity carried out
-            through your account. Do not use another person’s account without
-            permission or attempt to access another customer’s data.
+            through your account. When email verification is required, confirm
+            your email address before using the workspace. Do not use another
+            person’s account without permission or attempt to access another
+            customer’s data.
           </p>
         </section>
 

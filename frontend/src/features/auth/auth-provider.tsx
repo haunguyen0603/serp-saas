@@ -36,6 +36,10 @@ export function useAuth() {
     ...state,
     isAuthenticated: state.status === "authenticated",
     isLoading: state.status === "loading",
+    requiresEmailVerification:
+      state.emailVerificationRequired &&
+      !!state.user &&
+      !state.user.email_verified,
     login: session.login,
     register: session.register,
     logout: session.logout,

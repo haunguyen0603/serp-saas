@@ -37,6 +37,14 @@ const errorMessages: Record<string, string> = {
 
   INVALID_CREDENTIALS: "Invalid email or password.",
   EMAIL_ALREADY_REGISTERED: "This email is already registered.",
+  EMAIL_NOT_VERIFIED: "Verify your email before using the application.",
+  INVALID_VERIFICATION_TOKEN:
+    "This verification link is invalid or has already been used. Open the latest email or request a new link.",
+  VERIFICATION_TOKEN_EXPIRED:
+    "This verification link has expired. Request a new email.",
+  VERIFICATION_RATE_LIMITED: "Please wait before requesting another email.",
+  AUTH_EMAIL_UNAVAILABLE:
+    "Email delivery is unavailable. Please try again later.",
   PASSWORD_POLICY_VIOLATION: "Password must contain 10 to 128 characters.",
   TERMS_NOT_ACCEPTED: "You must accept the Terms of Service.",
   AUTHENTICATION_REQUIRED: "Please log in to continue.",

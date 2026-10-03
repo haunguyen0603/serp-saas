@@ -31,3 +31,9 @@ export const refreshSession = () => session("/api/v1/auth/refresh", {});
 export const logout = async () => {
   await requestJson<{ status: "ok" }>("/api/v1/auth/logout", post({}));
 };
+
+export const verifyEmail = (token: string) =>
+  requestJson<{ status: "verified"; user_id: string }>(
+    "/api/v1/auth/verify-email",
+    post({ token }),
+  );

@@ -1,4 +1,13 @@
 services:
+  mailpit:
+    image: axllent/mailpit:v1.31.3
+    environment:
+      MP_DATABASE: /data/mailpit.db
+    ports:
+      - "127.0.0.1:8025:8025"
+    volumes:
+      - mailpit_data:/data
+
   postgres:
     image: postgres:16.13-bookworm
     environment:
@@ -72,6 +81,19 @@ services:
       AUTH_COOKIE_NAME: ${AUTH_COOKIE_NAME:-serp_refresh_token}
       AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-false}
       AUTH_COOKIE_SAMESITE: ${AUTH_COOKIE_SAMESITE:-lax}
+      AUTH_REQUIRE_VERIFIED_EMAIL: ${AUTH_REQUIRE_VERIFIED_EMAIL:-true}
+      AUTH_SITE_URL: ${AUTH_SITE_URL:-http://localhost:3000}
+      AUTH_VERIFICATION_EXPIRE_MINUTES: ${AUTH_VERIFICATION_EXPIRE_MINUTES:-60}
+      AUTH_VERIFICATION_RESEND_SECONDS: ${AUTH_VERIFICATION_RESEND_SECONDS:-60}
+      AUTH_VERIFICATION_MAX_EMAILS_PER_HOUR: ${AUTH_VERIFICATION_MAX_EMAILS_PER_HOUR:-5}
+      AUTH_EMAIL_PROVIDER: ${AUTH_EMAIL_PROVIDER:-smtp}
+      AUTH_EMAIL_FROM: ${AUTH_EMAIL_FROM:-SERP SaaS <noreply@serp-saas.local>}
+      AUTH_SMTP_HOST: ${AUTH_SMTP_HOST:-mailpit}
+      AUTH_SMTP_PORT: ${AUTH_SMTP_PORT:-1025}
+      AUTH_SMTP_USERNAME: ${AUTH_SMTP_USERNAME:-}
+      AUTH_SMTP_PASSWORD: ${AUTH_SMTP_PASSWORD:-}
+      AUTH_SMTP_STARTTLS: ${AUTH_SMTP_STARTTLS:-false}
+      AUTH_SMTP_SSL: ${AUTH_SMTP_SSL:-false}
       SERP_PROVIDER: ${SERP_PROVIDER:-fake}
       SERP_ENABLED_PROVIDERS: ${SERP_ENABLED_PROVIDERS:-}
       SERP_PROVIDER_STRATEGY: ${SERP_PROVIDER_STRATEGY:-priority}
@@ -94,6 +116,8 @@ services:
     volumes:
       - report_artifacts:/var/lib/serp-saas/reports
     depends_on:
+      mailpit:
+        condition: service_started
       postgres:
         condition: service_healthy
       redis:
@@ -146,5 +170,6 @@ services:
       start_period: 20s
 
 volumes:
+  mailpit_data:
   postgres_data:
   report_artifacts:

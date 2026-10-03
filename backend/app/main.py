@@ -16,6 +16,7 @@ from app.core.middleware import RequestLoggingMiddleware
 from app.core.redis import create_redis_client
 from app.core.security import hash_password
 from app.db.session import create_engine, create_session_factory
+from app.services.auth_email import create_auth_email_sender
 from app.services.report_email import create_report_email_sender
 from app.services.report_storage import create_report_storage
 from app.services.task_queue import create_task_queue
@@ -33,6 +34,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         app.state.task_queue = create_task_queue(settings)
         app.state.report_storage = create_report_storage(settings)
         app.state.report_email_sender = create_report_email_sender(settings)
+        app.state.auth_email_sender = create_auth_email_sender(settings)
         app.state.redis = client
         try:
             app.state.dummy_password_hash = await run_in_threadpool(

@@ -65,6 +65,9 @@ and provider concurrency together. Keep API and worker pool budgets below Cloud 
 connection limit. Set an Artifact Registry cleanup policy and use a small staging DB.
 
 Use workload identity / runtime service accounts; no downloaded private keys in `.env`.
+Signup verification also requires production SMTP configuration and an HTTPS
+`AUTH_SITE_URL` matching the frontend origin. See [email verification](email-verification.md)
+for auth mail settings, TLS, verification gates and local Mailpit acceptance.
 Provide DATABASE_URL, JWT and SERP keys using Secret Manager. The existing asyncpg URL
 configuration remains compatible with Cloud Run → Cloud SQL private/proxy connectivity.
 No GCP or provider credentials belong in NEXT_PUBLIC variables. Configure all services

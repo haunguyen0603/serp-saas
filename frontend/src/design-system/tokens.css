@@ -763,8 +763,24 @@
   border-radius: var(--ds-radius-md);
   box-shadow: var(--ds-shadow-md);
 }
-.ui-dropdown-content > a {
+.ui-dropdown-content > a,
+.ui-dropdown-content > button {
   padding: 10px;
+}
+.ui-dropdown-content > button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ui-dropdown-content > button:hover:not(:disabled) {
+  color: var(--ds-brand);
+}
+.ui-dropdown-content > button:disabled {
+  opacity: 0.6;
+  cursor: wait;
 }
 .ui-tooltip {
   position: relative;

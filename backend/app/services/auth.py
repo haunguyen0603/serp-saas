@@ -18,6 +18,10 @@ from app.repositories.refresh_token import RefreshTokenRepository
 from app.repositories.user import UserRepository
 from app.schemas.auth import AuthResponse, LoginRequest, RegisterRequest
 from app.schemas.user import UserResponse
+from app.services.email_verification import (
+    EmailVerificationService,
+    PendingVerification,
+)
 from app.services.users import require_active
 
 logger = logging.getLogger(__name__)
@@ -27,6 +31,7 @@ logger = logging.getLogger(__name__)
 class IssuedSession:
     response: AuthResponse = field(repr=False)
     refresh_token: str = field(repr=False)
+    verification: PendingVerification | None = field(default=None, repr=False)
 
 
 class AuthService:
@@ -54,6 +59,7 @@ class AuthService:
                 access_token=create_access_token(user.id, self.settings),
                 expires_in=self.settings.access_token_expire_minutes * 60,
                 user=UserResponse.from_user(user),
+                email_verification_required=self.settings.auth_require_verified_email,
             ),
             raw,
         )
@@ -69,7 +75,11 @@ class AuthService:
             raise AppError(
                 409, "EMAIL_ALREADY_REGISTERED", "This email is already registered."
             )
-        result = await self.issue_session(user)
+        pending = await EmailVerificationService(
+            self.users.session, self.settings
+        ).request(user.id)
+        issued = await self.issue_session(user)
+        result = IssuedSession(issued.response, issued.refresh_token, pending)
         logger.info("Registration succeeded")
         return result
 

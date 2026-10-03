@@ -142,6 +142,11 @@ def test_production_cookie_and_secret(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("SCHEDULER_SERVICE_ACCOUNT_EMAIL", "scheduler@test.example")
     monkeypatch.setenv("REPORT_STORAGE_PROVIDER", "gcs")
     monkeypatch.setenv("REPORT_STORAGE_BUCKET", "private-report-artifacts")
+    monkeypatch.setenv("AUTH_EMAIL_PROVIDER", "smtp")
+    monkeypatch.setenv("AUTH_SITE_URL", "https://app.example")
+    monkeypatch.setenv("AUTH_EMAIL_FROM", "noreply@example.com")
+    monkeypatch.setenv("AUTH_SMTP_HOST", "smtp.example.com")
+    monkeypatch.setenv("AUTH_SMTP_STARTTLS", "true")
     assert Settings().auth_cookie_secure
 
 

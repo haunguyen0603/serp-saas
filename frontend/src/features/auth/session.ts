@@ -12,6 +12,7 @@ export interface AuthState {
   accessToken: string | null;
   status: "loading" | "authenticated" | "anonymous" | "error";
   error: string | null;
+  emailVerificationRequired: boolean;
 }
 
 export type AuthenticatedRequest = <T>(
@@ -24,6 +25,7 @@ const initial: AuthState = {
   accessToken: null,
   status: "loading",
   error: null,
+  emailVerificationRequired: false,
 };
 
 // One instance per mounted provider, never a server-wide mutable singleton.
@@ -57,6 +59,7 @@ export class AuthSession {
       accessToken: response.access_token,
       status: "authenticated",
       error: null,
+      emailVerificationRequired: response.email_verification_required ?? false,
     });
   }
 
@@ -87,6 +90,7 @@ export class AuthSession {
             error: unauthorized
               ? null
               : "The service is unavailable. Please try again.",
+            emailVerificationRequired: false,
           });
         }
         throw error;
@@ -102,6 +106,7 @@ export class AuthSession {
     const result = await api.register(input);
     this.generation++;
     this.accept(result);
+    return result;
   };
 
   login = async (input: LoginInput) => {
@@ -109,6 +114,7 @@ export class AuthSession {
     const result = await api.login(input);
     this.generation++;
     this.accept(result);
+    return result;
   };
 
   logout = async () => {
@@ -121,6 +127,7 @@ export class AuthSession {
       accessToken: null,
       status: "anonymous",
       error: null,
+      emailVerificationRequired: false,
     });
   };
 

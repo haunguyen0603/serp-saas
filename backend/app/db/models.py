@@ -1,6 +1,7 @@
 """Import future ORM models here so Alembic discovers their metadata."""
 
 from app.db.base import Base
+from app.models.email_verification import EmailVerificationToken
 from app.models.keyword import Keyword
 from app.models.keyword_organization import (
     KeywordGroup,
@@ -38,6 +39,7 @@ __all__ = [
     "ProjectRankSchedule",
     "User",
     "RefreshToken",
+    "EmailVerificationToken",
     "Project",
     "ProjectCompetitorSite",
     "Keyword",

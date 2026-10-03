@@ -53,6 +53,7 @@ class AuthResponse(BaseModel):
     token_type: Literal["bearer"] = "bearer"
     expires_in: int
     user: UserResponse
+    email_verification_required: bool = True
 
 
 class SessionRequest(BaseModel):

@@ -395,6 +395,9 @@
   color: var(--ds-brand);
   font-weight: 650;
 }
+.public-cta-row > .public-text-link {
+  margin-top: 0;
+}
 .device-comparison {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -770,7 +773,7 @@
     gap: 45px;
   }
 }
-@media (max-width: 960px) {
+@media (max-width: 1100px) {
   .public-header-inner {
     min-height: 66px;
     display: flex;

@@ -33,6 +33,19 @@ class Settings(BaseSettings):
     )
     auth_cookie_secure: bool = False
     auth_cookie_samesite: Literal["lax", "strict", "none"] = "lax"
+    auth_require_verified_email: bool = True
+    auth_site_url: str = "http://localhost:3000"
+    auth_verification_expire_minutes: int = Field(default=60, ge=5, le=1440)
+    auth_verification_resend_seconds: int = Field(default=60, ge=10, le=3600)
+    auth_verification_max_emails_per_hour: int = Field(default=5, ge=1, le=20)
+    auth_email_provider: Literal["disabled", "fake", "smtp"] = "disabled"
+    auth_email_from: str = ""
+    auth_smtp_host: str = ""
+    auth_smtp_port: int = Field(default=587, ge=1, le=65535)
+    auth_smtp_username: str = ""
+    auth_smtp_password: SecretStr | None = None
+    auth_smtp_starttls: bool = True
+    auth_smtp_ssl: bool = False
     # SERP_PROVIDER remains as a compatibility fallback for existing M4 installs.
     serp_provider: Literal["serpapi", "serper", "fake"] = "serpapi"
     serp_enabled_providers: str | None = None
@@ -98,6 +111,22 @@ class Settings(BaseSettings):
         if len(value.get_secret_value().encode()) < 32:
             raise ValueError("JWT_SECRET_KEY must contain at least 32 bytes")
         return value
+
+    @field_validator("auth_site_url")
+    @classmethod
+    def validate_auth_site_url(cls, value: str) -> str:
+        url = urlsplit(value)
+        if (
+            url.scheme not in {"http", "https"}
+            or not url.hostname
+            or url.username
+            or url.password
+            or url.path not in ("", "/")
+            or url.query
+            or url.fragment
+        ):
+            raise ValueError("AUTH_SITE_URL must be an explicit HTTP(S) origin")
+        return value.rstrip("/")
 
     @field_validator("database_url")
     @classmethod
@@ -309,6 +338,32 @@ class Settings(BaseSettings):
                     "REPORT_SMTP_USERNAME and REPORT_SMTP_PASSWORD must be "
                     "configured together"
                 )
+        return self
+
+    @model_validator(mode="after")
+    def validate_auth_email(self) -> Self:
+        if self.auth_email_provider == "smtp":
+            if not self.auth_smtp_host or not self.auth_email_from:
+                raise ValueError(
+                    "Auth SMTP requires AUTH_SMTP_HOST and AUTH_EMAIL_FROM"
+                )
+            if any(c in self.auth_email_from for c in "\r\n"):
+                raise ValueError("AUTH_EMAIL_FROM must not contain newlines")
+            if self.auth_smtp_starttls and self.auth_smtp_ssl:
+                raise ValueError("Choose either auth SMTP STARTTLS or implicit SSL")
+            if bool(self.auth_smtp_username) != bool(
+                self.auth_smtp_password and self.auth_smtp_password.get_secret_value()
+            ):
+                raise ValueError(
+                    "Auth SMTP username and password must be configured together"
+                )
+        if self.app_env == "production":
+            if self.auth_email_provider != "smtp":
+                raise ValueError("Production email verification requires SMTP")
+            if not self.auth_site_url.startswith("https://"):
+                raise ValueError("Production AUTH_SITE_URL requires HTTPS")
+            if not (self.auth_smtp_starttls or self.auth_smtp_ssl):
+                raise ValueError("Production auth SMTP requires TLS")
         return self
 
 

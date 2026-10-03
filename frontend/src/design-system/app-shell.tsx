@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState, type ReactNode } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState, type ReactNode } from "react";
 import { useAuth } from "@/features/auth/auth-provider";
 import { Drawer, DropdownMenu, Icon, IconButton } from "./ui";
 import { PublicShell } from "./public-shell";
@@ -31,21 +31,52 @@ const routes = [
 export function AppShell({ children }: { children: ReactNode }) {
   const path = usePathname();
   const auth = useAuth();
+  const router = useRouter();
   const [mobile, setMobile] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState<string | null>(null);
+  async function logout() {
+    if (loggingOut) return;
+    setLoggingOut(true);
+    setLogoutError(null);
+    try {
+      await auth.logout();
+      router.replace("/login");
+    } catch {
+      setLogoutError("Logout could not be completed. Please try again.");
+    } finally {
+      setLoggingOut(false);
+    }
+  }
   const customer =
     path === "/app" ||
     path.startsWith("/app/") ||
     path === "/settings/billing" ||
     path.startsWith("/admin/");
+  useEffect(() => {
+    if (customer && auth.isAuthenticated && auth.requiresEmailVerification)
+      router.replace("/verify-email");
+  }, [customer, auth.isAuthenticated, auth.requiresEmailVerification, router]);
   const publicSite = [
     "/",
     "/pricing",
+    "/about",
+    "/privacy",
     "/terms",
     "/login",
     "/register",
     "/signup",
+    "/verify-email",
   ].includes(path);
   if (publicSite) return <PublicShell>{children}</PublicShell>;
+  if (customer && auth.isAuthenticated && auth.requiresEmailVerification)
+    return (
+      <PublicShell>
+        <main className="public-main py-12">
+          <p role="status">Redirecting to email verification…</p>
+        </main>
+      </PublicShell>
+    );
   if (!customer)
     return (
       <div className="mx-auto max-w-3xl px-6 py-12">
@@ -161,10 +192,22 @@ export function AppShell({ children }: { children: ReactNode }) {
             <DropdownMenu label="Account">
               <Link href="/app/settings">Profile & settings</Link>
               <Link href="/settings/billing">Billing & Usage</Link>
+              <button
+                type="button"
+                onClick={() => void logout()}
+                disabled={loggingOut}
+              >
+                {loggingOut ? "Logging out…" : "Logout"}
+              </button>
             </DropdownMenu>
           </div>
         </header>
         <div id="main-content" tabIndex={-1} className="app-content">
+          {logoutError && (
+            <p role="alert" className="mb-4">
+              {logoutError}
+            </p>
+          )}
           {children}
         </div>
       </div>

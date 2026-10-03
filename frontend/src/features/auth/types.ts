@@ -15,6 +15,14 @@ export interface AuthResponse {
   token_type: "bearer";
   expires_in: number;
   user: User;
+  email_verification_required?: boolean;
+}
+
+export interface VerificationStatus {
+  verified: boolean;
+  delivery_status: "not_requested" | "pending" | "sent" | "failed" | "verified";
+  retry_after_seconds: number;
+  expires_at: string | null;
 }
 
 export interface LoginInput {
