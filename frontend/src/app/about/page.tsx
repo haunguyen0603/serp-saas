@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { appHref } from "@/lib/site";
 
 const description =
   "Learn about SERP SaaS, a focused workspace for Google keyword rankings, Desktop and Mobile tracking, and ranking history.";
@@ -89,7 +90,7 @@ export default function AboutPage() {
             the current limits and prices before choosing a Plan.
           </p>
           <div className="public-cta-row">
-            <Link href="/register" className="ui-link-button">
+            <Link href={appHref("/register")} className="ui-link-button">
               Start Free
             </Link>
             <Link href="/pricing" className="public-text-link">

@@ -157,6 +157,7 @@ services:
         NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:?Set NEXT_PUBLIC_API_BASE_URL in .env}
         NEXT_PUBLIC_APP_ENV: ${NEXT_PUBLIC_APP_ENV:?Set NEXT_PUBLIC_APP_ENV in .env}
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-}
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:

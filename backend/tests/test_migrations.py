@@ -47,6 +47,12 @@ def test_fresh_database_upgrade_and_forward_only_boundary(
     schema, admin, engine, admin_sql = isolated_migration_context(settings, monkeypatch)
     config = Config("alembic.ini")
 
+    # A production migration job receives only DATABASE_URL. Missing runtime
+    # secrets or even unrelated malformed settings must not block schema upgrades.
+    monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
+    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("DEBUG", "release")
+
     async def revision() -> str | None:
         async with engine.connect() as connection:
             return await connection.scalar(

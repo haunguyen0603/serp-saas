@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen, within } from "@testing-library/react";
-import { beforeEach, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import HomePage from "@/app/page";
 import { PublicShell } from "@/design-system/public-shell";
 import type { Plan } from "@/features/billing/types";
@@ -48,6 +48,36 @@ function view(component: React.ReactNode) {
 beforeEach(() => {
   state.authenticated = false;
   state.request.mockReset();
+});
+
+afterEach(() => vi.unstubAllEnvs());
+
+it("sends commercial CTAs to app and keeps desktop/mobile legal links on the main domain", () => {
+  vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://serpsaas.com");
+  vi.stubEnv("NEXT_PUBLIC_APP_URL", "https://app.serpsaas.com");
+  view(
+    <PublicShell>
+      <HomePage />
+    </PublicShell>,
+  );
+  expect(screen.getByRole("link", { name: "Get Started" })).toHaveAttribute(
+    "href",
+    "https://app.serpsaas.com/register",
+  );
+  for (const link of screen.getAllByRole("link", { name: "Start Free" })) {
+    expect(link).toHaveAttribute("href", "https://app.serpsaas.com/register");
+  }
+  for (const link of screen.getAllByRole("link", { name: "Privacy Policy" })) {
+    expect(link).toHaveAttribute("href", "https://serpsaas.com/privacy");
+  }
+  fireEvent.click(
+    screen.getByRole("button", { name: "Open public navigation" }),
+  );
+  expect(
+    within(screen.getByRole("dialog")).getByRole("link", {
+      name: "Get Started",
+    }),
+  ).toHaveAttribute("href", "https://app.serpsaas.com/register");
 });
 
 it("preserves fractional catalog prices on public Pricing", async () => {

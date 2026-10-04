@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { useProtectedAuth } from "@/features/projects/protected";
 import type { BillingSummary, DeviceBilling, Plan } from "./types";
+import { siteHref } from "@/lib/site";
 
 export const money = (plan: Plan) =>
   new Intl.NumberFormat("en-US", {
@@ -140,7 +141,7 @@ export function BillingPage() {
           instructions. Paid Plans are activated after payment is confirmed.
         </p>
       </Card>
-      <Link className="text-brand underline" href="/pricing">
+      <Link className="text-brand underline" href={siteHref("/pricing")}>
         View Plans and prices
       </Link>
     </main>

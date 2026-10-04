@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { useAuth } from "@/features/auth/auth-provider";
 import { Drawer, Icon, IconButton } from "./ui";
+import { appHref, siteHref } from "@/lib/site";
 
 const links = [
   { href: "/", label: "Home" },
@@ -33,7 +34,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
       {links.map((link) => (
         <Link
           key={link.href}
-          href={link.href}
+          href={siteHref(link.href)}
           aria-current={path === link.href ? "page" : undefined}
           onClick={() => setOpen(false)}
         >
@@ -50,7 +51,11 @@ export function PublicShell({ children }: { children: ReactNode }) {
       </a>
       <header className="public-header">
         <div className="public-header-inner">
-          <Link href="/" className="public-logo" aria-label="SERP SaaS home">
+          <Link
+            href={siteHref("/")}
+            className="public-logo"
+            aria-label="SERP SaaS home"
+          >
             <span className="app-logo-mark">
               <Icon name="chart" />
             </span>
@@ -59,15 +64,15 @@ export function PublicShell({ children }: { children: ReactNode }) {
           <div className="public-desktop-nav">{navigation}</div>
           <div className="public-header-actions">
             {auth.isAuthenticated ? (
-              <Link href="/app/settings" className="public-login">
+              <Link href={appHref("/app/settings")} className="public-login">
                 Account
               </Link>
             ) : (
-              <Link href="/login" className="public-login">
+              <Link href={appHref("/login")} className="public-login">
                 Log in
               </Link>
             )}
-            <Link href={startHref} className="ui-link-button">
+            <Link href={appHref(startHref)} className="ui-link-button">
               {startLabel}
             </Link>
           </div>
@@ -86,23 +91,23 @@ export function PublicShell({ children }: { children: ReactNode }) {
       <footer className="public-footer">
         <div className="public-footer-inner">
           <div>
-            <Link href="/" className="public-logo">
+            <Link href={siteHref("/")} className="public-logo">
               SERP SaaS
             </Link>
             <p>Clear Google rank tracking for focused SEO teams.</p>
           </div>
           <nav aria-label="Product links">
             <strong>Product</strong>
-            <Link href="/">Home</Link>
-            <Link href="/pricing">Pricing</Link>
-            <Link href="/about">About us</Link>
-            <Link href="/privacy">Privacy Policy</Link>
-            <Link href="/terms">Terms of Service</Link>
+            <Link href={siteHref("/")}>Home</Link>
+            <Link href={siteHref("/pricing")}>Pricing</Link>
+            <Link href={siteHref("/about")}>About us</Link>
+            <Link href={siteHref("/privacy")}>Privacy Policy</Link>
+            <Link href={siteHref("/terms")}>Terms of Service</Link>
           </nav>
           <nav aria-label="Account links">
             <strong>Account</strong>
-            <Link href="/login">Log in</Link>
-            <Link href="/register">Create account</Link>
+            <Link href={appHref("/login")}>Log in</Link>
+            <Link href={appHref("/register")}>Create account</Link>
           </nav>
         </div>
         <p className="public-copyright">
@@ -112,10 +117,12 @@ export function PublicShell({ children }: { children: ReactNode }) {
       <Drawer open={open} onClose={() => setOpen(false)} title="SERP SaaS">
         {navigation}
         <div className="public-drawer-actions">
-          <Link href={auth.isAuthenticated ? "/app/settings" : "/login"}>
+          <Link
+            href={appHref(auth.isAuthenticated ? "/app/settings" : "/login")}
+          >
             {auth.isAuthenticated ? "Account" : "Log in"}
           </Link>
-          <Link href={startHref} className="ui-link-button">
+          <Link href={appHref(startHref)} className="ui-link-button">
             {startLabel}
           </Link>
         </div>

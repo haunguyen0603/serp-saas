@@ -6,6 +6,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { useAuth } from "./auth-provider";
 import { ApiError } from "@/lib/api/client";
 import { Button } from "@/design-system/ui";
+import { siteHref } from "@/lib/site";
 
 const inputStyle = "ui-input auth-input";
 
@@ -123,7 +124,7 @@ export function AuthForm({ mode }: { mode: "signup" | "login" }) {
               <span>
                 I accept the{" "}
                 <Link
-                  href="/terms"
+                  href={siteHref("/terms")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="ui-text-link"
@@ -136,7 +137,7 @@ export function AuthForm({ mode }: { mode: "signup" | "login" }) {
             <p className="text-sm text-secondary">
               Learn how we handle your information in our{" "}
               <Link
-                href="/privacy"
+                href={siteHref("/privacy")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ui-text-link"

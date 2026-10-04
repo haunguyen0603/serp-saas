@@ -10,6 +10,7 @@ import {
 } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { AuthSession } from "./session";
+import { shouldRestoreSession } from "@/lib/site";
 
 const AuthContext = createContext<AuthSession | null>(null);
 
@@ -17,7 +18,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
   const [session] = useState(() => new AuthSession(() => queryClient.clear()));
   useEffect(() => {
-    session.start();
+    if (shouldRestoreSession(window.location.host)) session.start();
   }, [session]);
   return (
     <AuthContext.Provider value={session}>{children}</AuthContext.Provider>

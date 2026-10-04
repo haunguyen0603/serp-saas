@@ -3,10 +3,12 @@ from typing import Literal, Self
 from urllib.parse import urlsplit
 
 from pydantic import Field, SecretStr, field_validator, model_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import SettingsConfigDict
+
+from app.core.database_config import DatabaseSettings
 
 
-class Settings(BaseSettings):
+class Settings(DatabaseSettings):
     model_config = SettingsConfigDict(
         env_file=("../.env", ".env"),
         case_sensitive=False,
@@ -21,7 +23,6 @@ class Settings(BaseSettings):
     debug: bool
     backend_host: str = "0.0.0.0"
     backend_port: int = Field(default=8000, ge=1, le=65535)
-    database_url: SecretStr
     redis_url: SecretStr
     cors_origins: list[str]
     jwt_secret_key: SecretStr
@@ -127,14 +128,6 @@ class Settings(BaseSettings):
         ):
             raise ValueError("AUTH_SITE_URL must be an explicit HTTP(S) origin")
         return value.rstrip("/")
-
-    @field_validator("database_url")
-    @classmethod
-    def validate_database_url(cls, value: SecretStr) -> SecretStr:
-        url = urlsplit(value.get_secret_value())
-        if url.scheme != "postgresql+asyncpg" or not url.hostname or not url.path:
-            raise ValueError("DATABASE_URL must be a PostgreSQL asyncpg URL")
-        return value
 
     @field_validator("redis_url")
     @classmethod

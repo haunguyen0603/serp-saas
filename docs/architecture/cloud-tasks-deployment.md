@@ -1,5 +1,9 @@
 # Cloud Tasks / Cloud Run deployment preparation
 
+For the project's Cloud SQL PostgreSQL 16 instance and the initial database-only
+migration job, follow [Cloud SQL initialization](cloud-sql-deployment.md) first.
+After migration succeeds, follow the [API/worker deployment runbook](cloud-run-deployment.md).
+
 M5 does not deploy GCP resources automatically. Local acceptance is zero-cost with
 Docker, LocalTaskQueue and FakeSerpProvider. Cloud Tasks is the only production queue.
 

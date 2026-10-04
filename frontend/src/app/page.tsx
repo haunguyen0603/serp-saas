@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { appHref } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "Google Rank Tracker for Desktop & Mobile | SERP SaaS" },
@@ -76,7 +77,7 @@ export default function HomePage() {
           </p>
           <div className="public-cta-row">
             <Link
-              href="/register"
+              href={appHref("/register")}
               className="ui-link-button public-cta-primary"
             >
               Start Free
@@ -328,7 +329,7 @@ export default function HomePage() {
           on the Free Plans.
         </p>
         <div className="public-cta-row">
-          <Link href="/register" className="ui-link-button">
+          <Link href={appHref("/register")} className="ui-link-button">
             Start Free
           </Link>
           <Link href="/pricing" className="public-secondary-link">

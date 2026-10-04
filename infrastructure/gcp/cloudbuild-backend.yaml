@@ -1,0 +1,21 @@
+# Build from repository root. Secrets and local .env files are excluded by .dockerignore.
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --target
+      - production
+      - --file
+      - infrastructure/docker/backend.Dockerfile
+      - --tag
+      - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/backend:${_IMAGE_TAG}"
+      - .
+images:
+  - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/backend:${_IMAGE_TAG}"
+substitutions:
+  _REGION: asia-southeast1
+  _REPOSITORY: serp-saas
+  _IMAGE_TAG: cloudsql-initial
+timeout: 1200s
+options:
+  logging: CLOUD_LOGGING_ONLY

@@ -34,6 +34,10 @@ zero-credit development and keep the enabled/fixed provider settings consistent.
 - [Architecture and recovery](docs/architecture/async-ranking.md)
 - [Batch and schedule APIs](docs/api/rank-check-batches.md)
 - [Cloud Tasks / Cloud Run IAM and configuration](docs/architecture/cloud-tasks-deployment.md)
+- [Cloud SQL initialization and migration job](docs/architecture/cloud-sql-deployment.md)
+- [Deploy API and worker on Cloud Run, step by step](docs/architecture/cloud-run-deployment.md)
+- [Deploy frontend and validate the website](docs/architecture/cloud-run-frontend-deployment.md)
+- [GitHub / Developer Connect CI/CD for Cloud Run](docs/architecture/cloud-run-ci-cd.md)
 - [M5 verification report](docs/verification-milestone-5.md)
 
 ```sh
@@ -325,6 +329,9 @@ docker compose run --rm backend alembic upgrade head
 
 When running the backend locally, run `alembic upgrade head` from `backend/` with
 its virtual environment activated.
+Alembic reads database-only settings and requires only `DATABASE_URL`. The API and
+worker continue to require their complete runtime configuration. Cloud Run socket
+URLs are supported; see the Cloud SQL initialization runbook above.
 The initial revision is intentionally empty and tracks only migration history.
 Revision `0002_authentication` creates `users` and `refresh_tokens`. Downgrading
 that revision removes those tables and their account/session data. Revision

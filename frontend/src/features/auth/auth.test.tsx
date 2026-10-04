@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { Providers } from "@/components/providers";
 import { AuthProvider } from "./auth-provider";
 import SignupPage from "@/app/signup/page";
@@ -47,6 +47,28 @@ beforeEach(() => {
       .mockImplementation(
         async () => new Response(JSON.stringify(result.user)),
       ),
+  );
+});
+
+afterEach(() => vi.unstubAllEnvs());
+
+it("does not refresh an account session on the commercial origin", () => {
+  vi.stubEnv("NEXT_PUBLIC_SITE_URL", window.location.origin);
+  vi.stubEnv("NEXT_PUBLIC_APP_URL", "https://app.serpsaas.com");
+  view(SignupPage);
+  expect(api.refreshSession).not.toHaveBeenCalled();
+});
+
+it("links signup terms and privacy to the commercial domain", async () => {
+  vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://serpsaas.com");
+  vi.stubEnv("NEXT_PUBLIC_APP_URL", "https://app.serpsaas.com");
+  await fill();
+  expect(
+    screen.getByRole("link", { name: /Terms of Service/ }),
+  ).toHaveAttribute("href", "https://serpsaas.com/terms");
+  expect(screen.getByRole("link", { name: /Privacy Policy/ })).toHaveAttribute(
+    "href",
+    "https://serpsaas.com/privacy",
   );
 });
 

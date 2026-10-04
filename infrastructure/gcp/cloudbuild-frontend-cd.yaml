@@ -1,0 +1,63 @@
+# Repository-triggered release; keep cloudbuild-frontend.yaml for manual builds.
+steps:
+  - id: checks
+    name: node:22.22.0-bookworm-slim
+    dir: frontend
+    entrypoint: sh
+    env:
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+      - NEXT_PUBLIC_APP_ENV=test
+    args:
+      - -ec
+      - npm ci && npm run lint && npx next typegen && npm run typecheck && npm test
+  - id: build
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --target
+      - production
+      - --file
+      - infrastructure/docker/frontend.Dockerfile
+      - --build-arg
+      - "NEXT_PUBLIC_API_BASE_URL=${_API_URL}"
+      - --build-arg
+      - NEXT_PUBLIC_APP_ENV=production
+      - --build-arg
+      - "NEXT_PUBLIC_SITE_URL=${_SITE_URL}"
+      - --build-arg
+      - "NEXT_PUBLIC_APP_URL=${_APP_URL}"
+      - --tag
+      - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/frontend:$BUILD_ID"
+      - .
+  # images are normally pushed at the end of a build: deploy needs this push first.
+  - id: push
+    name: gcr.io/cloud-builders/docker
+    args:
+      [
+        push,
+        "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/frontend:$BUILD_ID",
+      ]
+  - id: release
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    entrypoint: sh
+    args: [infrastructure/gcp/cloud-run-release.sh, frontend]
+    env:
+      - GCP_PROJECT_ID=$PROJECT_ID
+      - GCP_LOCATION=${_REGION}
+      - RELEASE_BUILD_ID=$BUILD_ID
+      - RELEASE_IMAGE=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/frontend:$BUILD_ID
+      - RELEASE_LOCK_BUCKET=${_LOCK_BUCKET}
+      - RELEASE_SITE_URL=${_SITE_URL}
+      - RELEASE_APP_URL=${_APP_URL}
+images:
+  - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/frontend:$BUILD_ID"
+substitutions:
+  _REGION: asia-southeast1
+  _REPOSITORY: serp-saas
+  _LOCK_BUCKET: serp-saas-ci-locks
+  _API_URL: "https://serp-api-833917440392.asia-southeast1.run.app"
+  _SITE_URL: "https://serp-web-833917440392.asia-southeast1.run.app"
+  _APP_URL: "https://serp-web-833917440392.asia-southeast1.run.app"
+timeout: 1800s
+options:
+  logging: CLOUD_LOGGING_ONLY

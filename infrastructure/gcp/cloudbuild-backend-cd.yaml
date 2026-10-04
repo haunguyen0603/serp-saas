@@ -1,0 +1,67 @@
+# One release updates the migration job, worker and API with the same image.
+steps:
+  - id: build-checks
+    name: gcr.io/cloud-builders/docker
+    args:
+      [
+        build,
+        --target,
+        development,
+        --file,
+        infrastructure/docker/backend.Dockerfile,
+        --tag,
+        "backend-checks:$BUILD_ID",
+        .,
+      ]
+  - id: checks
+    name: gcr.io/cloud-builders/docker
+    args:
+      - run
+      - --rm
+      - --env
+      - DATABASE_URL=postgresql+asyncpg://app:test@localhost/test
+      - --env
+      - REDIS_URL=redis://localhost:6379/0
+      - "backend-checks:$BUILD_ID"
+      - sh
+      - -ec
+      - 'ruff check . && ruff format --check . && mypy && pytest -m "not integration"'
+  - id: build
+    name: gcr.io/cloud-builders/docker
+    args:
+      [
+        build,
+        --target,
+        production,
+        --file,
+        infrastructure/docker/backend.Dockerfile,
+        --tag,
+        "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/backend:$BUILD_ID",
+        .,
+      ]
+  - id: push
+    name: gcr.io/cloud-builders/docker
+    args:
+      [
+        push,
+        "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/backend:$BUILD_ID",
+      ]
+  - id: release
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    entrypoint: sh
+    args: [infrastructure/gcp/cloud-run-release.sh, backend]
+    env:
+      - GCP_PROJECT_ID=$PROJECT_ID
+      - GCP_LOCATION=${_REGION}
+      - RELEASE_BUILD_ID=$BUILD_ID
+      - RELEASE_IMAGE=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/backend:$BUILD_ID
+      - RELEASE_LOCK_BUCKET=${_LOCK_BUCKET}
+images:
+  - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/backend:$BUILD_ID"
+substitutions:
+  _REGION: asia-southeast1
+  _REPOSITORY: serp-saas
+  _LOCK_BUCKET: serp-saas-ci-locks
+timeout: 1800s
+options:
+  logging: CLOUD_LOGGING_ONLY

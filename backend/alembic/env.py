@@ -4,7 +4,7 @@ from sqlalchemy import Connection, pool
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from alembic import context
-from app.core.config import get_settings
+from app.core.database_config import DatabaseSettings
 from app.core.logging import configure_logging
 from app.db.models import Base
 
@@ -14,7 +14,7 @@ target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:
     context.configure(
-        url=get_settings().database_url.get_secret_value(),
+        url=DatabaseSettings().database_url.get_secret_value(),
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -31,7 +31,7 @@ def do_run_migrations(connection: Connection) -> None:
 
 async def run_async_migrations() -> None:
     engine = create_async_engine(
-        get_settings().database_url.get_secret_value(),
+        DatabaseSettings().database_url.get_secret_value(),
         poolclass=pool.NullPool,
         hide_parameters=True,
     )

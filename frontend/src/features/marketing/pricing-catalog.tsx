@@ -6,6 +6,7 @@ import { Badge, Card, ErrorState, Skeleton } from "@/design-system/ui";
 import { useAuth } from "@/features/auth/auth-provider";
 import type { Plan } from "@/features/billing/types";
 import { requestJson } from "@/lib/api/client";
+import { appHref } from "@/lib/site";
 
 const tierOrder = ["free", "starter", "pro"];
 const tierCopy: Record<string, string> = {
@@ -153,7 +154,7 @@ export function PricingCatalog() {
                       </li>
                     </ul>
                     <Link
-                      href={href}
+                      href={appHref(href)}
                       className={
                         tier === "starter"
                           ? "ui-link-button"
@@ -225,7 +226,9 @@ export function PricingCatalog() {
           options.
         </p>
         <Link
-          href={auth.isAuthenticated ? "/settings/billing" : "/register"}
+          href={appHref(
+            auth.isAuthenticated ? "/settings/billing" : "/register",
+          )}
           className="ui-link-button"
         >
           {auth.isAuthenticated ? "Open Billing & Usage" : "Start Free"}
