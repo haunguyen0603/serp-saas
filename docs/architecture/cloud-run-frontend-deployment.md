@@ -121,6 +121,59 @@ Nếu dùng Mobile, bật SerpAPI trong provider configuration của cả API v�
 registry hiện giới hạn Serper ở Desktop. Việc thêm SerpAPI secret riêng chưa bật
 provider. Cách cấu hình cả hai được ghi trong runbook backend.
 
+### Login báo “The service is unavailable” sau khi đổi domain
+
+Kiểm tra DevTools → Network → request `login`: lấy Request URL, Status và Response,
+không chia sẻ payload/password, token hoặc cookie. API URL nằm trong frontend bundle
+đã build; việc đổi domain website hoặc runtime env không tự thay đổi URL này.
+
+Nếu API `/health/db` trả 200 nhưng preflight OPTIONS trả 400 với nội dung
+`Disallowed CORS origin`, API chưa cho phép origin của trang đăng nhập. Đây là lỗi
+cấu hình origin; chưa cần thay đổi mật khẩu hoặc build lại backend.
+Xem [CORS trong FastAPI](https://fastapi.tiangolo.com/tutorial/cors/).
+
+Ví dụ khôi phục login khi mới có `https://serpsaas.com` hoạt động, frontend vẫn
+gọi API `run.app`, còn DNS/HTTPS của `app` và `api` chưa sẵn sàng. Trong thư mục
+checkout Cloud Shell đang dùng, export **cả ba biến** rồi cập nhật:
+
+```sh
+export GCP_PROJECT_ID=serp-saas
+export GCP_LOCATION=asia-southeast1
+export FRONTEND_ORIGIN=https://serpsaas.com
+export FRONTEND_APP_ORIGIN=https://serpsaas.com
+export FRONTEND_API_URL=https://serp-api-833917440392.asia-southeast1.run.app
+sh infrastructure/gcp/cloud-run-frontend.sh auth-origin
+```
+
+Đây là cấu hình tạm cho login/verification trên domain chính. Nó đặt
+`AUTH_SITE_URL=https://serpsaas.com` và `CORS_ORIGINS=["https://serpsaas.com"]`, đồng
+thời đồng bộ profile local nếu có. Chạy `auth-origin` trong shell mới mà chưa export
+origin sẽ dùng mặc định `run.app`; script không tự đọc các biến từ `.env` của IDE.
+Pipeline CI/CD đổi image nhưng giữ nguyên origin runtime API, nên chạy lại build
+frontend cũng không tự sửa CORS.
+
+Kiểm tra lại sau khi revision mới sẵn sàng:
+
+```sh
+curl --silent --show-error --include --max-time 20 \
+  --request OPTIONS "$FRONTEND_API_URL/api/v1/auth/login" \
+  --header "Origin: $FRONTEND_APP_ORIGIN" \
+  --header 'Access-Control-Request-Method: POST' \
+  --header 'Access-Control-Request-Headers: content-type'
+```
+
+Cần HTTP 200, `Access-Control-Allow-Origin: https://serpsaas.com` và
+`Access-Control-Allow-Credentials: true`. Sau đó reload trang và thử login một lần.
+Nếu frontend còn gọi một API URL khác, dùng đúng Request URL từ browser để kiểm tra.
+Nếu API trả 500/503 hoặc không phân giải được DNS, cần xử lý lỗi đó riêng thay vì
+chỉ cập nhật CORS.
+
+Khi DNS/HTTPS của `app.serpsaas.com` và `api.serpsaas.com` đã hoạt động, hoàn tất
+bước 6 để đưa luồng tài khoản sang app domain và API sang cùng site. Với CI/CD,
+cập nhật substitutions của frontend trigger và chạy lại trigger như runbook CI/CD;
+vẫn cần chạy `auth-origin` với ba origin mới. Kiểm tra cả login và reload để xác
+nhận refresh cookie hoạt động sau khi chuyển domain.
+
 ## 6. Tách website thương mại và ứng dụng theo domain
 
 Cấu hình production dùng ba hostname:

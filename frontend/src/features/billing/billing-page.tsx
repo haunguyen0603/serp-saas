@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useProtectedAuth } from "@/features/projects/protected";
 import type { BillingSummary, DeviceBilling, Plan } from "./types";
 import { siteHref } from "@/lib/site";
+import { SUPPORT_EMAIL, SUPPORT_EMAIL_HREF } from "@/lib/contact";
 
 export const money = (plan: Plan) =>
   new Intl.NumberFormat("en-US", {
@@ -137,8 +138,12 @@ export function BillingPage() {
       <Card>
         <h2 className="mb-2">Need more room to grow?</h2>
         <p>
-          To change your Plan, contact your administrator for bank-transfer
-          instructions. Paid Plans are activated after payment is confirmed.
+          To change your Plan, email{" "}
+          <a className="ui-text-link" href={SUPPORT_EMAIL_HREF}>
+            {SUPPORT_EMAIL}
+          </a>{" "}
+          for assistance and bank-transfer instructions. Paid Plans are
+          activated after payment is confirmed.
         </p>
       </Card>
       <Link className="text-brand underline" href={siteHref("/pricing")}>

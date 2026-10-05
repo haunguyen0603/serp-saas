@@ -61,14 +61,6 @@ export function PricingCatalog() {
         </p>
       </section>
 
-      <div className="manual-payment-note" role="note">
-        <strong>Transparent manual activation</strong>
-        <span>
-          Paid Plans are currently activated manually after bank-transfer
-          payment confirmation by an administrator.
-        </span>
-      </div>
-
       {query.isPending && <Skeleton label="Loading current Plans…" rows={6} />}
       {query.isError && (
         <ErrorState
@@ -163,11 +155,6 @@ export function PricingCatalog() {
                     >
                       {label}
                     </Link>
-                    {paid && (
-                      <p className="pricing-manual">
-                        Manual bank-transfer activation
-                      </p>
-                    )}
                   </Card>
                 );
               })}

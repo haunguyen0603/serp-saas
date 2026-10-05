@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { appHref } from "@/lib/site";
+import { SUPPORT_EMAIL, SUPPORT_EMAIL_HREF } from "@/lib/contact";
 
 const description =
   "Learn about SERP SaaS, a focused workspace for Google keyword rankings, Desktop and Mobile tracking, and ranking history.";
@@ -104,9 +105,12 @@ export default function AboutPage() {
             Questions about the service
           </h2>
           <p>
-            For account support or paid activation, contact the administrator
-            who manages your account or subscription. For details about using
-            the service and how information is handled, read our{" "}
+            For account support, Plan changes or paid activation, email us at{" "}
+            <a className="ui-text-link" href={SUPPORT_EMAIL_HREF}>
+              {SUPPORT_EMAIL}
+            </a>
+            . For details about using the service and how information is
+            handled, read our{" "}
             <Link className="ui-text-link" href="/terms">
               Terms of Service
             </Link>{" "}

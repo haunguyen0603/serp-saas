@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SUPPORT_EMAIL, SUPPORT_EMAIL_HREF } from "@/lib/contact";
 
 const description =
   "Learn how SERP SaaS handles account information, keyword tracking data, cookies, reports and subscription records.";
@@ -24,7 +25,7 @@ export default function PrivacyPage() {
         <header className="space-y-4">
           <h1 className="text-3xl font-semibold sm:text-4xl">Privacy Policy</h1>
           <p className="text-sm text-secondary">
-            Last updated: <time dateTime="2026-10-03">October 3, 2026</time>
+            Last updated: <time dateTime="2026-10-05">October 5, 2026</time>
           </p>
           <p>
             This policy explains how SERP SaaS handles information when you
@@ -161,9 +162,11 @@ export default function PrivacyPage() {
             You can manage your Keywords and Tracked Sites, pause schedules, and
             export ranking information using the available CSV and PDF reports.
             For account-information corrections, account closure or requests
-            about access to or deletion of your personal information, contact
-            the administrator who manages your account or subscription. These
-            requests currently require administrator assistance.
+            about access to or deletion of your personal information, email{" "}
+            <a className="ui-text-link" href={SUPPORT_EMAIL_HREF}>
+              {SUPPORT_EMAIL}
+            </a>
+            . These requests currently require administrator assistance.
           </p>
           <p>
             Depending on the laws that apply to you, you may have additional
@@ -179,8 +182,11 @@ export default function PrivacyPage() {
           </h2>
           <p>
             If you have questions about this policy or how your information is
-            handled, contact the administrator responsible for your account. We
-            may update this page as the service changes. The date above
+            handled, contact us at{" "}
+            <a className="ui-text-link" href={SUPPORT_EMAIL_HREF}>
+              {SUPPORT_EMAIL}
+            </a>
+            . We may update this page as the service changes. The date above
             identifies the current version.
           </p>
         </section>

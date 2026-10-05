@@ -186,7 +186,7 @@ try {
   const pricingText = await page.locator("main").textContent();
   for (const forbidden of ["Buy Now", "Checkout", "Subscribe", "Stripe", "PayPal", "crypto"])
     assert(!pricingText.toLowerCase().includes(forbidden.toLowerCase()), `Forbidden payment wording: ${forbidden}`);
-  assert(pricingText.toLowerCase().includes("manual bank-transfer"));
+  assert.equal(await page.locator(".manual-payment-note, .pricing-manual").count(), 0);
 
   const pricingSeo = await page.evaluate(() => ({
     title: document.title,

@@ -622,21 +622,6 @@
 .pricing-hero > p:last-child {
   margin-inline: auto;
 }
-.manual-payment-note {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 18px 22px;
-  margin-bottom: 80px;
-  border: 1px solid #b9c7ee;
-  border-radius: 10px;
-  background: #f2f5ff;
-  color: var(--ds-secondary);
-}
-.manual-payment-note strong {
-  color: var(--ds-text);
-  white-space: nowrap;
-}
 .pricing-group {
   margin-bottom: 96px;
   scroll-margin-top: 100px;
@@ -722,13 +707,8 @@
 }
 .pricing-card > a {
   width: 100%;
+  min-height: 50px;
   margin-top: auto;
-}
-.pricing-manual {
-  margin-top: 12px;
-  color: var(--ds-muted);
-  text-align: center;
-  font-size: 0.72rem;
 }
 .pricing-faq {
   max-width: 900px;
@@ -845,11 +825,6 @@
   }
   .public-footer-inner {
     gap: 36px;
-  }
-  .manual-payment-note {
-    align-items: flex-start;
-    flex-direction: column;
-    margin-bottom: 60px;
   }
   .pricing-group-heading {
     gap: 12px;

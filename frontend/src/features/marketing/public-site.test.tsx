@@ -200,9 +200,12 @@ it("renders exact API values and logged-out manual activation CTAs", async () =>
       name: "Request Activation",
     }),
   ).toHaveAttribute("href", "/register");
-  expect(screen.getAllByText("Manual bank-transfer activation")).toHaveLength(
-    4,
-  );
+  expect(
+    screen.queryByText("Manual bank-transfer activation"),
+  ).not.toBeInTheDocument();
+  expect(
+    screen.queryByText("Transparent manual activation"),
+  ).not.toBeInTheDocument();
   expect(
     screen.getAllByRole("region", {
       name: /^(Desktop|Mobile) (Free|Starter|Pro)$/,
