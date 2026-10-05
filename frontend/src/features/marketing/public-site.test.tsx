@@ -168,7 +168,7 @@ it.each([
       screen.getByRole("button", { name: "Open public navigation" }),
     );
     const dialog = screen.getByRole("dialog", { name: "SERP SaaS" });
-    const link = within(dialog).getByRole("link", { name, exact: true });
+    const link = within(dialog).getByRole("link", { name });
     // Keep the shell mounted to verify closure without a document navigation.
     link.addEventListener("click", (event) => event.preventDefault());
     fireEvent.click(link);
