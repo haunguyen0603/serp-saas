@@ -65,7 +65,7 @@ export function AuthForm({ mode }: { mode: "signup" | "login" }) {
   }
 
   return (
-    <main className="mx-auto max-w-md">
+    <main className="auth-main">
       <h1 className="mb-8 text-3xl font-semibold">
         {signup ? "Create your account" : "Log in"}
       </h1>

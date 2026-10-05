@@ -6,6 +6,11 @@
   font-size: 15px;
   line-height: 1.65;
 }
+.auth-main {
+  width: min(448px, calc(100% - 32px));
+  margin-inline: auto;
+  padding-block: clamp(32px, 6vw, 48px);
+}
 .auth-input {
   min-height: 52px;
   padding: 12px 16px;
@@ -13,6 +18,7 @@
   background: #fff;
   color: #0f172a;
   caret-color: #0f172a;
+  font-size: 1rem;
 }
 .auth-input:hover {
   border-color: #94a3b8;
