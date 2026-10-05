@@ -94,6 +94,18 @@ it("creates a Project with initial keywords and no domain", async () => {
     },
   });
   view(<ProjectForm />);
+  const country = screen.getByRole("combobox", { name: "Country" });
+  const language = screen.getByRole("combobox", { name: "Language" });
+  expect(country).toHaveValue("VN");
+  expect(language).toHaveValue("vi");
+  expect(
+    within(country).getByRole("option", { name: "Vietnam (VN)" }),
+  ).toBeInTheDocument();
+  expect(
+    within(language).getByRole("option", { name: "Vietnamese (vi)" }),
+  ).toBeInTheDocument();
+  fireEvent.change(country, { target: { value: "US" } });
+  fireEvent.change(language, { target: { value: "en" } });
   expect(
     screen.queryByRole("combobox", { name: /provider/i }),
   ).not.toBeInTheDocument();
@@ -109,11 +121,13 @@ it("creates a Project with initial keywords and no domain", async () => {
   );
   const body = JSON.parse(String(request.mock.calls[0][1].body));
   expect(body.keywords).toEqual(["one", "two", "one"]);
+  expect(body.country_code).toBe("US");
+  expect(body.language_code).toBe("en");
   expect(body).not.toHaveProperty("domain");
   expect(body).not.toHaveProperty("provider");
 });
 
-function detailApi() {
+function detailApi(settings: Partial<Project> = {}) {
   request.mockImplementation(async (path: string, options?: RequestInit) => {
     if (path.includes("/analytics/summary"))
       return {
@@ -125,7 +139,8 @@ function detailApi() {
     if (path.includes("rank-check-batches?") || path.includes("/jobs?"))
       return { items: [], next_cursor: null, has_more: false };
     if (path.endsWith("rank-schedule")) return null;
-    if (path === "/api/v1/projects/project-1" && !options) return project;
+    if (path === "/api/v1/projects/project-1" && !options)
+      return { ...project, ...settings };
     if (path.endsWith("/rankings/latest"))
       return {
         items: [
@@ -319,6 +334,52 @@ it("updates Project SERP settings without default fields", async () => {
   );
   const body = JSON.parse(String(call?.[1].body));
   expect(body).toHaveProperty("country_code", "VN");
+  expect(body).toHaveProperty("language_code", "vi");
   expect(body).not.toHaveProperty("default_country_code");
   expect(body).not.toHaveProperty("domain");
+});
+
+it("saves selected country and regional language codes from Project settings", async () => {
+  detailApi();
+  view(<ProjectDetail projectId="project-1" />);
+  const country = await screen.findByRole("combobox", { name: "Country" });
+  const language = screen.getByRole("combobox", { name: "Language" });
+  expect(country).toHaveValue("VN");
+  expect(language).toHaveValue("vi");
+  fireEvent.change(country, { target: { value: "US" } });
+  fireEvent.change(language, { target: { value: "en-GB" } });
+  fireEvent.submit(screen.getByRole("form", { name: "Project settings" }));
+  await screen.findByText("Project settings saved.");
+  const call = request.mock.calls.find(
+    ([path, options]) =>
+      path === "/api/v1/projects/project-1" && options?.method === "PATCH",
+  );
+  expect(JSON.parse(String(call?.[1].body))).toMatchObject({
+    country_code: "US",
+    language_code: "en-GB",
+  });
+});
+
+it("preserves saved locale codes outside the catalog when editing other settings", async () => {
+  detailApi({ country_code: "GB", language_code: "zh-Hant" });
+  view(<ProjectDetail projectId="project-1" />);
+  const country = await screen.findByRole("combobox", { name: "Country" });
+  expect(country).toHaveValue("GB");
+  expect(screen.getByRole("combobox", { name: "Language" })).toHaveValue(
+    "zh-Hant",
+  );
+  fireEvent.change(screen.getByLabelText("Project name"), {
+    target: { value: "Renamed" },
+  });
+  fireEvent.submit(screen.getByRole("form", { name: "Project settings" }));
+  await screen.findByText("Project settings saved.");
+  const call = request.mock.calls.find(
+    ([path, options]) =>
+      path === "/api/v1/projects/project-1" && options?.method === "PATCH",
+  );
+  expect(JSON.parse(String(call?.[1].body))).toMatchObject({
+    name: "Renamed",
+    country_code: "GB",
+    language_code: "zh-Hant",
+  });
 });

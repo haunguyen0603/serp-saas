@@ -18,6 +18,7 @@ import { KeywordManager } from "./keyword-manager";
 import { ProtectedStatus, useProtectedAuth } from "./protected";
 import type { Device, Project, ProjectUpdate } from "./types";
 import { ProjectAnalytics } from "@/features/analytics/project-analytics";
+import { CountrySelect, LanguageSelect } from "./locale-select";
 
 const field = "";
 
@@ -72,7 +73,7 @@ function ProjectSettings({ project }: { project: Project }) {
         </label>
         <label>
           Country
-          <Input
+          <CountrySelect
             className={field}
             name="country"
             defaultValue={project.country_code}
@@ -81,7 +82,7 @@ function ProjectSettings({ project }: { project: Project }) {
         </label>
         <label>
           Language
-          <Input
+          <LanguageSelect
             className={field}
             name="language"
             defaultValue={project.language_code}

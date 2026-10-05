@@ -9,6 +9,7 @@ import { ApiError } from "@/lib/api/client";
 import { createProject, projectKeys } from "./api";
 import { ProtectedStatus, useProtectedAuth } from "./protected";
 import type { Device, ProjectCreate } from "./types";
+import { CountrySelect, LanguageSelect } from "./locale-select";
 
 const field = "";
 
@@ -81,7 +82,7 @@ export function ProjectForm() {
         <div className="grid gap-5 sm:grid-cols-2">
           <label>
             Country
-            <Input
+            <CountrySelect
               name="country"
               required
               defaultValue="VN"
@@ -90,7 +91,7 @@ export function ProjectForm() {
           </label>
           <label>
             Language
-            <Input
+            <LanguageSelect
               name="language"
               required
               defaultValue="vi"
