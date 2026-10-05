@@ -119,10 +119,15 @@ export function PublicShell({ children }: { children: ReactNode }) {
         <div className="public-drawer-actions">
           <Link
             href={appHref(auth.isAuthenticated ? "/app/settings" : "/login")}
+            onClick={() => setOpen(false)}
           >
             {auth.isAuthenticated ? "Account" : "Log in"}
           </Link>
-          <Link href={appHref(startHref)} className="ui-link-button">
+          <Link
+            href={appHref(startHref)}
+            className="ui-link-button"
+            onClick={() => setOpen(false)}
+          >
             {startLabel}
           </Link>
         </div>

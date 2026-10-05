@@ -150,6 +150,32 @@ it("provides an accessible public mobile menu and accurate CTAs", () => {
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 });
 
+it.each([
+  [false, "Log in"],
+  [false, "Get Started"],
+  [true, "Account"],
+  [true, "Open App"],
+] as const)(
+  "closes the mobile menu when selecting %s / %s",
+  (authenticated, name) => {
+    state.authenticated = authenticated;
+    view(
+      <PublicShell>
+        <main>Page</main>
+      </PublicShell>,
+    );
+    fireEvent.click(
+      screen.getByRole("button", { name: "Open public navigation" }),
+    );
+    const dialog = screen.getByRole("dialog", { name: "SERP SaaS" });
+    const link = within(dialog).getByRole("link", { name, exact: true });
+    // Keep the shell mounted to verify closure without a document navigation.
+    link.addEventListener("click", (event) => event.preventDefault());
+    fireEvent.click(link);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  },
+);
+
 it("groups all authoritative Plans by device and tier", () => {
   const grouped = groupPlans(plans);
   expect(grouped.map((group) => group.device)).toEqual(["desktop", "mobile"]);
