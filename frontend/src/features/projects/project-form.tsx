@@ -39,6 +39,12 @@ export function ProjectForm() {
     event.preventDefault();
     setError(null);
     const values = new FormData(event.currentTarget);
+    const country = String(values.get("country") ?? "");
+    const language = String(values.get("language") ?? "");
+    if (!country || !language) {
+      setError("Select a country and language before creating a project.");
+      return;
+    }
     const keywords = String(values.get("keywords") ?? "").split(/\r?\n/);
     if (keywords.length > 1000) {
       setError("A Project may contain at most 1000 keyword lines.");
@@ -47,8 +53,8 @@ export function ProjectForm() {
     const input: ProjectCreate = {
       name: String(values.get("name") ?? ""),
       search_engine: "google",
-      country_code: String(values.get("country") ?? "VN"),
-      language_code: String(values.get("language") ?? "vi"),
+      country_code: country,
+      language_code: language,
       device: String(values.get("device") ?? "desktop") as Device,
       location: String(values.get("location") ?? "") || null,
       keywords,
@@ -80,24 +86,8 @@ export function ProjectForm() {
           </Select>
         </label>
         <div className="grid gap-5 sm:grid-cols-2">
-          <label>
-            Country
-            <CountrySelect
-              name="country"
-              required
-              defaultValue="VN"
-              className={field}
-            />
-          </label>
-          <label>
-            Language
-            <LanguageSelect
-              name="language"
-              required
-              defaultValue="vi"
-              className={field}
-            />
-          </label>
+          <CountrySelect name="country" required className={field} />
+          <LanguageSelect name="language" required className={field} />
           <label>
             Device
             <Select name="device" defaultValue="desktop" className={field}>

@@ -71,24 +71,18 @@ function ProjectSettings({ project }: { project: Project }) {
             required
           />
         </label>
-        <label>
-          Country
-          <CountrySelect
-            className={field}
-            name="country"
-            defaultValue={project.country_code}
-            required
-          />
-        </label>
-        <label>
-          Language
-          <LanguageSelect
-            className={field}
-            name="language"
-            defaultValue={project.language_code}
-            required
-          />
-        </label>
+        <CountrySelect
+          className={field}
+          name="country"
+          defaultValue={project.country_code}
+          required
+        />
+        <LanguageSelect
+          className={field}
+          name="language"
+          defaultValue={project.language_code}
+          required
+        />
         <label>
           Device
           <Select className={field} name="device" defaultValue={project.device}>

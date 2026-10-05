@@ -96,16 +96,14 @@ it("creates a Project with initial keywords and no domain", async () => {
   view(<ProjectForm />);
   const country = screen.getByRole("combobox", { name: "Country" });
   const language = screen.getByRole("combobox", { name: "Language" });
-  expect(country).toHaveValue("VN");
-  expect(language).toHaveValue("vi");
-  expect(
-    within(country).getByRole("option", { name: "Vietnam (VN)" }),
-  ).toBeInTheDocument();
-  expect(
-    within(language).getByRole("option", { name: "Vietnamese (vi)" }),
-  ).toBeInTheDocument();
-  fireEvent.change(country, { target: { value: "US" } });
-  fireEvent.change(language, { target: { value: "en" } });
+  expect(country).toHaveValue("");
+  expect(country).toHaveAttribute("placeholder", "Select country");
+  expect(language).toHaveValue("");
+  expect(language).toHaveAttribute("placeholder", "Select language");
+  fireEvent.change(country, { target: { value: "United States" } });
+  fireEvent.click(screen.getByRole("option", { name: "United States (US)" }));
+  fireEvent.change(language, { target: { value: "English" } });
+  fireEvent.click(screen.getByRole("option", { name: "English (en)" }));
   expect(
     screen.queryByRole("combobox", { name: /provider/i }),
   ).not.toBeInTheDocument();
@@ -125,6 +123,15 @@ it("creates a Project with initial keywords and no domain", async () => {
   expect(body.language_code).toBe("en");
   expect(body).not.toHaveProperty("domain");
   expect(body).not.toHaveProperty("provider");
+});
+
+it("requires explicit country and language selections before creating a project", () => {
+  view(<ProjectForm />);
+  fireEvent.submit(screen.getByRole("form", { name: "Create project" }));
+  expect(screen.getByRole("alert")).toHaveTextContent(
+    "Select a country and language",
+  );
+  expect(request).not.toHaveBeenCalled();
 });
 
 function detailApi(settings: Partial<Project> = {}) {
@@ -344,10 +351,14 @@ it("saves selected country and regional language codes from Project settings", a
   view(<ProjectDetail projectId="project-1" />);
   const country = await screen.findByRole("combobox", { name: "Country" });
   const language = screen.getByRole("combobox", { name: "Language" });
-  expect(country).toHaveValue("VN");
-  expect(language).toHaveValue("vi");
+  expect(country).toHaveValue("Vietnam (VN)");
+  expect(language).toHaveValue("Vietnamese (vi)");
   fireEvent.change(country, { target: { value: "US" } });
+  fireEvent.click(screen.getByRole("option", { name: "United States (US)" }));
   fireEvent.change(language, { target: { value: "en-GB" } });
+  fireEvent.click(
+    screen.getByRole("option", { name: "English (United Kingdom) (en-GB)" }),
+  );
   fireEvent.submit(screen.getByRole("form", { name: "Project settings" }));
   await screen.findByText("Project settings saved.");
   const call = request.mock.calls.find(
@@ -364,9 +375,9 @@ it("preserves saved locale codes outside the catalog when editing other settings
   detailApi({ country_code: "GB", language_code: "zh-Hant" });
   view(<ProjectDetail projectId="project-1" />);
   const country = await screen.findByRole("combobox", { name: "Country" });
-  expect(country).toHaveValue("GB");
+  expect(country).toHaveValue("United Kingdom (GB)");
   expect(screen.getByRole("combobox", { name: "Language" })).toHaveValue(
-    "zh-Hant",
+    "zh-Hant (current value)",
   );
   fireEvent.change(screen.getByLabelText("Project name"), {
     target: { value: "Renamed" },

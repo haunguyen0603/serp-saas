@@ -299,6 +299,71 @@
 .ui-select {
   height: var(--ds-control-height);
 }
+.locale-field {
+  min-width: 0;
+}
+.locale-control {
+  position: relative;
+}
+.locale-search {
+  padding-right: 36px;
+  font-size: 1rem;
+}
+.locale-chevron {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ds-secondary);
+  pointer-events: none;
+}
+.locale-options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 50;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-md);
+}
+.locale-options-above {
+  top: auto;
+  bottom: calc(100% + 4px);
+}
+.locale-option {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 0;
+  background: var(--ds-surface);
+  color: var(--ds-text);
+  font: inherit;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.locale-option:hover,
+.locale-option[aria-selected="true"] {
+  background: var(--ds-surface-muted);
+  color: var(--ds-brand);
+}
+.locale-no-matches {
+  padding: 10px 12px;
+  color: var(--ds-muted);
+}
+.locale-required {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.6875rem;
+  color: var(--ds-muted);
+}
 .ui-input::placeholder {
   color: var(--ds-muted);
 }
