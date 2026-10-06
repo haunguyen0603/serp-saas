@@ -116,12 +116,11 @@
   overflow: clip;
 }
 .public-hero {
-  min-height: 650px;
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(500px, 1.08fr);
   align-items: center;
   gap: 64px;
-  padding: 88px 0 80px;
+  padding: 64px 0 56px;
 }
 .public-eyebrow {
   color: var(--ds-brand);
@@ -298,11 +297,11 @@
   font-weight: 600;
 }
 .public-section {
-  padding: 104px 0;
+  padding: 48px 0;
 }
 .public-section-heading {
   max-width: 720px;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
 }
 .public-section h2,
 .pricing-group h2,
@@ -319,6 +318,9 @@
 .public-detail-card > p:not(.public-eyebrow) {
   margin-top: 18px;
   color: var(--ds-secondary);
+}
+.public-section > div > .public-eyebrow {
+  margin-top: 0;
 }
 .public-steps {
   display: grid;
@@ -516,8 +518,8 @@
   font-weight: 400;
 }
 .public-developer {
-  padding: 72px;
-  margin: 10px 0 100px;
+  padding: 48px;
+  margin: 16px 0 64px;
   border-radius: 22px;
   background: #eef2ff;
   text-align: center;
@@ -533,7 +535,7 @@
   color: var(--ds-secondary);
 }
 .public-final-cta {
-  padding: 76px 24px;
+  padding: 56px 24px;
   text-align: center;
   border-radius: 22px;
   background: #17233c;
@@ -554,6 +556,9 @@
   margin-top: 100px;
   border-top: 1px solid var(--ds-border);
   background: var(--ds-background);
+}
+#public-content:has(.public-hero) + .public-footer {
+  margin-top: 64px;
 }
 .public-footer-inner {
   display: grid;
