@@ -1,5 +1,7 @@
 # Milestone 7G — Blog & SEO Content verification
 
+**Production follow-up, 2026-10-07:** M7G and M7G.1 were subsequently [deployed and checked on the public domains](deployment-milestone-7g1.md) after explicit authorization. Search Console inspection remains pending. The following local report preserves the original pre-deployment evidence.
+
 Verified locally on 2026-10-07 against base commit `abb3beb`. Implementation, static production build and local browser QA pass. **Production deployment, public-domain checks and Search Console inspection remain pending**; this task did not authorize deployment or GitHub publishing.
 
 ## Implementation and scope
@@ -135,9 +137,9 @@ Frontend Docker was rebuilt and updated on localhost:3000, with no backend resta
 
 Updated index evidence: [375 px](verification-artifacts/milestone-7g/blog-cta-alignment-375.png), [768 px](verification-artifacts/milestone-7g/blog-cta-alignment-768.png), [1024 px](verification-artifacts/milestone-7g/blog-cta-alignment-1024.png), [1440 px](verification-artifacts/milestone-7g/blog-cta-alignment-1440.png). Detail evidence: [Google ranking guide](verification-artifacts/milestone-7g/how-to-track-google-rankings-cta-alignment-1440.png), [Agency guide](verification-artifacts/milestone-7g/serp-tracking-for-agencies-cta-alignment-1440.png), [Monitoring guide](verification-artifacts/milestone-7g/how-to-monitor-keyword-ranking-cta-alignment-1440.png). All detail screenshots are also available at 375/768/1024 px with the corresponding filename suffix.
 
-## Pending production verification
+## Production verification follow-up
 
-No deployment, Git commit or push was performed. No production HTTP result or Google indexing status is claimed. After authorized deployment, run:
+At the initial local verification, no deployment, Git commit or push had been performed. The subsequent authorized release and successful production HTTP/browser checks are recorded in [the deployment report](deployment-milestone-7g1.md). Google indexing status is still not claimed. Public checks can be repeated with:
 
 ```bash
 curl -I https://serpsaas.com/blog
@@ -155,6 +157,6 @@ Confirm HTTP 200, commercial HTTPS canonicals, four Blog URLs in sitemap, allowe
 - [x] Distinct metadata, canonical/OG/Twitter, Article/Breadcrumb JSON-LD.
 - [x] Public navigation, sitemap/robots/RSS, related guides and contextual CTAs.
 - [x] Responsive/browser/accessibility QA, production build and frontend regression suite.
-- [ ] Runtime findings remediated by [M7G.1](verification-milestone-7g1.md); review the remaining dev-only braces exception before release.
-- [ ] Authorized production deployment and post-deployment URL checks.
+- [x] Runtime findings remediated by [M7G.1](verification-milestone-7g1.md); the disclosed dev-only braces exception is carried forward for the authorized release.
+- [x] Authorized production deployment and post-deployment URL/browser checks; see [release evidence](deployment-milestone-7g1.md).
 - [ ] Google Search Console URL Inspection.

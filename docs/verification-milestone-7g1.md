@@ -1,5 +1,7 @@
 # Milestone 7G.1 — Dependency Security Remediation verification
 
+**Production follow-up, 2026-10-07:** the user subsequently authorized deployment. Commit `7edae61` was released successfully through Cloud Build; 23 real-domain HTTP checks and 16 public Blog browser cases passed. See [production release evidence and limitations](deployment-milestone-7g1.md). The report below preserves the initial local verification and its then-undeployed status.
+
 Verified locally on 2026-10-07. **All three reported runtime vulnerabilities are fixed; `npm audit --omit=dev` reports 0 findings.** Full audit still reports **5 high development-tool findings** from one unpatched `braces` advisory. This is not a claim that the entire dependency tree is vulnerability-free. No production deployment, production-domain verification, GitHub push or Search Console inspection was performed.
 
 ## Baseline and scope

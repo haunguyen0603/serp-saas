@@ -1,0 +1,188 @@
+{
+  "checkedAt": "2026-10-07T11:45:44.089Z",
+  "mode": "production public browser; auth refresh intercepted, no live accounts or API mutations",
+  "javascriptDisabledRoutes": [
+    "/blog",
+    "/blog/how-to-track-google-rankings",
+    "/blog/serp-tracking-for-agencies",
+    "/blog/how-to-monitor-keyword-ranking"
+  ],
+  "results": [
+    {
+      "path": "/blog",
+      "width": 375,
+      "status": 200,
+      "scrollWidth": 375,
+      "ctaWidth": 343,
+      "referenceWidth": 343,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog/how-to-track-google-rankings",
+      "width": 375,
+      "status": 200,
+      "scrollWidth": 375,
+      "ctaWidth": 343,
+      "referenceWidth": 343,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog/serp-tracking-for-agencies",
+      "width": 375,
+      "status": 200,
+      "scrollWidth": 375,
+      "ctaWidth": 343,
+      "referenceWidth": 343,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog/how-to-monitor-keyword-ranking",
+      "width": 375,
+      "status": 200,
+      "scrollWidth": 375,
+      "ctaWidth": 343,
+      "referenceWidth": 343,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog",
+      "width": 768,
+      "status": 200,
+      "scrollWidth": 768,
+      "ctaWidth": 720,
+      "referenceWidth": 720,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog/how-to-track-google-rankings",
+      "width": 768,
+      "status": 200,
+      "scrollWidth": 768,
+      "ctaWidth": 720,
+      "referenceWidth": 720,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog/serp-tracking-for-agencies",
+      "width": 768,
+      "status": 200,
+      "scrollWidth": 768,
+      "ctaWidth": 720,
+      "referenceWidth": 720,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog/how-to-monitor-keyword-ranking",
+      "width": 768,
+      "status": 200,
+      "scrollWidth": 768,
+      "ctaWidth": 720,
+      "referenceWidth": 720,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog",
+      "width": 1024,
+      "status": 200,
+      "scrollWidth": 1024,
+      "ctaWidth": 976,
+      "referenceWidth": 976,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog/how-to-track-google-rankings",
+      "width": 1024,
+      "status": 200,
+      "scrollWidth": 1024,
+      "ctaWidth": 976,
+      "referenceWidth": 976,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog/serp-tracking-for-agencies",
+      "width": 1024,
+      "status": 200,
+      "scrollWidth": 1024,
+      "ctaWidth": 976,
+      "referenceWidth": 976,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog/how-to-monitor-keyword-ranking",
+      "width": 1024,
+      "status": 200,
+      "scrollWidth": 1024,
+      "ctaWidth": 976,
+      "referenceWidth": 976,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "ctaWidth": 1180,
+      "referenceWidth": 1180,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog/how-to-track-google-rankings",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "ctaWidth": 1180,
+      "referenceWidth": 1180,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog/serp-tracking-for-agencies",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "ctaWidth": 1180,
+      "referenceWidth": 1180,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    },
+    {
+      "path": "/blog/how-to-monitor-keyword-ranking",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "ctaWidth": 1180,
+      "referenceWidth": 1180,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "compiledApiOrigins": []
+    }
+  ]
+}

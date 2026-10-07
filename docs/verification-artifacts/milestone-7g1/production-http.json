@@ -1,0 +1,139 @@
+{
+  "checkedAt": "2026-10-07T11:46:55.133Z",
+  "mode": "production public HTTP GET only; no login, account or provider mutations",
+  "results": [
+    {
+      "url": "https://serpsaas.com/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/pricing",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/about",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/privacy",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/terms",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/blog",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "https://serpsaas.com/blog",
+      "singleH1": true,
+      "serverRenderedBlog": true,
+      "noPublicNoindex": true
+    },
+    {
+      "url": "https://serpsaas.com/blog/how-to-track-google-rankings",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "https://serpsaas.com/blog/how-to-track-google-rankings",
+      "singleH1": true,
+      "serverRenderedBlog": true,
+      "noPublicNoindex": true
+    },
+    {
+      "url": "https://serpsaas.com/blog/serp-tracking-for-agencies",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "https://serpsaas.com/blog/serp-tracking-for-agencies",
+      "singleH1": true,
+      "serverRenderedBlog": true,
+      "noPublicNoindex": true
+    },
+    {
+      "url": "https://serpsaas.com/blog/how-to-monitor-keyword-ranking",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "https://serpsaas.com/blog/how-to-monitor-keyword-ranking",
+      "singleH1": true,
+      "serverRenderedBlog": true,
+      "noPublicNoindex": true
+    },
+    {
+      "url": "https://serpsaas.com/feed.xml",
+      "status": 200,
+      "contentType": "application/rss+xml; charset=utf-8",
+      "rssItems": 3
+    },
+    {
+      "url": "https://serpsaas.com/sitemap.xml",
+      "status": 200,
+      "contentType": "application/xml",
+      "canonicalBlogUrls": 4
+    },
+    {
+      "url": "https://serpsaas.com/robots.txt",
+      "status": 200,
+      "contentType": "text/plain"
+    },
+    {
+      "url": "https://serpsaas.com/blog/unknown-slug",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/blog/private-draft",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://app.serpsaas.com/login",
+      "status": 200,
+      "robots": "noindex, nofollow"
+    },
+    {
+      "url": "https://app.serpsaas.com/register",
+      "status": 200,
+      "robots": "noindex, nofollow"
+    },
+    {
+      "url": "https://app.serpsaas.com/verify-email",
+      "status": 200,
+      "robots": "noindex, nofollow"
+    },
+    {
+      "url": "https://app.serpsaas.com/app",
+      "status": 200,
+      "robots": "noindex, nofollow"
+    },
+    {
+      "url": "https://app.serpsaas.com/app/projects",
+      "status": 200,
+      "robots": "noindex, nofollow"
+    },
+    {
+      "url": "https://app.serpsaas.com/blog",
+      "status": 307,
+      "location": "https://serpsaas.com/blog"
+    },
+    {
+      "url": "https://app.serpsaas.com/blog/how-to-track-google-rankings",
+      "status": 307,
+      "location": "https://serpsaas.com/blog/how-to-track-google-rankings"
+    },
+    {
+      "url": "https://serpsaas.com/login",
+      "status": 307,
+      "location": "https://app.serpsaas.com/login"
+    },
+    {
+      "url": "https://app.serpsaas.com/robots.txt",
+      "status": 200,
+      "appRobotsDisallowAll": true
+    }
+  ]
+}
