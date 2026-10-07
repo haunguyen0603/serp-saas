@@ -416,6 +416,14 @@ and `uv run mypy` from `backend/`; `npm test`, `npm run lint`,
 For backend unit tests without dependency connectivity use
 `uv run pytest -m 'not integration'` after configuring the required settings.
 
+## Public Blog (Milestone 7G)
+
+`/blog` and three static guides use repository-controlled Markdown, validated
+frontmatter, public navigation, canonical metadata, Article/Breadcrumb JSON-LD,
+`/sitemap.xml`, and `/feed.xml`. Drafts are excluded and return 404.
+See [Blog authoring](docs/blog-authoring.md) and
+[Milestone 7G verification](docs/verification-milestone-7g.md).
+
 ## Dependency versions
 
 `backend/uv.lock` and `frontend/package-lock.json` lock all resolved dependencies.
@@ -425,7 +433,7 @@ Docker bases and runtime dependencies are pinned by release version. Main versio
 | --- | --- |
 | Python container | 3.12.12 |
 | Node container | 22.22.0 |
-| Next.js / React | 16.3.4 / 19.3.0 |
+| Next.js / React | 16.3.6 / 19.3.0 |
 | TypeScript / Tailwind CSS | 5.9.3 / 4.3.3 |
 | TanStack Query | 5.102.8 |
 | FastAPI / Uvicorn | 0.141.1 / 0.52.4 |

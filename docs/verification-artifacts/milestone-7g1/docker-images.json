@@ -1,0 +1,16 @@
+[
+  {
+    "tags": [
+      "serp-saas-frontend:m7g1-amd64"
+    ],
+    "platform": "linux/amd64",
+    "digest": "sha256:f23b965ffcd0a06d71a985661677acffbe33581663f72e4e9736933b92ecaeb3"
+  },
+  {
+    "tags": [
+      "serp-saas-frontend:latest"
+    ],
+    "platform": "linux/arm64",
+    "digest": "sha256:1cc5afdf0c0f7233d65df94e6ec916c2cea83a0ab028da07ddd3794f7339a9ce"
+  }
+]

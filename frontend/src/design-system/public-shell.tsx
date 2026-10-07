@@ -10,6 +10,7 @@ import { appHref, siteHref } from "@/lib/site";
 const links = [
   { href: "/", label: "Home" },
   { href: "/pricing", label: "Pricing" },
+  { href: "/blog", label: "Blog" },
   { href: "/about", label: "About us" },
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms of Service" },
@@ -35,7 +36,12 @@ export function PublicShell({ children }: { children: ReactNode }) {
         <Link
           key={link.href}
           href={siteHref(link.href)}
-          aria-current={path === link.href ? "page" : undefined}
+          aria-current={
+            path === link.href ||
+            (link.href === "/blog" && path.startsWith("/blog/"))
+              ? "page"
+              : undefined
+          }
           onClick={() => setOpen(false)}
         >
           {link.label}
@@ -100,6 +106,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
             <strong>Product</strong>
             <Link href={siteHref("/")}>Home</Link>
             <Link href={siteHref("/pricing")}>Pricing</Link>
+            <Link href={siteHref("/blog")}>Blog</Link>
             <Link href={siteHref("/about")}>About us</Link>
             <Link href={siteHref("/privacy")}>Privacy Policy</Link>
             <Link href={siteHref("/terms")}>Terms of Service</Link>

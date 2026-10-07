@@ -1,0 +1,174 @@
+{
+  "node": "v22.22.0",
+  "arch": "x64",
+  "next": "16.3.6",
+  "sharp": {
+    "vips": "8.18.7",
+    "sharp": "0.35.5"
+  },
+  "sourceMap": "1.2.2",
+  "markdown": [
+    "how-to-monitor-keyword-ranking.md",
+    "how-to-track-google-rankings.md",
+    "serp-tracking-for-agencies.md"
+  ],
+  "http": [
+    {
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": null
+    },
+    {
+      "path": "/pricing",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": null
+    },
+    {
+      "path": "/about",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": null
+    },
+    {
+      "path": "/privacy",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": null
+    },
+    {
+      "path": "/terms",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": null
+    },
+    {
+      "path": "/blog",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": null
+    },
+    {
+      "path": "/blog/how-to-track-google-rankings",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": null
+    },
+    {
+      "path": "/blog/serp-tracking-for-agencies",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": null
+    },
+    {
+      "path": "/blog/how-to-monitor-keyword-ranking",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": null
+    },
+    {
+      "path": "/login",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": "noindex, nofollow"
+    },
+    {
+      "path": "/register",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": "noindex, nofollow"
+    },
+    {
+      "path": "/verify-email",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": "noindex, nofollow"
+    },
+    {
+      "path": "/app",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": "noindex, nofollow"
+    },
+    {
+      "path": "/app/projects",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "robots": "noindex, nofollow"
+    },
+    {
+      "path": "/feed.xml",
+      "status": 200,
+      "contentType": "application/rss+xml; charset=utf-8",
+      "robots": null
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "contentType": "application/xml",
+      "robots": null
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "contentType": "text/plain",
+      "robots": null
+    },
+    {
+      "path": "/blog/unknown-slug",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "robots": null
+    },
+    {
+      "path": "/blog/private-draft",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "robots": null
+    }
+  ],
+  "bracesTraced": false,
+  "svgOutput": {
+    "format": "png",
+    "mediaType": "image/png",
+    "size": 262,
+    "width": 64,
+    "height": 64,
+    "space": "srgb",
+    "channels": 4,
+    "depth": "uchar",
+    "density": 72,
+    "isProgressive": false,
+    "isPalette": false,
+    "bitsPerSample": 8,
+    "hasProfile": false,
+    "hasAlpha": true,
+    "autoOrient": {
+      "width": 64,
+      "height": 64
+    }
+  },
+  "nextImage": {
+    "status": 200,
+    "contentType": "image/webp",
+    "image": {
+      "format": "webp",
+      "mediaType": "image/webp",
+      "size": 358,
+      "width": 64,
+      "height": 64,
+      "space": "srgb",
+      "channels": 3,
+      "depth": "uchar",
+      "isProgressive": false,
+      "isPalette": false,
+      "hasProfile": false,
+      "hasAlpha": false,
+      "autoOrient": {
+        "width": 64,
+        "height": 64
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+▲ Next.js 16.3.6
+- Local:         http://localhost:3000
+- Network:       http://0.0.0.0:3000
+✓ Ready in 0ms
+✓ Running next.config took 2ms
+Error: Internal: NoFallbackError
+    at p (.next/server/chunks/430.js:141:1229)
+    at responseGenerator (.next/server/chunks/430.js:141:4580)
+Error: Internal: NoFallbackError
+    at p (.next/server/chunks/430.js:141:1229)
+    at responseGenerator (.next/server/chunks/430.js:141:4580)
+Error: Internal: NoFallbackError
+    at p (.next/server/chunks/430.js:141:1229)
+    at responseGenerator (.next/server/chunks/430.js:141:4580)
+Error: Internal: NoFallbackError
+    at p (.next/server/chunks/430.js:141:1229)
+    at responseGenerator (.next/server/chunks/430.js:141:4580)

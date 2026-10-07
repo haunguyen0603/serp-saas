@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next";
-import { getSiteUrl } from "@/lib/site";
+import { getCanonicalSiteUrl } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: ["/", "/pricing", "/about", "/privacy", "/terms"],
+      allow: ["/", "/pricing", "/about", "/privacy", "/terms", "/blog"],
       disallow: [
         "/app",
         "/admin",
@@ -17,6 +17,6 @@ export default function robots(): MetadataRoute.Robots {
         "/signup",
       ],
     },
-    sitemap: new URL("/sitemap.xml", getSiteUrl()).toString(),
+    sitemap: new URL("/sitemap.xml", getCanonicalSiteUrl()).toString(),
   };
 }

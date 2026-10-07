@@ -57,17 +57,20 @@ export function AppShell({ children }: { children: ReactNode }) {
     if (customer && auth.isAuthenticated && auth.requiresEmailVerification)
       router.replace("/verify-email");
   }, [customer, auth.isAuthenticated, auth.requiresEmailVerification, router]);
-  const publicSite = [
-    "/",
-    "/pricing",
-    "/about",
-    "/privacy",
-    "/terms",
-    "/login",
-    "/register",
-    "/signup",
-    "/verify-email",
-  ].includes(path);
+  const publicSite =
+    [
+      "/",
+      "/pricing",
+      "/about",
+      "/privacy",
+      "/terms",
+      "/login",
+      "/register",
+      "/signup",
+      "/verify-email",
+    ].includes(path) ||
+    path === "/blog" ||
+    path.startsWith("/blog/");
   if (publicSite) return <PublicShell>{children}</PublicShell>;
   if (customer && auth.isAuthenticated && auth.requiresEmailVerification)
     return (

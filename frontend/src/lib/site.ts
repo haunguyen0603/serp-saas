@@ -34,6 +34,15 @@ export function getAppUrl(): URL {
   );
 }
 
+// Public SEO outputs must always point to the commercial HTTPS origin,
+// including builds inspected locally or through a Cloud Run preview URL.
+export function getCanonicalSiteUrl(): URL {
+  const configured = getSiteUrl();
+  return configured.origin === "https://serpsaas.com"
+    ? configured
+    : new URL("https://serpsaas.com");
+}
+
 export function hasSeparateAppDomain(): boolean {
   return getSiteUrl().origin !== getAppUrl().origin;
 }
@@ -56,7 +65,18 @@ export function siteHref(path: string): string {
   return linkTo(path, getSiteUrl());
 }
 
-export const marketingPaths = ["/", "/pricing", "/about", "/privacy", "/terms"];
+export const marketingPaths = [
+  "/",
+  "/pricing",
+  "/about",
+  "/privacy",
+  "/terms",
+  "/blog",
+];
+
+export function isMarketingPath(path: string): boolean {
+  return marketingPaths.includes(path) || path.startsWith("/blog/");
+}
 
 export function isAppPath(path: string): boolean {
   return [

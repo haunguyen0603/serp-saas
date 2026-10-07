@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
+    "prebuild": "node --experimental-strip-types scripts/validate-blog.mjs",
     "build": "next build --webpack",
     "start": "next start --hostname 0.0.0.0",
     "lint": "eslint .",
@@ -18,9 +19,12 @@
   },
   "dependencies": {
     "@tanstack/react-query": "5.102.8",
-    "next": "16.3.4",
+    "next": "16.3.6",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "react-markdown": "10.1.0",
+    "remark-gfm": "4.0.1",
+    "yaml": "2.9.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
@@ -30,7 +34,7 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.4",
-    "eslint-config-next": "16.3.4",
+    "eslint-config-next": "16.3.6",
     "jsdom": "26.1.0",
     "prettier": "3.8.1",
     "tailwindcss": "4.3.3",

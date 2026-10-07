@@ -4,7 +4,7 @@ import {
   getSiteUrl,
   hasSeparateAppDomain,
   isAppPath,
-  marketingPaths,
+  isMarketingPath,
 } from "@/lib/site";
 
 export function proxy(request: NextRequest) {
@@ -22,7 +22,7 @@ export function proxy(request: NextRequest) {
     target = new URL("/app", app);
   } else if (
     host === app.host &&
-    (marketingPaths.includes(path) || path === "/sitemap.xml")
+    (isMarketingPath(path) || path === "/sitemap.xml" || path === "/feed.xml")
   ) {
     target = new URL(site);
     target.pathname = path;

@@ -134,6 +134,11 @@ it("provides an accessible public mobile menu and accurate CTAs", () => {
       name: "Terms of Service",
     }),
   ).toHaveAttribute("href", "/terms");
+  for (const region of ["banner", "contentinfo"]) {
+    expect(
+      within(screen.getByRole(region)).getByRole("link", { name: "Blog" }),
+    ).toHaveAttribute("href", "/blog");
+  }
   fireEvent.click(
     screen.getByRole("button", { name: "Open public navigation" }),
   );
@@ -145,6 +150,10 @@ it("provides an accessible public mobile menu and accurate CTAs", () => {
   expect(within(dialog).getByRole("link", { name: "Pricing" })).toHaveAttribute(
     "aria-current",
     "page",
+  );
+  expect(within(dialog).getByRole("link", { name: "Blog" })).toHaveAttribute(
+    "href",
+    "/blog",
   );
   fireEvent(dialog, new Event("cancel", { bubbles: true, cancelable: true }));
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();

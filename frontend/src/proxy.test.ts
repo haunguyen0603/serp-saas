@@ -15,7 +15,17 @@ it("publishes only commercial pages in the main site's sitemap", () => {
       .map((page) => page.url)
       .sort(),
   ).toEqual(
-    ["/", "/pricing", "/about", "/terms", "/privacy"]
+    [
+      "/",
+      "/pricing",
+      "/about",
+      "/terms",
+      "/privacy",
+      "/blog",
+      "/blog/how-to-track-google-rankings",
+      "/blog/serp-tracking-for-agencies",
+      "/blog/how-to-monitor-keyword-ranking",
+    ]
       .map((path) => `https://serpsaas.com${path}`)
       .sort(),
   );
@@ -42,14 +52,20 @@ it.each([
   );
 });
 
-it.each(["/pricing", "/terms", "/privacy", "/about", "/sitemap.xml"])(
-  "moves commercial pages back to the primary domain: %s",
-  (path) => {
-    expect(
-      proxy(request("app.serpsaas.com", path)).headers.get("location"),
-    ).toBe(`https://serpsaas.com${path}`);
-  },
-);
+it.each([
+  "/pricing",
+  "/terms",
+  "/privacy",
+  "/about",
+  "/sitemap.xml",
+  "/blog",
+  "/blog/how-to-track-google-rankings",
+  "/feed.xml",
+])("moves commercial pages back to the primary domain: %s", (path) => {
+  expect(proxy(request("app.serpsaas.com", path)).headers.get("location")).toBe(
+    `https://serpsaas.com${path}`,
+  );
+});
 
 it("opens the workspace at the app root and allows its authentication gate to run", () => {
   expect(proxy(request("app.serpsaas.com", "/")).headers.get("location")).toBe(
