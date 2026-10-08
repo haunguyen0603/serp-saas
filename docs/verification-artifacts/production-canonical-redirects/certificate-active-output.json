@@ -1,0 +1,17 @@
+{
+  "source": "User-supplied Cloud Shell status screenshot; not independently queried through the GCP API",
+  "helper_output": "Certificate and both map entries are ACTIVE; ready for deploy.",
+  "certificate": "projects/serp-saas/locations/global/certificates/serp-canonical-cert",
+  "certificate_state": "ACTIVE",
+  "map_entry_states": {
+    "serp-canonical-apex": "ACTIVE",
+    "serp-canonical-www": "ACTIVE"
+  },
+  "load_balancer_ip": "136.81.159.43",
+  "pending": [
+    "Load balancer deployment",
+    "Preflight against the allocated IP",
+    "Traffic DNS cutover",
+    "Production canonical response verification"
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "checked_at": "2026-10-08T08:17:46.573200+00:00",
+  "results": [
+    {
+      "name": "apex-tls12",
+      "command": [
+        "curl",
+        "--silent",
+        "--show-error",
+        "--head",
+        "--noproxy",
+        "*",
+        "--resolve",
+        "serpsaas.com:443:136.81.159.43",
+        "--connect-timeout",
+        "5",
+        "--max-time",
+        "12",
+        "--tlsv1.2",
+        "--tls-max",
+        "1.2",
+        "https://serpsaas.com/"
+      ],
+      "exit_code": 0,
+      "output": "HTTP/2 200 \nvary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding\nx-nextjs-cache: HIT\nx-nextjs-prerender: 1\nx-nextjs-prerender: 1\nx-nextjs-stale-time: 300\ncache-control: s-maxage=31536000\netag: \"dz0ee83od4pv0\"\ncontent-type: text/html; charset=utf-8\nx-cloud-trace-context: e4ca40fc9b8ef6ff6c6f038f5cd39f4a;o=1\ncontent-length: 33541\ndate: Thu, 08 Oct 2026 08:17:46 GMT\nserver: Google Frontend\nvia: 1.1 google\nalt-svc: h3=\":443\"; ma=2592000\n\n",
+      "error": ""
+    },
+    {
+      "name": "apex-tls13",
+      "command": [
+        "curl",
+        "--silent",
+        "--show-error",
+        "--head",
+        "--noproxy",
+        "*",
+        "--resolve",
+        "serpsaas.com:443:136.81.159.43",
+        "--connect-timeout",
+        "5",
+        "--max-time",
+        "12",
+        "--tlsv1.3",
+        "--tls-max",
+        "1.3",
+        "https://serpsaas.com/"
+      ],
+      "exit_code": 4,
+      "output": "",
+      "error": "curl: (4) A requested feature, protocol or option was not found built-in in this libcurl due to a build-time decision.\n"
+    },
+    {
+      "name": "www-tls",
+      "command": [
+        "curl",
+        "--silent",
+        "--show-error",
+        "--head",
+        "--noproxy",
+        "*",
+        "--resolve",
+        "www.serpsaas.com:443:136.81.159.43",
+        "--connect-timeout",
+        "5",
+        "--max-time",
+        "12",
+        "https://www.serpsaas.com/"
+      ],
+      "exit_code": 0,
+      "output": "HTTP/2 301 \ncache-control: private\nlocation: https://serpsaas.com/\ncontent-length: 0\ndate: Thu, 08 Oct 2026 08:17:45 GMT\ncontent-type: text/html; charset=UTF-8\nalt-svc: h3=\":443\"; ma=2592000\n\n",
+      "error": ""
+    },
+    {
+      "name": "python-tls",
+      "result": {
+        "host": "serpsaas.com",
+        "error": "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1144)"
+      }
+    },
+    {
+      "name": "python-tls",
+      "result": {
+        "host": "www.serpsaas.com",
+        "error": "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1144)"
+      }
+    }
+  ]
+}

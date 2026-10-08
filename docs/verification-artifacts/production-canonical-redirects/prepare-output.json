@@ -1,0 +1,17 @@
+{
+  "source": "User-supplied Cloud Shell prepare output screenshot; not independently read from GCP API",
+  "phase": "prepare completed; certificate authorization, load balancer deployment and traffic DNS cutover pending",
+  "load_balancer_ip": "136.81.159.43",
+  "certificate_dns_records": {
+    "apex": {
+      "type": "CNAME",
+      "name": "_acme-challenge_3gwysczgqi3z3sof.serpsaas.com.",
+      "data": "28faca74-b3ee-401b-b3fc-ce02f292d1cd.19.authorize.certificatemanager.goog."
+    },
+    "www": {
+      "type": "CNAME",
+      "name": "_acme-challenge_3gwysczgqi3z3sof.www.serpsaas.com.",
+      "data": "2311a64e-a76e-471d-aa1c-bdd13109447c.7.authorize.certificatemanager.goog."
+    }
+  }
+}

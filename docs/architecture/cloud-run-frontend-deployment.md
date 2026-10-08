@@ -8,6 +8,10 @@ thực tế. Chưa có lệnh GCP nào được chạy từ workspace local cho 
 Sau lần deploy đầu, dùng [CI/CD qua Connect Repo](cloud-run-ci-cd.md) để tự kiểm tra,
 build và deploy khi merge vào `main`, thay cho upload source ở mỗi lần cập nhật.
 
+Nếu đang dùng Cloud Run Domain Mapping và cần HTTP/www redirect **301** cho SEO,
+dùng [runbook canonical redirects](cloud-run-canonical-redirects.md). Runbook đó
+chỉ chuyển apex/www sang Load Balancer và giữ Domain Mapping hiện tại cho app/API.
+
 ## 1. Kiểm tra backend và Scheduler
 
 ```sh

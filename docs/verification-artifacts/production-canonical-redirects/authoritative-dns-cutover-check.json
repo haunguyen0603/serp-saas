@@ -1,0 +1,81 @@
+{
+  "checked_at": "2026-10-08T08:22:52.345159+00:00",
+  "results": [
+    {
+      "server": "ns1.azdigi.com",
+      "host": "serpsaas.com",
+      "command": [
+        "dig",
+        "@ns1.azdigi.com",
+        "serpsaas.com",
+        "A",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns1.azdigi.com serpsaas.com A +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 3423\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; ANSWER SECTION:\nserpsaas.com.\t\t14440\tIN\tA\t216.239.32.21\n\n",
+      "error": ""
+    },
+    {
+      "server": "ns1.azdigi.com",
+      "host": "www.serpsaas.com",
+      "command": [
+        "dig",
+        "@ns1.azdigi.com",
+        "www.serpsaas.com",
+        "A",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns1.azdigi.com www.serpsaas.com A +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 21057\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n",
+      "error": ""
+    },
+    {
+      "server": "ns2.azdigi.com",
+      "host": "serpsaas.com",
+      "command": [
+        "dig",
+        "@ns2.azdigi.com",
+        "serpsaas.com",
+        "A",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns2.azdigi.com serpsaas.com A +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 5093\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; ANSWER SECTION:\nserpsaas.com.\t\t14440\tIN\tA\t216.239.32.21\n\n",
+      "error": ""
+    },
+    {
+      "server": "ns2.azdigi.com",
+      "host": "www.serpsaas.com",
+      "command": [
+        "dig",
+        "@ns2.azdigi.com",
+        "www.serpsaas.com",
+        "A",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns2.azdigi.com www.serpsaas.com A +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 45037\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n",
+      "error": ""
+    }
+  ]
+}

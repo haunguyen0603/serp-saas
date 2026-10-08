@@ -1,0 +1,281 @@
+[
+  {
+    "name": "serpsaas.com",
+    "type": "NS",
+    "exit_code": 0,
+    "response": {
+      "Status": 0,
+      "TC": false,
+      "RD": true,
+      "RA": true,
+      "AD": false,
+      "CD": false,
+      "Question": [
+        {
+          "name": "serpsaas.com.",
+          "type": 2
+        }
+      ],
+      "Answer": [
+        {
+          "name": "serpsaas.com.",
+          "type": 2,
+          "TTL": 21600,
+          "data": "ns1.azdigi.com."
+        },
+        {
+          "name": "serpsaas.com.",
+          "type": 2,
+          "TTL": 21600,
+          "data": "ns2.azdigi.com."
+        }
+      ],
+      "Comment": "Response from 45.252.248.6."
+    },
+    "error": ""
+  },
+  {
+    "name": "serpsaas.com",
+    "type": "A",
+    "exit_code": 0,
+    "response": {
+      "Status": 0,
+      "TC": false,
+      "RD": true,
+      "RA": true,
+      "AD": false,
+      "CD": false,
+      "Question": [
+        {
+          "name": "serpsaas.com.",
+          "type": 1
+        }
+      ],
+      "Answer": [
+        {
+          "name": "serpsaas.com.",
+          "type": 1,
+          "TTL": 14440,
+          "data": "216.239.32.21"
+        }
+      ],
+      "Comment": "Response from 103.221.220.6."
+    },
+    "error": ""
+  },
+  {
+    "name": "serpsaas.com",
+    "type": "AAAA",
+    "exit_code": 0,
+    "response": {
+      "Status": 0,
+      "TC": false,
+      "RD": true,
+      "RA": true,
+      "AD": false,
+      "CD": false,
+      "Question": [
+        {
+          "name": "serpsaas.com.",
+          "type": 28
+        }
+      ],
+      "Authority": [
+        {
+          "name": "serpsaas.com.",
+          "type": 6,
+          "TTL": 1800,
+          "data": "ns1.azdigi.com. thachpham.azdigi.com. 2026100501 3600 1800 1209600 86400"
+        }
+      ],
+      "Comment": "Response from 45.252.248.6."
+    },
+    "error": ""
+  },
+  {
+    "name": "serpsaas.com",
+    "type": "CAA",
+    "exit_code": 0,
+    "response": {
+      "Status": 0,
+      "TC": false,
+      "RD": true,
+      "RA": true,
+      "AD": false,
+      "CD": false,
+      "Question": [
+        {
+          "name": "serpsaas.com.",
+          "type": 257
+        }
+      ],
+      "Authority": [
+        {
+          "name": "serpsaas.com.",
+          "type": 6,
+          "TTL": 1800,
+          "data": "ns1.azdigi.com. thachpham.azdigi.com. 2026100501 3600 1800 1209600 86400"
+        }
+      ],
+      "Comment": "Response from 45.252.248.6."
+    },
+    "error": ""
+  },
+  {
+    "name": "www.serpsaas.com",
+    "type": "A",
+    "exit_code": 0,
+    "response": {
+      "Status": 3,
+      "TC": false,
+      "RD": true,
+      "RA": true,
+      "AD": false,
+      "CD": false,
+      "Question": [
+        {
+          "name": "www.serpsaas.com.",
+          "type": 1
+        }
+      ],
+      "Authority": [
+        {
+          "name": "serpsaas.com.",
+          "type": 6,
+          "TTL": 1800,
+          "data": "ns1.azdigi.com. thachpham.azdigi.com. 2026100501 3600 1800 1209600 86400"
+        }
+      ],
+      "Comment": "Response from 103.221.220.6."
+    },
+    "error": ""
+  },
+  {
+    "name": "www.serpsaas.com",
+    "type": "AAAA",
+    "exit_code": 0,
+    "response": {
+      "Status": 3,
+      "TC": false,
+      "RD": true,
+      "RA": true,
+      "AD": false,
+      "CD": false,
+      "Question": [
+        {
+          "name": "www.serpsaas.com.",
+          "type": 28
+        }
+      ],
+      "Authority": [
+        {
+          "name": "serpsaas.com.",
+          "type": 6,
+          "TTL": 1800,
+          "data": "ns1.azdigi.com. thachpham.azdigi.com. 2026100501 3600 1800 1209600 86400"
+        }
+      ],
+      "Comment": "Response from 45.252.248.6."
+    },
+    "error": ""
+  },
+  {
+    "name": "www.serpsaas.com",
+    "type": "CNAME",
+    "exit_code": 0,
+    "response": {
+      "Status": 3,
+      "TC": false,
+      "RD": true,
+      "RA": true,
+      "AD": false,
+      "CD": false,
+      "Question": [
+        {
+          "name": "www.serpsaas.com.",
+          "type": 5
+        }
+      ],
+      "Authority": [
+        {
+          "name": "serpsaas.com.",
+          "type": 6,
+          "TTL": 1800,
+          "data": "ns1.azdigi.com. thachpham.azdigi.com. 2026100501 3600 1800 1209600 86400"
+        }
+      ],
+      "Comment": "Response from 103.221.220.6."
+    },
+    "error": ""
+  },
+  {
+    "name": "app.serpsaas.com",
+    "type": "A",
+    "exit_code": 0,
+    "response": {
+      "Status": 0,
+      "TC": false,
+      "RD": true,
+      "RA": true,
+      "AD": false,
+      "CD": false,
+      "Question": [
+        {
+          "name": "app.serpsaas.com.",
+          "type": 1
+        }
+      ],
+      "Answer": [
+        {
+          "name": "app.serpsaas.com.",
+          "type": 5,
+          "TTL": 14440,
+          "data": "ghs.googlehosted.com."
+        },
+        {
+          "name": "ghs.googlehosted.com.",
+          "type": 1,
+          "TTL": 300,
+          "data": "74.125.203.121"
+        }
+      ],
+      "Comment": "Response from 216.239.34.10."
+    },
+    "error": ""
+  },
+  {
+    "name": "api.serpsaas.com",
+    "type": "A",
+    "exit_code": 0,
+    "response": {
+      "Status": 0,
+      "TC": false,
+      "RD": true,
+      "RA": true,
+      "AD": false,
+      "CD": false,
+      "Question": [
+        {
+          "name": "api.serpsaas.com.",
+          "type": 1
+        }
+      ],
+      "Answer": [
+        {
+          "name": "api.serpsaas.com.",
+          "type": 5,
+          "TTL": 14440,
+          "data": "ghs.googlehosted.com."
+        },
+        {
+          "name": "ghs.googlehosted.com.",
+          "type": 1,
+          "TTL": 300,
+          "data": "74.125.203.121"
+        }
+      ],
+      "Comment": "Response from 216.239.38.10."
+    },
+    "error": ""
+  }
+]

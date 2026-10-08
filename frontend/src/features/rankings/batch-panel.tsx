@@ -23,6 +23,7 @@ import {
   batchKey,
   batchUrl,
   getBatch,
+  rankingFailureMessage,
   terminalBatch,
   type Batch,
   type Job,
@@ -227,7 +228,7 @@ export function BatchPanel({
                 <li key={job.id}>
                   {job.keyword}: {job.status} · Attempts: {job.attempt_count}
                   {job.status === "failed"
-                    ? " · Check could not be completed"
+                    ? ` · ${rankingFailureMessage(job.last_error_code)}`
                     : ""}
                 </li>
               ))}

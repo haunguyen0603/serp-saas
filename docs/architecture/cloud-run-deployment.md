@@ -151,6 +151,38 @@ trong `.env.cloud-run.yaml`, rồi redeploy cả hai service:
 Chỉ sửa ba field này trong profile hiện có; không thay cả file bằng đoạn JSON trên.
 Nếu chạy lại bước `config`, các field provider sẽ trở về mặc định Serper.
 
+### Project Mobile báo “Completed with errors”
+
+Batch hoàn thành với lỗi chỉ cho biết các job đã kết thúc; cần kiểm tra nguyên nhân
+ở DevTools → Network → response của
+`/api/v1/projects/<project-id>/rank-check-batches/<batch-id>/jobs`, field
+`items[].last_error_code`. API này yêu cầu đăng nhập bằng tài khoản sở hữu Project.
+
+| Mã lỗi | Nguyên nhân và cách xử lý |
+| --- | --- |
+| `SERP_PROVIDER_UNSUPPORTED_CONFIGURATION` | Với cấu hình cố định Serper, Mobile không được hỗ trợ. Bật routing `priority` và SerpAPI như phần trên. |
+| `SERP_PROVIDER_NOT_CONFIGURED` | Provider cố định thiếu cấu hình hoặc credential. Kiểm tra enabled providers và secret binding. |
+| `SERP_NO_PROVIDER_AVAILABLE` | Không có provider phù hợp được bật, cấu hình và còn ngân sách. Với Mobile, kiểm tra SerpAPI và ngân sách request. |
+| `SERP_PROVIDER_AUTH_ERROR` | Provider từ chối credential. Kiểm tra key và phiên bản secret đang được inject. |
+| `SERP_PROVIDER_QUOTA_EXHAUSTED` | Provider hết quota. Kiểm tra quota của tài khoản provider. |
+| `SERP_PROVIDER_TIMEOUT` / `SERP_PROVIDER_UNAVAILABLE` | Lỗi tạm thời khi gọi provider. Kiểm tra worker logs và thử lại sau. |
+
+Registry hiện cho phép Serper với Desktop và SerpAPI với Desktop/Mobile. Router
+`priority` bỏ qua Serper khi Project dùng Mobile; thứ tự `serper,serpapi` vẫn giữ
+Serper ưu tiên cho Desktop. Không chuyển Project Mobile sang Desktop để bỏ lỗi vì
+đó là hai môi trường xếp hạng khác nhau.
+
+Trong Cloud Shell, dùng **profile hiện có**, chỉnh ba field provider trong phần
+trên, export `SERPAPI_SECRET_VERSION` đúng phiên bản đang enabled, rồi cập nhật
+**cả worker và API** theo hướng dẫn trên. Key trong `.env` trên máy local không
+cấu hình Cloud Run. CI/CD chỉ cập nhật image và giữ nguyên provider settings, nên
+build lại mã nguồn cũng không tự bật Mobile.
+
+Sau cập nhật, chạy Check Rankings mới cho Project Mobile và xác nhận các job
+`succeeded`. Các batch đã thất bại giữ nguyên lịch sử và không tự chạy lại. Lần
+check mới gọi provider thật và sử dụng quota; health check không xác nhận kết quả
+xếp hạng Mobile.
+
 ## 4. Tạo cấu hình production
 
 ```sh

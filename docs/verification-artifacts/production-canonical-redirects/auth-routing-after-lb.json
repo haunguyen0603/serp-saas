@@ -1,0 +1,119 @@
+{
+  "checked_at": "2026-10-08T08:21:14.407307+00:00",
+  "scope": "Anonymous routing/availability only; no authenticated user session or mutation",
+  "results": [
+    {
+      "name": "lb-apex-login",
+      "url": "https://serpsaas.com/login?source=canonical-check",
+      "command": [
+        "curl",
+        "--silent",
+        "--show-error",
+        "--dump-header",
+        "-",
+        "--output",
+        "/dev/null",
+        "--connect-timeout",
+        "5",
+        "--max-time",
+        "15",
+        "--noproxy",
+        "*",
+        "--resolve",
+        "serpsaas.com:443:136.81.159.43",
+        "https://serpsaas.com/login?source=canonical-check"
+      ],
+      "exit_code": 0,
+      "output": "HTTP/2 307 \nlocation: https://app.serpsaas.com/login?source=canonical-check\nx-cloud-trace-context: a6cda6b5afd076ffcd202ecdfdafbd9b\ndate: Thu, 08 Oct 2026 08:21:04 GMT\ncontent-type: text/html\nserver: Google Frontend\ncontent-length: 53\nvia: 1.1 google\nalt-svc: h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000\n\n",
+      "error": ""
+    },
+    {
+      "name": "lb-apex-app",
+      "url": "https://serpsaas.com/app?source=canonical-check",
+      "command": [
+        "curl",
+        "--silent",
+        "--show-error",
+        "--dump-header",
+        "-",
+        "--output",
+        "/dev/null",
+        "--connect-timeout",
+        "5",
+        "--max-time",
+        "15",
+        "--noproxy",
+        "*",
+        "--resolve",
+        "serpsaas.com:443:136.81.159.43",
+        "https://serpsaas.com/app?source=canonical-check"
+      ],
+      "exit_code": 0,
+      "output": "HTTP/2 307 \nlocation: https://app.serpsaas.com/app?source=canonical-check\nx-cloud-trace-context: c21ae45918fbe15b83bad210dbeb72ce;o=1\ndate: Thu, 08 Oct 2026 08:21:04 GMT\ncontent-type: text/html\nserver: Google Frontend\ncontent-length: 51\nvia: 1.1 google\nalt-svc: h3=\":443\"; ma=2592000\n\n",
+      "error": ""
+    },
+    {
+      "name": "app-login",
+      "url": "https://app.serpsaas.com/login",
+      "command": [
+        "curl",
+        "--silent",
+        "--show-error",
+        "--dump-header",
+        "-",
+        "--output",
+        "/dev/null",
+        "--connect-timeout",
+        "5",
+        "--max-time",
+        "15",
+        "https://app.serpsaas.com/login"
+      ],
+      "exit_code": 0,
+      "output": "HTTP/2 200 \nx-robots-tag: noindex, nofollow\nvary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding\nx-nextjs-cache: HIT\nx-nextjs-prerender: 1\nx-nextjs-prerender: 1\nx-nextjs-stale-time: 300\ncache-control: s-maxage=31536000\netag: \"8hpsddss5691t\"\ncontent-type: text/html; charset=utf-8\nx-cloud-trace-context: cf6286ec51c0e028691c7d286d6a2d0e\ndate: Thu, 08 Oct 2026 08:21:05 GMT\nserver: Google Frontend\ncontent-length: 11732\n\n",
+      "error": ""
+    },
+    {
+      "name": "app-root",
+      "url": "https://app.serpsaas.com/",
+      "command": [
+        "curl",
+        "--silent",
+        "--show-error",
+        "--dump-header",
+        "-",
+        "--output",
+        "/dev/null",
+        "--connect-timeout",
+        "5",
+        "--max-time",
+        "15",
+        "https://app.serpsaas.com/"
+      ],
+      "exit_code": 0,
+      "output": "HTTP/2 307 \nlocation: https://app.serpsaas.com/app\nx-cloud-trace-context: 96157fc18f104d33a15249f3cba591c0\ndate: Thu, 08 Oct 2026 08:21:05 GMT\ncontent-type: text/html\nserver: Google Frontend\ncontent-length: 28\n\n",
+      "error": ""
+    },
+    {
+      "name": "api-health",
+      "url": "https://api.serpsaas.com/health/db",
+      "command": [
+        "curl",
+        "--silent",
+        "--show-error",
+        "--dump-header",
+        "-",
+        "--output",
+        "/dev/null",
+        "--connect-timeout",
+        "5",
+        "--max-time",
+        "15",
+        "https://api.serpsaas.com/health/db"
+      ],
+      "exit_code": 0,
+      "output": "HTTP/2 200 \ncontent-type: application/json\nx-cloud-trace-context: 926850a169438f8c0e9cbd350fa8e26b;o=1\ndate: Thu, 08 Oct 2026 08:21:14 GMT\nserver: Google Frontend\ncontent-length: 15\n\n",
+      "error": ""
+    }
+  ]
+}

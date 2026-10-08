@@ -1,0 +1,99 @@
+[
+  {
+    "name": "googlebot-http-home",
+    "url": "http://serpsaas.com/",
+    "command": [
+      "curl",
+      "--silent",
+      "--show-error",
+      "--max-time",
+      "20",
+      "--dump-header",
+      "-",
+      "--output",
+      "/dev/null",
+      "--user-agent",
+      "Googlebot",
+      "http://serpsaas.com/"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/1.1 302 Found\nlocation: https://serpsaas.com/\nx-cloud-trace-context: e5893a2a2a76294ab8e3c3adc957082a\ndate: Thu, 08 Oct 2026 05:25:29 GMT\ncontent-type: text/html\nserver: Google Frontend\nContent-Length: 0\n\n",
+    "error": ""
+  },
+  {
+    "name": "apex-http-pricing-get",
+    "url": "http://serpsaas.com/pricing?utm_source=canonical-check&probe=1",
+    "command": [
+      "curl",
+      "--silent",
+      "--show-error",
+      "--max-time",
+      "20",
+      "--dump-header",
+      "-",
+      "--output",
+      "/dev/null",
+      "http://serpsaas.com/pricing?utm_source=canonical-check&probe=1"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/1.1 302 Found\nlocation: https://serpsaas.com/pricing?utm_source=canonical-check&probe=1\nx-cloud-trace-context: 3d91845d95c972f10bcc9242d3bfc9a8;o=1\ndate: Thu, 08 Oct 2026 05:25:29 GMT\ncontent-type: text/html\nserver: Google Frontend\nContent-Length: 0\n\n",
+    "error": ""
+  },
+  {
+    "name": "app-login",
+    "url": "https://app.serpsaas.com/login",
+    "command": [
+      "curl",
+      "--silent",
+      "--show-error",
+      "--max-time",
+      "20",
+      "--dump-header",
+      "-",
+      "--output",
+      "/dev/null",
+      "https://app.serpsaas.com/login"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/2 200 \nx-robots-tag: noindex, nofollow\nvary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding\nx-nextjs-cache: HIT\nx-nextjs-prerender: 1\nx-nextjs-prerender: 1\nx-nextjs-stale-time: 300\ncache-control: s-maxage=31536000\netag: \"8hpsddss5691t\"\ncontent-type: text/html; charset=utf-8\nx-cloud-trace-context: 539b0322c7bd17e811ff2fe11d833744\ndate: Thu, 08 Oct 2026 05:25:29 GMT\nserver: Google Frontend\ncontent-length: 11732\n\n",
+    "error": ""
+  },
+  {
+    "name": "app-root",
+    "url": "https://app.serpsaas.com/",
+    "command": [
+      "curl",
+      "--silent",
+      "--show-error",
+      "--max-time",
+      "20",
+      "--dump-header",
+      "-",
+      "--output",
+      "/dev/null",
+      "https://app.serpsaas.com/"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/2 307 \nlocation: https://app.serpsaas.com/app\nx-cloud-trace-context: 1d3830fec4650dc8294fa65a042bab54\ndate: Thu, 08 Oct 2026 05:25:29 GMT\ncontent-type: text/html\nserver: Google Frontend\ncontent-length: 28\n\n",
+    "error": ""
+  },
+  {
+    "name": "api-health",
+    "url": "https://api.serpsaas.com/health/db",
+    "command": [
+      "curl",
+      "--silent",
+      "--show-error",
+      "--max-time",
+      "20",
+      "--dump-header",
+      "-",
+      "--output",
+      "/dev/null",
+      "https://api.serpsaas.com/health/db"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/2 200 \ncontent-type: application/json\nx-cloud-trace-context: 5c0c107327fcc7d141e0c038dc3e1492;o=1\ndate: Thu, 08 Oct 2026 05:25:29 GMT\nserver: Google Frontend\ncontent-length: 15\n\n",
+    "error": ""
+  }
+]

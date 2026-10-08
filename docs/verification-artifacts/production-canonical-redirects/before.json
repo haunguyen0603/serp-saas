@@ -1,0 +1,206 @@
+[
+  {
+    "name": "apex-http-home",
+    "url": "http://serpsaas.com/",
+    "command": [
+      "curl",
+      "--head",
+      "--silent",
+      "--show-error",
+      "--connect-timeout",
+      "10",
+      "--max-time",
+      "25",
+      "--write-out",
+      "\nFINAL_STATUS=%{http_code}\nFINAL_URL=%{url_effective}\nREMOTE_IP=%{remote_ip}\n",
+      "http://serpsaas.com/"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/1.1 302 Found\nlocation: https://serpsaas.com/\nx-cloud-trace-context: 63f1d7c98517143be3ebb8e103af3128\ndate: Thu, 08 Oct 2026 05:17:26 GMT\ncontent-type: text/html\nserver: Google Frontend\nTransfer-Encoding: chunked\n\n\nFINAL_STATUS=302\nFINAL_URL=http://serpsaas.com/\nREMOTE_IP=216.239.32.21\n",
+    "error": ""
+  },
+  {
+    "name": "apex-http-pricing",
+    "url": "http://serpsaas.com/pricing",
+    "command": [
+      "curl",
+      "--head",
+      "--silent",
+      "--show-error",
+      "--connect-timeout",
+      "10",
+      "--max-time",
+      "25",
+      "--write-out",
+      "\nFINAL_STATUS=%{http_code}\nFINAL_URL=%{url_effective}\nREMOTE_IP=%{remote_ip}\n",
+      "http://serpsaas.com/pricing"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/1.1 302 Found\nlocation: https://serpsaas.com/pricing\nx-cloud-trace-context: d4f34b2369a4a101fa5fcb24d0bc1ef1\ndate: Thu, 08 Oct 2026 05:17:26 GMT\ncontent-type: text/html\nserver: Google Frontend\nTransfer-Encoding: chunked\n\n\nFINAL_STATUS=302\nFINAL_URL=http://serpsaas.com/pricing\nREMOTE_IP=216.239.32.21\n",
+    "error": ""
+  },
+  {
+    "name": "apex-http-query",
+    "url": "http://serpsaas.com/pricing?utm_source=canonical-check&probe=1",
+    "command": [
+      "curl",
+      "--head",
+      "--silent",
+      "--show-error",
+      "--connect-timeout",
+      "10",
+      "--max-time",
+      "25",
+      "--write-out",
+      "\nFINAL_STATUS=%{http_code}\nFINAL_URL=%{url_effective}\nREMOTE_IP=%{remote_ip}\n",
+      "http://serpsaas.com/pricing?utm_source=canonical-check&probe=1"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/1.1 302 Found\nlocation: https://serpsaas.com/pricing?utm_source=canonical-check&probe=1\nx-cloud-trace-context: 77c12e7694d82eb0c7081dec521bce17;o=1\ndate: Thu, 08 Oct 2026 05:17:26 GMT\ncontent-type: text/html\nserver: Google Frontend\nTransfer-Encoding: chunked\n\n\nFINAL_STATUS=302\nFINAL_URL=http://serpsaas.com/pricing?utm_source=canonical-check&probe=1\nREMOTE_IP=216.239.32.21\n",
+    "error": ""
+  },
+  {
+    "name": "apex-https-home",
+    "url": "https://serpsaas.com/",
+    "command": [
+      "curl",
+      "--head",
+      "--silent",
+      "--show-error",
+      "--connect-timeout",
+      "10",
+      "--max-time",
+      "25",
+      "--write-out",
+      "\nFINAL_STATUS=%{http_code}\nFINAL_URL=%{url_effective}\nREMOTE_IP=%{remote_ip}\n",
+      "https://serpsaas.com/"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/2 200 \nvary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding\nx-nextjs-cache: HIT\nx-nextjs-prerender: 1\nx-nextjs-prerender: 1\nx-nextjs-stale-time: 300\ncache-control: s-maxage=31536000\netag: \"dz0ee83od4pv0\"\ncontent-type: text/html; charset=utf-8\nx-cloud-trace-context: ec1024865e56683f3a5444daaa57647b\ncontent-length: 33541\ndate: Thu, 08 Oct 2026 05:17:26 GMT\nserver: Google Frontend\n\n\nFINAL_STATUS=200\nFINAL_URL=https://serpsaas.com/\nREMOTE_IP=216.239.32.21\n",
+    "error": ""
+  },
+  {
+    "name": "apex-https-pricing",
+    "url": "https://serpsaas.com/pricing",
+    "command": [
+      "curl",
+      "--head",
+      "--silent",
+      "--show-error",
+      "--connect-timeout",
+      "10",
+      "--max-time",
+      "25",
+      "--write-out",
+      "\nFINAL_STATUS=%{http_code}\nFINAL_URL=%{url_effective}\nREMOTE_IP=%{remote_ip}\n",
+      "https://serpsaas.com/pricing"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/2 200 \nvary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding\nx-nextjs-cache: HIT\nx-nextjs-prerender: 1\nx-nextjs-prerender: 1\nx-nextjs-stale-time: 300\ncache-control: s-maxage=31536000\netag: \"13eefz8lr77blg\"\ncontent-type: text/html; charset=utf-8\nx-cloud-trace-context: 762b35849a07ef1c08cf012eeb5f5c23\ncontent-length: 15033\ndate: Thu, 08 Oct 2026 05:17:26 GMT\nserver: Google Frontend\n\n\nFINAL_STATUS=200\nFINAL_URL=https://serpsaas.com/pricing\nREMOTE_IP=216.239.32.21\n",
+    "error": ""
+  },
+  {
+    "name": "www-http-home",
+    "url": "http://www.serpsaas.com/",
+    "command": [
+      "curl",
+      "--head",
+      "--silent",
+      "--show-error",
+      "--connect-timeout",
+      "10",
+      "--max-time",
+      "25",
+      "--write-out",
+      "\nFINAL_STATUS=%{http_code}\nFINAL_URL=%{url_effective}\nREMOTE_IP=%{remote_ip}\n",
+      "http://www.serpsaas.com/"
+    ],
+    "exit_code": 6,
+    "output": "\nFINAL_STATUS=000\nFINAL_URL=http://www.serpsaas.com/\nREMOTE_IP=\n",
+    "error": "curl: (6) Could not resolve host: www.serpsaas.com\n"
+  },
+  {
+    "name": "www-https-home",
+    "url": "https://www.serpsaas.com/",
+    "command": [
+      "curl",
+      "--head",
+      "--silent",
+      "--show-error",
+      "--connect-timeout",
+      "10",
+      "--max-time",
+      "25",
+      "--write-out",
+      "\nFINAL_STATUS=%{http_code}\nFINAL_URL=%{url_effective}\nREMOTE_IP=%{remote_ip}\n",
+      "https://www.serpsaas.com/"
+    ],
+    "exit_code": 6,
+    "output": "\nFINAL_STATUS=000\nFINAL_URL=https://www.serpsaas.com/\nREMOTE_IP=\n",
+    "error": "curl: (6) Could not resolve host: www.serpsaas.com\n"
+  },
+  {
+    "name": "googlebot-http-home",
+    "url": "http://serpsaas.com/",
+    "command": [
+      "curl",
+      "--head",
+      "--silent",
+      "--show-error",
+      "--connect-timeout",
+      "10",
+      "--max-time",
+      "25",
+      "--user-agent",
+      "Googlebot",
+      "--write-out",
+      "\nFINAL_STATUS=%{http_code}\nFINAL_URL=%{url_effective}\nREMOTE_IP=%{remote_ip}\n",
+      "http://serpsaas.com/"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/1.1 302 Found\nlocation: https://serpsaas.com/\nx-cloud-trace-context: ef8cf5dc9801e6a56d569112c7358a48\ndate: Thu, 08 Oct 2026 05:17:27 GMT\ncontent-type: text/html\nserver: Google Frontend\nTransfer-Encoding: chunked\n\n\nFINAL_STATUS=302\nFINAL_URL=http://serpsaas.com/\nREMOTE_IP=216.239.32.21\n",
+    "error": ""
+  },
+  {
+    "name": "ipv6-http-home",
+    "url": "http://serpsaas.com/",
+    "command": [
+      "curl",
+      "--head",
+      "--silent",
+      "--show-error",
+      "--connect-timeout",
+      "10",
+      "--max-time",
+      "25",
+      "--ipv6",
+      "--write-out",
+      "\nFINAL_STATUS=%{http_code}\nFINAL_URL=%{url_effective}\nREMOTE_IP=%{remote_ip}\n",
+      "http://serpsaas.com/"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/1.1 302 Found\nlocation: https://serpsaas.com/\nx-cloud-trace-context: 528e73714d136fb67c68b6c4ec713588\ndate: Thu, 08 Oct 2026 05:17:27 GMT\ncontent-type: text/html\nserver: Google Frontend\nTransfer-Encoding: chunked\n\n\nFINAL_STATUS=302\nFINAL_URL=http://serpsaas.com/\nREMOTE_IP=::ffff:216.239.32.21\n",
+    "error": ""
+  },
+  {
+    "name": "canonical-chain",
+    "url": "http://serpsaas.com/",
+    "command": [
+      "curl",
+      "--head",
+      "--silent",
+      "--show-error",
+      "--connect-timeout",
+      "10",
+      "--max-time",
+      "25",
+      "--location",
+      "--write-out",
+      "\nFINAL_STATUS=%{http_code}\nFINAL_URL=%{url_effective}\nREMOTE_IP=%{remote_ip}\n",
+      "http://serpsaas.com/"
+    ],
+    "exit_code": 0,
+    "output": "HTTP/1.1 302 Found\nlocation: https://serpsaas.com/\nx-cloud-trace-context: 62515e28f42c7f2a86db4baf0455a6a9\ndate: Thu, 08 Oct 2026 05:17:27 GMT\ncontent-type: text/html\nserver: Google Frontend\nTransfer-Encoding: chunked\n\nHTTP/2 200 \nvary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding\nx-nextjs-cache: HIT\nx-nextjs-prerender: 1\nx-nextjs-prerender: 1\nx-nextjs-stale-time: 300\ncache-control: s-maxage=31536000\netag: \"dz0ee83od4pv0\"\ncontent-type: text/html; charset=utf-8\nx-cloud-trace-context: 0c63a62a5a13a695f5c12a2d71ddaa6f\ncontent-length: 33541\ndate: Thu, 08 Oct 2026 05:17:27 GMT\nserver: Google Frontend\n\n\nFINAL_STATUS=200\nFINAL_URL=https://serpsaas.com/\nREMOTE_IP=216.239.32.21\n",
+    "error": ""
+  }
+]

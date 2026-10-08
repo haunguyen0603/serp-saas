@@ -30,9 +30,16 @@ def main() -> None:
         action="store_true",
         help="Package CI/CD helpers, build configs and docs for Cloud Shell setup.",
     )
+    group.add_argument(
+        "--canonical-guide",
+        action="store_true",
+        help="Package only the commercial-domain canonical redirect infrastructure.",
+    )
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
-    if args.ci_guide:
+    if args.canonical_guide:
+        filename = "serp-saas-canonical-redirects.tar.gz"
+    elif args.ci_guide:
         filename = "serp-saas-cloudrun-ci.tar.gz"
     elif args.domains:
         filename = "serp-saas-domains.tar.gz"
@@ -43,7 +50,44 @@ def main() -> None:
     else:
         filename = "serp-saas-cloudshell.tar.gz"
     destination = root / "dist" / filename
-    if args.ci_guide:
+    if args.canonical_guide:
+        files = [
+            "docs/architecture/cloud-run-canonical-redirects.md",
+            "docs/production-canonical-redirects.md",
+            "infrastructure/gcp/canonical-redirects.py",
+            "infrastructure/gcp/package-cloudshell.py",
+            "infrastructure/gcp/tests/test_canonical_redirects.py",
+        ]
+        files.extend(
+            path.relative_to(root).as_posix()
+            for path in (root / "infrastructure/gcp/canonical-redirects").iterdir()
+            if path.suffix in {".tf", ".hcl"} or path.name == ".gitignore"
+        )
+        files.extend(
+            f"docs/verification-artifacts/production-canonical-redirects/{name}"
+            for name in (
+                "before.json",
+                "dns-before.json",
+                "http-get-and-app-before.json",
+                "verification-before.json",
+                "prepare-output.json",
+                "dns-after-prepare.json",
+                "dns-certificate-provisioning.json",
+                "certificate-active-output.json",
+                "https-frontend-output.json",
+                "deployment-request-check.json",
+                "lb-tls-diagnostics.json",
+                "preflight-deployment-request.json",
+                "preflight-after-deploy.json",
+                "auth-routing-after-lb.json",
+                "authoritative-dns-cutover-check.json",
+                "dns-and-auth-after-cutover.json",
+                "production-after-system-dns-cache.json",
+                "production-after-first-public-dns.json",
+                "production-after.json",
+            )
+        )
+    elif args.ci_guide:
         files = [
             "docs/architecture/cloud-run-ci-cd.md",
             "infrastructure/gcp/cloud-run-ci.sh",

@@ -114,6 +114,62 @@ it("shows safe failure text, batch history, and cancellation", async () => {
   ).not.toBeInTheDocument();
 });
 
+it.each([
+  [
+    "SERP_PROVIDER_UNSUPPORTED_CONFIGURATION",
+    "Ranking checks are not available for this project's search settings. Please contact support.",
+  ],
+  [
+    "SERP_NO_PROVIDER_AVAILABLE",
+    "Ranking checks are currently unavailable for this project. Please contact support.",
+  ],
+  [
+    "SERP_PROVIDER_AUTH_ERROR",
+    "The ranking service could not authenticate. Please contact support.",
+  ],
+  ["SERP_PROVIDER_TIMEOUT", "The ranking check timed out. Please try again."],
+  ["unknown-upstream-secret", "Check could not be completed"],
+  [null, "Check could not be completed"],
+])("explains failed keyword checks safely for %s", async (code, message) => {
+  const completed = {
+    ...batch,
+    status: "completed_with_errors",
+    queued_keyword_count: 0,
+    failed_keyword_count: 2,
+    progress_percent: 100,
+  };
+  request.mockImplementation(async (path: string) =>
+    path.includes("/jobs?")
+      ? {
+          items: [
+            {
+              id: "job-1",
+              keyword: "vinfast",
+              status: "failed",
+              attempt_count: 1,
+              last_error_code: code,
+            },
+          ],
+          next_cursor: null,
+        }
+      : path.includes("?limit")
+        ? { items: [completed], next_cursor: null }
+        : completed,
+  );
+  view(
+    <BatchPanel
+      projectId="project"
+      selectedBatch="batch-1"
+      onSelect={() => {}}
+    />,
+  );
+  fireEvent.click(await screen.findByText("Keyword check details"));
+  expect(
+    await screen.findByText(`vinfast: failed · Attempts: 1 · ${message}`),
+  ).toBeVisible();
+  if (code) expect(screen.queryByText(code, { exact: false })).toBeNull();
+});
+
 it("creates, pauses and deletes a timezone-aware schedule", async () => {
   request.mockImplementation(async (_: string, options?: RequestInit) =>
     options?.method === "PUT"

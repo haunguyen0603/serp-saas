@@ -44,6 +44,28 @@ export type Page<T> = {
   next_cursor: string | null;
   has_more: boolean;
 };
+export function rankingFailureMessage(code: string | null): string {
+  switch (code) {
+    case "SERP_PROVIDER_UNSUPPORTED_CONFIGURATION":
+      return "Ranking checks are not available for this project's search settings. Please contact support.";
+    case "SERP_PROVIDER_NOT_CONFIGURED":
+    case "SERP_NO_PROVIDER_AVAILABLE":
+      return "Ranking checks are currently unavailable for this project. Please contact support.";
+    case "SERP_PROVIDER_AUTH_ERROR":
+      return "The ranking service could not authenticate. Please contact support.";
+    case "SERP_PROVIDER_QUOTA_EXHAUSTED":
+    case "SERP_PROVIDER_BUDGET_EXHAUSTED":
+      return "The ranking service has reached its usage limit. Please contact support.";
+    case "SERP_PROVIDER_TIMEOUT":
+      return "The ranking check timed out. Please try again.";
+    case "SERP_PROVIDER_RATE_LIMITED":
+      return "The ranking service is busy. Please try again later.";
+    case "SERP_PROVIDER_UNAVAILABLE":
+      return "The ranking service is temporarily unavailable. Please try again later.";
+    default:
+      return "Check could not be completed";
+  }
+}
 export const terminalBatch = (status: string) =>
   ["completed", "completed_with_errors", "failed", "cancelled"].includes(
     status,

@@ -1,0 +1,331 @@
+{
+  "checked_at": "2026-10-08T08:27:34.945951+00:00",
+  "results": [
+    {
+      "name": "ns1.azdigi.com:serpsaas.com:A",
+      "command": [
+        "dig",
+        "@ns1.azdigi.com",
+        "serpsaas.com",
+        "A",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns1.azdigi.com serpsaas.com A +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 58346\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; ANSWER SECTION:\nserpsaas.com.\t\t300\tIN\tA\t136.81.159.43\n\n",
+      "error": ""
+    },
+    {
+      "name": "ns1.azdigi.com:serpsaas.com:AAAA",
+      "command": [
+        "dig",
+        "@ns1.azdigi.com",
+        "serpsaas.com",
+        "AAAA",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns1.azdigi.com serpsaas.com AAAA +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 32890\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n",
+      "error": ""
+    },
+    {
+      "name": "ns1.azdigi.com:serpsaas.com:CNAME",
+      "command": [
+        "dig",
+        "@ns1.azdigi.com",
+        "serpsaas.com",
+        "CNAME",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns1.azdigi.com serpsaas.com CNAME +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 62790\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n",
+      "error": ""
+    },
+    {
+      "name": "ns1.azdigi.com:www.serpsaas.com:A",
+      "command": [
+        "dig",
+        "@ns1.azdigi.com",
+        "www.serpsaas.com",
+        "A",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns1.azdigi.com www.serpsaas.com A +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 11129\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; ANSWER SECTION:\nwww.serpsaas.com.\t300\tIN\tA\t136.81.159.43\n\n",
+      "error": ""
+    },
+    {
+      "name": "ns1.azdigi.com:www.serpsaas.com:AAAA",
+      "command": [
+        "dig",
+        "@ns1.azdigi.com",
+        "www.serpsaas.com",
+        "AAAA",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns1.azdigi.com www.serpsaas.com AAAA +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 15242\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n",
+      "error": ""
+    },
+    {
+      "name": "ns1.azdigi.com:www.serpsaas.com:CNAME",
+      "command": [
+        "dig",
+        "@ns1.azdigi.com",
+        "www.serpsaas.com",
+        "CNAME",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns1.azdigi.com www.serpsaas.com CNAME +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 13075\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n",
+      "error": ""
+    },
+    {
+      "name": "ns2.azdigi.com:serpsaas.com:A",
+      "command": [
+        "dig",
+        "@ns2.azdigi.com",
+        "serpsaas.com",
+        "A",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns2.azdigi.com serpsaas.com A +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 55514\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; ANSWER SECTION:\nserpsaas.com.\t\t300\tIN\tA\t136.81.159.43\n\n",
+      "error": ""
+    },
+    {
+      "name": "ns2.azdigi.com:serpsaas.com:AAAA",
+      "command": [
+        "dig",
+        "@ns2.azdigi.com",
+        "serpsaas.com",
+        "AAAA",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns2.azdigi.com serpsaas.com AAAA +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 43256\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n",
+      "error": ""
+    },
+    {
+      "name": "ns2.azdigi.com:serpsaas.com:CNAME",
+      "command": [
+        "dig",
+        "@ns2.azdigi.com",
+        "serpsaas.com",
+        "CNAME",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns2.azdigi.com serpsaas.com CNAME +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 1681\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n",
+      "error": ""
+    },
+    {
+      "name": "ns2.azdigi.com:www.serpsaas.com:A",
+      "command": [
+        "dig",
+        "@ns2.azdigi.com",
+        "www.serpsaas.com",
+        "A",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns2.azdigi.com www.serpsaas.com A +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 8604\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; ANSWER SECTION:\nwww.serpsaas.com.\t300\tIN\tA\t136.81.159.43\n\n",
+      "error": ""
+    },
+    {
+      "name": "ns2.azdigi.com:www.serpsaas.com:AAAA",
+      "command": [
+        "dig",
+        "@ns2.azdigi.com",
+        "www.serpsaas.com",
+        "AAAA",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns2.azdigi.com www.serpsaas.com AAAA +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 17229\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n",
+      "error": ""
+    },
+    {
+      "name": "ns2.azdigi.com:www.serpsaas.com:CNAME",
+      "command": [
+        "dig",
+        "@ns2.azdigi.com",
+        "www.serpsaas.com",
+        "CNAME",
+        "+norecurse",
+        "+noall",
+        "+answer",
+        "+comments",
+        "+time=3",
+        "+tries=1"
+      ],
+      "exit_code": 0,
+      "output": "\n; <<>> DiG 9.10.6 <<>> @ns2.azdigi.com www.serpsaas.com CNAME +norecurse +noall +answer +comments +time=3 +tries=1\n; (1 server found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 43645\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n",
+      "error": ""
+    },
+    {
+      "name": "public:serpsaas.com:A",
+      "command": [
+        "curl",
+        "--fail",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "15",
+        "https://dns.google/resolve?name=serpsaas.com&type=A"
+      ],
+      "exit_code": 0,
+      "output": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"serpsaas.com.\",\"type\":1}],\"Answer\":[{\"name\":\"serpsaas.com.\",\"type\":1,\"TTL\":300,\"data\":\"136.81.159.43\"}],\"Comment\":\"Response from 103.221.220.6.\"}",
+      "error": ""
+    },
+    {
+      "name": "public:www.serpsaas.com:A",
+      "command": [
+        "curl",
+        "--fail",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "15",
+        "https://dns.google/resolve?name=www.serpsaas.com&type=A"
+      ],
+      "exit_code": 0,
+      "output": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"www.serpsaas.com.\",\"type\":1}],\"Answer\":[{\"name\":\"www.serpsaas.com.\",\"type\":1,\"TTL\":300,\"data\":\"136.81.159.43\"}],\"Comment\":\"Response from 45.252.248.6.\"}",
+      "error": ""
+    },
+    {
+      "name": "app-login",
+      "command": [
+        "curl",
+        "--silent",
+        "--show-error",
+        "--dump-header",
+        "-",
+        "--output",
+        "/dev/null",
+        "--connect-timeout",
+        "5",
+        "--max-time",
+        "15",
+        "https://app.serpsaas.com/login"
+      ],
+      "exit_code": 0,
+      "output": "HTTP/2 200 \nx-robots-tag: noindex, nofollow\nvary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding\nx-nextjs-cache: HIT\nx-nextjs-prerender: 1\nx-nextjs-prerender: 1\nx-nextjs-stale-time: 300\ncache-control: s-maxage=31536000\netag: \"8hpsddss5691t\"\ncontent-type: text/html; charset=utf-8\nx-cloud-trace-context: cf2b9aa62c4d2507eaf81c28daa060a0;o=1\ndate: Thu, 08 Oct 2026 08:27:34 GMT\nserver: Google Frontend\ncontent-length: 11732\n\n",
+      "error": ""
+    },
+    {
+      "name": "app-root",
+      "command": [
+        "curl",
+        "--silent",
+        "--show-error",
+        "--dump-header",
+        "-",
+        "--output",
+        "/dev/null",
+        "--connect-timeout",
+        "5",
+        "--max-time",
+        "15",
+        "https://app.serpsaas.com/"
+      ],
+      "exit_code": 0,
+      "output": "HTTP/2 307 \nlocation: https://app.serpsaas.com/app\nx-cloud-trace-context: 1b7051c12d5934f32458a5031d05ef5f\ndate: Thu, 08 Oct 2026 08:27:34 GMT\ncontent-type: text/html\nserver: Google Frontend\ncontent-length: 28\n\n",
+      "error": ""
+    },
+    {
+      "name": "api-health",
+      "command": [
+        "curl",
+        "--silent",
+        "--show-error",
+        "--dump-header",
+        "-",
+        "--output",
+        "/dev/null",
+        "--connect-timeout",
+        "5",
+        "--max-time",
+        "15",
+        "https://api.serpsaas.com/health/db"
+      ],
+      "exit_code": 0,
+      "output": "HTTP/2 200 \ncontent-type: application/json\nx-cloud-trace-context: a08637bad4f4eed7333ad445748743dc;o=1\ndate: Thu, 08 Oct 2026 08:27:34 GMT\nserver: Google Frontend\ncontent-length: 15\n\n",
+      "error": ""
+    },
+    {
+      "name": "apex-login",
+      "command": [
+        "curl",
+        "--silent",
+        "--show-error",
+        "--dump-header",
+        "-",
+        "--output",
+        "/dev/null",
+        "--connect-timeout",
+        "5",
+        "--max-time",
+        "15",
+        "https://serpsaas.com/login?source=canonical-check"
+      ],
+      "exit_code": 0,
+      "output": "HTTP/2 307 \nlocation: https://app.serpsaas.com/login?source=canonical-check\nx-cloud-trace-context: 68d7e7715c9e79b054d1e838ada4ae77\ndate: Thu, 08 Oct 2026 08:27:34 GMT\ncontent-type: text/html\nserver: Google Frontend\ncontent-length: 53\n\n",
+      "error": ""
+    }
+  ]
+}

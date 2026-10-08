@@ -1,0 +1,14 @@
+{
+  "source": "User-supplied Cloud Shell describe output screenshot; not independently queried through the GCP API",
+  "target_https_proxy": {
+    "name": "serp-canonical-https-proxy",
+    "certificateMap": "//certificatemanager.googleapis.com/projects/serp-saas/locations/global/certificateMaps/serp-canonical-certmap",
+    "urlMap": "https://www.googleapis.com/compute/v1/projects/serp-saas/global/urlMaps/serp-canonical-https"
+  },
+  "forwarding_rule": {
+    "IPAddress": "136.81.159.43",
+    "loadBalancingScheme": "EXTERNAL_MANAGED",
+    "portRange": "443-443",
+    "target": "https://www.googleapis.com/compute/v1/projects/serp-saas/global/targetHttpsProxies/serp-canonical-https-proxy"
+  }
+}
