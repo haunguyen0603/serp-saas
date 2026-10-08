@@ -15,6 +15,7 @@ PUBLIC_FIELDS = (
     "AUTH_EMAIL_PROVIDER",
     "AUTH_EMAIL_FROM",
     "AUTH_SMTP_HOST",
+    "AUTH_SMTP_LOCAL_HOSTNAME",
     "AUTH_SMTP_PORT",
     "AUTH_SMTP_USERNAME",
     "AUTH_SMTP_SSL",
@@ -77,6 +78,12 @@ def read_password(binding: dict, project: str, annotations: dict) -> str:
 
 def check_smtp(values: dict[str, str], password: str | None = None) -> bool:
     host = values.get("AUTH_SMTP_HOST", "")
+    local_hostname = values.get("AUTH_SMTP_LOCAL_HOSTNAME", "app.serpsaas.com")
+    print(f"SMTP probe HELO/EHLO: {local_hostname}")
+    if "AUTH_SMTP_LOCAL_HOSTNAME" not in values:
+        print(
+            "Using the updated helper's default; an older API image may use a different HELO."
+        )
     implicit_tls = values.get("AUTH_SMTP_SSL", "false").lower() == "true"
     starttls = values.get("AUTH_SMTP_STARTTLS", "true").lower() == "true"
     if not host or host.isdecimal() or host == "mailpit" or host.startswith("<"):
@@ -101,9 +108,11 @@ def check_smtp(values: dict[str, str], password: str | None = None) -> bool:
         context = ssl.create_default_context()
         client: smtplib.SMTP
         if implicit_tls:
-            client = smtplib.SMTP_SSL(host, port, timeout=10, context=context)
+            client = smtplib.SMTP_SSL(
+                host, port, local_hostname=local_hostname, timeout=10, context=context
+            )
         else:
-            client = smtplib.SMTP(host, port, timeout=10)
+            client = smtplib.SMTP(host, port, local_hostname=local_hostname, timeout=10)
         with client:
             code, _ = client.ehlo()
             if code != 250:

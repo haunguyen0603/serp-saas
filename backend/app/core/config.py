@@ -1,3 +1,4 @@
+import re
 from functools import lru_cache
 from typing import Literal, Self
 from urllib.parse import urlsplit
@@ -42,6 +43,9 @@ class Settings(DatabaseSettings):
     auth_email_provider: Literal["disabled", "fake", "smtp"] = "disabled"
     auth_email_from: str = ""
     auth_smtp_host: str = ""
+    auth_smtp_local_hostname: str = Field(
+        default="app.serpsaas.com", min_length=1, max_length=253
+    )
     auth_smtp_port: int = Field(default=587, ge=1, le=65535)
     auth_smtp_username: str = ""
     auth_smtp_password: SecretStr | None = None
@@ -332,6 +336,19 @@ class Settings(DatabaseSettings):
                     "configured together"
                 )
         return self
+
+    @field_validator("auth_smtp_local_hostname")
+    @classmethod
+    def validate_auth_smtp_local_hostname(cls, value: str) -> str:
+        label = r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?"
+        if (
+            not re.fullmatch(rf"{label}(?:\.{label})+", value)
+            or value.rsplit(".", 1)[-1].isdigit()
+        ):
+            raise ValueError(
+                "AUTH_SMTP_LOCAL_HOSTNAME must be a fully qualified DNS hostname"
+            )
+        return value.lower()
 
     @model_validator(mode="after")
     def validate_auth_email(self) -> Self:

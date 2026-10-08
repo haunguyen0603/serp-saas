@@ -13,11 +13,15 @@ from app.services.auth_email import (
 
 
 @pytest.mark.parametrize("ssl_mode", [False, True])
-async def test_smtp_tls_credentials_and_message(settings, monkeypatch, ssl_mode):
+@pytest.mark.parametrize("hostname", ["app.serpsaas.com", "mail.client.example"])
+async def test_smtp_tls_credentials_and_message(
+    settings, monkeypatch, ssl_mode, hostname
+):
     settings = settings.model_copy(
         update={
             "auth_email_from": "SERP SaaS <noreply@example.com>",
             "auth_smtp_host": "smtp.example.com",
+            "auth_smtp_local_hostname": hostname,
             "auth_smtp_port": 465 if ssl_mode else 587,
             "auth_smtp_ssl": ssl_mode,
             "auth_smtp_starttls": not ssl_mode,
@@ -37,6 +41,11 @@ async def test_smtp_tls_credentials_and_message(settings, monkeypatch, ssl_mode)
         )
     )
     connection.login.assert_called_once_with("smtp-user", "smtp-password")
+    assert constructor.call_args.kwargs["local_hostname"] == hostname
+    assert constructor.call_args.args == (
+        "smtp.example.com",
+        465 if ssl_mode else 587,
+    )
     if ssl_mode:
         connection.starttls.assert_not_called()
         assert constructor.call_args.kwargs["context"].check_hostname
@@ -67,6 +76,44 @@ async def test_smtp_failure_is_sanitized(settings, monkeypatch):
             )
         )
     assert "private password" not in str(failure.value)
+
+
+def test_smtp_local_hostname_default_and_environment(settings, monkeypatch):
+    values = settings.model_dump(exclude={"auth_smtp_local_hostname"})
+    monkeypatch.delenv("AUTH_SMTP_LOCAL_HOSTNAME", raising=False)
+    assert Settings(_env_file=None, **values).auth_smtp_local_hostname == (
+        "app.serpsaas.com"
+    )
+    monkeypatch.setenv("AUTH_SMTP_LOCAL_HOSTNAME", "Mail.Client.Example")
+    assert Settings(_env_file=None, **values).auth_smtp_local_hostname == (
+        "mail.client.example"
+    )
+
+
+@pytest.mark.parametrize(
+    "hostname",
+    [
+        "",
+        "localhost",
+        "127.0.0.1",
+        "[127.0.0.1]",
+        "::1",
+        "https://app.serpsaas.com",
+        "app.serpsaas.com:465",
+        "app.serpsaas.com/path",
+        "app.serpsaas.com\r\nMAIL FROM:<attacker@example.com>",
+        "app.serpsaas.com\n",
+        " app.serpsaas.com",
+        "bad_name.example.com",
+        "-app.example.com",
+        "app-.example.com",
+        "app..example.com",
+        f"{'a' * 64}.example.com",
+    ],
+)
+def test_smtp_local_hostname_rejects_unsafe_values(settings, hostname):
+    with pytest.raises(ValidationError):
+        Settings(**{**settings.model_dump(), "auth_smtp_local_hostname": hostname})
 
 
 @pytest.mark.parametrize(

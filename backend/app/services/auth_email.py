@@ -64,12 +64,16 @@ class SMTPAuthEmailSender:
                     client = smtplib.SMTP_SSL(
                         settings.auth_smtp_host,
                         settings.auth_smtp_port,
+                        local_hostname=settings.auth_smtp_local_hostname,
                         timeout=10,
                         context=ssl.create_default_context(),
                     )
                 else:
                     client = smtplib.SMTP(
-                        settings.auth_smtp_host, settings.auth_smtp_port, timeout=10
+                        settings.auth_smtp_host,
+                        settings.auth_smtp_port,
+                        local_hostname=settings.auth_smtp_local_hostname,
+                        timeout=10,
                     )
                 with client:
                     if settings.auth_smtp_starttls:

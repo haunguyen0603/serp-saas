@@ -16,6 +16,7 @@ from pathlib import Path
 SMTP_FIELDS = (
     "AUTH_EMAIL_FROM",
     "AUTH_SMTP_HOST",
+    "AUTH_SMTP_LOCAL_HOSTNAME",
     "AUTH_SMTP_PORT",
     "AUTH_SMTP_USERNAME",
     "AUTH_SMTP_PASSWORD",
@@ -55,6 +56,7 @@ stage = "configuration"
 try:
     env = os.environ
     host = env["AUTH_SMTP_HOST"]
+    local_hostname = env.get("AUTH_SMTP_LOCAL_HOSTNAME", "app.serpsaas.com")
     port = int(env.get("AUTH_SMTP_PORT", "587"))
     implicit_tls = env.get("AUTH_SMTP_SSL", "false").lower() == "true"
     starttls = env.get("AUTH_SMTP_STARTTLS", "true").lower() == "true"
@@ -73,9 +75,12 @@ try:
         )
     stage = "connect"
     if implicit_tls:
-        client = smtplib.SMTP_SSL(host, port, timeout=10, context=ssl.create_default_context())
+        client = smtplib.SMTP_SSL(
+            host, port, local_hostname=local_hostname,
+            timeout=10, context=ssl.create_default_context()
+        )
     else:
-        client = smtplib.SMTP(host, port, timeout=10)
+        client = smtplib.SMTP(host, port, local_hostname=local_hostname, timeout=10)
     with client:
         report(stage, "passed")
         if starttls:
@@ -250,6 +255,19 @@ def main() -> None:
         flush=True,
     )
     print("A separate Cloud Run instance may have a different outbound IP.", flush=True)
+    smtp_environment = {
+        entry["name"]: entry
+        for entry in revision["spec"]["containers"][0].get("env", [])
+    }
+    hostname = smtp_environment.get("AUTH_SMTP_LOCAL_HOSTNAME", {}).get(
+        "value", "app.serpsaas.com"
+    )
+    print(f"Probe HELO/EHLO: {hostname}", flush=True)
+    if "AUTH_SMTP_LOCAL_HOSTNAME" not in smtp_environment:
+        print(
+            "Using the updated helper's default; an older API image may use a different HELO.",
+            flush=True,
+        )
     print(
         "Mode: one test email." if args.recipient else "Mode: TLS and SMTP login only.",
         flush=True,

@@ -62,6 +62,9 @@ def main() -> None:
         "AUTH_EMAIL_PROVIDER": "smtp",
         "AUTH_EMAIL_FROM": sender,
         "AUTH_SMTP_HOST": host,
+        "AUTH_SMTP_LOCAL_HOSTNAME": (
+            os.environ.get("AUTH_SMTP_LOCAL_HOSTNAME") or "app.serpsaas.com"
+        ),
         "AUTH_SMTP_PORT": port,
         "AUTH_SMTP_USERNAME": username,
         "AUTH_SMTP_STARTTLS": "true" if port == "587" else "false",

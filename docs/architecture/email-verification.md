@@ -88,6 +88,7 @@ endpoint that exposes a raw token or bypasses verification.
 | `AUTH_EMAIL_PROVIDER`                       | Compose `smtp`; tests `fake`          | `smtp` required                                         |
 | `AUTH_EMAIL_FROM`                           | `SERP SaaS <noreply@serp-saas.local>` | Authorized sender address                               |
 | `AUTH_SMTP_HOST` / `AUTH_SMTP_PORT`         | `mailpit` / `1025`                    | Your SMTP relay and port                                |
+| `AUTH_SMTP_LOCAL_HOSTNAME`                 | `app.serpsaas.com`                    | Client HELO/EHLO identity approved by the SMTP provider   |
 | `AUTH_SMTP_USERNAME` / `AUTH_SMTP_PASSWORD` | Empty                                 | Configure both when authentication is required          |
 | `AUTH_SMTP_STARTTLS`                        | `false`                               | Usually true for port 587                               |
 | `AUTH_SMTP_SSL`                             | `false`                               | True for implicit TLS (usually 465); disable STARTTLS   |
@@ -102,6 +103,51 @@ continue to require a verified email.
 Before production, configure the real SMTP sender/domain and test delivery to an
 authorized recipient. Local acceptance exercises SMTP through Mailpit; it does
 not validate external inbox delivery or SPF/DKIM/DMARC configuration.
+
+### Explicit HELO/EHLO identity (AZDIGI / Cloud Run)
+
+AZDIGI identified MagicSpam `SPAM[hostname]` rejections for authenticated Cloud Run
+connections advertising `[127.0.0.1]`, followed by outbound rate-limit locks.
+The provider whitelisted `noreply@serpsaas.com`, delivery resumed, and the provider
+approved `app.serpsaas.com` as the application's HELO/EHLO identity.
+
+The updated backend defaults `AUTH_SMTP_LOCAL_HOSTNAME` to `app.serpsaas.com`
+and passes it as `local_hostname` to both SMTP and SMTP_SSL. This also applies
+when Python negotiates EHLO again after STARTTLS. Overrides must be an ASCII
+fully qualified DNS hostname, not a URL, IP address, or newline-containing value.
+The SMTP relay hostname, TLS certificate verification and credentials do not
+change. Setting this identity does **not** change Cloud Run's outbound IP or PTR.
+See [Python's SMTP client identity](https://docs.python.org/3/library/smtplib.html#smtplib.SMTP).
+
+Deploy a backend image containing this change before expecting the API to use it.
+For an explicit production override, update only this nonsecret variable after
+deployment (the command creates a new Cloud Run revision):
+
+```sh
+gcloud run services update serp-api \
+  --project=serp-saas --region=asia-southeast1 \
+  --update-env-vars=AUTH_SMTP_LOCAL_HOSTNAME=app.serpsaas.com
+```
+
+Do not use `--set-env-vars`, replace secret bindings, change DNS, or rerun database
+migrations merely to set HELO. The Cloud Run config generator includes this field
+for future deployments. An older image ignores the new variable; updating only
+the environment is not sufficient for that image.
+
+The updated SMTP helpers use the same explicit hostname or the new default and
+display their test HELO identity. If the serving revision has no explicit field,
+they warn that an older API image may use a different HELO; helper success is not
+proof that an old API's greeting changed. After deploying, request one verification
+email, check `delivery_status`, and ask AZDIGI to confirm HELO `app.serpsaas.com`
+without `SPAM[hostname]` / `RATELIMIT` in the corresponding log. Stop after a
+failure instead of repeatedly sending. This change does not introduce automatic
+retries or a shared SMTP circuit breaker.
+
+Local verification for this change: 111 non-integration backend tests passed
+(179 integration tests deselected), all 36 GCP tooling tests passed, and
+Ruff lint/format plus mypy (141 source files) passed. SMTP calls were mocked;
+backend tests ran in a network-isolated local container without mounting `.env`.
+No production deployment or external test email was performed for this change.
 
 ## Cloud Run: missing verification email
 
