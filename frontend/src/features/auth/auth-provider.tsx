@@ -48,5 +48,7 @@ export function useAuth() {
     request: session.authenticatedRequest,
     download: session.authenticatedDownload,
     getCurrentUser: session.getCurrentUser,
+    changePassword: session.changePassword,
+    clearSession: session.clearSession,
   };
 }

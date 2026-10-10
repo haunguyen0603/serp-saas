@@ -214,6 +214,22 @@ to access `/app`. Local mail is captured at `http://localhost:8025` (Mailpit).
 `/login` signs in existing active accounts. Email is trimmed and lowercased
 without removing plus aliases or dots. The Terms checkbox links to `/terms`.
 
+Use **Forgot password?** on `/login` to request a password reset email. The link
+opens `/reset-password` and expires after 30 minutes by default. Only the latest
+link works, and each link can be used once. Requests return the same confirmation
+for unknown, disabled and rate-limited accounts. Defaults allow one email per
+minute and five per hour, configured with `AUTH_PASSWORD_RESET_EXPIRE_MINUTES`,
+`AUTH_PASSWORD_RESET_RESEND_SECONDS`, and `AUTH_PASSWORD_RESET_MAX_EMAILS_PER_HOUR`.
+Resetting a password signs out all previous sessions and requires a new login;
+it does not bypass email verification.
+
+Signed-in users can select **Settings → Change password** at `/app/settings`,
+enter their current password, and confirm a new 10–128 character password.
+The current session is renewed; all other sessions and pending reset links are
+revoked. Apply migration `0014_password_management` before running the updated
+backend. Both email flows use the existing auth SMTP configuration; local messages
+are available in Mailpit at `http://localhost:8025`.
+
 Passwords use Argon2id. A 15-minute signed access JWT lives only in frontend memory.
 A cryptographically random refresh token lives only in an HttpOnly cookie, with
 its SHA-256 hash stored in PostgreSQL. The frontend sends credentialed requests,

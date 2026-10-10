@@ -158,3 +158,77 @@ it("waits for rotation before revoking the replacement session on logout", async
   expect(api.logout).toHaveBeenCalledOnce();
   expect(session.getSnapshot().accessToken).toBeNull();
 });
+
+it("accepts the renewed session after changing password", async () => {
+  vi.mocked(api.login).mockResolvedValue(result);
+  const renewed = { ...result, access_token: "renewed-after-password-change" };
+  const fetchMock = vi
+    .fn()
+    .mockResolvedValue(new Response(JSON.stringify(renewed)));
+  vi.stubGlobal("fetch", fetchMock);
+  const session = new AuthSession();
+  await session.login({
+    email: result.user.email,
+    password: "old test password",
+  });
+  await session.changePassword("old test password", "new test password");
+  expect(fetchMock).toHaveBeenCalledWith(
+    "http://api.test/api/v1/auth/change-password",
+    expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({
+        current_password: "old test password",
+        new_password: "new test password",
+      }),
+      headers: expect.objectContaining({
+        Authorization: "Bearer in-memory-token",
+      }),
+    }),
+  );
+  expect(session.getSnapshot().accessToken).toBe(renewed.access_token);
+  expect(session.getSnapshot().status).toBe("authenticated");
+});
+
+it("retains the existing session when the current password is incorrect", async () => {
+  vi.mocked(api.login).mockResolvedValue(result);
+  vi.stubGlobal(
+    "fetch",
+    vi
+      .fn()
+      .mockResolvedValue(
+        new Response(
+          JSON.stringify({ error: { code: "INVALID_CURRENT_PASSWORD" } }),
+          { status: 400 },
+        ),
+      ),
+  );
+  const session = new AuthSession();
+  await session.login({
+    email: result.user.email,
+    password: "old test password",
+  });
+  await expect(
+    session.changePassword("wrong password", "new test password"),
+  ).rejects.toThrow("current password is incorrect");
+  expect(session.getSnapshot().accessToken).toBe(result.access_token);
+  expect(api.refreshSession).not.toHaveBeenCalled();
+});
+
+it("clears local credentials and prevents an in-flight refresh from restoring them after reset", async () => {
+  let finish!: (value: AuthResponse) => void;
+  vi.mocked(api.refreshSession).mockImplementation(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+  );
+  const clear = vi.fn();
+  const session = new AuthSession(clear);
+  const restoring = session.refresh();
+  session.clearSession();
+  finish(result);
+  await restoring;
+  expect(session.getSnapshot().status).toBe("anonymous");
+  expect(session.getSnapshot().accessToken).toBeNull();
+  expect(session.getSnapshot().user).toBeNull();
+});

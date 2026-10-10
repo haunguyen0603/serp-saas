@@ -44,6 +44,8 @@ it.each([
   "/signup",
   "/login",
   "/verify-email",
+  "/forgot-password",
+  "/reset-password",
 ])("moves app routes off the commercial domain: %s", (path) => {
   const response = proxy(request("serpsaas.com", `${path}?source=test`));
   expect(response.status).toBe(307);

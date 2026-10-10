@@ -87,6 +87,8 @@ export function isAppPath(path: string): boolean {
     "/register",
     "/signup",
     "/verify-email",
+    "/forgot-password",
+    "/reset-password",
   ].some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
 }
 

@@ -192,4 +192,29 @@ export class AuthSession {
   };
 
   getCurrentUser = () => this.authenticatedRequest<User>("/api/v1/users/me");
+
+  clearSession = () => {
+    this.generation++;
+    this.update({
+      user: null,
+      accessToken: null,
+      status: "anonymous",
+      error: null,
+      emailVerificationRequired: false,
+    });
+  };
+
+  changePassword = async (current_password: string, new_password: string) => {
+    await this.refreshFlight?.catch(() => {});
+    const result = await this.authenticatedRequest<AuthResponse>(
+      "/api/v1/auth/change-password",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ current_password, new_password }),
+      },
+    );
+    this.generation++;
+    this.accept(result);
+  };
 }

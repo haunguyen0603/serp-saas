@@ -13,6 +13,12 @@ export class ApiError extends Error {
 }
 
 const errorMessages: Record<string, string> = {
+  INVALID_CURRENT_PASSWORD: "Your current password is incorrect.",
+  PASSWORD_UNCHANGED: "Choose a password different from your current password.",
+  INVALID_PASSWORD_RESET_TOKEN:
+    "This reset link is invalid or has already been used. Request a new link.",
+  PASSWORD_RESET_TOKEN_EXPIRED:
+    "This reset link has expired. Request a new link.",
   PLAN_CHANGED: "This Plan has changed. Reload the catalog before saving.",
   INVALID_PLAN_PRICE:
     "Free Plans must stay at $0; paid Plans need a positive price.",

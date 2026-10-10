@@ -37,3 +37,15 @@ export const verifyEmail = (token: string) =>
     "/api/v1/auth/verify-email",
     post({ token }),
   );
+
+export const forgotPassword = (email: string) =>
+  requestJson<{ status: "ok" }>(
+    "/api/v1/auth/forgot-password",
+    post({ email }),
+  );
+
+export const resetPassword = (token: string, new_password: string) =>
+  requestJson<{ status: "ok" }>(
+    "/api/v1/auth/reset-password",
+    post({ token, new_password }),
+  );

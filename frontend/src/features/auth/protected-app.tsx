@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "./auth-provider";
 import { ApiError } from "@/lib/api/client";
+import { ChangePassword } from "./change-password";
 
 export function ProtectedApp() {
   const auth = useAuth();
@@ -119,6 +120,7 @@ export function ProtectedApp() {
           </div>
         </dl>
       </Card>
+      <ChangePassword />
       <div className="mt-8 flex flex-wrap gap-3">
         <Link
           href="/app/projects"

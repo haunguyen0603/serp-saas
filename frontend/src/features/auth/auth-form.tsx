@@ -149,6 +149,13 @@ export function AuthForm({ mode }: { mode: "signup" | "login" }) {
             </p>
           </>
         )}
+        {!signup && (
+          <p className="text-right text-sm">
+            <Link href="/forgot-password" className="ui-text-link">
+              Forgot password?
+            </Link>
+          </p>
+        )}
         {error && (
           <p
             role="alert"

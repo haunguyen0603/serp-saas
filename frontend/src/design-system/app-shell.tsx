@@ -68,6 +68,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       "/register",
       "/signup",
       "/verify-email",
+      "/forgot-password",
+      "/reset-password",
     ].includes(path) ||
     path === "/blog" ||
     path.startsWith("/blog/");
