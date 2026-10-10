@@ -24,12 +24,15 @@ def verify_password(password: str, password_hash: str) -> bool:
         return False
 
 
-def create_access_token(user_id: UUID, settings: Settings) -> str:
+def create_access_token(
+    user_id: UUID, settings: Settings, password_version: int = 0
+) -> str:
     now = datetime.now(UTC)
     return jwt.encode(
         {
             "sub": str(user_id),
             "type": "access",
+            "password_version": password_version,
             "iat": now,
             "exp": now + timedelta(minutes=settings.access_token_expire_minutes),
         },
@@ -38,7 +41,9 @@ def create_access_token(user_id: UUID, settings: Settings) -> str:
     )
 
 
-def decode_access_token(token: str, settings: Settings) -> UUID:
+def decode_access_token(
+    token: str, settings: Settings, password_version: int | None = None
+) -> UUID:
     try:
         claims = jwt.decode(
             token,
@@ -48,6 +53,11 @@ def decode_access_token(token: str, settings: Settings) -> UUID:
         )
         if claims["type"] != "access":
             raise ValueError("Wrong token type")
+        if (
+            password_version is not None
+            and claims.get("password_version", 0) != password_version
+        ):
+            raise ValueError("Password changed")
         return UUID(claims["sub"])
     except jwt.ExpiredSignatureError:
         raise AppError(

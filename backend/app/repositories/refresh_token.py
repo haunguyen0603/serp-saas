@@ -29,6 +29,15 @@ class RefreshTokenRepository:
                 select(RefreshToken)
                 .where(RefreshToken.token_hash == token_hash)
                 .with_for_update()
+                .execution_options(populate_existing=True)
+            ),
+        )
+
+    async def get_by_hash(self, token_hash: str) -> RefreshToken | None:
+        return cast(
+            RefreshToken | None,
+            await self.session.scalar(
+                select(RefreshToken).where(RefreshToken.token_hash == token_hash)
             ),
         )
 

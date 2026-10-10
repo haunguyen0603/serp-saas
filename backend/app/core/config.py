@@ -40,6 +40,9 @@ class Settings(DatabaseSettings):
     auth_verification_expire_minutes: int = Field(default=60, ge=5, le=1440)
     auth_verification_resend_seconds: int = Field(default=60, ge=10, le=3600)
     auth_verification_max_emails_per_hour: int = Field(default=5, ge=1, le=20)
+    auth_password_reset_expire_minutes: int = Field(default=30, ge=5, le=60)
+    auth_password_reset_resend_seconds: int = Field(default=60, ge=10, le=3600)
+    auth_password_reset_max_emails_per_hour: int = Field(default=5, ge=1, le=20)
     auth_email_provider: Literal["disabled", "fake", "smtp"] = "disabled"
     auth_email_from: str = ""
     auth_smtp_host: str = ""

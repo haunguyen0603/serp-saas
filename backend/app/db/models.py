@@ -8,6 +8,7 @@ from app.models.keyword_organization import (
     KeywordTag,
     KeywordTagAssignment,
 )
+from app.models.password_reset import PasswordResetToken
 from app.models.project import Project
 from app.models.project_competitor_site import ProjectCompetitorSite
 from app.models.provider_usage import ProviderUsage
@@ -40,6 +41,7 @@ __all__ = [
     "User",
     "RefreshToken",
     "EmailVerificationToken",
+    "PasswordResetToken",
     "Project",
     "ProjectCompetitorSite",
     "Keyword",

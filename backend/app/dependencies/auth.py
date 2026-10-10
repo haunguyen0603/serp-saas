@@ -47,7 +47,9 @@ async def get_authenticated_user(
     if credentials is None:
         raise AppError(401, "AUTHENTICATION_REQUIRED", "Authentication is required.")
     user_id = decode_access_token(credentials.credentials, settings)
-    return await UserService(UserRepository(session)).current_user(user_id)
+    user = await UserService(UserRepository(session)).current_user(user_id)
+    decode_access_token(credentials.credentials, settings, user.password_version)
+    return user
 
 
 AuthenticatedUser = Annotated[User, Depends(get_authenticated_user)]

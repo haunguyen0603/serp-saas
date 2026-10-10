@@ -7,9 +7,26 @@ from pydantic import SecretStr, ValidationError
 from app.core.config import Settings
 from app.services.auth_email import (
     AuthEmailError,
+    PasswordResetEmail,
     SMTPAuthEmailSender,
     VerificationEmail,
 )
+
+
+async def test_smtp_password_reset_message(settings, monkeypatch):
+    connection = MagicMock()
+    connection.__enter__.return_value = connection
+    monkeypatch.setattr(smtplib, "SMTP", MagicMock(return_value=connection))
+    email = PasswordResetEmail(
+        "person@example.com", "http://localhost:3000/reset-password#token=secret", 30
+    )
+    await SMTPAuthEmailSender(settings).send(email)
+    message = connection.send_message.call_args.args[0]
+    assert message["Subject"] == "Reset your password | SERP SaaS"
+    assert email.url in message.get_content()
+    assert "30 minutes" in message.get_content()
+    assert "Your password has not changed" in message.get_content()
+    assert "secret" not in repr(email)
 
 
 @pytest.mark.parametrize("ssl_mode", [False, True])

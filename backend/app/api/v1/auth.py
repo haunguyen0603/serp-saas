@@ -14,10 +14,16 @@ from app.schemas.email_verification import (
     VerifyEmailRequest,
 )
 from app.schemas.health import ErrorResponse, HealthResponse
+from app.schemas.password import (
+    ChangePasswordRequest,
+    ForgotPasswordRequest,
+    ResetPasswordRequest,
+)
 from app.services.email_verification import (
     EmailVerificationService,
     deliver_verification_email,
 )
+from app.services.password import PasswordService, deliver_password_reset_email
 
 router = APIRouter(
     prefix="/auth",
@@ -29,6 +35,55 @@ router = APIRouter(
         422: {"model": ErrorResponse},
     },
 )
+
+
+@router.post("/forgot-password")
+async def forgot_password(
+    data: ForgotPasswordRequest,
+    session: DBSession,
+    settings: AppSettings,
+    request: Request,
+    background: BackgroundTasks,
+) -> HealthResponse:
+    pending = await PasswordService(session, settings).request_reset(str(data.email))
+    if pending is not None:
+        background.add_task(
+            deliver_password_reset_email, pending, request.app.state.auth_email_sender
+        )
+    return HealthResponse()
+
+
+@router.post("/reset-password")
+async def reset_password(
+    data: ResetPasswordRequest,
+    session: DBSession,
+    settings: AppSettings,
+    response: Response,
+) -> HealthResponse:
+    await PasswordService(session, settings).reset(
+        data.token.get_secret_value(), data.new_password.get_secret_value()
+    )
+    clear_refresh_cookie(response, settings)
+    return HealthResponse()
+
+
+@router.post("/change-password")
+async def change_password(
+    data: ChangePasswordRequest,
+    user: AuthenticatedUser,
+    session: DBSession,
+    settings: AppSettings,
+    auth: Authentication,
+    response: Response,
+) -> AuthResponse:
+    changed = await PasswordService(session, settings).change(
+        user,
+        data.current_password.get_secret_value(),
+        data.new_password.get_secret_value(),
+    )
+    issued = await auth.issue_session(changed)
+    set_refresh_cookie(response, issued.refresh_token, settings)
+    return issued.response
 
 
 @router.post("/register", status_code=201)

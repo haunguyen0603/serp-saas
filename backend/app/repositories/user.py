@@ -33,15 +33,32 @@ class UserRepository:
         )
         return cast(User | None, await self.session.scalar(statement))
 
-    async def get_by_email(self, email: str) -> User | None:
+    async def get_by_email(
+        self, email: str, *, for_update: bool = False
+    ) -> User | None:
+        statement = select(User).where(User.email == normalize_email(email))
+        if for_update:
+            statement = statement.with_for_update().execution_options(
+                populate_existing=True
+            )
         return cast(
             User | None,
-            await self.session.scalar(
-                select(User).where(User.email == normalize_email(email))
-            ),
+            await self.session.scalar(statement),
         )
 
-    async def get_by_id(self, user_id: UUID) -> User | None:
+    async def get_by_id(
+        self, user_id: UUID, *, for_update: bool = False
+    ) -> User | None:
+        if for_update:
+            return cast(
+                User | None,
+                await self.session.scalar(
+                    select(User)
+                    .where(User.id == user_id)
+                    .with_for_update()
+                    .execution_options(populate_existing=True)
+                ),
+            )
         return await self.session.get(User, user_id)
 
     async def record_login(self, user: User) -> None:

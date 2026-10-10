@@ -56,7 +56,9 @@ class AuthService:
         )
         return IssuedSession(
             AuthResponse(
-                access_token=create_access_token(user.id, self.settings),
+                access_token=create_access_token(
+                    user.id, self.settings, user.password_version
+                ),
                 expires_in=self.settings.access_token_expire_minutes * 60,
                 user=UserResponse.from_user(user),
                 email_verification_required=self.settings.auth_require_verified_email,
@@ -84,7 +86,7 @@ class AuthService:
         return result
 
     async def login(self, data: LoginRequest) -> IssuedSession:
-        user = await self.users.get_by_email(str(data.email))
+        user = await self.users.get_by_email(str(data.email), for_update=True)
         valid = await run_in_threadpool(
             verify_password,
             data.password.get_secret_value(),
@@ -102,15 +104,20 @@ class AuthService:
     async def refresh(self, raw: str | None) -> IssuedSession:
         if raw is None or len(raw) > 256:
             raise AppError(401, "INVALID_REFRESH_TOKEN", "Invalid refresh session.")
-        token = await self.tokens.get_by_hash_for_update(hash_refresh_token(raw))
+        token = await self.tokens.get_by_hash(hash_refresh_token(raw))
         now = datetime.now(UTC)
         if token is None or token.revoked_at is not None or token.expires_at <= now:
             logger.info("Refresh rejected")
             raise AppError(401, "INVALID_REFRESH_TOKEN", "Invalid refresh session.")
-        user = await self.users.get_by_id(token.user_id)
+        # Lock the account before its tokens, matching password reset/change.
+        user = await self.users.get_by_id(token.user_id, for_update=True)
         if user is None:
             raise AppError(401, "INVALID_REFRESH_TOKEN", "Invalid refresh session.")
         require_active(user)
+        token = await self.tokens.get_by_hash_for_update(hash_refresh_token(raw))
+        now = datetime.now(UTC)
+        if token is None or token.revoked_at is not None or token.expires_at <= now:
+            raise AppError(401, "INVALID_REFRESH_TOKEN", "Invalid refresh session.")
         await self.tokens.revoke(token, now, used=True)
         result = await self.issue_session(user)
         logger.info("Refresh succeeded")

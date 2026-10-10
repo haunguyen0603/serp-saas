@@ -19,20 +19,27 @@ class VerificationEmail:
     expire_minutes: int
 
 
+@dataclass(frozen=True)
+class PasswordResetEmail:
+    recipient: str = field(repr=False)
+    url: str = field(repr=False)
+    expire_minutes: int
+
+
 class AuthEmailSender(Protocol):
-    async def send(self, message: VerificationEmail) -> None: ...
+    async def send(self, message: VerificationEmail | PasswordResetEmail) -> None: ...
 
 
 class DisabledAuthEmailSender:
-    async def send(self, message: VerificationEmail) -> None:
+    async def send(self, message: VerificationEmail | PasswordResetEmail) -> None:
         raise AuthEmailError("AUTH_EMAIL_UNAVAILABLE")
 
 
 class FakeAuthEmailSender:
     def __init__(self) -> None:
-        self.messages: list[VerificationEmail] = []
+        self.messages: list[VerificationEmail | PasswordResetEmail] = []
 
-    async def send(self, message: VerificationEmail) -> None:
+    async def send(self, message: VerificationEmail | PasswordResetEmail) -> None:
         self.messages.append(message)
 
 
@@ -40,22 +47,35 @@ class SMTPAuthEmailSender:
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
 
-    async def send(self, message: VerificationEmail) -> None:
+    async def send(self, message: VerificationEmail | PasswordResetEmail) -> None:
         settings = self.settings
         email = EmailMessage()
         email["From"] = settings.auth_email_from
         email["To"] = message.recipient
-        email["Subject"] = "Verify your email address | SERP SaaS"
-        email.set_content(
-            "Welcome to SERP SaaS.\n\n"
-            "Open this link, then select Verify email to confirm your address:\n"
-            f"{message.url}\n\n"
-            f"This link expires in {message.expire_minutes} minutes "
-            "and can be used once.\n"
-            "If you request a new email, only the latest link will work.\n\n"
-            "If you did not create this account, you can ignore this email.\n"
-            "Never share your password or this verification link."
-        )
+        if isinstance(message, PasswordResetEmail):
+            email["Subject"] = "Reset your password | SERP SaaS"
+            email.set_content(
+                "A password reset was requested for your SERP SaaS account.\n\n"
+                "Open this link to choose a new password:\n"
+                f"{message.url}\n\n"
+                f"This link expires in {message.expire_minutes} minutes "
+                "and can be used once. Only the latest link will work.\n\n"
+                "If you did not request this, ignore this email. "
+                "Your password has not changed.\n"
+                "Never share your password or this reset link."
+            )
+        else:
+            email["Subject"] = "Verify your email address | SERP SaaS"
+            email.set_content(
+                "Welcome to SERP SaaS.\n\n"
+                "Open this link, then select Verify email to confirm your address:\n"
+                f"{message.url}\n\n"
+                f"This link expires in {message.expire_minutes} minutes "
+                "and can be used once.\n"
+                "If you request a new email, only the latest link will work.\n\n"
+                "If you did not create this account, you can ignore this email.\n"
+                "Never share your password or this verification link."
+            )
 
         def deliver() -> None:
             try:

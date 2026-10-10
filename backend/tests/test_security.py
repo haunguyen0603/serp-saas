@@ -35,7 +35,8 @@ def test_access_token(settings: Settings) -> None:
     payload = jwt.decode(
         token, settings.jwt_secret_key.get_secret_value(), algorithms=["HS256"]
     )
-    assert set(payload) == {"sub", "type", "iat", "exp"}
+    assert set(payload) == {"sub", "type", "iat", "exp", "password_version"}
+    assert payload["password_version"] == 0
     assert payload["exp"] - payload["iat"] == 900
 
 
@@ -154,3 +155,12 @@ def test_samesite_none_requires_secure(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("AUTH_COOKIE_SAMESITE", "none")
     with pytest.raises(ValidationError, match="SameSite=None"):
         Settings()
+
+
+def test_password_version_revokes_old_access_tokens(settings: Settings) -> None:
+    user_id = uuid4()
+    old = create_access_token(user_id, settings)
+    with pytest.raises(AppError, match="Invalid access token"):
+        decode_access_token(old, settings, password_version=1)
+    current = create_access_token(user_id, settings, password_version=1)
+    assert decode_access_token(current, settings, password_version=1) == user_id
