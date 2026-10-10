@@ -1,3 +1,5 @@
+import { landingPageLinks } from "./landing-pages";
+
 const fallbackSiteUrl = "http://localhost:3000";
 
 function origin(value: string, name: string): URL {
@@ -72,6 +74,7 @@ export const marketingPaths = [
   "/privacy",
   "/terms",
   "/blog",
+  ...landingPageLinks.map((link) => link.href),
 ];
 
 export function isMarketingPath(path: string): boolean {

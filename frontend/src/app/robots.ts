@@ -1,11 +1,20 @@
 import type { MetadataRoute } from "next";
 import { getCanonicalSiteUrl } from "@/lib/site";
+import { landingPageLinks } from "@/lib/landing-pages";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: ["/", "/pricing", "/about", "/privacy", "/terms", "/blog"],
+      allow: [
+        "/",
+        "/pricing",
+        "/about",
+        "/privacy",
+        "/terms",
+        "/blog",
+        ...landingPageLinks.map((link) => link.href),
+      ],
       disallow: [
         "/app",
         "/admin",

@@ -25,6 +25,9 @@ it("publishes only commercial pages in the main site's sitemap", () => {
       "/blog/how-to-track-google-rankings",
       "/blog/serp-tracking-for-agencies",
       "/blog/how-to-monitor-keyword-ranking",
+      "/google-serp-rank-tracker",
+      "/daily-serp-tracker",
+      "/serp-tracking-for-agencies",
     ]
       .map((path) => `https://serpsaas.com${path}`)
       .sort(),
@@ -63,6 +66,9 @@ it.each([
   "/blog",
   "/blog/how-to-track-google-rankings",
   "/feed.xml",
+  "/google-serp-rank-tracker",
+  "/daily-serp-tracker",
+  "/serp-tracking-for-agencies",
 ])("moves commercial pages back to the primary domain: %s", (path) => {
   expect(proxy(request("app.serpsaas.com", path)).headers.get("location")).toBe(
     `https://serpsaas.com${path}`,
@@ -84,6 +90,16 @@ it("allows marketing pages and prevents app indexing", async () => {
   ).toBeNull();
   const robots = proxy(request("app.serpsaas.com", "/robots.txt"));
   expect(await robots.text()).toBe("User-agent: *\nDisallow: /\n");
+});
+
+it.each([
+  "/google-serp-rank-tracker",
+  "/daily-serp-tracker",
+  "/serp-tracking-for-agencies",
+])("keeps the canonical landing page indexable: %s", (path) => {
+  const response = proxy(request("serpsaas.com", path));
+  expect(response.headers.get("location")).toBeNull();
+  expect(response.headers.get("X-Robots-Tag")).toBeNull();
 });
 
 it("uses the original Host header behind a reverse proxy and configured redirect targets", () => {

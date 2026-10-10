@@ -5,6 +5,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useAuth } from "@/features/auth/auth-provider";
 import { Drawer, DropdownMenu, Icon, IconButton } from "./ui";
 import { PublicShell } from "./public-shell";
+import { isMarketingPath } from "@/lib/site";
 const routes = [
   { label: "Overview", href: "/app", icon: "grid", group: "" },
   {
@@ -59,20 +60,13 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [customer, auth.isAuthenticated, auth.requiresEmailVerification, router]);
   const publicSite =
     [
-      "/",
-      "/pricing",
-      "/about",
-      "/privacy",
-      "/terms",
       "/login",
       "/register",
       "/signup",
       "/verify-email",
       "/forgot-password",
       "/reset-password",
-    ].includes(path) ||
-    path === "/blog" ||
-    path.startsWith("/blog/");
+    ].includes(path) || isMarketingPath(path);
   if (publicSite) return <PublicShell>{children}</PublicShell>;
   if (customer && auth.isAuthenticated && auth.requiresEmailVerification)
     return (

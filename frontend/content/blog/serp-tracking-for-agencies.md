@@ -3,7 +3,7 @@ title: "SERP Tracking for Agencies: A Repeatable Client Reporting Workflow"
 slug: serp-tracking-for-agencies
 description: "Organize client rank tracking with clear project boundaries, keyword groups, same-check competitor comparisons and reports that explain the evidence."
 publishedAt: "2026-10-07"
-updatedAt: "2026-10-07"
+updatedAt: "2026-10-10"
 author: "SERP SaaS"
 category: "Agency SEO"
 tags: ["Rank Tracking", "Agencies", "Reporting", "SEO"]
@@ -18,6 +18,8 @@ An agency rank report should make a decision easier. Before importing keywords, 
 Write a short tracking brief for each client. Include the site, market, language, device, keyword scope and review cadence. Keep this brief with your own account notes so another review does not silently change the meaning of the dataset.
 
 If you are setting up tracking for the first time, our [Google ranking baseline guide](/blog/how-to-track-google-rankings) explains the measurement fundamentals. This guide focuses on organizing and communicating that work across clients.
+
+For the product capabilities supporting this process, see [SERP SaaS for agency rank tracking](/serp-tracking-for-agencies): multiple client Projects in one account, keyword organization, competitor comparisons and report exports.
 
 ## Keep client boundaries clear
 

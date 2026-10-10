@@ -440,6 +440,17 @@ frontmatter, public navigation, canonical metadata, Article/Breadcrumb JSON-LD,
 See [Blog authoring](docs/blog-authoring.md) and
 [Milestone 7G verification](docs/verification-milestone-7g.md).
 
+## SEO landing pages (Milestone 7H)
+
+`/google-serp-rank-tracker`, `/daily-serp-tracker`, and
+`/serp-tracking-for-agencies` are static commercial pages with distinct product,
+recurring-monitoring, and agency workflows. They share PublicShell, include
+canonical/OG/Twitter metadata and WebPage/SoftwareApplication/Breadcrumb JSON-LD,
+and are connected through the homepage, footer, relevant Blog guides and the
+existing sitemap. Copy preserves Top 10 measurement, Plan-dependent scheduling
+and user-based ownership. See [M7H verification](docs/verification-milestone-7h.md)
+for local checks and deployment status.
+
 ## Dependency versions
 
 `backend/uv.lock` and `frontend/package-lock.json` lock all resolved dependencies.
@@ -449,7 +460,7 @@ Docker bases and runtime dependencies are pinned by release version. Main versio
 | --- | --- |
 | Python container | 3.12.12 |
 | Node container | 22.22.0 |
-| Next.js / React | 16.3.6 / 19.3.0 |
+| Next.js / React | 16.3.8 / 19.3.0 |
 | TypeScript / Tailwind CSS | 5.9.3 / 4.3.3 |
 | TanStack Query | 5.102.8 |
 | FastAPI / Uvicorn | 0.141.1 / 0.52.4 |

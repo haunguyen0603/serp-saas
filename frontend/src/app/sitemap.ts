@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getCanonicalSiteUrl } from "@/lib/site";
 import { getPublishedPosts } from "@/features/blog/content";
+import { landingPageLinks } from "@/lib/landing-pages";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const site = getCanonicalSiteUrl();
@@ -18,6 +19,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: new URL("/terms", site).toString(), priority: 0.3 },
     { url: new URL("/privacy", site).toString(), priority: 0.3 },
     { url: new URL("/about", site).toString(), priority: 0.5 },
+    ...landingPageLinks.map((link) => ({
+      url: new URL(link.href, site).toString(),
+      priority: 0.8,
+    })),
     {
       url: new URL("/blog", site).toString(),
       changeFrequency: "weekly",

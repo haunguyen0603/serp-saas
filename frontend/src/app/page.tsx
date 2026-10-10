@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { appHref } from "@/lib/site";
+import { appHref, siteHref } from "@/lib/site";
+import { landingPageLinks } from "@/lib/landing-pages";
+import { softwareApplication } from "@/features/marketing/seo";
+import { serializeStructuredData } from "@/features/blog/seo";
 
 export const metadata: Metadata = {
   title: { absolute: "Google Rank Tracker for Desktop & Mobile | SERP SaaS" },
@@ -52,12 +55,7 @@ const features = [
 
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "SERP SaaS",
-  applicationCategory: "BusinessApplication",
-  operatingSystem: "Web",
-  description:
-    "Google keyword rank tracking for separate Desktop and Mobile Projects, schedules and ranking history.",
+  ...softwareApplication,
 };
 
 export default function HomePage() {
@@ -65,7 +63,9 @@ export default function HomePage() {
     <main className="public-main">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{
+          __html: serializeStructuredData(structuredData),
+        }}
       />
       <section className="public-hero" aria-labelledby="hero-title">
         <div className="public-hero-copy">
@@ -311,6 +311,28 @@ export default function HomePage() {
           <span>
             Schedules <i>Plan-based cadence</i>
           </span>
+        </div>
+      </section>
+
+      <section className="public-section" aria-labelledby="tracking-use-cases">
+        <div className="public-section-heading">
+          <p className="public-eyebrow">Choose your tracking workflow</p>
+          <h2 id="tracking-use-cases">
+            Built for different rank-tracking workflows
+          </h2>
+        </div>
+        <div className="public-feature-grid">
+          {landingPageLinks.map((link) => (
+            <article className="ui-card public-feature" key={link.href}>
+              <h3>
+                <Link href={siteHref(link.href)}>{link.label}</Link>
+              </h3>
+              <p>{link.description}</p>
+              <Link href={siteHref(link.href)} className="public-text-link">
+                Explore {link.label} →
+              </Link>
+            </article>
+          ))}
         </div>
       </section>
 

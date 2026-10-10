@@ -6,6 +6,7 @@ import { useState, type ReactNode } from "react";
 import { useAuth } from "@/features/auth/auth-provider";
 import { Drawer, Icon, IconButton } from "./ui";
 import { appHref, siteHref } from "@/lib/site";
+import { landingPageLinks } from "@/lib/landing-pages";
 
 const links = [
   { href: "/", label: "Home" },
@@ -106,6 +107,11 @@ export function PublicShell({ children }: { children: ReactNode }) {
             <strong>Product</strong>
             <Link href={siteHref("/")}>Home</Link>
             <Link href={siteHref("/pricing")}>Pricing</Link>
+            {landingPageLinks.map((link) => (
+              <Link key={link.href} href={siteHref(link.href)}>
+                {link.label}
+              </Link>
+            ))}
             <Link href={siteHref("/blog")}>Blog</Link>
             <Link href={siteHref("/about")}>About us</Link>
             <Link href={siteHref("/privacy")}>Privacy Policy</Link>

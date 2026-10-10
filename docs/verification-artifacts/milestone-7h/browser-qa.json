@@ -1,0 +1,311 @@
+{
+  "results": [
+    {
+      "path": "/google-serp-rank-tracker",
+      "width": 375,
+      "status": 200,
+      "viewport": 375,
+      "scroll": 375,
+      "readingWidths": [
+        343,
+        343,
+        343,
+        343,
+        343,
+        343
+      ],
+      "layoutShift": 0,
+      "accessibilityViolations": 0,
+      "errors": []
+    },
+    {
+      "path": "/daily-serp-tracker",
+      "width": 375,
+      "status": 200,
+      "viewport": 375,
+      "scroll": 375,
+      "readingWidths": [
+        343,
+        343,
+        343,
+        343,
+        343,
+        343
+      ],
+      "layoutShift": 0,
+      "accessibilityViolations": 0,
+      "errors": []
+    },
+    {
+      "path": "/serp-tracking-for-agencies",
+      "width": 375,
+      "status": 200,
+      "viewport": 375,
+      "scroll": 375,
+      "readingWidths": [
+        343,
+        343,
+        343,
+        343,
+        343,
+        343,
+        343
+      ],
+      "layoutShift": 0,
+      "accessibilityViolations": 0,
+      "errors": []
+    },
+    {
+      "path": "/google-serp-rank-tracker",
+      "width": 768,
+      "status": 200,
+      "viewport": 768,
+      "scroll": 768,
+      "readingWidths": [
+        720,
+        720,
+        720,
+        720,
+        720,
+        720
+      ],
+      "layoutShift": 0,
+      "accessibilityViolations": 0,
+      "errors": []
+    },
+    {
+      "path": "/daily-serp-tracker",
+      "width": 768,
+      "status": 200,
+      "viewport": 768,
+      "scroll": 768,
+      "readingWidths": [
+        720,
+        720,
+        720,
+        720,
+        720,
+        720
+      ],
+      "layoutShift": 0,
+      "accessibilityViolations": 0,
+      "errors": []
+    },
+    {
+      "path": "/serp-tracking-for-agencies",
+      "width": 768,
+      "status": 200,
+      "viewport": 768,
+      "scroll": 768,
+      "readingWidths": [
+        720,
+        720,
+        720,
+        720,
+        720,
+        720,
+        720
+      ],
+      "layoutShift": 0,
+      "accessibilityViolations": 0,
+      "errors": []
+    },
+    {
+      "path": "/google-serp-rank-tracker",
+      "width": 1024,
+      "status": 200,
+      "viewport": 1024,
+      "scroll": 1024,
+      "readingWidths": [
+        464,
+        464,
+        464,
+        464,
+        464,
+        464
+      ],
+      "layoutShift": 0,
+      "accessibilityViolations": 0,
+      "errors": []
+    },
+    {
+      "path": "/daily-serp-tracker",
+      "width": 1024,
+      "status": 200,
+      "viewport": 1024,
+      "scroll": 1024,
+      "readingWidths": [
+        464,
+        464,
+        464,
+        464,
+        464,
+        464
+      ],
+      "layoutShift": 0,
+      "accessibilityViolations": 0,
+      "errors": []
+    },
+    {
+      "path": "/serp-tracking-for-agencies",
+      "width": 1024,
+      "status": 200,
+      "viewport": 1024,
+      "scroll": 1024,
+      "readingWidths": [
+        464,
+        464,
+        464,
+        464,
+        464,
+        464,
+        464
+      ],
+      "layoutShift": 0,
+      "accessibilityViolations": 0,
+      "errors": []
+    },
+    {
+      "path": "/google-serp-rank-tracker",
+      "width": 1440,
+      "status": 200,
+      "viewport": 1440,
+      "scroll": 1440,
+      "readingWidths": [
+        566,
+        566,
+        566,
+        566,
+        566,
+        566
+      ],
+      "layoutShift": 0,
+      "accessibilityViolations": 0,
+      "errors": []
+    },
+    {
+      "path": "/daily-serp-tracker",
+      "width": 1440,
+      "status": 200,
+      "viewport": 1440,
+      "scroll": 1440,
+      "readingWidths": [
+        566,
+        566,
+        566,
+        566,
+        566,
+        566
+      ],
+      "layoutShift": 0,
+      "accessibilityViolations": 0,
+      "errors": []
+    },
+    {
+      "path": "/serp-tracking-for-agencies",
+      "width": 1440,
+      "status": 200,
+      "viewport": 1440,
+      "scroll": 1440,
+      "readingWidths": [
+        566,
+        566,
+        566,
+        566,
+        566,
+        566,
+        566
+      ],
+      "layoutShift": 0,
+      "accessibilityViolations": 0,
+      "errors": []
+    }
+  ],
+  "noJavaScript": [
+    {
+      "path": "/google-serp-rank-tracker",
+      "width": 375,
+      "readable": true
+    },
+    {
+      "path": "/daily-serp-tracker",
+      "width": 375,
+      "readable": true
+    },
+    {
+      "path": "/serp-tracking-for-agencies",
+      "width": 375,
+      "readable": true
+    },
+    {
+      "path": "/google-serp-rank-tracker",
+      "width": 768,
+      "readable": true
+    },
+    {
+      "path": "/daily-serp-tracker",
+      "width": 768,
+      "readable": true
+    },
+    {
+      "path": "/serp-tracking-for-agencies",
+      "width": 768,
+      "readable": true
+    },
+    {
+      "path": "/google-serp-rank-tracker",
+      "width": 1024,
+      "readable": true
+    },
+    {
+      "path": "/daily-serp-tracker",
+      "width": 1024,
+      "readable": true
+    },
+    {
+      "path": "/serp-tracking-for-agencies",
+      "width": 1024,
+      "readable": true
+    },
+    {
+      "path": "/google-serp-rank-tracker",
+      "width": 1440,
+      "readable": true
+    },
+    {
+      "path": "/daily-serp-tracker",
+      "width": 1440,
+      "readable": true
+    },
+    {
+      "path": "/serp-tracking-for-agencies",
+      "width": 1440,
+      "readable": true
+    }
+  ],
+  "http": [
+    {
+      "path": "/google-serp-rank-tracker",
+      "canonicalHostStatus": 200,
+      "noindex": false,
+      "appHostStatus": 307,
+      "location": "https://serpsaas.com/google-serp-rank-tracker?source=qa"
+    },
+    {
+      "path": "/daily-serp-tracker",
+      "canonicalHostStatus": 200,
+      "noindex": false,
+      "appHostStatus": 307,
+      "location": "https://serpsaas.com/daily-serp-tracker?source=qa"
+    },
+    {
+      "path": "/serp-tracking-for-agencies",
+      "canonicalHostStatus": 200,
+      "noindex": false,
+      "appHostStatus": 307,
+      "location": "https://serpsaas.com/serp-tracking-for-agencies?source=qa"
+    }
+  ],
+  "sitemapUrls": 12,
+  "internalLinkChecks": "homepage, footer, three contextual Blog links, related guides and product workflows passed"
+}

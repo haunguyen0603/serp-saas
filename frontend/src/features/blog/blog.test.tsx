@@ -164,7 +164,7 @@ it.each([
   ],
   [
     "earlier update",
-    firstSource.replace('updatedAt: "2026-10-07"', 'updatedAt: "2026-10-06"'),
+    firstSource.replace('updatedAt: "2026-10-10"', 'updatedAt: "2026-10-06"'),
     /precede/,
   ],
   [

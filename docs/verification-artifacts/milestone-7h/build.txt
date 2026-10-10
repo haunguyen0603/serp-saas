@@ -1,0 +1,76 @@
+
+> serp-saas-frontend@0.1.0 prebuild
+> node --experimental-strip-types scripts/validate-blog.mjs
+
+Blog content validated: 3 published, 0 drafts.
+
+> serp-saas-frontend@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.3.8 (webpack)
+✓ Running next.config.ts took 1025ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 9.0s
+  Running TypeScript ...
+  Finished TypeScript in 3.8s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/37) ...
+  Generating static pages using 7 workers (9/37) 
+  Generating static pages using 7 workers (18/37) 
+  Generating static pages using 7 workers (27/37) 
+✓ Generating static pages using 7 workers (37/37) in 636ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ○ /admin/customers
+├ ƒ /admin/customers/[userId]
+├ ○ /admin/plans
+├ ○ /app
+├ ○ /app/projects
+├ ƒ /app/projects/[projectId]
+├ ƒ /app/projects/[projectId]/competitors
+├ ƒ /app/projects/[projectId]/rankings
+├ ƒ /app/projects/[projectId]/reports
+├ ○ /app/projects/new
+├ ○ /app/rankings
+├ ○ /app/settings
+├ ○ /app/tracked-sites
+├ ƒ /app/tracked-sites/[siteId]
+├ ○ /app/tracked-sites/new
+├ ○ /apple-icon.png
+├ ○ /blog
+├   /blog/[slug]
+│ ├ ● /blog/how-to-monitor-keyword-ranking
+│ ├ ● /blog/how-to-track-google-rankings
+│ └ ● /blog/serp-tracking-for-agencies
+├ ○ /daily-serp-tracker
+├ ○ /feed.xml
+├ ○ /forgot-password
+├ ○ /google-serp-rank-tracker
+├ ○ /health
+├ ○ /icon.svg
+├ ○ /login
+├ ○ /pricing
+├ ○ /privacy
+├ ○ /register
+├ ○ /reset-password
+├ ○ /robots.txt
+├ ○ /serp-tracking-for-agencies
+├ ○ /settings/billing
+├ ○ /signup
+├ ○ /sitemap.xml
+├ ○ /terms
+└ ○ /verify-email
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

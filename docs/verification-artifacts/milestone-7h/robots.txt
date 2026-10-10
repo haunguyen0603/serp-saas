@@ -1,0 +1,22 @@
+User-Agent: *
+Allow: /
+Allow: /pricing
+Allow: /about
+Allow: /privacy
+Allow: /terms
+Allow: /blog
+Allow: /google-serp-rank-tracker
+Allow: /daily-serp-tracker
+Allow: /serp-tracking-for-agencies
+Disallow: /app
+Disallow: /admin
+Disallow: /settings
+Disallow: /api
+Disallow: /verify-email
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /login
+Disallow: /register
+Disallow: /signup
+
+Sitemap: https://serpsaas.com/sitemap.xml
