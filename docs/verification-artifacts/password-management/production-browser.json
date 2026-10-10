@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-10-10T05:46:12.540Z",
+  "cases": [
+    {
+      "route": "/forgot-password",
+      "width": 375,
+      "passed": true
+    },
+    {
+      "route": "/reset-password",
+      "width": 375,
+      "passed": true,
+      "secretRemoved": true,
+      "invalidTokenRejected": true
+    },
+    {
+      "route": "/app/settings",
+      "width": 375,
+      "passed": true,
+      "anonymousRedirect": "/login"
+    },
+    {
+      "route": "/forgot-password",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "route": "/reset-password",
+      "width": 1440,
+      "passed": true,
+      "secretRemoved": true,
+      "invalidTokenRejected": true
+    },
+    {
+      "route": "/app/settings",
+      "width": 1440,
+      "passed": true,
+      "anonymousRedirect": "/login"
+    }
+  ],
+  "limitations": "Anonymous production browser smoke only. No account creation, real password mutation or email send."
+}

@@ -1,0 +1,76 @@
+{
+  "checked_at": "2026-10-10T05:36:59.759299+00:00",
+  "mode": "backend-only",
+  "results": [
+    {
+      "url": "https://api.serpsaas.com/health",
+      "method": "GET",
+      "status": 200,
+      "expected_status": 200,
+      "passed": true
+    },
+    {
+      "url": "https://api.serpsaas.com/health/db",
+      "method": "GET",
+      "status": 200,
+      "expected_status": 200,
+      "passed": true
+    },
+    {
+      "url": "https://api.serpsaas.com/openapi.json",
+      "method": "GET",
+      "status": 200,
+      "expected_status": 200,
+      "passed": true
+    },
+    {
+      "openapi_path": "/api/v1/auth/forgot-password",
+      "passed": true
+    },
+    {
+      "openapi_path": "/api/v1/auth/reset-password",
+      "passed": true
+    },
+    {
+      "openapi_path": "/api/v1/auth/change-password",
+      "passed": true
+    },
+    {
+      "url": "https://api.serpsaas.com/api/v1/auth/forgot-password",
+      "method": "POST",
+      "status": 422,
+      "expected_status": 422,
+      "passed": true,
+      "error_code": "VALIDATION_ERROR",
+      "no_store": true
+    },
+    {
+      "url": "https://api.serpsaas.com/api/v1/auth/reset-password",
+      "method": "POST",
+      "status": 400,
+      "expected_status": 400,
+      "passed": true,
+      "error_code": "INVALID_PASSWORD_RESET_TOKEN",
+      "no_store": true
+    },
+    {
+      "url": "https://api.serpsaas.com/api/v1/auth/change-password",
+      "method": "POST",
+      "status": 401,
+      "expected_status": 401,
+      "passed": true,
+      "error_code": "AUTHENTICATION_REQUIRED",
+      "no_store": true
+    },
+    {
+      "url": "https://api.serpsaas.com/api/v1/auth/forgot-password",
+      "method": "POST",
+      "status": 403,
+      "expected_status": 403,
+      "passed": true,
+      "error_code": "UNTRUSTED_ORIGIN",
+      "no_store": true
+    }
+  ],
+  "limitations": "Read-only pages and invalid unauthenticated requests; no production account, password or email mutation."
+}

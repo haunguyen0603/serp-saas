@@ -1,0 +1,25 @@
+{
+  "commit": "e956ecdb61b9d1eed922a88e216315fe1cb4f467",
+  "checks": [
+    {
+      "name": "serp-web-main (serp-saas)",
+      "head_sha": "e956ecdb61b9d1eed922a88e216315fe1cb4f467",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://console.cloud.google.com/cloud-build/builds;region=europe-west1/b48461d6-98c1-49ff-9cb6-5935bc037ad1?project=833917440392",
+      "started_at": "2026-10-10T05:37:17Z",
+      "completed_at": "2026-10-10T05:45:38Z",
+      "summary": "Build b48461d6-98c1-49ff-9cb6-5935bc037ad1 successful"
+    },
+    {
+      "name": "serp-backend-main (serp-saas)",
+      "head_sha": "e956ecdb61b9d1eed922a88e216315fe1cb4f467",
+      "status": "completed",
+      "conclusion": "neutral",
+      "details_url": "https://console.cloud.google.com/cloud-build/triggers;region=europe-west1/edit/afed77f4-293c-4a1d-8a68-2da8cbbf3a63?project=833917440392",
+      "started_at": "2026-10-10T05:37:17Z",
+      "completed_at": "2026-10-10T05:37:17Z",
+      "summary": "Changed files did not match file filter"
+    }
+  ]
+}
