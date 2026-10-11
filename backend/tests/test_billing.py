@@ -72,12 +72,13 @@ async def test_catalog_free_and_security(auth_client, auth_app):
         for p in plans
     ] == [
         ("desktop_free", 0, 1, 50, 100),
-        ("desktop_starter", 1900, 5, 500, 5000),
-        ("desktop_pro", 12900, 20, 5000, 50000),
+        ("desktop_starter", 495330, 5, 500, 5000),
+        ("desktop_pro", 3363030, 20, 5000, 50000),
         ("mobile_free", 0, 1, 20, 50),
-        ("mobile_starter", 3900, 3, 200, 1000),
-        ("mobile_pro", 24900, 10, 1000, 10000),
+        ("mobile_starter", 1016730, 3, 200, 1000),
+        ("mobile_pro", 6491430, 10, 1000, 10000),
     ]
+    assert all(plan["currency"] == "VND" for plan in plans)
     me = (await auth_client.get("/api/v1/billing/me", headers=user)).json()
     assert [d["plan"]["code"] for d in me["devices"]] == ["desktop_free", "mobile_free"]
     for method, path, body in [

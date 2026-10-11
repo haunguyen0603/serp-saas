@@ -27,6 +27,12 @@ const routes = [
     icon: "wallet",
     group: "Usage & billing",
   },
+  {
+    label: "Change Plan",
+    href: "/app/change-plan",
+    icon: "refresh",
+    group: "",
+  },
   { label: "Settings", href: "/app/settings", icon: "user", group: "Account" },
 ];
 export function AppShell({ children }: { children: ReactNode }) {

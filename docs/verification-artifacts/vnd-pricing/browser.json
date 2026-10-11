@@ -1,0 +1,126 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "path": "/pricing",
+      "width": 375,
+      "passed": true,
+      "api": "real local API"
+    },
+    {
+      "path": "/vi/bang-gia",
+      "width": 375,
+      "passed": true,
+      "api": "real local API"
+    },
+    {
+      "path": "/app/change-plan",
+      "width": 375,
+      "passed": true,
+      "api": "synthetic session; real catalog fixture"
+    },
+    {
+      "path": "/settings/billing",
+      "width": 375,
+      "passed": true,
+      "api": "synthetic session; real catalog fixture"
+    },
+    {
+      "path": "/admin/plans",
+      "width": 375,
+      "passed": true,
+      "api": "synthetic session; real catalog fixture"
+    },
+    {
+      "path": "/pricing",
+      "width": 768,
+      "passed": true,
+      "api": "real local API"
+    },
+    {
+      "path": "/vi/bang-gia",
+      "width": 768,
+      "passed": true,
+      "api": "real local API"
+    },
+    {
+      "path": "/app/change-plan",
+      "width": 768,
+      "passed": true,
+      "api": "synthetic session; real catalog fixture"
+    },
+    {
+      "path": "/settings/billing",
+      "width": 768,
+      "passed": true,
+      "api": "synthetic session; real catalog fixture"
+    },
+    {
+      "path": "/admin/plans",
+      "width": 768,
+      "passed": true,
+      "api": "synthetic session; real catalog fixture"
+    },
+    {
+      "path": "/pricing",
+      "width": 1024,
+      "passed": true,
+      "api": "real local API"
+    },
+    {
+      "path": "/vi/bang-gia",
+      "width": 1024,
+      "passed": true,
+      "api": "real local API"
+    },
+    {
+      "path": "/app/change-plan",
+      "width": 1024,
+      "passed": true,
+      "api": "synthetic session; real catalog fixture"
+    },
+    {
+      "path": "/settings/billing",
+      "width": 1024,
+      "passed": true,
+      "api": "synthetic session; real catalog fixture"
+    },
+    {
+      "path": "/admin/plans",
+      "width": 1024,
+      "passed": true,
+      "api": "synthetic session; real catalog fixture"
+    },
+    {
+      "path": "/pricing",
+      "width": 1440,
+      "passed": true,
+      "api": "real local API"
+    },
+    {
+      "path": "/vi/bang-gia",
+      "width": 1440,
+      "passed": true,
+      "api": "real local API"
+    },
+    {
+      "path": "/app/change-plan",
+      "width": 1440,
+      "passed": true,
+      "api": "synthetic session; real catalog fixture"
+    },
+    {
+      "path": "/settings/billing",
+      "width": 1440,
+      "passed": true,
+      "api": "synthetic session; real catalog fixture"
+    },
+    {
+      "path": "/admin/plans",
+      "width": 1440,
+      "passed": true,
+      "api": "synthetic session; real catalog fixture"
+    }
+  ],
+  "errors": []
+}

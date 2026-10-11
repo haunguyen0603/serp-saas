@@ -13,6 +13,116 @@ from alembic import command
 from app.core.config import Settings
 
 
+@pytest.mark.integration
+def test_vnd_catalog_migration_preserves_custom_prices_and_legacy_snapshots(
+    settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    schema, admin, engine, admin_sql = isolated_migration_context(settings, monkeypatch)
+    config = Config("alembic.ini")
+    user_id, subscription_id, change_id = uuid4(), uuid4(), uuid4()
+
+    async def seed() -> None:
+        async with engine.begin() as connection:
+            await connection.execute(
+                text(
+                    "UPDATE plans SET price_monthly_minor_units=2950 "
+                    "WHERE code='desktop_starter'"
+                )
+            )
+            await connection.execute(
+                text(
+                    "UPDATE plans SET price_monthly_minor_units=19900 "
+                    "WHERE code='mobile_pro'"
+                )
+            )
+            await connection.execute(
+                text("UPDATE plans SET currency='EUR' WHERE code='mobile_free'")
+            )
+            await connection.execute(
+                text(
+                    "INSERT INTO users "
+                    "(id,email,password_hash,status,terms_accepted_at) "
+                    "VALUES (:id,'vnd-test@example.test','test-hash','active',now())"
+                ),
+                {"id": user_id},
+            )
+            await connection.execute(
+                text(
+                    "INSERT INTO subscriptions (id,user_id,plan_id,device_scope,"
+                    "status,source,period_start,period_end,snapshot) "
+                    "SELECT :id,:user_id,id,device_scope,'active','manual',now(),"
+                    "now()+interval '1 month',to_jsonb(plans) FROM plans "
+                    "WHERE code='desktop_starter'"
+                ),
+                {"id": subscription_id, "user_id": user_id},
+            )
+            await connection.execute(
+                text(
+                    "INSERT INTO plan_changes (id,plan_id,before,after) "
+                    "SELECT :id,id,to_jsonb(plans),to_jsonb(plans) FROM plans "
+                    "WHERE code='desktop_starter'"
+                ),
+                {"id": change_id},
+            )
+
+    async def state() -> tuple[dict[str, Any], Any, Any]:
+        async with engine.connect() as connection:
+            plans = {
+                row["code"]: dict(row)
+                for row in (
+                    await connection.execute(text("SELECT * FROM plans ORDER BY code"))
+                ).mappings()
+            }
+            subscription = await connection.scalar(
+                text("SELECT to_jsonb(subscriptions) FROM subscriptions WHERE id=:id"),
+                {"id": subscription_id},
+            )
+            audit = await connection.scalar(
+                text("SELECT to_jsonb(plan_changes) FROM plan_changes WHERE id=:id"),
+                {"id": change_id},
+            )
+            return plans, subscription, audit
+
+    try:
+        command.upgrade(config, "0014_password_management")
+        asyncio.run(seed())
+        before, legacy, audit = asyncio.run(state())
+        command.upgrade(config, "head")
+        after, legacy_after, audit_after = asyncio.run(state())
+        assert legacy == legacy_after and audit == audit_after
+        assert legacy_after["snapshot"]["currency"] == "USD"
+        for code, original in before.items():
+            for key in original.keys() - {
+                "price_monthly_minor_units",
+                "currency",
+                "updated_at",
+            }:
+                assert after[code][key] == original[key]
+            if original["currency"] == "USD":
+                assert after[code]["currency"] == "VND"
+                assert (
+                    after[code]["price_monthly_minor_units"]
+                    == original["price_monthly_minor_units"] * 26070 // 100
+                )
+            else:
+                assert after[code] == original
+        assert after["desktop_starter"]["price_monthly_minor_units"] == 769065
+        assert after["mobile_pro"]["price_monthly_minor_units"] == 5187930
+        command.downgrade(config, "0014_password_management")
+        restored, legacy_restored, audit_restored = asyncio.run(state())
+        assert legacy_restored == legacy and audit_restored == audit
+        for code, original in before.items():
+            assert restored[code]["currency"] == original["currency"]
+            assert (
+                restored[code]["price_monthly_minor_units"]
+                == original["price_monthly_minor_units"]
+            )
+    finally:
+        asyncio.run(engine.dispose())
+        asyncio.run(admin_sql(f'DROP SCHEMA "{schema}" CASCADE'))
+        asyncio.run(admin.dispose())
+
+
 def isolated_migration_context(settings: Settings, monkeypatch: pytest.MonkeyPatch):
     schema = f"migration_test_{uuid4().hex}"
     url = settings.database_url.get_secret_value()
@@ -61,7 +171,7 @@ def test_fresh_database_upgrade_and_forward_only_boundary(
 
     try:
         command.upgrade(config, "head")
-        assert asyncio.run(revision()) == "0013_email_verification"
+        assert asyncio.run(revision()) == "0015_vnd_pricing"
 
         async def tables() -> set[str]:
             async with engine.connect() as connection:
@@ -81,6 +191,7 @@ def test_fresh_database_upgrade_and_forward_only_boundary(
             "users",
             "refresh_tokens",
             "email_verification_tokens",
+            "password_reset_tokens",
             "projects",
             "keywords",
             "tracked_sites",
@@ -104,10 +215,10 @@ def test_fresh_database_upgrade_and_forward_only_boundary(
         command.downgrade(config, "0005_rank_tracking")
         assert asyncio.run(revision()) == "0005_rank_tracking"
         command.upgrade(config, "head")
-        assert asyncio.run(revision()) == "0013_email_verification"
+        assert asyncio.run(revision()) == "0015_vnd_pricing"
         with pytest.raises(RuntimeError, match="intentionally irreversible"):
             command.downgrade(config, "0003_projects_keywords")
-        assert asyncio.run(revision()) == "0013_email_verification"
+        assert asyncio.run(revision()) == "0015_vnd_pricing"
     finally:
         asyncio.run(engine.dispose())
         asyncio.run(admin_sql(f'DROP SCHEMA "{schema}" CASCADE'))

@@ -1,0 +1,1391 @@
+{
+  "apiMode": "Synthetic intercepted API; local production standalone; no real accounts or backend changes",
+  "results": [
+    {
+      "width": 375,
+      "fixture": "free-desktop",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "fixture": "paid-desktop",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "fixture": "free-mobile",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "fixture": "paid-mobile",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "fixture": "catalog-failure",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "fixture": "empty",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 0,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 0,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "fixture": "subscription-failure",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "fixture": "free-desktop",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "fixture": "paid-desktop",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "fixture": "free-mobile",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "fixture": "paid-mobile",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "fixture": "catalog-failure",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "fixture": "empty",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 0,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 0,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "fixture": "subscription-failure",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "fixture": "free-desktop",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "fixture": "paid-desktop",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "fixture": "free-mobile",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "fixture": "paid-mobile",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "fixture": "catalog-failure",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "fixture": "empty",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 0,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 0,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "fixture": "subscription-failure",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "fixture": "free-desktop",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "fixture": "paid-desktop",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "fixture": "free-mobile",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "fixture": "paid-mobile",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "fixture": "catalog-failure",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "fixture": "empty",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 0,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 0,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "fixture": "subscription-failure",
+      "scopeChecks": [
+        {
+          "device": "desktop",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        },
+        {
+          "device": "mobile",
+          "cards": 3,
+          "axeViolations": 0,
+          "overflow": false,
+          "selectApiRequests": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/auth/refresh"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/plans"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/billing/me"
+        }
+      ],
+      "billingMutations": 0,
+      "errors": []
+    }
+  ],
+  "gates": [
+    {
+      "width": 375,
+      "fixture": "anonymous",
+      "finalPath": "/login",
+      "billingRequests": 0,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "fixture": "unverified",
+      "finalPath": "/verify-email",
+      "billingRequests": 0,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "fixture": "anonymous",
+      "finalPath": "/login",
+      "billingRequests": 0,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "fixture": "unverified",
+      "finalPath": "/verify-email",
+      "billingRequests": 0,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "fixture": "anonymous",
+      "finalPath": "/login",
+      "billingRequests": 0,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "fixture": "unverified",
+      "finalPath": "/verify-email",
+      "billingRequests": 0,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "fixture": "anonymous",
+      "finalPath": "/login",
+      "billingRequests": 0,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "fixture": "unverified",
+      "finalPath": "/verify-email",
+      "billingRequests": 0,
+      "errors": []
+    }
+  ]
+}

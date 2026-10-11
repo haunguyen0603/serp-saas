@@ -18,6 +18,7 @@ import {
 } from "@/features/projects/protected";
 import type { Plan } from "@/features/billing/types";
 import { money } from "@/features/billing/billing-page";
+import { currencyDecimals } from "@/features/billing/money";
 
 export interface AdminPlan extends Plan {
   updated_at: string;
@@ -40,8 +41,10 @@ function PlanEditor({ plan }: { plan: AdminPlan }) {
   const client = useQueryClient();
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const decimals = currencyDecimals(plan.currency);
+  const scale = 10 ** decimals;
   const [values, setValues] = useState({
-    price: (plan.price_monthly_minor_units / 100).toFixed(2),
+    price: (plan.price_monthly_minor_units / scale).toFixed(decimals),
     max_projects: String(plan.max_projects),
     max_keywords: String(plan.max_keywords),
     monthly_keyword_checks: String(plan.monthly_keyword_checks),
@@ -75,13 +78,21 @@ function PlanEditor({ plan }: { plan: AdminPlan }) {
     event.preventDefault();
     setError(null);
     setSaved(false);
-    if (!/^\d+(\.\d{1,2})?$/.test(values.price)) {
-      setError("Enter a price with at most two decimal places.");
+    const pricePattern = decimals
+      ? new RegExp(`^\\d+(\\.\\d{1,${decimals}})?$`)
+      : /^\d+$/;
+    if (!pricePattern.test(values.price)) {
+      setError(
+        decimals
+          ? `Enter a price with at most ${decimals} decimal places.`
+          : "Enter a whole-number price in VND.",
+      );
       return;
     }
     const [whole, fraction = ""] = values.price.split(".");
-    const cents = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
-    if (!Number.isSafeInteger(cents) || cents > 2147483647) {
+    const minorUnits =
+      Number(whole) * scale + Number(fraction.padEnd(decimals, "0"));
+    if (!Number.isSafeInteger(minorUnits) || minorUnits > 2147483647) {
       setError("Price is too large.");
       return;
     }
@@ -98,7 +109,7 @@ function PlanEditor({ plan }: { plan: AdminPlan }) {
     }
     mutation.mutate({
       expected_updated_at: version,
-      price_monthly_minor_units: cents,
+      price_monthly_minor_units: minorUnits,
       ...limits,
     });
   }
@@ -120,9 +131,9 @@ function PlanEditor({ plan }: { plan: AdminPlan }) {
             Monthly price ({plan.currency})
             <Input
               type="number"
-              min={plan.code.endsWith("_free") ? "0" : "0.01"}
-              max="21474836.47"
-              step="0.01"
+              min={plan.code.endsWith("_free") ? "0" : String(1 / scale)}
+              max={String(2147483647 / scale)}
+              step={String(1 / scale)}
               required
               value={values.price}
               readOnly={plan.code.endsWith("_free")}
@@ -131,7 +142,7 @@ function PlanEditor({ plan }: { plan: AdminPlan }) {
           </label>
           {plan.code.endsWith("_free") && (
             <p className="text-sm text-secondary">
-              Free Plans stay at $0. Their limits can be edited.
+              Free Plans stay at {money(plan)}. Their limits can be edited.
             </p>
           )}
           {fields.map(([key, label]) => (

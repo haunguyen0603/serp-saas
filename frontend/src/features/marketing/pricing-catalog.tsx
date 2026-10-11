@@ -5,38 +5,20 @@ import Link from "next/link";
 import { Badge, Card, ErrorState, Skeleton } from "@/design-system/ui";
 import { useAuth } from "@/features/auth/auth-provider";
 import type { Plan } from "@/features/billing/types";
-import { requestJson } from "@/lib/api/client";
+import {
+  groupPlans,
+  planPrice,
+  planCatalogQuery,
+} from "@/features/billing/plan-catalog";
 import type { PublicLocale } from "@/lib/public-locales";
 import { appHref } from "@/lib/site";
 
-const tierOrder = ["free", "starter", "pro"];
+export { groupPlans } from "@/features/billing/plan-catalog";
 const tierCopy: Record<string, string> = {
   free: "Try the workflow with a small keyword set.",
   starter: "For freelancers, small sites and focused SEO teams.",
   pro: "For agencies and teams with higher tracking volume.",
 };
-
-export function groupPlans(plans: Plan[]) {
-  return (["desktop", "mobile"] as const).map((device) => ({
-    device,
-    plans: plans
-      .filter((plan) => plan.device_scope === device)
-      .sort(
-        (a, b) =>
-          tierOrder.indexOf(a.code.split("_").at(-1) ?? "") -
-          tierOrder.indexOf(b.code.split("_").at(-1) ?? ""),
-      ),
-  }));
-}
-
-function planPrice(plan: Plan) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: plan.currency,
-    minimumFractionDigits: plan.price_monthly_minor_units % 100 ? 2 : 0,
-    maximumFractionDigits: 2,
-  }).format(plan.price_monthly_minor_units / 100);
-}
 
 function scheduleText(plan: Plan, locale: PublicLocale) {
   if (locale === "vi") {
@@ -62,11 +44,7 @@ export function PricingCatalog({ locale = "en" }: { locale?: PublicLocale }) {
     pro: "Dành cho agency và người làm SEO cần theo dõi nhiều từ khóa hơn.",
   };
   const auth = useAuth();
-  const query = useQuery({
-    queryKey: ["public-plans"],
-    queryFn: () => requestJson<Plan[]>("/api/v1/billing/plans"),
-    staleTime: 60_000,
-  });
+  const query = useQuery(planCatalogQuery);
 
   return (
     <main className="public-main pricing-main">

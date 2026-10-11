@@ -175,7 +175,13 @@ try {
   for (const plan of plans) {
     const card = page.getByRole("region", { name: plan.name });
     const text = await card.textContent();
-    const price = `$${(plan.price_monthly_minor_units / 100).toLocaleString("en-US")}`;
+    const decimals = new Intl.NumberFormat("en-US", { style: "currency", currency: plan.currency }).resolvedOptions().maximumFractionDigits;
+    const scale = 10 ** decimals;
+    const price = new Intl.NumberFormat(plan.currency === "VND" ? "vi-VN" : "en-US", {
+      style: "currency", currency: plan.currency,
+      minimumFractionDigits: plan.price_monthly_minor_units % scale ? decimals : 0,
+      maximumFractionDigits: decimals,
+    }).format(plan.price_monthly_minor_units / scale);
     assert(text.includes(price), `${plan.code}: rendered price differs from API`);
     assert(text.includes(plan.max_keywords.toLocaleString("en-US")), `${plan.code}: keyword limit missing`);
     assert(text.includes(plan.monthly_keyword_checks.toLocaleString("en-US")), `${plan.code}: usage limit missing`);

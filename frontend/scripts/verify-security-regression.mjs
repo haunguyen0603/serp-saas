@@ -259,6 +259,11 @@ try {
     const protectedRoutes = [
       ["/app", "Overview"],
       ["/app/projects", "Projects"],
+      ["/app/tracked-sites", "Tracked Sites"],
+      ["/app/rankings", "Rankings"],
+      ["/app/settings", "Account settings"],
+      ["/settings/billing", "Billing & Usage"],
+      ["/app/change-plan", "Change Plan"],
       [`/app/projects/${project.id}`, project.name],
       [`/app/projects/${project.id}/rankings`, "Ranking Explorer"],
       [`/app/projects/${project.id}/reports`, "Reports"],

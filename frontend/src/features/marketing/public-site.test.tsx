@@ -92,6 +92,27 @@ it("preserves fractional catalog prices on public Pricing", async () => {
   expect(await screen.findByText("$29.50")).toBeVisible();
 });
 
+it.each(["en", "vi"] as const)(
+  "renders exact VND prices on %s Pricing",
+  async (locale) => {
+    state.request.mockResolvedValue(
+      plans.map((plan) => ({
+        ...plan,
+        currency: "VND",
+        price_monthly_minor_units:
+          plan.code === "mobile_pro"
+            ? 5187930
+            : (plan.price_monthly_minor_units * 26070) / 100,
+      })),
+    );
+    view(<PricingCatalog locale={locale} />);
+    for (const amount of ["495.330", "3.363.030", "1.016.730", "5.187.930"]) {
+      expect(await screen.findByText(`${amount} ₫`)).toBeVisible();
+    }
+    expect(screen.getAllByText("0 ₫")).toHaveLength(2);
+  },
+);
+
 it("renders truthful Home sections and safe preview data", () => {
   render(<HomePage />);
   expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(

@@ -51,7 +51,7 @@ class Plan(IdentityTime, Base):
     name: Mapped[str] = mapped_column(String(120))
     device_scope: Mapped[str] = mapped_column(String(16))
     price_monthly_minor_units: Mapped[int] = mapped_column(Integer)
-    currency: Mapped[str] = mapped_column(String(3), default="USD")
+    currency: Mapped[str] = mapped_column(String(3), default="VND")
     max_projects: Mapped[int] = mapped_column(Integer)
     max_keywords: Mapped[int] = mapped_column(Integer)
     monthly_keyword_checks: Mapped[int] = mapped_column(Integer)

@@ -11,6 +11,7 @@ from app.models.billing import BillingAuditEvent, Plan, Subscription, UsagePerio
 from app.models.project import Project
 from app.models.rank_job import ProjectRankSchedule
 from app.repositories.billing import BillingRepository
+from app.services.billing.currency import replacement_event
 
 TERMS = (
     "code",
@@ -281,12 +282,7 @@ class SubscriptionService:
         await self.session.flush()
         event = "subscription_scheduled" if future else "subscription_activated"
         if not future and replace_existing:
-            event = (
-                "subscription_upgraded"
-                if plan.price_monthly_minor_units
-                >= active.snapshot["price_monthly_minor_units"]
-                else "subscription_downgraded"
-            )
+            event = replacement_event(plan, active.snapshot)
         self.audit(user_id, plan.device_scope, event, actor=actor, subscription=sub)
         if not future:
             await self.disable_schedules(sub)

@@ -6,9 +6,9 @@ Implemented and verified on 2026-09-20.
 
 Sign in with a platform administrator account and open **Administration → Plans & Pricing** (`/admin/plans`). Each Desktop and Mobile Free/Starter/Pro Plan has its own form and Save action:
 
-- Monthly price in USD, with up to two decimal places.
+- Monthly price in VND, as a whole number of dong. Legacy currencies use their own minor-unit precision (for example USD cents).
 - Max projects, max keywords, and monthly logical keyword checks, as nonnegative whole numbers.
-- Free prices remain $0; paid Plans require a positive price. Free resource limits are editable.
+- Free prices remain zero; paid Plans require a positive price. Free resource limits are editable.
 
 Saving updates the authoritative database catalog used by public Pricing and new subscription activations. Per the user's selected policy, **existing subscription snapshots remain unchanged**, including existing Free subscriptions and extensions of existing subscriptions. A newly created subscription (including a newly created Free fallback) takes the current catalog terms. Existing usage periods, reservations, schedules, and ranking data are not rewritten.
 
@@ -23,6 +23,8 @@ Catalog changes do not collect money or activate a subscription. Manual bank-tra
 - Every effective change records the administrator UUID, timestamp, and before/after Plan terms in `plan_changes`, in the same transaction. The UI displays the latest 20 entries; older entries remain in the database. No-op saves create no audit entry.
 - Migration `0009_plan_catalog_audit` adds only the audit table/index. No seed prices or existing subscription snapshots are updated by this migration.
 - Public Pricing now preserves fractional prices (for example $29.50) instead of rounding them to whole dollars.
+
+On 2026-10-11, local migration `0015_vnd_pricing` converts current USD catalog prices to VND at the fixed Vietcombank selling rate of 26,070 VND/USD. For VND, `price_monthly_minor_units` stores dong directly. Existing subscription snapshots and audit history keep their original currency and amount. The editor, public Pricing, Change Plan, Billing and Admin history format amounts using the currency's minor-unit precision. See [VND pricing conversion](pricing-vnd-conversion.md) for the exact current prices and verification.
 
 ## Verification
 

@@ -1,0 +1,83 @@
+{
+  "passed": true,
+  "revision": "0015_vnd_pricing",
+  "usd_vnd_rate": 26070,
+  "catalog_before": [
+    {
+      "code": "desktop_free",
+      "currency": "USD",
+      "price_monthly_minor_units": 0
+    },
+    {
+      "code": "desktop_pro",
+      "currency": "USD",
+      "price_monthly_minor_units": 12900
+    },
+    {
+      "code": "desktop_starter",
+      "currency": "USD",
+      "price_monthly_minor_units": 1900
+    },
+    {
+      "code": "mobile_free",
+      "currency": "USD",
+      "price_monthly_minor_units": 0
+    },
+    {
+      "code": "mobile_pro",
+      "currency": "USD",
+      "price_monthly_minor_units": 19900
+    },
+    {
+      "code": "mobile_starter",
+      "currency": "USD",
+      "price_monthly_minor_units": 3900
+    }
+  ],
+  "catalog_after": [
+    {
+      "code": "desktop_free",
+      "currency": "VND",
+      "price_monthly_minor_units": 0
+    },
+    {
+      "code": "desktop_pro",
+      "currency": "VND",
+      "price_monthly_minor_units": 3363030
+    },
+    {
+      "code": "desktop_starter",
+      "currency": "VND",
+      "price_monthly_minor_units": 495330
+    },
+    {
+      "code": "mobile_free",
+      "currency": "VND",
+      "price_monthly_minor_units": 0
+    },
+    {
+      "code": "mobile_pro",
+      "currency": "VND",
+      "price_monthly_minor_units": 5187930
+    },
+    {
+      "code": "mobile_starter",
+      "currency": "VND",
+      "price_monthly_minor_units": 1016730
+    }
+  ],
+  "preserved": {
+    "subscriptions": {
+      "count": 68,
+      "sha256": "0981c40252d4ff56ea9493bf083be41421718be79747b43800fe0a8f86e7ac84"
+    },
+    "plan_changes": {
+      "count": 1,
+      "sha256": "f44d142b9f85deee07bfe1c24771d3f591c5ac1a0be7142df76ab074cd75d76a"
+    },
+    "usage_periods": {
+      "count": 122,
+      "sha256": "c6eada3a2a2402337b36f9a7429dd24f4c3f05e82e3d804fecec911beff4752a"
+    }
+  }
+}

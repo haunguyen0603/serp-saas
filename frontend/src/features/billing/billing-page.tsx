@@ -6,12 +6,9 @@ import { useProtectedAuth } from "@/features/projects/protected";
 import type { BillingSummary, DeviceBilling, Plan } from "./types";
 import { siteHref } from "@/lib/site";
 import { SUPPORT_EMAIL, SUPPORT_EMAIL_HREF } from "@/lib/contact";
+import { formatPlanMoney } from "./money";
 
-export const money = (plan: Plan) =>
-  new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: plan.currency,
-  }).format(plan.price_monthly_minor_units / 100);
+export const money = (plan: Plan) => formatPlanMoney(plan, true);
 export const date = (value: string) => new Date(value).toLocaleString();
 // Legacy exports preserve the existing public pricing page; customer controls use UI primitives.
 export const panel =

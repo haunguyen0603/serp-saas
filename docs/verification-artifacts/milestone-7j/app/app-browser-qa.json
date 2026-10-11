@@ -1,0 +1,334 @@
+{
+  "apiMode": "intercepted synthetic fixtures; no real backend, accounts, mutations or providers",
+  "results": [
+    {
+      "mode": "anonymous",
+      "path": "/",
+      "status": 200,
+      "finalPath": "/",
+      "heading": "Track your Google rankings with clarity.",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/pricing",
+      "status": 200,
+      "finalPath": "/pricing",
+      "heading": "Choose the capacity your rankings need.",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/login",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/register",
+      "status": 200,
+      "finalPath": "/register",
+      "heading": "Create your account",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/verify-email",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/app",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/app/projects",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/app/tracked-sites",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/app/rankings",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/app/settings",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/settings/billing",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/app/change-plan",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/app/projects/security-qa-project",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/app/projects/security-qa-project/rankings",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/app/projects/security-qa-project/reports",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/app/projects/security-qa-project/competitors",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "anonymous",
+      "path": "/admin/plans",
+      "status": 200,
+      "finalPath": "/login",
+      "heading": "Log in",
+      "pageErrors": []
+    },
+    {
+      "mode": "verified",
+      "path": "/app",
+      "status": 200,
+      "finalPath": "/app",
+      "heading": "Overview",
+      "pageErrors": []
+    },
+    {
+      "mode": "verified",
+      "path": "/app/projects",
+      "status": 200,
+      "finalPath": "/app/projects",
+      "heading": "Projects",
+      "pageErrors": []
+    },
+    {
+      "mode": "verified",
+      "path": "/app/tracked-sites",
+      "status": 200,
+      "finalPath": "/app/tracked-sites",
+      "heading": "Tracked Sites",
+      "pageErrors": []
+    },
+    {
+      "mode": "verified",
+      "path": "/app/rankings",
+      "status": 200,
+      "finalPath": "/app/rankings",
+      "heading": "Rankings",
+      "pageErrors": []
+    },
+    {
+      "mode": "verified",
+      "path": "/app/settings",
+      "status": 200,
+      "finalPath": "/app/settings",
+      "heading": "Account settings",
+      "pageErrors": []
+    },
+    {
+      "mode": "verified",
+      "path": "/settings/billing",
+      "status": 200,
+      "finalPath": "/settings/billing",
+      "heading": "Billing & Usage",
+      "pageErrors": []
+    },
+    {
+      "mode": "verified",
+      "path": "/app/change-plan",
+      "status": 200,
+      "finalPath": "/app/change-plan",
+      "heading": "Change Plan",
+      "pageErrors": []
+    },
+    {
+      "mode": "verified",
+      "path": "/app/projects/security-qa-project",
+      "status": 200,
+      "finalPath": "/app/projects/security-qa-project",
+      "heading": "Security QA Project",
+      "pageErrors": []
+    },
+    {
+      "mode": "verified",
+      "path": "/app/projects/security-qa-project/rankings",
+      "status": 200,
+      "finalPath": "/app/projects/security-qa-project/rankings",
+      "heading": "Ranking Explorer",
+      "pageErrors": []
+    },
+    {
+      "mode": "verified",
+      "path": "/app/projects/security-qa-project/reports",
+      "status": 200,
+      "finalPath": "/app/projects/security-qa-project/reports",
+      "heading": "Reports",
+      "pageErrors": []
+    },
+    {
+      "mode": "verified",
+      "path": "/app/projects/security-qa-project/competitors",
+      "status": 200,
+      "finalPath": "/app/projects/security-qa-project/competitors",
+      "heading": "Competitors",
+      "pageErrors": []
+    },
+    {
+      "mode": "verified",
+      "path": "/admin/plans",
+      "status": 200,
+      "finalPath": "/admin/plans",
+      "heading": "Administrator access required",
+      "pageErrors": []
+    },
+    {
+      "mode": "unverified",
+      "path": "/app",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    },
+    {
+      "mode": "unverified",
+      "path": "/app/projects",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    },
+    {
+      "mode": "unverified",
+      "path": "/app/tracked-sites",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    },
+    {
+      "mode": "unverified",
+      "path": "/app/rankings",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    },
+    {
+      "mode": "unverified",
+      "path": "/app/settings",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    },
+    {
+      "mode": "unverified",
+      "path": "/settings/billing",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    },
+    {
+      "mode": "unverified",
+      "path": "/app/change-plan",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    },
+    {
+      "mode": "unverified",
+      "path": "/app/projects/security-qa-project",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    },
+    {
+      "mode": "unverified",
+      "path": "/app/projects/security-qa-project/rankings",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    },
+    {
+      "mode": "unverified",
+      "path": "/app/projects/security-qa-project/reports",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    },
+    {
+      "mode": "unverified",
+      "path": "/app/projects/security-qa-project/competitors",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    },
+    {
+      "mode": "unverified",
+      "path": "/admin/plans",
+      "status": 200,
+      "finalPath": "/verify-email",
+      "heading": "Verify your email",
+      "pageErrors": []
+    }
+  ],
+  "adminRequests": 0
+}

@@ -1332,3 +1332,107 @@
 .billing-metrics .ui-caption {
   grid-column: 1 / -1;
 }
+
+.change-plan-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+}
+
+.change-plan-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  box-shadow: 0 4px 16px rgb(24 36 58 / 4%);
+}
+
+.change-plan-card--current {
+  border-color: var(--ds-brand);
+}
+
+.change-plan-card-header {
+  border-bottom: 1px solid var(--ds-border);
+  padding-bottom: 1rem;
+}
+
+.change-plan-icon {
+  display: inline-flex;
+  padding: 0.65rem;
+  border-radius: 0.75rem;
+  background: var(--ds-surface-muted);
+  color: var(--ds-brand);
+  margin-bottom: 1rem;
+}
+
+.change-plan-card h3 {
+  font-size: 1.2rem;
+  overflow-wrap: anywhere;
+}
+
+.change-plan-price {
+  margin-top: 0.75rem;
+  color: var(--ds-secondary);
+}
+
+.change-plan-price strong {
+  color: var(--ds-text);
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  overflow-wrap: anywhere;
+}
+
+.change-plan-badge {
+  min-height: 1.75rem;
+  margin-top: 0.5rem;
+}
+
+.change-plan-entitlements {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.25rem 0;
+  flex: 1;
+}
+
+.change-plan-entitlements > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.change-plan-entitlements dt {
+  color: var(--ds-secondary);
+}
+
+.change-plan-entitlements dd {
+  text-align: right;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.change-plan-summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem 3rem;
+}
+
+.change-plan-summary h3 {
+  overflow-wrap: anywhere;
+}
+
+.change-plan-summary > div {
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .change-plan-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .change-plan-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

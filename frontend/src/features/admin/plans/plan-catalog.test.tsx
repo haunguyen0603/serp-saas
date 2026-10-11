@@ -158,6 +158,46 @@ it("keeps unsaved fields on conflict and reloads them explicitly", async () => {
   );
 });
 
+it("loads and saves whole dong in the VND editor and rejects fractional dong", async () => {
+  const vndPlans = plans.map((plan) => ({
+    ...plan,
+    currency: "VND",
+    price_monthly_minor_units: (plan.price_monthly_minor_units * 26070) / 100,
+  }));
+  state.request.mockImplementation(
+    async (path: string, options?: RequestInit) => {
+      if (options?.method === "PATCH")
+        return {
+          ...vndPlans.find((plan) => plan.code === "desktop_starter"),
+          ...JSON.parse(String(options.body)),
+        };
+      return path.endsWith("/history") ? [] : vndPlans;
+    },
+  );
+  show();
+  const form = await screen.findByRole("form", {
+    name: "Edit Desktop Starter",
+  });
+  const input = within(form).getByLabelText("Monthly price (VND)");
+  expect(input).toHaveValue(495330);
+  expect(input).toHaveAttribute("step", "1");
+  fireEvent.change(input, { target: { value: "495330.5" } });
+  fireEvent.submit(form);
+  expect(
+    await screen.findByText("Enter a whole-number price in VND."),
+  ).toBeVisible();
+  expect(
+    state.request.mock.calls.some(([, options]) => options?.method === "PATCH"),
+  ).toBe(false);
+  fireEvent.change(input, { target: { value: "495331" } });
+  fireEvent.submit(form);
+  await screen.findByText("Saved. New activations will use these terms.");
+  const [, options] = state.request.mock.calls.find(
+    ([, options]) => options?.method === "PATCH",
+  )!;
+  expect(JSON.parse(options.body).price_monthly_minor_units).toBe(495331);
+});
+
 it("shows local loading, retryable catalog failure, and retries", async () => {
   state.request.mockImplementation(async () => {
     throw new Error("offline");

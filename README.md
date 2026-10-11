@@ -58,6 +58,11 @@ resource limits, monthly checks, reservations and reset dates. `/pricing` lists 
 six seeded Plans. Paid activation requires external bank-transfer confirmation by
 an administrator; there is no checkout or payment-provider integration.
 
+The catalog uses VND after migration `0015_vnd_pricing`, at the fixed conversion
+rate of 26,070 VND/USD selected on 2026-10-11. VND minor units are whole dong;
+legacy USD subscription snapshots keep cents and their original terms. See
+[VND pricing conversion](docs/pricing-vnd-conversion.md) for prices and checks.
+
 An operator can grant platform Admin access to an existing account:
 
 ```sh
