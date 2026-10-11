@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import HealthPage from "@/app/health/page";
+import HealthPage from "@/app/(en)/health/page";
 import { Providers } from "@/components/providers";
 
 vi.mock("@/lib/config", () => ({

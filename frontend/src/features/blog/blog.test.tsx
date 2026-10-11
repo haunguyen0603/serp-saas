@@ -10,15 +10,15 @@ import { tmpdir } from "node:os";
 import { spawnSync } from "node:child_process";
 import { render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
-import BlogPage from "@/app/blog/page";
+import BlogPage from "@/app/(en)/blog/page";
 import BlogArticlePage, {
   dynamicParams,
   generateMetadata,
   generateStaticParams,
-} from "@/app/blog/[slug]/page";
+} from "@/app/(en)/blog/[slug]/page";
 import sitemap from "@/app/sitemap";
 import robots from "@/app/robots";
-import { GET as feedRoute } from "@/app/feed.xml/route";
+import { GET as feedRoute } from "@/app/(en)/feed.xml/route";
 import { BlogMarkdown } from "./blog-components";
 import {
   getPublishedPost,
@@ -52,7 +52,7 @@ function fixture() {
   const root = mkdtempSync(join(tmpdir(), "m7g-content-test-"));
   temporaryDirectories.push(root);
   const directory = join(root, "content/blog");
-  mkdirSync(directory, { recursive: true });
+  mkdirSync(join(directory, "vi"), { recursive: true });
   writeFileSync(join(directory, `${first.slug}.md`), firstSource);
   const draft = firstSource
     .replaceAll(first.slug, "private-draft")

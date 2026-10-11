@@ -1,0 +1,1073 @@
+{
+  "results": [
+    {
+      "path": "/",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/seo-rank-tracking-cho-agency",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/blog",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/seo-rank-tracking-cho-agency",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/blog",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/seo-rank-tracking-cho-agency",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/blog",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/seo-rank-tracking-cho-agency",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/blog",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    },
+    {
+      "path": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "axeViolations": 0
+    }
+  ],
+  "noJavaScript": [
+    {
+      "path": "/",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/seo-rank-tracking-cho-agency",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/blog",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/seo-rank-tracking-cho-agency",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/blog",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/seo-rank-tracking-cho-agency",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/blog",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "width": 1024,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/seo-rank-tracking-cho-agency",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/blog",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    },
+    {
+      "path": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "readable": true
+    }
+  ],
+  "navigation": [
+    {
+      "from": "/",
+      "to": "/vi",
+      "width": 375,
+      "keyboard": true
+    },
+    {
+      "from": "/vi",
+      "to": "/",
+      "width": 375,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "to": "/google-serp-rank-tracker",
+      "width": 375,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "to": "/daily-serp-tracker",
+      "width": 375,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/seo-rank-tracking-cho-agency",
+      "to": "/serp-tracking-for-agencies",
+      "width": 375,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/blog",
+      "to": "/blog",
+      "width": 375,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "to": "/blog/how-to-track-google-rankings",
+      "width": 375,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "to": "/blog/how-to-monitor-keyword-ranking",
+      "width": 375,
+      "keyboard": true
+    },
+    {
+      "from": "/",
+      "to": "/vi",
+      "width": 768,
+      "keyboard": true
+    },
+    {
+      "from": "/vi",
+      "to": "/",
+      "width": 768,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "to": "/google-serp-rank-tracker",
+      "width": 768,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "to": "/daily-serp-tracker",
+      "width": 768,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/seo-rank-tracking-cho-agency",
+      "to": "/serp-tracking-for-agencies",
+      "width": 768,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/blog",
+      "to": "/blog",
+      "width": 768,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "to": "/blog/how-to-track-google-rankings",
+      "width": 768,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "to": "/blog/how-to-monitor-keyword-ranking",
+      "width": 768,
+      "keyboard": true
+    },
+    {
+      "from": "/",
+      "to": "/vi",
+      "width": 1024,
+      "keyboard": true
+    },
+    {
+      "from": "/vi",
+      "to": "/",
+      "width": 1024,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "to": "/google-serp-rank-tracker",
+      "width": 1024,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "to": "/daily-serp-tracker",
+      "width": 1024,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/seo-rank-tracking-cho-agency",
+      "to": "/serp-tracking-for-agencies",
+      "width": 1024,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/blog",
+      "to": "/blog",
+      "width": 1024,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "to": "/blog/how-to-track-google-rankings",
+      "width": 1024,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "to": "/blog/how-to-monitor-keyword-ranking",
+      "width": 1024,
+      "keyboard": true
+    },
+    {
+      "from": "/",
+      "to": "/vi",
+      "width": 1440,
+      "keyboard": true
+    },
+    {
+      "from": "/vi",
+      "to": "/",
+      "width": 1440,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "to": "/google-serp-rank-tracker",
+      "width": 1440,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "to": "/daily-serp-tracker",
+      "width": 1440,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/seo-rank-tracking-cho-agency",
+      "to": "/serp-tracking-for-agencies",
+      "width": 1440,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/blog",
+      "to": "/blog",
+      "width": 1440,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "to": "/blog/how-to-track-google-rankings",
+      "width": 1440,
+      "keyboard": true
+    },
+    {
+      "from": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "to": "/blog/how-to-monitor-keyword-ranking",
+      "width": 1440,
+      "keyboard": true
+    },
+    {
+      "from": "/about",
+      "to": "/vi",
+      "width": 375,
+      "keyboard": true,
+      "fallback": true
+    },
+    {
+      "from": "/about",
+      "to": "/vi",
+      "width": 1440,
+      "keyboard": true,
+      "fallback": true
+    }
+  ],
+  "metadata": [
+    {
+      "path": "/",
+      "locale": "en",
+      "title": "Google Rank Tracker for Desktop & Mobile | SERP SaaS",
+      "description": "Track Google keyword rankings across Desktop and Mobile, schedule rank checks, monitor ranking history, and manage SEO sites in one place.",
+      "canonical": "https://serpsaas.com/",
+      "structuredData": [
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "SERP SaaS",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web",
+          "description": "Google keyword rank tracking for separate Desktop and Mobile Projects, schedules and ranking history."
+        }
+      ]
+    },
+    {
+      "path": "/vi",
+      "locale": "vi",
+      "title": "Theo dõi thứ hạng từ khóa Google dễ dàng | SERP SaaS",
+      "description": "Theo dõi vị trí từ khóa Google, phân tích biến động, so sánh đối thủ và tạo báo cáo SEO. Quản lý dự án Desktop và Mobile riêng biệt với SERP SaaS.",
+      "canonical": "https://serpsaas.com/vi",
+      "structuredData": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": "https://serpsaas.com/vi",
+              "url": "https://serpsaas.com/vi",
+              "inLanguage": "vi",
+              "name": "Theo dõi thứ hạng từ khóa Google dễ dàng",
+              "description": "Theo dõi vị trí từ khóa Google, phân tích biến động, so sánh đối thủ và tạo báo cáo SEO. Quản lý dự án Desktop và Mobile riêng biệt với SERP SaaS.",
+              "about": {
+                "@id": "https://serpsaas.com/#software"
+              },
+              "breadcrumb": {
+                "@id": "https://serpsaas.com/vi#breadcrumbs"
+              }
+            },
+            {
+              "@type": "SoftwareApplication",
+              "name": "SERP SaaS",
+              "applicationCategory": "BusinessApplication",
+              "operatingSystem": "Web",
+              "description": "Theo dõi thứ hạng từ khóa Google, lịch kiểm tra và lịch sử trên các dự án Desktop và Mobile riêng biệt.",
+              "inLanguage": "vi",
+              "@id": "https://serpsaas.com/#software",
+              "url": "https://serpsaas.com"
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://serpsaas.com/vi#breadcrumbs",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Trang chủ",
+                  "item": "https://serpsaas.com/vi"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Theo dõi thứ hạng từ khóa Google dễ dàng",
+                  "item": "https://serpsaas.com/vi"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "locale": "vi",
+      "title": "Công cụ kiểm tra thứ hạng từ khóa Google | SERP SaaS",
+      "description": "Kiểm tra thứ hạng từ khóa Google, xem lịch sử, phân tích biến động và so sánh đối thủ với SERP SaaS. Theo dõi Desktop và Mobile riêng biệt.",
+      "canonical": "https://serpsaas.com/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "structuredData": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": "https://serpsaas.com/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+              "url": "https://serpsaas.com/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+              "inLanguage": "vi",
+              "name": "Theo dõi thứ hạng từ khóa trên Google",
+              "description": "Kiểm tra thứ hạng từ khóa Google, xem lịch sử, phân tích biến động và so sánh đối thủ với SERP SaaS. Theo dõi Desktop và Mobile riêng biệt.",
+              "about": {
+                "@id": "https://serpsaas.com/#software"
+              },
+              "breadcrumb": {
+                "@id": "https://serpsaas.com/vi/cong-cu-kiem-tra-thu-hang-tu-khoa#breadcrumbs"
+              }
+            },
+            {
+              "@type": "SoftwareApplication",
+              "name": "SERP SaaS",
+              "applicationCategory": "BusinessApplication",
+              "operatingSystem": "Web",
+              "description": "Theo dõi thứ hạng từ khóa Google, lịch kiểm tra và lịch sử trên các dự án Desktop và Mobile riêng biệt.",
+              "inLanguage": "vi",
+              "@id": "https://serpsaas.com/#software",
+              "url": "https://serpsaas.com"
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://serpsaas.com/vi/cong-cu-kiem-tra-thu-hang-tu-khoa#breadcrumbs",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Trang chủ",
+                  "item": "https://serpsaas.com/vi"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Theo dõi thứ hạng từ khóa trên Google",
+                  "item": "https://serpsaas.com/vi/cong-cu-kiem-tra-thu-hang-tu-khoa"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "locale": "vi",
+      "title": "Theo dõi thứ hạng từ khóa hàng ngày | SERP SaaS",
+      "description": "Theo dõi biến động thứ hạng từ khóa Google theo lịch, xem lịch sử và kiểm tra các thay đổi đáng chú ý. Lịch hàng ngày hoặc hàng tuần tùy gói dịch vụ.",
+      "canonical": "https://serpsaas.com/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "structuredData": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": "https://serpsaas.com/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+              "url": "https://serpsaas.com/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+              "inLanguage": "vi",
+              "name": "Theo dõi thứ hạng từ khóa hàng ngày",
+              "description": "Theo dõi biến động thứ hạng từ khóa Google theo lịch, xem lịch sử và kiểm tra các thay đổi đáng chú ý. Lịch hàng ngày hoặc hàng tuần tùy gói dịch vụ.",
+              "about": {
+                "@id": "https://serpsaas.com/#software"
+              },
+              "breadcrumb": {
+                "@id": "https://serpsaas.com/vi/theo-doi-thu-hang-tu-khoa-hang-ngay#breadcrumbs"
+              }
+            },
+            {
+              "@type": "SoftwareApplication",
+              "name": "SERP SaaS",
+              "applicationCategory": "BusinessApplication",
+              "operatingSystem": "Web",
+              "description": "Theo dõi thứ hạng từ khóa Google, lịch kiểm tra và lịch sử trên các dự án Desktop và Mobile riêng biệt.",
+              "inLanguage": "vi",
+              "@id": "https://serpsaas.com/#software",
+              "url": "https://serpsaas.com"
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://serpsaas.com/vi/theo-doi-thu-hang-tu-khoa-hang-ngay#breadcrumbs",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Trang chủ",
+                  "item": "https://serpsaas.com/vi"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Theo dõi thứ hạng từ khóa hàng ngày",
+                  "item": "https://serpsaas.com/vi/theo-doi-thu-hang-tu-khoa-hang-ngay"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/vi/seo-rank-tracking-cho-agency",
+      "locale": "vi",
+      "title": "Theo dõi thứ hạng từ khóa cho SEO Agency | SERP SaaS",
+      "description": "Quản lý nhiều dự án khách hàng, nhóm từ khóa, so sánh đối thủ và xuất báo cáo SEO trong cùng một tài khoản SERP SaaS dành cho người làm agency.",
+      "canonical": "https://serpsaas.com/vi/seo-rank-tracking-cho-agency",
+      "structuredData": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": "https://serpsaas.com/vi/seo-rank-tracking-cho-agency",
+              "url": "https://serpsaas.com/vi/seo-rank-tracking-cho-agency",
+              "inLanguage": "vi",
+              "name": "Theo dõi thứ hạng từ khóa cho SEO Agency",
+              "description": "Quản lý nhiều dự án khách hàng, nhóm từ khóa, so sánh đối thủ và xuất báo cáo SEO trong cùng một tài khoản SERP SaaS dành cho người làm agency.",
+              "about": {
+                "@id": "https://serpsaas.com/#software"
+              },
+              "breadcrumb": {
+                "@id": "https://serpsaas.com/vi/seo-rank-tracking-cho-agency#breadcrumbs"
+              }
+            },
+            {
+              "@type": "SoftwareApplication",
+              "name": "SERP SaaS",
+              "applicationCategory": "BusinessApplication",
+              "operatingSystem": "Web",
+              "description": "Theo dõi thứ hạng từ khóa Google, lịch kiểm tra và lịch sử trên các dự án Desktop và Mobile riêng biệt.",
+              "inLanguage": "vi",
+              "@id": "https://serpsaas.com/#software",
+              "url": "https://serpsaas.com"
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://serpsaas.com/vi/seo-rank-tracking-cho-agency#breadcrumbs",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Trang chủ",
+                  "item": "https://serpsaas.com/vi"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Theo dõi thứ hạng từ khóa cho SEO Agency",
+                  "item": "https://serpsaas.com/vi/seo-rank-tracking-cho-agency"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/vi/blog",
+      "locale": "vi",
+      "title": "Kiến thức SEO & Theo dõi thứ hạng | SERP SaaS",
+      "description": "Hướng dẫn theo dõi thứ hạng Google, kiểm tra vị trí từ khóa và đọc biến động SEO tại Việt Nam với môi trường tìm kiếm nhất quán.",
+      "canonical": "https://serpsaas.com/vi/blog",
+      "structuredData": [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "https://serpsaas.com/vi/blog",
+          "url": "https://serpsaas.com/vi/blog",
+          "inLanguage": "vi",
+          "name": "Kiến thức SEO & Theo dõi thứ hạng",
+          "description": "Hướng dẫn theo dõi thứ hạng Google, kiểm tra vị trí từ khóa và đọc biến động SEO tại Việt Nam với môi trường tìm kiếm nhất quán."
+        }
+      ]
+    },
+    {
+      "path": "/vi/blog/cach-theo-doi-thu-hang-google",
+      "locale": "vi",
+      "title": "Cách theo dõi thứ hạng Google cho một dự án SEO | SERP SaaS",
+      "description": "Xây dựng bộ từ khóa, chọn môi trường Google tại Việt Nam và duy trì lịch sử thứ hạng để so sánh kết quả SEO qua các lần kiểm tra.",
+      "canonical": "https://serpsaas.com/vi/blog/cach-theo-doi-thu-hang-google",
+      "structuredData": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BlogPosting",
+              "@id": "https://serpsaas.com/vi/blog/cach-theo-doi-thu-hang-google#article",
+              "inLanguage": "vi",
+              "headline": "Cách theo dõi thứ hạng Google cho một dự án SEO",
+              "description": "Xây dựng bộ từ khóa, chọn môi trường Google tại Việt Nam và duy trì lịch sử thứ hạng để so sánh kết quả SEO qua các lần kiểm tra.",
+              "datePublished": "2026-10-11",
+              "dateModified": "2026-10-11",
+              "author": {
+                "@type": "Organization",
+                "name": "SERP SaaS"
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "SERP SaaS",
+                "url": "https://serpsaas.com"
+              },
+              "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "https://serpsaas.com/vi/blog/cach-theo-doi-thu-hang-google"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Trang chủ",
+                  "item": "https://serpsaas.com/vi"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Blog",
+                  "item": "https://serpsaas.com/vi/blog"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "Cách theo dõi thứ hạng Google cho một dự án SEO",
+                  "item": "https://serpsaas.com/vi/blog/cach-theo-doi-thu-hang-google"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "locale": "vi",
+      "title": "Cách kiểm tra thứ hạng từ khóa và đọc vị trí trên Google | SERP SaaS",
+      "description": "Kiểm tra thứ hạng từ khóa bằng tìm kiếm thủ công hoặc công cụ, đối chiếu URL và hiểu giới hạn Top 10 trước khi kết luận về vị trí trên Google.",
+      "canonical": "https://serpsaas.com/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "structuredData": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BlogPosting",
+              "@id": "https://serpsaas.com/vi/blog/cach-kiem-tra-thu-hang-tu-khoa#article",
+              "inLanguage": "vi",
+              "headline": "Cách kiểm tra thứ hạng từ khóa và đọc vị trí trên Google",
+              "description": "Kiểm tra thứ hạng từ khóa bằng tìm kiếm thủ công hoặc công cụ, đối chiếu URL và hiểu giới hạn Top 10 trước khi kết luận về vị trí trên Google.",
+              "datePublished": "2026-10-11",
+              "dateModified": "2026-10-11",
+              "author": {
+                "@type": "Organization",
+                "name": "SERP SaaS"
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "SERP SaaS",
+                "url": "https://serpsaas.com"
+              },
+              "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "https://serpsaas.com/vi/blog/cach-kiem-tra-thu-hang-tu-khoa"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Trang chủ",
+                  "item": "https://serpsaas.com/vi"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Blog",
+                  "item": "https://serpsaas.com/vi/blog"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "Cách kiểm tra thứ hạng từ khóa và đọc vị trí trên Google",
+                  "item": "https://serpsaas.com/vi/blog/cach-kiem-tra-thu-hang-tu-khoa"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

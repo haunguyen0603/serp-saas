@@ -13,6 +13,7 @@ export default function robots(): MetadataRoute.Robots {
         "/privacy",
         "/terms",
         "/blog",
+        "/vi",
         ...landingPageLinks.map((link) => link.href),
       ],
       disallow: [

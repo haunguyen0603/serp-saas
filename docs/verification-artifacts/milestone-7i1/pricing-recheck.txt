@@ -1,0 +1,1 @@
+{"browserCases":96,"noJavaScriptCases":96,"keyboardSwitches":96,"httpCases":24,"pricingParityCases":4,"pricingErrorCases":2}

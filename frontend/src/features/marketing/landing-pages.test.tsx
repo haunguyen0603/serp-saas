@@ -2,15 +2,15 @@ import { render, screen, within } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import GooglePage, {
   metadata as googleMetadata,
-} from "@/app/google-serp-rank-tracker/page";
+} from "@/app/(en)/google-serp-rank-tracker/page";
 import DailyPage, {
   metadata as dailyMetadata,
-} from "@/app/daily-serp-tracker/page";
+} from "@/app/(en)/daily-serp-tracker/page";
 import AgencyPage, {
   metadata as agencyMetadata,
-} from "@/app/serp-tracking-for-agencies/page";
-import HomePage from "@/app/page";
-import BlogArticlePage from "@/app/blog/[slug]/page";
+} from "@/app/(en)/serp-tracking-for-agencies/page";
+import HomePage from "@/app/(en)/page";
+import BlogArticlePage from "@/app/(en)/blog/[slug]/page";
 import sitemap from "@/app/sitemap";
 import robots from "@/app/robots";
 import { AppShell } from "@/design-system/app-shell";

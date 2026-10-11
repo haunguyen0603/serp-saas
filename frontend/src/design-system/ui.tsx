@@ -609,12 +609,14 @@ export function EmptyState({
   );
 }
 export function ErrorState({
+  retryLabel = "Retry",
   title = "Unable to load this view",
   children,
   onRetry,
 }: {
   title?: string;
   children?: ReactNode;
+  retryLabel?: string;
   onRetry?: () => void;
 }) {
   return (
@@ -623,7 +625,7 @@ export function ErrorState({
       <p>
         {children ?? "Try again. If the problem continues, return to Overview."}
       </p>
-      {onRetry && <Button onClick={onRetry}>Retry</Button>}
+      {onRetry && <Button onClick={onRetry}>{retryLabel}</Button>}
     </Alert>
   );
 }

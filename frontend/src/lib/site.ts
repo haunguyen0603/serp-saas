@@ -1,3 +1,4 @@
+import { publicLocalePairs } from "./public-locales";
 import { landingPageLinks } from "./landing-pages";
 
 const fallbackSiteUrl = "http://localhost:3000";
@@ -75,10 +76,15 @@ export const marketingPaths = [
   "/terms",
   "/blog",
   ...landingPageLinks.map((link) => link.href),
+  ...publicLocalePairs.map((pair) => pair.vi),
 ];
 
 export function isMarketingPath(path: string): boolean {
-  return marketingPaths.includes(path) || path.startsWith("/blog/");
+  return (
+    marketingPaths.includes(path) ||
+    path.startsWith("/blog/") ||
+    path.startsWith("/vi/blog/")
+  );
 }
 
 export function isAppPath(path: string): boolean {

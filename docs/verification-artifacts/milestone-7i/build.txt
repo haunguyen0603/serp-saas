@@ -1,0 +1,84 @@
+
+> serp-saas-frontend@0.1.0 prebuild
+> node --experimental-strip-types scripts/validate-blog.mjs
+
+Blog content validated: 5 published, 0 drafts.
+
+> serp-saas-frontend@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.3.8 (webpack)
+✓ Running next.config.ts took 89ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.6s
+  Running TypeScript ...
+  Finished TypeScript in 1451ms ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/44) ...
+  Generating static pages using 7 workers (11/44) 
+  Generating static pages using 7 workers (22/44) 
+  Generating static pages using 7 workers (33/44) 
+✓ Generating static pages using 7 workers (44/44) in 441ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ○ /admin/customers
+├ ƒ /admin/customers/[userId]
+├ ○ /admin/plans
+├ ○ /app
+├ ○ /app/projects
+├ ƒ /app/projects/[projectId]
+├ ƒ /app/projects/[projectId]/competitors
+├ ƒ /app/projects/[projectId]/rankings
+├ ƒ /app/projects/[projectId]/reports
+├ ○ /app/projects/new
+├ ○ /app/rankings
+├ ○ /app/settings
+├ ○ /app/tracked-sites
+├ ƒ /app/tracked-sites/[siteId]
+├ ○ /app/tracked-sites/new
+├ ○ /apple-icon.png
+├ ○ /blog
+├   /blog/[slug]
+│ ├ ● /blog/how-to-monitor-keyword-ranking
+│ ├ ● /blog/how-to-track-google-rankings
+│ └ ● /blog/serp-tracking-for-agencies
+├ ○ /daily-serp-tracker
+├ ○ /feed.xml
+├ ○ /forgot-password
+├ ○ /google-serp-rank-tracker
+├ ○ /health
+├ ○ /icon.svg
+├ ○ /login
+├ ○ /pricing
+├ ○ /privacy
+├ ○ /register
+├ ○ /reset-password
+├ ○ /robots.txt
+├ ○ /serp-tracking-for-agencies
+├ ○ /settings/billing
+├ ○ /signup
+├ ○ /sitemap.xml
+├ ○ /terms
+├ ○ /verify-email
+├ ○ /vi
+├ ○ /vi/blog
+├   /vi/blog/[slug]
+│ ├ ● /vi/blog/cach-kiem-tra-thu-hang-tu-khoa
+│ └ ● /vi/blog/cach-theo-doi-thu-hang-google
+├ ○ /vi/cong-cu-kiem-tra-thu-hang-tu-khoa
+├ ○ /vi/seo-rank-tracking-cho-agency
+└ ○ /vi/theo-doi-thu-hang-tu-khoa-hang-ngay
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

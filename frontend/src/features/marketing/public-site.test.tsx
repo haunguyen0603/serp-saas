@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import HomePage from "@/app/page";
+import HomePage from "@/app/(en)/page";
 import { PublicShell } from "@/design-system/public-shell";
 import type { Plan } from "@/features/billing/types";
 import { PricingCatalog, groupPlans } from "./pricing-catalog";

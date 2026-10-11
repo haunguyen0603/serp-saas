@@ -6,6 +6,12 @@ import { useState, type ReactNode } from "react";
 import { useAuth } from "@/features/auth/auth-provider";
 import { Drawer, Icon, IconButton } from "./ui";
 import { appHref, siteHref } from "@/lib/site";
+import { LanguageSelect } from "./language-select";
+import {
+  localizedPublicPath,
+  publicLocale,
+  vietnameseProductLinks,
+} from "@/lib/public-locales";
 import { landingPageLinks } from "@/lib/landing-pages";
 
 const links = [
@@ -20,6 +26,24 @@ const links = [
 export function PublicShell({ children }: { children: ReactNode }) {
   const path = usePathname();
   const auth = useAuth();
+  const vi = publicLocale(path) === "vi";
+  const text = (en: string, translated: string) => (vi ? translated : en);
+  const home = vi ? "/vi" : "/";
+  const blog = vi ? "/vi/blog" : "/blog";
+  const localizedLabels: Record<string, string> = {
+    Home: "Trang chủ",
+    Pricing: "Bảng giá",
+    Blog: "Blog",
+    "About us": "Giới thiệu",
+    "Privacy Policy": "Chính sách bảo mật",
+    "Terms of Service": "Điều khoản dịch vụ",
+  };
+  const publicLinks = links.map((link) => ({
+    ...link,
+    href: localizedPublicPath(link.href, vi ? "vi" : "en"),
+    label: vi ? localizedLabels[link.label] : link.label,
+  }));
+  const productLinks = vi ? vietnameseProductLinks : landingPageLinks;
   const [open, setOpen] = useState(false);
   const startHref = auth.isAuthenticated
     ? auth.requiresEmailVerification
@@ -28,18 +52,21 @@ export function PublicShell({ children }: { children: ReactNode }) {
     : "/register";
   const startLabel = auth.isAuthenticated
     ? auth.requiresEmailVerification
-      ? "Verify email"
-      : "Open App"
-    : "Get Started";
+      ? text("Verify email", "Xác minh email")
+      : text("Open App", "Mở ứng dụng")
+    : text("Get Started", "Bắt đầu");
   const navigation = (
-    <nav aria-label="Public navigation" className="public-nav">
-      {links.map((link) => (
+    <nav
+      aria-label={text("Public navigation", "Điều hướng công khai")}
+      className="public-nav"
+    >
+      {publicLinks.map((link) => (
         <Link
           key={link.href}
           href={siteHref(link.href)}
           aria-current={
             path === link.href ||
-            (link.href === "/blog" && path.startsWith("/blog/"))
+            (link.href === blog && path.startsWith(`${blog}/`))
               ? "page"
               : undefined
           }
@@ -54,14 +81,14 @@ export function PublicShell({ children }: { children: ReactNode }) {
   return (
     <div className="public-shell">
       <a className="public-skip" href="#public-content">
-        Skip to content
+        {text("Skip to content", "Đến nội dung")}
       </a>
       <header className="public-header">
         <div className="public-header-inner">
           <Link
-            href={siteHref("/")}
+            href={siteHref(home)}
             className="public-logo"
-            aria-label="SERP SaaS home"
+            aria-label={text("SERP SaaS home", "Trang chủ SERP SaaS")}
           >
             <span className="app-logo-mark">
               <Icon name="chart" />
@@ -69,14 +96,15 @@ export function PublicShell({ children }: { children: ReactNode }) {
             SERP SaaS
           </Link>
           <div className="public-desktop-nav">{navigation}</div>
+          <LanguageSelect path={path} />
           <div className="public-header-actions">
             {auth.isAuthenticated ? (
               <Link href={appHref("/app/settings")} className="public-login">
-                Account
+                {text("Account", "Tài khoản")}
               </Link>
             ) : (
               <Link href={appHref("/login")} className="public-login">
-                Log in
+                {text("Log in", "Đăng nhập")}
               </Link>
             )}
             <Link href={appHref(startHref)} className="ui-link-button">
@@ -85,7 +113,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
           </div>
           <IconButton
             className="public-menu-button"
-            label="Open public navigation"
+            label={text("Open public navigation", "Mở menu điều hướng")}
             icon="menu"
             variant="ghost"
             onClick={() => setOpen(true)}
@@ -98,29 +126,40 @@ export function PublicShell({ children }: { children: ReactNode }) {
       <footer className="public-footer">
         <div className="public-footer-inner">
           <div>
-            <Link href={siteHref("/")} className="public-logo">
+            <Link href={siteHref(home)} className="public-logo">
               SERP SaaS
             </Link>
-            <p>Clear Google rank tracking for focused SEO teams.</p>
+            <p>
+              {text(
+                "Clear Google rank tracking for focused SEO teams.",
+                "Theo dõi thứ hạng Google rõ ràng cho công việc SEO.",
+              )}
+            </p>
           </div>
-          <nav aria-label="Product links">
-            <strong>Product</strong>
-            <Link href={siteHref("/")}>Home</Link>
-            <Link href={siteHref("/pricing")}>Pricing</Link>
-            {landingPageLinks.map((link) => (
+          <nav aria-label={text("Product links", "Liên kết sản phẩm")}>
+            <strong>{text("Product", "Sản phẩm")}</strong>
+            {publicLinks.slice(0, 2).map((link) => (
               <Link key={link.href} href={siteHref(link.href)}>
                 {link.label}
               </Link>
             ))}
-            <Link href={siteHref("/blog")}>Blog</Link>
-            <Link href={siteHref("/about")}>About us</Link>
-            <Link href={siteHref("/privacy")}>Privacy Policy</Link>
-            <Link href={siteHref("/terms")}>Terms of Service</Link>
+            {productLinks.map((link) => (
+              <Link key={link.href} href={siteHref(link.href)}>
+                {link.label}
+              </Link>
+            ))}
+            {publicLinks.slice(2).map((link) => (
+              <Link key={link.href} href={siteHref(link.href)}>
+                {link.label}
+              </Link>
+            ))}
           </nav>
-          <nav aria-label="Account links">
-            <strong>Account</strong>
-            <Link href={appHref("/login")}>Log in</Link>
-            <Link href={appHref("/register")}>Create account</Link>
+          <nav aria-label={text("Account links", "Liên kết tài khoản")}>
+            <strong>{text("Account", "Tài khoản")}</strong>
+            <Link href={appHref("/login")}>{text("Log in", "Đăng nhập")}</Link>
+            <Link href={appHref("/register")}>
+              {text("Create account", "Tạo tài khoản")}
+            </Link>
           </nav>
         </div>
         <p className="public-copyright">
@@ -134,7 +173,9 @@ export function PublicShell({ children }: { children: ReactNode }) {
             href={appHref(auth.isAuthenticated ? "/app/settings" : "/login")}
             onClick={() => setOpen(false)}
           >
-            {auth.isAuthenticated ? "Account" : "Log in"}
+            {auth.isAuthenticated
+              ? text("Account", "Tài khoản")
+              : text("Log in", "Đăng nhập")}
           </Link>
           <Link
             href={appHref(startHref)}

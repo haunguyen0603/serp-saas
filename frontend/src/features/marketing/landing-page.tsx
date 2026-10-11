@@ -1,3 +1,4 @@
+import { publicLocale, vietnameseProductLinks } from "@/lib/public-locales";
 import Link from "next/link";
 import { appHref, siteHref } from "@/lib/site";
 import { landingPageLinks } from "@/lib/landing-pages";
@@ -5,7 +6,13 @@ import { serializeStructuredData } from "@/features/blog/seo";
 import type { LandingContent } from "./landing-content";
 import { landingStructuredData } from "./seo";
 
-function LandingActions({ label }: { label: string }) {
+function LandingActions({
+  label,
+  vi = false,
+}: {
+  label: string;
+  vi?: boolean;
+}) {
   return (
     <div className="public-cta-row">
       <Link
@@ -14,14 +21,18 @@ function LandingActions({ label }: { label: string }) {
       >
         {label}
       </Link>
-      <Link href={siteHref("/pricing")} className="public-secondary-link">
-        View pricing
+      <Link
+        href={siteHref(vi ? "/vi/bang-gia" : "/pricing")}
+        className="public-secondary-link"
+      >
+        {vi ? "Xem bảng giá" : "View pricing"}
       </Link>
     </div>
   );
 }
 
 export function LandingPage({ page }: { page: LandingContent }) {
+  const vi = publicLocale(page.path) === "vi";
   return (
     <main className="public-main landing-main">
       <script
@@ -30,10 +41,15 @@ export function LandingPage({ page }: { page: LandingContent }) {
           __html: serializeStructuredData(landingStructuredData(page)),
         }}
       />
-      <nav className="landing-breadcrumbs" aria-label="Breadcrumb">
+      <nav
+        className="landing-breadcrumbs"
+        aria-label={vi ? "Đường dẫn" : "Breadcrumb"}
+      >
         <ol>
           <li>
-            <Link href={siteHref("/")}>Home</Link>
+            <Link href={siteHref(vi ? "/vi" : "/")}>
+              {vi ? "Trang chủ" : "Home"}
+            </Link>
           </li>
           <li aria-current="page">{page.heading}</li>
         </ol>
@@ -43,7 +59,7 @@ export function LandingPage({ page }: { page: LandingContent }) {
           <p className="public-eyebrow">{page.eyebrow}</p>
           <h1 id="landing-heading">{page.heading}</h1>
           <p className="public-lead">{page.lead}</p>
-          <LandingActions label={page.finalCta.label} />
+          <LandingActions vi={vi} label={page.finalCta.label} />
           <p className="public-cta-note">{page.note}</p>
         </div>
         <aside className="landing-workflow" aria-label={page.workflow.heading}>
@@ -63,7 +79,7 @@ export function LandingPage({ page }: { page: LandingContent }) {
       <section className="landing-mid-cta" aria-labelledby="mid-cta-heading">
         <h2 id="mid-cta-heading">{page.midCta.heading}</h2>
         <p>{page.midCta.description}</p>
-        <LandingActions label={page.midCta.label} />
+        <LandingActions vi={vi} label={page.midCta.label} />
       </section>
       <div className="landing-section-grid">
         {page.sections.slice(2).map((section) => (
@@ -71,13 +87,19 @@ export function LandingPage({ page }: { page: LandingContent }) {
         ))}
       </div>
       <section className="landing-guides" aria-labelledby="guides-heading">
-        <h2 id="guides-heading">Put your tracking workflow into practice</h2>
+        <h2 id="guides-heading">
+          {vi
+            ? "Áp dụng vào công việc SEO"
+            : "Put your tracking workflow into practice"}
+        </h2>
         <p>{page.guide.description}</p>
         <Link href={siteHref(page.guide.path)} className="public-text-link">
           {page.guide.label} →
         </Link>
-        <nav aria-label="Related product workflows">
-          {landingPageLinks
+        <nav
+          aria-label={vi ? "Công cụ liên quan" : "Related product workflows"}
+        >
+          {(vi ? vietnameseProductLinks : landingPageLinks)
             .filter((link) => link.href !== page.path)
             .map((link) => (
               <Link key={link.href} href={siteHref(link.href)}>
@@ -89,7 +111,7 @@ export function LandingPage({ page }: { page: LandingContent }) {
       <section className="public-final-cta" aria-labelledby="final-cta-heading">
         <h2 id="final-cta-heading">{page.finalCta.heading}</h2>
         <p>{page.finalCta.description}</p>
-        <LandingActions label={page.finalCta.label} />
+        <LandingActions vi={vi} label={page.finalCta.label} />
       </section>
     </main>
   );

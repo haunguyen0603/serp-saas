@@ -17,6 +17,18 @@ it("publishes only commercial pages in the main site's sitemap", () => {
   ).toEqual(
     [
       "/",
+      "/vi",
+      "/vi/blog",
+      "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "/vi/seo-rank-tracking-cho-agency",
+      "/vi/blog/cach-theo-doi-thu-hang-google",
+      "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "/vi/bang-gia",
+      "/vi/gioi-thieu",
+      "/vi/chinh-sach-bao-mat",
+      "/vi/dieu-khoan-dich-vu",
+      "/vi/blog/serp-tracking-cho-agency",
       "/pricing",
       "/about",
       "/terms",

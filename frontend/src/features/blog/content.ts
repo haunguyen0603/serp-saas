@@ -3,6 +3,7 @@ import { basename, join } from "node:path";
 import { parseDocument } from "yaml";
 
 export interface BlogPost {
+  locale?: "en" | "vi";
   title: string;
   slug: string;
   description: string;
@@ -21,7 +22,8 @@ export interface BlogPost {
   readingMinutes: number;
 }
 
-const contentDirectory = () => join(process.cwd(), "content", "blog");
+const contentDirectory = (locale: "en" | "vi" = "en") =>
+  join(process.cwd(), "content", "blog", ...(locale === "vi" ? ["vi"] : []));
 
 export function parseBlogPost(source: string, filename: string): BlogPost {
   const fail = (message: string): never => {
@@ -51,6 +53,8 @@ export function parseBlogPost(source: string, filename: string): BlogPost {
       fail(`${field} must be a valid YYYY-MM-DD date.`);
     return value;
   };
+  if (data.locale !== undefined && data.locale !== "en" && data.locale !== "vi")
+    fail("locale must be en or vi.");
   const slug = string("slug", 100);
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug))
     fail("slug must use lowercase words separated by hyphens.");
@@ -96,6 +100,7 @@ export function parseBlogPost(source: string, filename: string): BlogPost {
     .split(/\s+/)
     .filter(Boolean).length;
   return {
+    ...(data.locale ? { locale: data.locale as "en" | "vi" } : {}),
     title: string("title", 140),
     slug,
     description: string("description", 220),
@@ -119,13 +124,22 @@ export function parseBlogPost(source: string, filename: string): BlogPost {
   };
 }
 
-export function readBlogPosts(directory = contentDirectory()): BlogPost[] {
+export function readBlogPosts(
+  directory = contentDirectory(),
+  locale: "en" | "vi" = "en",
+): BlogPost[] {
   const posts = readdirSync(directory)
     .filter((filename) => filename.endsWith(".md"))
     .sort()
     .map((filename) =>
       parseBlogPost(readFileSync(join(directory, filename), "utf8"), filename),
     );
+  for (const post of posts) {
+    if ((post.locale ?? "en") !== locale)
+      throw new Error(
+        `Blog locale must match its content directory: ${post.slug}`,
+      );
+  }
   for (const field of ["slug", "title", "description"] as const) {
     const values = posts.map((post) => post[field].toLowerCase());
     if (new Set(values).size !== values.length)
@@ -138,17 +152,35 @@ export function readBlogPosts(directory = contentDirectory()): BlogPost[] {
   );
 }
 
-export function getPublishedPosts(directory?: string): BlogPost[] {
-  return readBlogPosts(directory).filter((post) => !post.draft);
+export function getPublishedPosts(
+  directory?: string,
+  locale: "en" | "vi" = "en",
+): BlogPost[] {
+  return readBlogPosts(directory ?? contentDirectory(locale), locale).filter(
+    (post) => !post.draft,
+  );
 }
 
-export function getPublishedPost(slug: string): BlogPost | undefined {
-  return getPublishedPosts().find((post) => post.slug === slug);
+export function getPublishedPost(
+  slug: string,
+  locale: "en" | "vi" = "en",
+): BlogPost | undefined {
+  return getPublishedPosts(undefined, locale).find(
+    (post) => post.slug === slug,
+  );
 }
 
-export function getRelatedPosts(post: BlogPost, posts = getPublishedPosts()) {
+export function getRelatedPosts(
+  post: BlogPost,
+  posts = getPublishedPosts(undefined, post.locale ?? "en"),
+) {
   return posts
-    .filter((candidate) => !candidate.draft && candidate.slug !== post.slug)
+    .filter(
+      (candidate) =>
+        !candidate.draft &&
+        candidate.slug !== post.slug &&
+        (candidate.locale ?? "en") === (post.locale ?? "en"),
+    )
     .sort((left, right) => {
       const score = (candidate: BlogPost) =>
         candidate.tags.filter((tag) => post.tags.includes(tag)).length +

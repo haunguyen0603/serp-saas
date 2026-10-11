@@ -1,3 +1,4 @@
+import { localeLanguages } from "@/lib/public-locales";
 import type { Metadata } from "next";
 import { getCanonicalSiteUrl } from "@/lib/site";
 import type { BlogPost } from "./content";
@@ -6,29 +7,58 @@ export const blogTitle = "SERP Tracking & SEO Insights";
 export const blogDescription =
   "Practical guides on Google rank tracking, SERP monitoring, keyword performance, reporting, and competitor analysis.";
 
-export function blogUrl(slug?: string) {
+export function blogUrl(slug?: string, locale: "en" | "vi" = "en") {
   return new URL(
-    slug ? `/blog/${slug}` : "/blog",
+    `${locale === "vi" ? "/vi" : ""}/blog${slug ? `/${slug}` : ""}`,
     getCanonicalSiteUrl(),
   ).toString();
 }
 
-export function blogMetadata(post?: BlogPost): Metadata {
-  const title = post?.title ?? blogTitle;
-  const description = post?.description ?? blogDescription;
-  const url = blogUrl(post?.slug);
+export const vietnameseBlogTitle = "Kiến thức SEO & Theo dõi thứ hạng";
+export const vietnameseBlogDescription =
+  "Hướng dẫn theo dõi thứ hạng Google, kiểm tra vị trí từ khóa và đọc biến động SEO tại Việt Nam với môi trường tìm kiếm nhất quán.";
+
+export function blogIndexStructuredData(locale: "en" | "vi") {
+  const url = blogUrl(undefined, locale);
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": url,
+    url,
+    inLanguage: locale,
+    name: locale === "vi" ? vietnameseBlogTitle : blogTitle,
+    description: locale === "vi" ? vietnameseBlogDescription : blogDescription,
+  };
+}
+
+export function blogMetadata(
+  post?: BlogPost,
+  locale: "en" | "vi" = post?.locale ?? "en",
+): Metadata {
+  const title =
+    post?.title ?? (locale === "vi" ? vietnameseBlogTitle : blogTitle);
+  const description =
+    post?.description ??
+    (locale === "vi" ? vietnameseBlogDescription : blogDescription);
+  const url = blogUrl(post?.slug, locale);
   return {
     title,
     description,
     alternates: {
       canonical: url,
-      types: {
-        "application/rss+xml": new URL(
-          "/feed.xml",
-          getCanonicalSiteUrl(),
-        ).toString(),
-      },
+      languages: localeLanguages(new URL(url).pathname),
+      ...(locale === "en"
+        ? {
+            types: {
+              "application/rss+xml": new URL(
+                "/feed.xml",
+                getCanonicalSiteUrl(),
+              ).toString(),
+            },
+          }
+        : {}),
     },
+    ...(locale === "vi" ? { robots: { index: true, follow: true } } : {}),
     openGraph: {
       title: `${title} | SERP SaaS`,
       description,
@@ -68,7 +98,8 @@ export function blogMetadata(post?: BlogPost): Metadata {
 }
 
 export function articleStructuredData(post: BlogPost) {
-  const url = blogUrl(post.slug);
+  const locale = post.locale ?? "en";
+  const url = blogUrl(post.slug, locale);
   const home = getCanonicalSiteUrl().origin;
   return {
     "@context": "https://schema.org",
@@ -76,6 +107,7 @@ export function articleStructuredData(post: BlogPost) {
       {
         "@type": "BlogPosting",
         "@id": `${url}#article`,
+        inLanguage: locale,
         headline: post.title,
         description: post.description,
         datePublished: post.publishedAt,
@@ -88,8 +120,18 @@ export function articleStructuredData(post: BlogPost) {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: `${home}/` },
-          { "@type": "ListItem", position: 2, name: "Blog", item: blogUrl() },
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: locale === "vi" ? "Trang chủ" : "Home",
+            item: `${home}${locale === "vi" ? "/vi" : "/"}`,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Blog",
+            item: blogUrl(undefined, locale),
+          },
           { "@type": "ListItem", position: 3, name: post.title, item: url },
         ],
       },

@@ -67,7 +67,7 @@ M6.5C may add the customer API and API keys, and M6.5D may add developer documen
 
 ## Terms of Service (2026-09-20)
 
-`/terms` is a public, static page with English service terms, a revision date, canonical URL and Open Graph metadata. Its content lives in `frontend/src/app/terms/page.tsx` for the product owner to review and maintain. Header navigation, the mobile drawer and the footer link to the page.
+`/terms` is a public, static page with English service terms, a revision date, canonical URL and Open Graph metadata. Its content lives in `frontend/src/app/(en)/terms/page.tsx` for the product owner to review and maintain. Header navigation, the mobile drawer and the footer link to the page.
 
 The registration checkbox keeps its existing required acceptance behavior. Its inline Terms of Service link opens `/terms` in a separate tab with `noopener noreferrer`, preserving the in-progress registration form. Opening the link does not check the checkbox or submit the form. The same AuthForm covers `/register` and `/signup`.
 
@@ -123,3 +123,36 @@ indexing. The host redirects do not authorize requests or replace backend checks
 Build arguments, Cloud Run helpers, API CORS and verification-email origin are
 configured together. Follow [the domain deployment runbook](architecture/cloud-run-frontend-deployment.md#6-tách-website-thương-mại-và-ứng-dụng-theo-domain)
 for HTTPS load balancing, DNS, full-source upload, build/deploy and validation.
+
+## Full English/Vietnamese public site (M7I + M7I.1, 2026-10-11)
+
+The current public site has 12 explicit English/Vietnamese pairs (24 URLs). The
+source of truth is `frontend/src/lib/public-locales.ts`: Home, Pricing, About,
+Privacy, Terms, three product landing pages, Blog index and three articles. The
+sitemap contains these public URLs; auth, app and admin routes remain excluded.
+Canonical and alternate metadata use `https://serpsaas.com`, with reciprocal
+`en`/`vi` links and English `x-default`. No browser-language redirect is used.
+
+English pages live in the `(en)` route group with server-rendered `lang="en"`;
+Vietnamese pages live under `/vi` with `lang="vi"`. Both layouts share
+`RootDocument` and existing providers. App/auth/admin URLs and their English
+content retain their existing behavior.
+
+`LanguageSelect` in the shared public header uses native `details`/`summary`,
+local US/Vietnam SVG flags and visible language labels. Both alternate links are
+server-rendered and work without JavaScript. The control remains visible beside
+the mobile navigation trigger; Escape and outside clicks close it when JavaScript
+is available. Public navigation, footer and contextual content links select the
+equivalent locale route. Login and registration still point to the app host.
+
+`/vi/bang-gia` renders the same `PricingCatalog` and
+`GET /api/v1/billing/plans` query as `/pricing`, translating only presentation.
+Plan IDs, prices, limits, scheduling entitlements, ordering and availability come
+from the same catalog. About, Privacy and Terms translations retain source claims,
+revision dates and contact information. The agency article explains reporting
+workflows separately from the commercial agency landing page.
+
+Implementation and local production QA evidence are documented in
+[M7I verification](verification-milestone-7i.md) and
+[M7I.1 verification](verification-milestone-7i1.md). Those reports distinguish
+local standalone verification from production deployment and Search Console work.
