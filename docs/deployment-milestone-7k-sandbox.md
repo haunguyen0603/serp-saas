@@ -2,6 +2,15 @@
 
 Requested on 2026-10-12. Target project: `serp-saas`, region: `asia-southeast1`; services: `serp-api`, `serp-worker`, `serp-web`. Deploy application code with the existing GitHub/Cloud Build pipelines. Keep `APP_ENV=production`, and configure only the SePay gateway with `SEPAY_ENV=sandbox`.
 
+## Release
+
+Source commit: [`b45cd2f`](https://github.com/haunguyen0603/serp-saas/commit/b45cd2f89aaaf6fca5db62cb1cda72412b4a309f), pushed normally to `main` following explicit deployment authorization.
+
+- [Backend build `0e61aa7a-c9ed-46bb-80a0-8fdbfb282eb9`](https://console.cloud.google.com/cloud-build/builds;region=europe-west1/0e61aa7a-c9ed-46bb-80a0-8fdbfb282eb9?project=833917440392): success, completed 2026-10-12 02:52:26 UTC (09:52:26 Vietnam time). The existing pipeline ran its checks, built/pushed the image, executed the migration job before API/worker release and checked database health.
+- [Frontend build `e3690dde-db5b-421f-91ac-45928502060d`](https://console.cloud.google.com/cloud-build/builds;region=europe-west1/e3690dde-db5b-421f-91ac-45928502060d?project=833917440392): success, completed 2026-10-12 02:54:50 UTC (09:54:50 Vietnam time). Its pipeline ran frontend checks, built/pushed and released `serp-web`.
+
+Gateway secret bindings are not created by these image-only releases. Checkout remains unavailable until Cloud Shell configuration. Release evidence is from the successful checks for the exact commit and public HTTPS tests; this workstation has no authenticated gcloud session, so it does not independently query Cloud Run revision names/digests or secret versions.
+
 ## Cloud Shell configuration
 
 After the backend pipeline has deployed M7K, open [Cloud Shell](https://console.cloud.google.com/cloudshell/editor?project=serp-saas), enter an up-to-date checkout and run:
@@ -20,6 +29,14 @@ If there is no checkout yet, clone `https://github.com/haunguyen0603/serp-saas.g
 3. `SEPAY_IPN_SECRET_KEY` from your local `.env`, with hidden input. A separate random key was generated locally when the value was missing.
 
 Do not paste keys into this chat or shell commands. Open the ignored local `.env` in the IDE and copy the values into the helper's hidden prompts. Do not upload the complete `.env` to Cloud Shell: it contains other application credentials.
+
+If Cloud Shell cannot clone the private repository, use the local `dist/serp-saas-sepay-sandbox.tar.gz` package. It contains only this helper, its tests and this guide, with no `.env` or keys. Upload the archive through Cloud Shell's Upload menu, then run:
+
+```sh
+cd ~
+tar -xzf serp-saas-sepay-sandbox.tar.gz
+python3 ~/serp-saas-sepay/infrastructure/gcp/configure-sepay-sandbox.py
+```
 
 The helper validates M7K's public API is deployed before mutation. It creates/adds versions of `serp-sepay-sandbox-key` and `serp-sepay-sandbox-ipn-key`, grants only the current API runtime service account `Secret Manager Secret Accessor` on those two secrets, then updates `serp-api` with numeric version bindings. Existing image, other secrets, environment variables, Cloud SQL connection, runtime identity, IAM and scaling are preserved. It routes API traffic to the new ready revision and checks the nonsecret configuration and secret references. It never prints secret values or subprocess error output that could include them.
 
@@ -83,11 +100,19 @@ gcloud run services update serp-api \
 
 A future real-production payment rollout needs a separate merchant/credential change after Sandbox E2E succeeds. This request authorizes deployment on production infrastructure with the gateway kept in Sandbox.
 
+## Public production verification
+
+After both builds succeeded, [13 HTTPS checks](verification-artifacts/milestone-7k/production-http.json) passed: API/database health, M7K OpenAPI endpoints, VND catalog, owner/authentication boundaries, public IPN authentication, Change Plan, all callback routes, noindex headers and the existing public site. Missing provider key returns the application JSON error `PAYMENT_PROVIDER_AUTH_FAILED` with 401; the IPN endpoint is not blocked by Cloud Run authentication or a login redirect.
+
+[Browser verification](verification-artifacts/milestone-7k/production-browser/browser-report.json) used the deployed frontend at `https://app.serpsaas.com`, with every API/hosted-checkout request intercepted using synthetic fixtures. Change Plan, signed POST, callback/payment states, timeout and refresh passed at 375/768/1024/1440 px, with zero page errors and no overflow/clipped controls. No production account, payment order, financial event or subscription was mutated by this browser verification. It is not merchant Sandbox E2E.
+
+Local release checks: backend mypy, lint/format and 41 payment/signature tests plus 136 non-integration tests passed; the preceding full implementation suite passed 347 backend and 308 frontend tests. The new production Sandbox restriction accounts for one additional backend test. Helper security tests passed 4 cases. Credentials were scanned against versionable files before committing, with no matches; local `.env` remains ignored and was not included in any source/upload archive.
+
 ## Status
 
 - Local M7K implementation: verified (see [implementation report](verification-milestone-7k.md)).
 - Cloud Shell helper security tests: 4 passed; keys use stdin and Cloud Run uses partial updates.
-- Production Sandbox customer restriction: backend test added.
-- Application code deployment: pending pipeline result.
+- Production Sandbox customer restriction: 41 payment/signature tests passed, including the new restriction; 136 non-integration backend tests passed.
+- Application code deployment: backend and frontend pipelines succeeded for `b45cd2f`.
 - Secret Manager / Cloud Run SePay binding: pending operator Cloud Shell execution.
 - Merchant Sandbox E2E: pending merchant IPN setup and QA journey.

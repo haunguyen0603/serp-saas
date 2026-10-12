@@ -1,0 +1,25 @@
+{
+  "commit": "b45cd2f89aaaf6fca5db62cb1cda72412b4a309f",
+  "checks": [
+    {
+      "name": "serp-web-main (serp-saas)",
+      "status": "completed",
+      "conclusion": "success",
+      "build_url": "https://console.cloud.google.com/cloud-build/builds;region=europe-west1/e3690dde-db5b-421f-91ac-45928502060d?project=833917440392",
+      "started_at": "2026-10-12T02:46:34Z",
+      "completed_at": "2026-10-12T02:54:50Z",
+      "summary": "Build e3690dde-db5b-421f-91ac-45928502060d successful"
+    },
+    {
+      "name": "serp-backend-main (serp-saas)",
+      "status": "completed",
+      "conclusion": "success",
+      "build_url": "https://console.cloud.google.com/cloud-build/builds;region=europe-west1/0e61aa7a-c9ed-46bb-80a0-8fdbfb282eb9?project=833917440392",
+      "started_at": "2026-10-12T02:46:33Z",
+      "completed_at": "2026-10-12T02:52:26Z",
+      "summary": "Build 0e61aa7a-c9ed-46bb-80a0-8fdbfb282eb9 successful"
+    }
+  ],
+  "secret_binding": "pending authenticated operator Cloud Shell execution",
+  "gateway_environment_target": "sandbox"
+}

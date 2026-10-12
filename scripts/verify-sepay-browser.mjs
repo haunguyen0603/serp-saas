@@ -4,7 +4,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 const { chromium } = await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE).href);
 const base = process.env.FRONTEND_URL ?? 'http://127.0.0.1:13001';
-const folder = 'docs/verification-artifacts/milestone-7k';
+const folder = process.env.SCREENSHOT_DIR ?? 'docs/verification-artifacts/milestone-7k';
 const browser = await chromium.launch({ headless: true, executablePath: process.env.CHROME_EXECUTABLE });
 const errors = [];
 const widths = [375,768,1024,1440];
@@ -119,7 +119,7 @@ try {
   await page.getByRole('heading',{name:'Payment confirmation is taking longer',exact:true}).waitFor();
   await responsive('payment-timeout');
   assert.deepEqual(errors,[]);
-  const report={mode:'intercepted fixtures; no SePay network calls',widths,checkoutCount,billingReads,consoleErrors:errors,
+  const report={frontend_url:base,mode:'intercepted fixtures; no SePay network calls',widths,checkoutCount,billingReads,consoleErrors:errors,
     scenarios:['signed POST form','redirect before confirmation','IPN before redirect','current plan refreshed','error','cancel','paid cancel remains paid','review','bounded polling timeout'],result:'passed'};
   await writeFile(`${folder}/browser-report.json`,JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify(report));

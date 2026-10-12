@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-12",
+  "mode": "public unauthenticated smoke; no orders, accounts or gateway transactions",
+  "checks": [
+    {
+      "name": "API health",
+      "status": 200,
+      "error_code": null
+    },
+    {
+      "name": "API database health",
+      "status": 200,
+      "error_code": null
+    },
+    {
+      "name": "M7K OpenAPI",
+      "status": 200,
+      "error_code": null
+    },
+    {
+      "name": "IPN publicly reachable and rejects missing provider key",
+      "status": 401,
+      "error_code": "PAYMENT_PROVIDER_AUTH_FAILED"
+    },
+    {
+      "name": "Checkout requires user authentication",
+      "status": 401,
+      "error_code": "AUTHENTICATION_REQUIRED"
+    },
+    {
+      "name": "Payment options require authentication",
+      "status": 401,
+      "error_code": "AUTHENTICATION_REQUIRED"
+    },
+    {
+      "name": "Payment status requires authentication",
+      "status": 401,
+      "error_code": "AUTHENTICATION_REQUIRED"
+    },
+    {
+      "name": "VND catalog",
+      "status": 200,
+      "error_code": null
+    }
+  ],
+  "passed": 8,
+  "merchant_secret_binding": "requires authenticated Cloud Shell execution",
+  "sandbox_e2e": "not performed"
+}
