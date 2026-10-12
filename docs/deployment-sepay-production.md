@@ -34,8 +34,12 @@ does not remove old Sandbox invoices or reset test-account subscriptions.
 
 ## 2. Run in Cloud Shell
 
-Open [Cloud Shell](https://console.cloud.google.com/cloudshell/editor?project=serp-saas)
-and run in the existing repository checkout:
+Open [Cloud Shell](https://console.cloud.google.com/cloudshell/editor?project=serp-saas).
+Cloud Shell has a separate filesystem from your computer. If `~/serp-saas` does
+not exist, use the upload workflow below. `git pull` requires an existing Git
+checkout; running it from the Cloud Shell home directory will fail.
+
+If `~/serp-saas` is already an existing repository checkout, run:
 
 ```sh
 cd ~/serp-saas
@@ -48,8 +52,9 @@ the hidden prompts. The helper deliberately does not import `.env`; your current
 local `.env` can remain the Sandbox configuration. Do not put keys into shell
 arguments or send them in chat.
 
-If the private repository cannot be pulled, upload the local package
-`dist/serp-saas-sepay-production.tar.gz` through Cloud Shell's Upload menu:
+If the repository directory is missing or the private repository cannot be pulled,
+upload the local package `dist/serp-saas-sepay-production.tar.gz` through Cloud
+Shell's Upload menu to your Cloud Shell home directory. Then run:
 
 ```sh
 cd ~
