@@ -114,5 +114,6 @@ Local release checks: backend mypy, lint/format and 41 payment/signature tests p
 - Cloud Shell helper security tests: 4 passed; keys use stdin and Cloud Run uses partial updates.
 - Production Sandbox customer restriction: 41 payment/signature tests passed, including the new restriction; 136 non-integration backend tests passed.
 - Application code deployment: backend and frontend pipelines succeeded for `b45cd2f`.
-- Secret Manager / Cloud Run SePay binding: pending operator Cloud Shell execution.
-- Merchant Sandbox E2E: pending merchant IPN setup and QA journey.
+- Secret Manager / Cloud Run SePay binding: the user completed setup and confirmed checkout became available for their account.
+- Merchant Sandbox E2E: the user reported successful Sandbox testing on 2026-10-12.
+- The user subsequently authorized enabling the real Production gateway. See [Production gateway rollout](deployment-sepay-production.md).

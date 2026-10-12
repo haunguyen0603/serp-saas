@@ -65,6 +65,20 @@ Synthetic artifacts: [sample Sandbox PDF](verification-artifacts/invoices/sample
 [desktop details](verification-artifacts/invoices/detail-desktop.png),
 [browser checks](verification-artifacts/invoices/browser-qa.json).
 
+## Production release — 2026-10-12
+
+Source [3e782db](https://github.com/haunguyen0603/serp-saas/commit/3e782db6f09380e28e04e5740f498529d43c4bac)
+was deployed by both existing Cloud Build pipelines:
+
+- [Backend bad486f6-a37e-408f-97c4-cd624df517d3](https://console.cloud.google.com/cloud-build/builds;region=europe-west1/bad486f6-a37e-408f-97c4-cd624df517d3?project=833917440392): success at 03:48:30 UTC.
+- [Frontend 1895317b-d4ea-4ef8-9f18-18cd67d7343f](https://console.cloud.google.com/cloud-build/builds;region=europe-west1/1895317b-d4ea-4ef8-9f18-18cd67d7343f?project=833917440392): success at 03:51:02 UTC.
+
+[18 public HTTPS checks](verification-artifacts/milestone-7k/production-http.json)
+passed, including list/detail page HTTP 200 with noindex, all three invoice APIs
+rejecting unauthenticated access and the PDF MIME declaration in OpenAPI.
+Production browser checks confirmed anonymous visitors to both invoice routes
+redirect to login, with zero invoice API requests and zero page errors.
+
 ## Production acceptance
 
 1. Log in and open **Invoices**. An account without payment orders sees an empty

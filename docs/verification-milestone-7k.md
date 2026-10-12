@@ -175,3 +175,11 @@ Production Sandbox checkout is limited to platform admins or configured `SEPAY_S
 
 
 The authorized rollout completed for application code: both backend and frontend Cloud Build checks succeeded for commit `b45cd2f`. Public production verification passed 13 HTTPS checks and the fixture browser journeys at all four responsive widths. Actual Secret Manager bindings remain pending the user's authenticated Cloud Shell helper execution, followed by SePay merchant IPN configuration and a real merchant Sandbox journey. These checks did not make a real payment or mutate a production subscription. The [rollout report](deployment-milestone-7k-sandbox.md) records the builds and remaining setup.
+
+## 2026-10-12 — Sandbox acceptance and real Production authorization
+
+The user confirmed Sandbox testing succeeded and explicitly requested switching
+the payment gateway to Production. They also confirmed Production merchant
+credentials are available. This supersedes the Sandbox-only rollout scope above.
+Actual Cloud Run gateway configuration is handled through the user's chosen
+Cloud Shell workflow; see [Production gateway rollout](deployment-sepay-production.md).

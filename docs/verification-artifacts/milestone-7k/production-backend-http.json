@@ -38,12 +38,27 @@
       "error_code": "AUTHENTICATION_REQUIRED"
     },
     {
+      "name": "Invoice list requires authentication",
+      "status": 401,
+      "error_code": "AUTHENTICATION_REQUIRED"
+    },
+    {
+      "name": "Invoice /00000000-0000-0000-0000-000000000000 requires authentication",
+      "status": 401,
+      "error_code": "AUTHENTICATION_REQUIRED"
+    },
+    {
+      "name": "Invoice /00000000-0000-0000-0000-000000000000/pdf requires authentication",
+      "status": 401,
+      "error_code": "AUTHENTICATION_REQUIRED"
+    },
+    {
       "name": "VND catalog",
       "status": 200,
       "error_code": null
     }
   ],
-  "passed": 8,
+  "passed": 11,
   "merchant_secret_binding": "requires authenticated Cloud Shell execution",
   "sandbox_e2e": "not performed"
 }
