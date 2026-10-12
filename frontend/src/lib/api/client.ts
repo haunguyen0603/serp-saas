@@ -13,6 +13,14 @@ export class ApiError extends Error {
 }
 
 const errorMessages: Record<string, string> = {
+  PAYMENT_CHECKOUT_UNAVAILABLE:
+    "Online checkout is unavailable. Please contact support.",
+  PAYMENT_PLAN_NOT_FOUND:
+    "This plan is no longer available. Reload the catalog.",
+  PAYMENT_PLAN_NOT_PURCHASABLE: "Select an available paid plan.",
+  PAYMENT_CURRENCY_UNSUPPORTED: "This plan is unavailable for online payment.",
+  PAYMENT_TRANSITION_NOT_ALLOWED: "This plan change requires support.",
+  PAYMENT_ORDER_NOT_FOUND: "Payment order not found for your account.",
   INVALID_CURRENT_PASSWORD: "Your current password is incorrect.",
   PASSWORD_UNCHANGED: "Choose a password different from your current password.",
   INVALID_PASSWORD_RESET_TOKEN:

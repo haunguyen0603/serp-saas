@@ -7,6 +7,7 @@ from app.api.v1.competitor_analytics import router as competitor_analytics_route
 from app.api.v1.keyword_organization import router as keyword_organization_router
 from app.api.v1.keywords import router as keywords_router
 from app.api.v1.overview import router as overview_router
+from app.api.v1.payments import router as payments_router
 from app.api.v1.projects import router as projects_router
 from app.api.v1.rank_batches import router as rank_batches_router
 from app.api.v1.rank_checks import router as rank_checks_router
@@ -35,3 +36,5 @@ router.include_router(tracked_sites_router)
 router.include_router(billing_router)
 
 router.include_router(overview_router)
+
+router.include_router(payments_router)

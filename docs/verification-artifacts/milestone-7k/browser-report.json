@@ -1,0 +1,24 @@
+{
+  "mode": "intercepted fixtures; no SePay network calls",
+  "widths": [
+    375,
+    768,
+    1024,
+    1440
+  ],
+  "checkoutCount": 1,
+  "billingReads": 2,
+  "consoleErrors": [],
+  "scenarios": [
+    "signed POST form",
+    "redirect before confirmation",
+    "IPN before redirect",
+    "current plan refreshed",
+    "error",
+    "cancel",
+    "paid cancel remains paid",
+    "review",
+    "bounded polling timeout"
+  ],
+  "result": "passed"
+}

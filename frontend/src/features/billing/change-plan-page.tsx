@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   Badge,
   Button,
   Card,
-  Dialog,
   EmptyState,
   ErrorState,
   Icon,
@@ -22,6 +21,7 @@ import {
 } from "@/features/projects/protected";
 import { groupPlans, planCatalogQuery, planPrice } from "./plan-catalog";
 import type { BillingSummary, Plan } from "./types";
+import { submitCheckout, type Checkout, type PaymentOptions } from "./payments";
 
 type ProductLine = Plan["device_scope"];
 const productName = (device: ProductLine) =>
@@ -31,9 +31,13 @@ function PlanCard({
   plan,
   current,
   onPlanSelect,
+  eligible,
+  busy,
 }: {
   plan: Plan;
   current: boolean;
+  eligible: boolean;
+  busy: boolean;
   onPlanSelect: (planId: string, productLine: ProductLine) => void;
 }) {
   return (
@@ -83,10 +87,16 @@ function PlanCard({
       <Button
         type="button"
         variant={current ? "secondary" : "primary"}
-        disabled={current}
+        disabled={current || !eligible || busy}
         onClick={() => onPlanSelect(plan.id ?? plan.code, plan.device_scope)}
       >
-        {current ? "Current Plan" : "Select"}
+        {current
+          ? "Current Plan"
+          : busy && eligible
+            ? "Preparing checkout…"
+            : eligible
+              ? "Select"
+              : "Unavailable"}
       </Button>
     </Card>
   );
@@ -97,10 +107,35 @@ export function ChangePlanPage() {
   const router = useRouter();
   const verified = auth.isAuthenticated && auth.user?.email_verified === true;
   const [productLine, setProductLine] = useState<ProductLine>("desktop");
-  const [selection, setSelection] = useState<{
-    planId: string;
-    productLine: ProductLine;
-  } | null>(null);
+  const submitting = useRef(false);
+  const checkout = useMutation({
+    mutationFn: async (selection: {
+      planId: string;
+      productLine: ProductLine;
+    }) => {
+      const response = await auth.request<Checkout>(
+        "/api/v1/billing/payments/sepay/checkout",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            plan_id: selection.planId,
+            product_line: selection.productLine,
+          }),
+        },
+      );
+      submitCheckout(response);
+    },
+    onSettled: () => {
+      submitting.current = false;
+    },
+  });
+  const paymentOptions = useQuery({
+    queryKey: ["payment-options", auth.user?.id],
+    queryFn: () =>
+      auth.request<PaymentOptions>("/api/v1/billing/payments/sepay/options"),
+    enabled: verified,
+  });
   useEffect(() => {
     if (auth.isAuthenticated && !verified) router.replace("/verify-email");
   }, [auth.isAuthenticated, verified, router]);
@@ -119,9 +154,10 @@ export function ChangePlanPage() {
     (group) => group.device === productLine,
   )!.plans;
 
-  // This boundary intentionally only opens local informational state in M7J.
   function onPlanSelect(planId: string, selectedProductLine: ProductLine) {
-    setSelection({ planId, productLine: selectedProductLine });
+    if (submitting.current) return;
+    submitting.current = true;
+    checkout.mutate({ planId, productLine: selectedProductLine });
   }
 
   if (!auth.isAuthenticated)
@@ -146,9 +182,22 @@ export function ChangePlanPage() {
         description="Compare available plans and choose the option that best matches your tracking needs."
       />
       <p className="text-secondary">
-        Online plan changes are coming soon. Selecting a new plan does not
-        change your subscription yet.
+        Purchase one month through SePay. Upgrades start a new month
+        immediately; existing time is not prorated. Paid downgrades require
+        support.
       </p>
+      {checkout.isError && (
+        <ErrorState title="Unable to create checkout.">
+          {checkout.error instanceof Error
+            ? checkout.error.message
+            : "Please try again."}
+        </ErrorState>
+      )}
+      {(paymentOptions.isError || paymentOptions.data?.enabled === false) && (
+        <p role="status">
+          Online checkout is currently unavailable. Please contact support.
+        </p>
+      )}
       <Tabs
         label="Plan product line"
         items={[
@@ -234,6 +283,15 @@ export function ChangePlanPage() {
                     current?.plan.code === plan.code &&
                     current.device_scope === plan.device_scope
                   }
+                  eligible={Boolean(
+                    current &&
+                    plan.id &&
+                    plan.currency === "VND" &&
+                    plan.price_monthly_minor_units > 0 &&
+                    paymentOptions.data?.enabled &&
+                    paymentOptions.data.eligible_plan_ids?.includes(plan.id),
+                  )}
+                  busy={checkout.isPending}
                   onPlanSelect={onPlanSelect}
                 />
               ))}
@@ -245,21 +303,6 @@ export function ChangePlanPage() {
             </EmptyState>
           ))}
       </section>
-      <Dialog
-        open={selection !== null}
-        onClose={() => setSelection(null)}
-        title="Plan upgrade coming soon"
-      >
-        <p>
-          Online payment and automatic plan upgrades are being prepared. Your
-          current subscription has not been changed.
-        </p>
-        <div className="ui-dialog-actions">
-          <Button type="button" onClick={() => setSelection(null)}>
-            Close
-          </Button>
-        </div>
-      </Dialog>
     </main>
   );
 }

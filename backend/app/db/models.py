@@ -9,6 +9,7 @@ from app.models.keyword_organization import (
     KeywordTagAssignment,
 )
 from app.models.password_reset import PasswordResetToken
+from app.models.payment import PaymentEvent, PaymentOrder
 from app.models.project import Project
 from app.models.project_competitor_site import ProjectCompetitorSite
 from app.models.provider_usage import ProviderUsage
@@ -25,6 +26,8 @@ from app.models.user import User
 
 __all__ = [
     "Base",
+    "PaymentEvent",
+    "PaymentOrder",
     "Plan",
     "PlanChange",
     "Subscription",

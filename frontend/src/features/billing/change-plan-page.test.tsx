@@ -54,7 +54,7 @@ const plans: Plan[] = ["desktop", "mobile"].flatMap((device, di) =>
     name: `${device === "desktop" ? "Desktop" : "Mobile"} ${tier}`,
     device_scope: device as Plan["device_scope"],
     price_monthly_minor_units: ti ? 2789 + ti * 100 + di * 1000 : 0,
-    currency: di ? "EUR" : "USD",
+    currency: "VND",
     max_projects: 2 + ti,
     max_keywords: 37 + ti * 101,
     monthly_keyword_checks: 1234 + ti * 222,
@@ -98,6 +98,17 @@ function summary(desktop = "free", mobile = "free"): BillingSummary {
     }),
   };
 }
+const options = {
+  enabled: true,
+  eligible_plan_ids: plans
+    .filter((p) => p.price_monthly_minor_units > 0)
+    .map((p) => p.id),
+};
+function mockSummary(data: BillingSummary) {
+  state.request.mockImplementation(async (path) =>
+    path.endsWith("/options") ? options : data,
+  );
+}
 function show(shell = false) {
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false } },
@@ -123,7 +134,7 @@ beforeEach(() => {
   state.status = "authenticated";
   state.verified = true;
   state.userId = "user-1";
-  state.request.mockResolvedValue(summary());
+  mockSummary(summary());
   state.refresh.mockResolvedValue(undefined);
   state.fetch.mockImplementation(
     async () => new Response(JSON.stringify(plans)),
@@ -142,7 +153,10 @@ it("allows verified users and includes an active sidebar link", async () => {
       .querySelector('[href="/app/change-plan"]'),
   ).toHaveAttribute("aria-current", "page");
   await screen.findByText("Current Desktop plan");
-  expect(state.request).toHaveBeenCalledExactlyOnceWith("/api/v1/billing/me");
+  expect(state.request).toHaveBeenCalledWith("/api/v1/billing/me");
+  expect(state.request).toHaveBeenCalledWith(
+    "/api/v1/billing/payments/sepay/options",
+  );
   expect(state.fetch).toHaveBeenCalledWith(
     "http://api.test/api/v1/billing/plans",
     expect.any(Object),
@@ -191,7 +205,7 @@ it("shows a recoverable session error and restores no catalog data", async () =>
 it.each(["free", "starter"])(
   "detects current %s plans by code and scope, with true disabled buttons",
   async (tier) => {
-    state.request.mockResolvedValue(summary(tier, tier));
+    mockSummary(summary(tier, tier));
     show();
     await screen.findByText("Current Desktop plan");
     await screen.findAllByRole("button", { name: "Select" });
@@ -217,7 +231,7 @@ it.each(["free", "starter"])(
 it("renders actual prices, currencies and limits, switching scopes with keyboard", async () => {
   show();
   await screen.findAllByRole("button", { name: "Select" });
-  expect(card("desktop_starter").getByText("$28.89")).toBeVisible();
+  expect(card("desktop_starter").getByText("2.889 ₫")).toBeVisible();
   expect(card("desktop_starter").getByText("138")).toBeVisible();
   expect(card("desktop_starter").getByText("1,456")).toBeVisible();
   expect(card("desktop_free").getByText("Not included")).toBeVisible();
@@ -229,45 +243,103 @@ it("renders actual prices, currencies and limits, switching scopes with keyboard
     "aria-selected",
     "true",
   );
-  expect(card("mobile_starter").getByText("€38.89")).toBeVisible();
+  expect(card("mobile_starter").getByText("3.889 ₫")).toBeVisible();
   expect(document.querySelectorAll("[data-plan-code]")).toHaveLength(3);
 });
 
-it("Select only opens information, restores focus on close, and makes ZERO new API calls", async () => {
+it("Select submits signed checkout via POST and disables duplicate clicks", async () => {
+  const submit = vi
+    .spyOn(HTMLFormElement.prototype, "submit")
+    .mockImplementation(function (this: HTMLFormElement) {
+      expect(this.method).toBe("post");
+      expect(this.action).toBe("https://checkout.example.test/init");
+      expect(
+        (this.elements.namedItem("signature") as HTMLInputElement).value,
+      ).toBe("signed-fixture");
+    });
+  let resolve!: (data: unknown) => void;
+  state.request.mockImplementation(async (path) =>
+    path.endsWith("/options")
+      ? options
+      : path.endsWith("/checkout")
+        ? new Promise((r) => {
+            resolve = r;
+          })
+        : summary(),
+  );
   show();
   await screen.findByText("Current Desktop plan");
-  await screen.findAllByRole("button", { name: "Select" });
-  const before = {
-    auth: state.request.mock.calls.length,
-    public: state.fetch.mock.calls.length,
-  };
-  const trigger = card("desktop_starter").getByRole("button", {
-    name: "Select",
+  const trigger = await waitFor(() => {
+    const button = card("desktop_starter").getByRole("button", {
+      name: "Select",
+    });
+    expect(button).toBeEnabled();
+    return button;
   });
-  trigger.focus();
   fireEvent.click(trigger);
-  const modal = screen.getByRole("dialog", {
-    name: "Plan upgrade coming soon",
-  });
+  fireEvent.click(trigger);
+  await waitFor(() => expect(trigger).toBeDisabled());
   expect(
-    within(modal).getByText(/Your current subscription has not been changed/),
-  ).toBeVisible();
-  fireEvent.click(within(modal).getByRole("button", { name: "Close" }));
-  expect(trigger).toHaveFocus();
-  fireEvent.click(trigger);
-  fireEvent(modal, new Event("cancel", { cancelable: true }));
-  expect(modal).not.toHaveAttribute("open");
-  expect(trigger).toHaveFocus();
-  expect(state.request).toHaveBeenCalledTimes(before.auth);
-  expect(state.fetch).toHaveBeenCalledTimes(before.public);
-  for (const [, options] of [
-    ...state.request.mock.calls,
-    ...state.fetch.mock.calls,
-  ]) {
-    expect(options?.method ?? "GET").toBe("GET");
-  }
+    state.request.mock.calls.filter(([path]) => path.endsWith("/checkout")),
+  ).toHaveLength(1);
+  resolve({
+    payment_order_id: "payment-1",
+    invoice_number: "PAY_TEST",
+    checkout_url: "https://checkout.example.test/init",
+    form: {
+      signature: "signed-fixture",
+      order_amount: "2889",
+      currency: "VND",
+    },
+  });
+  await waitFor(() => expect(submit).toHaveBeenCalledOnce());
+  expect(state.request).toHaveBeenCalledWith(
+    "/api/v1/billing/payments/sepay/checkout",
+    expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({
+        plan_id: "desktop-starter",
+        product_line: "desktop",
+      }),
+    }),
+  );
   expect(
     card("desktop_free").getByRole("button", { name: "Current Plan" }),
+  ).toBeDisabled();
+  submit.mockRestore();
+});
+
+it("checkout errors keep the current plan unchanged", async () => {
+  state.request.mockImplementation(async (path) => {
+    if (path.endsWith("/checkout")) throw new Error("Checkout unavailable");
+    return path.endsWith("/options") ? options : summary();
+  });
+  show();
+  await screen.findAllByRole("button", { name: "Select" });
+  fireEvent.click(
+    card("desktop_starter").getByRole("button", { name: "Select" }),
+  );
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "Checkout unavailable",
+  );
+  expect(
+    card("desktop_free").getByRole("button", { name: "Current Plan" }),
+  ).toBeDisabled();
+});
+
+it("Free, unsupported pricing and downgrades cannot start checkout", async () => {
+  const restricted = { enabled: true, eligible_plan_ids: ["desktop-pro"] };
+  state.request.mockImplementation(async (path) =>
+    path.endsWith("/options") ? restricted : summary("pro"),
+  );
+  show();
+  await screen.findByText("Current Desktop plan");
+  for (const code of ["desktop_free", "desktop_starter"])
+    expect(
+      card(code).getByRole("button", { name: "Unavailable" }),
+    ).toBeDisabled();
+  expect(
+    card("desktop_pro").getByRole("button", { name: "Current Plan" }),
   ).toBeDisabled();
 });
 
@@ -280,18 +352,22 @@ it("catalog error shows no fallback prices, and Retry recovers authoritative dat
   expect(screen.queryByText("$0")).not.toBeInTheDocument();
   fireEvent.click(within(alert).getByRole("button", { name: "Retry" }));
   await screen.findAllByRole("button", { name: "Select" });
-  expect(card("desktop_starter").getByText("$28.89")).toBeVisible();
+  expect(card("desktop_starter").getByText("2.889 ₫")).toBeVisible();
 });
 
 it("never guesses the current plan on a subscription failure, and supports retry", async () => {
-  state.request.mockRejectedValueOnce(new Error("Unavailable"));
+  state.request.mockImplementation(async (path) => {
+    if (path.endsWith("/options")) return options;
+    throw new Error("Unavailable");
+  });
   show();
   const alert = await screen.findByRole("alert");
   expect(alert).toHaveTextContent("Unable to load your current subscription.");
-  await screen.findAllByRole("button", { name: "Select" });
+  await screen.findAllByRole("button", { name: "Unavailable" });
   expect(
     screen.queryByRole("button", { name: "Current Plan" }),
   ).not.toBeInTheDocument();
+  mockSummary(summary());
   fireEvent.click(within(alert).getByRole("button", { name: "Retry" }));
   expect(
     await screen.findByRole("button", { name: "Current Plan" }),
@@ -311,7 +387,7 @@ it("does not mark a missing subscription or an absent catalog plan as current", 
   state.request.mockResolvedValue({ ...summary(), devices: [] });
   show();
   await screen.findByText("No current Desktop subscription was returned.");
-  await screen.findAllByRole("button", { name: "Select" });
+  await screen.findAllByRole("button", { name: "Unavailable" });
   expect(
     screen.queryByRole("button", { name: "Current Plan" }),
   ).not.toBeInTheDocument();
@@ -323,15 +399,15 @@ it("scopes current subscription queries to the signed-in account", async () => {
     await screen.findByRole("button", { name: "Current Plan" }),
   ).toBeDisabled();
   state.userId = "user-2";
-  state.request.mockResolvedValue(summary("pro"));
+  mockSummary(summary("pro"));
   view.rerender(view.rerenderPage());
   await waitFor(() =>
     expect(
       card("desktop_pro").getByRole("button", { name: "Current Plan" }),
     ).toBeDisabled(),
   );
-  expect(state.request).toHaveBeenCalledTimes(2);
+  expect(state.request).toHaveBeenCalledTimes(4);
   expect(
-    card("desktop_free").getByRole("button", { name: "Select" }),
-  ).toBeEnabled();
+    card("desktop_free").getByRole("button", { name: "Unavailable" }),
+  ).toBeDisabled();
 });

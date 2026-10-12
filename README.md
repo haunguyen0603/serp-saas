@@ -526,3 +526,16 @@ groups/tags, CSV import/export, notifications, reports, search volume, API keys,
 teams, organizations, roles, and permissions. No workspace or membership model is
 introduced.
 Future rate limiting should target `/register`, `/login`, and `/refresh`.
+
+### M7K — SePay one-time payments
+
+Verified users can purchase eligible VND plans from `/app/change-plan` through SePay-hosted POST checkout. Subscription activation happens only after authenticated, validated IPN processing. Orders retain commercial snapshots; duplicate events and reused provider references cannot activate or extend twice. Manual admin subscriptions remain supported. Checkout is disabled by default.
+
+Run Alembic to revision `0016_sepay_payments` before enabling. Set the backend `SEPAY_*` variables shown in `.env.example`, using merchant-confirmed Sandbox endpoints and backend-only secret injection. Configure merchant IPN auth `SECRET_KEY` at `/api/v1/billing/payments/sepay/ipn`. Callback routes are `/app/change-plan/payment/{success,error,cancel}`; the backend appends the internal payment reference. Production keys belong in Google Secret Manager and Cloud Run secret bindings.
+
+Purchases cover one calendar month. Upgrades reuse immediate manual replacement without proration; the API supports same-plan extension from current expiry, while the Current Plan card remains disabled. Free/downgrade/scheduled conflicts cannot create checkout. Late payments and void events require reconciliation.
+
+See [M7K verification and operator gates](docs/verification-milestone-7k.md). Local fixture verification is distinct from merchant Sandbox E2E; complete Sandbox verification and obtain explicit authorization before production deployment or a controlled real payment.
+
+
+For an authorized Sandbox rollout on the existing production app, follow [M7K Cloud Shell setup](docs/deployment-milestone-7k-sandbox.md). Production Sandbox checkout is limited to platform admins and `SEPAY_SANDBOX_ALLOWED_USER_IDS`; keys use pinned Secret Manager versions via `configure-sepay-sandbox.py`.

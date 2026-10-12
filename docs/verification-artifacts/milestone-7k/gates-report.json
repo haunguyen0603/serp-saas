@@ -1,0 +1,30 @@
+{
+  "verified_date": "2026-10-11",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "backend_tests": {
+    "passed": 347,
+    "failed": 0
+  },
+  "frontend_tests": {
+    "passed": 308,
+    "failed": 0,
+    "files": 34
+  },
+  "backend_lint_format": "passed",
+  "backend_mypy": "passed (152 source files)",
+  "frontend_lint_typecheck_format": "passed",
+  "frontend_production_build": "passed",
+  "backend_production_build": "passed (local image only)",
+  "migration_upgrade_downgrade_upgrade": "passed (disposable schemas)",
+  "orm_migration_parity": "passed",
+  "browser_qa": "passed (intercepted fixtures)",
+  "npm_runtime_audit": {
+    "vulnerabilities": 0,
+    "high": 0,
+    "critical": 0
+  },
+  "sandbox_merchant_e2e": "not performed; merchant configuration required",
+  "public_https_ipn_verification": "not performed",
+  "production_deployment": "not performed",
+  "real_payment_verification": "not performed"
+}

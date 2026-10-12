@@ -18,6 +18,21 @@ def test_environment(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("SERP_PROVIDER_PRIORITY", "serper,serpapi")
     monkeypatch.setenv("SERPAPI_API_KEY", "mock-test-key")
     monkeypatch.setenv("SERPER_API_KEY", "")
+    # Never inherit merchant credentials or gateway availability from local .env.
+    monkeypatch.setenv("SEPAY_ENABLED", "false")
+    monkeypatch.setenv("SEPAY_ENV", "sandbox")
+    monkeypatch.setenv("SEPAY_SANDBOX_ALLOWED_USER_IDS", "[]")
+    for field in (
+        "MERCHANT_ID",
+        "SECRET_KEY",
+        "IPN_SECRET_KEY",
+        "CHECKOUT_URL",
+        "VOID_URL",
+        "SUCCESS_URL",
+        "ERROR_URL",
+        "CANCEL_URL",
+    ):
+        monkeypatch.setenv(f"SEPAY_{field}", "")
     monkeypatch.setenv("APP_ENV", "test")
     monkeypatch.setenv("APP_NAME", "serp-saas-test")
     monkeypatch.setenv("APP_VERSION", "0.1.0")

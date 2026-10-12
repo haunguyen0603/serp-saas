@@ -13,6 +13,11 @@ class JSONFormatter(logging.Formatter):
             "message": record.getMessage(),
         }
         for field in (
+            "payment_order_id",
+            "invoice_number",
+            "notification_type",
+            "provider_transaction_id",
+            "status_transition",
             "batch_id",
             "job_id",
             "worker_execution_id",

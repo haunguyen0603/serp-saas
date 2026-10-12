@@ -232,12 +232,40 @@ class SubscriptionService:
             raise AppError(
                 422, "VALIDATION_ERROR", "Paid Plans require a manual bank transfer."
             )
-        active = await self.resolve(user_id, plan.device_scope, now)
+        return await self._activate_terms(
+            user_id,
+            actor,
+            plan.id,
+            snapshot(plan),
+            start,
+            end,
+            payment_method,
+            reference,
+            note,
+            replace_existing,
+        )
+
+    async def _activate_terms(
+        self,
+        user_id: UUID,
+        actor: UUID | None,
+        plan_id: UUID,
+        terms: dict[str, Any],
+        start: datetime,
+        end: datetime,
+        payment_method: str | None,
+        reference: str | None,
+        note: str | None,
+        replace_existing: bool = False,
+        source: str = "manual",
+    ) -> Subscription:
+        now = datetime.now(UTC)
+        active = await self.resolve(user_id, terms["device_scope"], now)
         future = start > now
         scheduled = await self.session.scalar(
             select(Subscription.id).where(
                 Subscription.user_id == user_id,
-                Subscription.device_scope == plan.device_scope,
+                Subscription.device_scope == terms["device_scope"],
                 Subscription.status == "scheduled",
             )
         )
@@ -266,12 +294,13 @@ class SubscriptionService:
             active.cancelled_at, active.cancelled_by_user_id = now, actor
         sub = Subscription(
             user_id=user_id,
-            plan_id=plan.id,
-            device_scope=plan.device_scope,
+            plan_id=plan_id,
+            device_scope=terms["device_scope"],
             status="scheduled" if future else "active",
             period_start=start,
             period_end=end,
-            snapshot=snapshot(plan),
+            snapshot=dict(terms),
+            source=source,
             payment_method=payment_method,
             payment_reference=reference,
             payment_note=note,
@@ -282,11 +311,65 @@ class SubscriptionService:
         await self.session.flush()
         event = "subscription_scheduled" if future else "subscription_activated"
         if not future and replace_existing:
-            event = replacement_event(plan, active.snapshot)
-        self.audit(user_id, plan.device_scope, event, actor=actor, subscription=sub)
+            event = replacement_event(Plan(**terms), active.snapshot)
+        self.audit(user_id, terms["device_scope"], event, actor=actor, subscription=sub)
         if not future:
             await self.disable_schedules(sub)
             await self.period(sub, now)
+        return sub
+
+    async def activate_from_payment(
+        self,
+        user_id: UUID,
+        plan_id: UUID,
+        terms: dict[str, Any],
+        reference: str,
+        payment_method: str | None,
+        now: datetime,
+    ) -> Subscription:
+        current = await self.resolve(user_id, terms["device_scope"], now)
+        before = {
+            "subscription_id": str(current.id),
+            "snapshot": current.snapshot,
+            "period_end": current.period_end.isoformat(),
+        }
+        if (
+            current.plan_id == plan_id
+            and current.snapshot["price_monthly_minor_units"] > 0
+        ):
+            sub = await self.extend(
+                user_id, None, current.id, add_months(current.period_end, 1)
+            )
+        else:
+            sub = await self._activate_terms(
+                user_id,
+                None,
+                plan_id,
+                terms,
+                now,
+                add_months(now, 1),
+                payment_method,
+                reference,
+                None,
+                True,
+                "sepay",
+            )
+        self.audit(
+            user_id,
+            terms["device_scope"],
+            "subscription_activated_from_payment",
+            subscription=sub,
+            metadata={
+                "source": "sepay",
+                "invoice_number": reference,
+                "before": before,
+                "after": {
+                    "subscription_id": str(sub.id),
+                    "snapshot": sub.snapshot,
+                    "period_end": sub.period_end.isoformat(),
+                },
+            },
+        )
         return sub
 
     async def owned(self, user_id: UUID, subscription_id: UUID) -> Subscription:
@@ -301,7 +384,7 @@ class SubscriptionService:
         return sub
 
     async def extend(
-        self, user_id: UUID, actor: UUID, subscription_id: UUID, end: datetime
+        self, user_id: UUID, actor: UUID | None, subscription_id: UUID, end: datetime
     ) -> Subscription:
         sub = await self.owned(user_id, subscription_id)
         if sub.status not in ("active", "scheduled") or sub.period_end <= datetime.now(

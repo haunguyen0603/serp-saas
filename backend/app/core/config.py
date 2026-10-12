@@ -2,6 +2,7 @@ import re
 from functools import lru_cache
 from typing import Literal, Self
 from urllib.parse import urlsplit
+from uuid import UUID
 
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
@@ -54,6 +55,18 @@ class Settings(DatabaseSettings):
     auth_smtp_password: SecretStr | None = None
     auth_smtp_starttls: bool = True
     auth_smtp_ssl: bool = False
+    sepay_enabled: bool = False
+    sepay_env: Literal["sandbox", "production"] = "sandbox"
+    sepay_sandbox_allowed_user_ids: list[UUID] = Field(default_factory=list)
+    sepay_merchant_id: str = ""
+    sepay_secret_key: SecretStr | None = None
+    sepay_ipn_secret_key: SecretStr | None = None
+    sepay_checkout_url: str = ""
+    sepay_void_url: str = ""
+    sepay_success_url: str = ""
+    sepay_error_url: str = ""
+    sepay_cancel_url: str = ""
+    sepay_pending_minutes: int = Field(default=45, ge=5, le=1440)
     # SERP_PROVIDER remains as a compatibility fallback for existing M4 installs.
     serp_provider: Literal["serpapi", "serper", "fake"] = "serpapi"
     serp_enabled_providers: str | None = None
@@ -119,6 +132,36 @@ class Settings(DatabaseSettings):
         if len(value.get_secret_value().encode()) < 32:
             raise ValueError("JWT_SECRET_KEY must contain at least 32 bytes")
         return value
+
+    @model_validator(mode="after")
+    def validate_sepay(self) -> Self:
+        if not self.sepay_enabled:
+            return self
+        if not all(
+            (
+                self.sepay_merchant_id,
+                self.sepay_secret_key and self.sepay_secret_key.get_secret_value(),
+                self.sepay_ipn_secret_key
+                and self.sepay_ipn_secret_key.get_secret_value(),
+            )
+        ):
+            raise ValueError("Enabled SePay requires merchant and signing/IPN keys")
+        for value in (
+            self.sepay_checkout_url,
+            self.sepay_success_url,
+            self.sepay_error_url,
+            self.sepay_cancel_url,
+        ):
+            url = urlsplit(value)
+            if (
+                url.scheme != "https"
+                or not url.hostname
+                or url.username
+                or url.password
+                or url.fragment
+            ):
+                raise ValueError("Enabled SePay requires explicit HTTPS URLs")
+        return self
 
     @field_validator("auth_site_url")
     @classmethod
