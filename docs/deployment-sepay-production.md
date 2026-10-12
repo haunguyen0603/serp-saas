@@ -170,6 +170,25 @@ Production secret. It uses [Secret Manager metadata listing](https://docs.cloud.
 without accessing secret payloads. Environment literals and revision error
 messages are deliberately excluded. This JSON can be shared for troubleshooting.
 
+If service conditions are `True` but `latest_created_revision` differs from
+`latest_ready_revision`, inspect the new revision itself. Service-level readiness
+does not establish that the new revision is ready to receive traffic. The user's
+2026-10-12 report showed Production secret version 1 bound to the template,
+`serp-api-00014-hqj` created and all traffic still on `serp-api-00013-n7vv`.
+The next read-only check for that exact revision is:
+
+```sh
+gcloud run revisions describe serp-api-00014-hqj \
+  --project=serp-saas --region=asia-southeast1 \
+  --format='json(status.conditions.type,status.conditions.status,status.conditions.reason)'
+```
+
+This projection excludes environment values and condition messages. Inspect the
+revision's own `Ready` condition before deciding whether to promote it or repair
+startup. [Cloud Run revision status](https://docs.cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions)
+is the evidence for that decision. The existing enabled secret versions do not
+need to be recreated merely to perform this readiness check.
+
 ## Verification evidence
 
 The configuration/helper tests run without cloud mutations:
