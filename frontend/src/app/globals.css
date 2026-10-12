@@ -16,3 +16,23 @@ button {
 button:disabled {
   cursor: wait;
 }
+
+.invoice-reference {
+  display: block;
+  overflow-wrap: anywhere;
+  margin-bottom: 0.5rem;
+}
+.invoice-details {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+.invoice-details dt {
+  color: var(--ds-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+.invoice-details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}

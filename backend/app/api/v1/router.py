@@ -4,6 +4,7 @@ from app.api.v1.analytics import router as analytics_router
 from app.api.v1.auth import router as auth_router
 from app.api.v1.billing import router as billing_router
 from app.api.v1.competitor_analytics import router as competitor_analytics_router
+from app.api.v1.invoices import router as invoices_router
 from app.api.v1.keyword_organization import router as keyword_organization_router
 from app.api.v1.keywords import router as keywords_router
 from app.api.v1.overview import router as overview_router
@@ -38,3 +39,4 @@ router.include_router(billing_router)
 router.include_router(overview_router)
 
 router.include_router(payments_router)
+router.include_router(invoices_router)

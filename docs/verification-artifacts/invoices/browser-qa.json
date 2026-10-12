@@ -1,0 +1,58 @@
+[
+  {
+    "width": 375,
+    "screen": "list",
+    "noOverflow": true,
+    "pdfDownload": true,
+    "pageErrors": 0
+  },
+  {
+    "width": 375,
+    "screen": "detail",
+    "noOverflow": true,
+    "pdfDownload": true,
+    "pageErrors": 0
+  },
+  {
+    "width": 768,
+    "screen": "list",
+    "noOverflow": true,
+    "pdfDownload": true,
+    "pageErrors": 0
+  },
+  {
+    "width": 768,
+    "screen": "detail",
+    "noOverflow": true,
+    "pdfDownload": true,
+    "pageErrors": 0
+  },
+  {
+    "width": 1024,
+    "screen": "list",
+    "noOverflow": true,
+    "pdfDownload": true,
+    "pageErrors": 0
+  },
+  {
+    "width": 1024,
+    "screen": "detail",
+    "noOverflow": true,
+    "pdfDownload": true,
+    "pageErrors": 0
+  },
+  {
+    "width": 1440,
+    "screen": "list",
+    "noOverflow": true,
+    "pdfDownload": true,
+    "pageErrors": 0
+  },
+  {
+    "width": 1440,
+    "screen": "detail",
+    "noOverflow": true,
+    "pdfDownload": true,
+    "pageErrors": 0
+  }
+]

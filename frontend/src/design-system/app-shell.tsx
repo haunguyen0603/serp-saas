@@ -33,6 +33,7 @@ const routes = [
     icon: "refresh",
     group: "",
   },
+  { label: "Invoices", href: "/app/invoices", icon: "receipt", group: "" },
   { label: "Settings", href: "/app/settings", icon: "user", group: "Account" },
 ];
 export function AppShell({ children }: { children: ReactNode }) {

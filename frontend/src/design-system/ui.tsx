@@ -26,6 +26,7 @@ export function Icon({
     chart: "M4 20V4 M4 20h17 M8 15l4-5 4 2 5-8",
     globe: "M3 12h18 M12 3c6 5 6 13 0 18 M12 3c-6 5-6 13 0 18",
     wallet: "M3 5h17v15H3z M15 10h6v6h-6z",
+    receipt: "M5 3h14v18l-3-2-4 2-4-2-3 2z M9 7h6 M9 11h6 M9 15h3",
     refresh:
       "M3 11a9 9 0 0 1 15.36-6.36L21 7 M21 3v4h-4 M21 13a9 9 0 0 1-15.36 6.36L3 17 M7 17H3v4",
     user: "M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0 M4 21v-3a8 6 0 0 1 16 0v3",

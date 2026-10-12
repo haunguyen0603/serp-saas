@@ -18,7 +18,7 @@ async function check(name, url, options = {}, expected = 200, code) {
 await check('API health', `${api}/health`);
 await check('API database health', `${api}/health/db`);
 const schema = await check('M7K OpenAPI', `${api}/openapi.json`);
-for (const path of ['/api/v1/billing/payments/sepay/checkout','/api/v1/billing/payments/sepay/options','/api/v1/billing/payments/sepay/ipn','/api/v1/billing/payments/{payment_order_id}']) {
+for (const path of ['/api/v1/billing/payments/sepay/checkout','/api/v1/billing/payments/sepay/options','/api/v1/billing/payments/sepay/ipn','/api/v1/billing/payments/{payment_order_id}','/api/v1/billing/invoices','/api/v1/billing/invoices/{invoice_id}','/api/v1/billing/invoices/{invoice_id}/pdf']) {
   assert(schema.data.paths[path], `Missing ${path}`);
 }
 await check('IPN publicly reachable and rejects missing provider key', `${api}/api/v1/billing/payments/sepay/ipn`, {
@@ -30,9 +30,12 @@ await check('Checkout requires user authentication', `${api}/api/v1/billing/paym
 }, 401, 'AUTHENTICATION_REQUIRED');
 await check('Payment options require authentication', `${api}/api/v1/billing/payments/sepay/options`, {}, 401, 'AUTHENTICATION_REQUIRED');
 await check('Payment status requires authentication', `${api}/api/v1/billing/payments/00000000-0000-0000-0000-000000000000`, {}, 401, 'AUTHENTICATION_REQUIRED');
+for (const suffix of ['', '/00000000-0000-0000-0000-000000000000', '/00000000-0000-0000-0000-000000000000/pdf']) {
+  await check(`Invoice ${suffix || 'list'} requires authentication`, `${api}/api/v1/billing/invoices${suffix}`, {}, 401, 'AUTHENTICATION_REQUIRED');
+}
 const catalog = await check('VND catalog', `${api}/api/v1/billing/plans`);
 assert(catalog.data.length >= 6 && catalog.data.every(plan=>plan.currency==='VND'));
-if (!backendOnly) for(const route of ['change-plan','change-plan/payment/success','change-plan/payment/error','change-plan/payment/cancel']) {
+if (!backendOnly) for(const route of ['change-plan','change-plan/payment/success','change-plan/payment/error','change-plan/payment/cancel','invoices','invoices/00000000-0000-0000-0000-000000000000']) {
   const { response } = await check(`App ${route}`, `${app}/app/${route}`);
   assert.equal(response.headers.get('x-robots-tag'),'noindex, nofollow');
 }

@@ -61,6 +61,8 @@ export function PaymentResultPage({
         "payment-options",
         "overview",
         "projects",
+        "invoices",
+        "invoice",
       ]) {
         void client.invalidateQueries({ queryKey: [key] });
       }
@@ -137,6 +139,12 @@ export function PaymentResultPage({
           <p className="text-secondary">
             Invoice: {payment.data?.invoice_number}
           </p>
+          <Link
+            className="ui-text-link"
+            href={`/app/invoices/${encodeURIComponent(orderId)}`}
+          >
+            View invoice
+          </Link>
         </Card>
       )}
       <Link href="/app/change-plan" className="ui-button ui-button--secondary">

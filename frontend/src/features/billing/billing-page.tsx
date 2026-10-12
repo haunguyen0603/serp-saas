@@ -122,6 +122,9 @@ export function BillingPage() {
         <p className="text-secondary mt-2">
           Your Plans, allowances and next reset — independently for each device.
         </p>
+        <Link className="ui-text-link" href="/app/invoices">
+          View invoices and transactions
+        </Link>
       </div>
       {billing.isError && <Alert>{billing.error.message}</Alert>}
       {!billing.data && !billing.isError && (
