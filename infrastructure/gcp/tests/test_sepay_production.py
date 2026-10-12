@@ -302,6 +302,123 @@ class ProductionSetupTests(unittest.TestCase):
             cloud.assert_not_called()
             prompt.assert_not_called()
 
+    def test_command_failure_reports_code_without_echoing_cloud_output(self):
+        failed = subprocess.CompletedProcess(
+            [],
+            1,
+            stdout="synthetic-signing-value",
+            stderr="PERMISSION_DENIED: input=synthetic-signing-value",
+        )
+        with (
+            patch.object(setup.subprocess, "run", return_value=failed),
+            self.assertRaises(setup.SetupError) as caught,
+        ):
+            setup.gcloud(
+                "secrets", "versions", "add", "key", value="synthetic-signing-value"
+            )
+        message = str(caught.exception)
+        self.assertIn("secrets versions add", message)
+        self.assertIn("PERMISSION_DENIED", message)
+        self.assertNotIn("synthetic-signing-value", message)
+
+    def test_failure_handler_reports_stage_and_controlled_error_only(self):
+        def fail():
+            setup.stage("verify_staged_production_revision")
+            raise setup.SetupError(
+                "Expected a pinned Production secret: SEPAY_IPN_SECRET_KEY"
+            )
+
+        with (
+            patch.object(setup, "main", side_effect=fail),
+            self.assertRaises(SystemExit) as caught,
+        ):
+            setup.run()
+        self.assertIn("verify_staged_production_revision", str(caught.exception))
+        self.assertIn("SEPAY_IPN_SECRET_KEY", str(caught.exception))
+        with (
+            patch.object(
+                setup, "main", side_effect=ValueError("synthetic-private-value")
+            ),
+            self.assertRaises(SystemExit) as caught,
+        ):
+            setup.run()
+        self.assertNotIn("synthetic-private-value", str(caught.exception))
+
+    def test_diagnosis_only_reads_metadata_and_filters_sensitive_fields(self):
+        current = service(production=True)
+        current["status"]["latestReadyRevisionName"] = "api-before"
+        current["status"]["conditions"][0] = {
+            "type": "Ready",
+            "status": "False",
+            "message": "synthetic-private-signing-value",
+        }
+        env = current["spec"]["template"]["spec"]["containers"][0]["env"]
+        next(e for e in env if e["name"] == "SEPAY_IPN_SECRET_KEY").clear()
+        env[-1].update(
+            {"name": "SEPAY_IPN_SECRET_KEY", "value": "synthetic-private-ipn-value"}
+        )
+        calls = []
+
+        def cloud(*args, value=None):
+            calls.append((args, value))
+            if args[:3] == ("run", "services", "describe"):
+                return json.dumps(current)
+            if args[:2] == ("secrets", "list"):
+                return json.dumps(
+                    [
+                        {"name": f"projects/test/secrets/{name}"}
+                        for name in setup.SECRETS.values()
+                    ]
+                )
+            if args[:3] == ("secrets", "versions", "list"):
+                return json.dumps(
+                    [
+                        {
+                            "name": f"projects/test/secrets/{args[3]}/versions/7",
+                            "state": "ENABLED",
+                        }
+                    ]
+                )
+            raise AssertionError(f"Unexpected cloud operation: {args[:3]}")
+
+        output = io.StringIO()
+        with (
+            patch.object(setup.sys, "argv", [str(PATH), "--diagnose"]),
+            patch.object(setup.shutil, "which", return_value="gcloud"),
+            patch.object(setup, "gcloud", side_effect=cloud),
+            patch.object(setup.getpass, "getpass") as prompt,
+            patch.object(setup, "urlopen") as network,
+            redirect_stdout(output),
+        ):
+            setup.main()
+        prompt.assert_not_called()
+        network.assert_not_called()
+        text = output.getvalue()
+        self.assertNotIn("synthetic-private", text)
+        report = json.loads(text)
+        self.assertEqual(report["mode"], "read_only_diagnosis")
+        self.assertEqual(report["latest_ready_revision"], "api-before")
+        self.assertEqual(report["latest_created_revision"], "api-production")
+        self.assertEqual(
+            report["secret_bindings"]["SEPAY_IPN_SECRET_KEY"]["type"], "literal_value"
+        )
+        self.assertEqual(
+            report["production_secret_versions"]["serp-sepay-production-key"][
+                "versions"
+            ],
+            [{"version": "7", "state": "ENABLED"}],
+        )
+        self.assertTrue(all(value is None for _, value in calls))
+
+    def test_environment_type_conflict_is_reported_without_raw_env_values(self):
+        message = (
+            "Cannot update environment variable synthetic-private-value "
+            "because it has already been set with a different type."
+        )
+        self.assertEqual(
+            setup.cloud_error_code(message), "ENVIRONMENT_VARIABLE_TYPE_CONFLICT"
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

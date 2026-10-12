@@ -146,6 +146,30 @@ If setup fails before traffic promotion, the existing serving revision remains
 active; inspect revision readiness and secret IAM in Cloud Console before rerunning.
 Rerunning creates new pinned versions without deleting older secret versions.
 
+## Diagnose an incomplete setup
+
+The updated helper reports the failed stage and controlled error reason, such as
+`store_production_secret:SEPAY_SECRET_KEY` plus `PERMISSION_DENIED`, or a staged
+revision/secret-reference validation error. Raw gcloud output and key values are
+never included in these errors. The original helper's generic failure message
+cannot establish which step failed or whether any secret/revision was created.
+
+For an existing failed attempt, upload the refreshed package
+`dist/serp-saas-sepay-production-diagnostics.tar.gz` to Cloud Shell Home, then run:
+
+```sh
+cd ~
+tar -xzf serp-saas-sepay-production-diagnostics.tar.gz
+python3 ~/serp-saas-sepay-production/infrastructure/gcp/configure-sepay-production.py --diagnose
+```
+
+`--diagnose` does not prompt for keys, create versions, change the service or
+promote traffic. It reports created/ready revision names, traffic, gateway mode,
+secret binding types and the latest five version numbers/states for each
+Production secret. It uses [Secret Manager metadata listing](https://docs.cloud.google.com/sdk/gcloud/reference/secrets/versions/list),
+without accessing secret payloads. Environment literals and revision error
+messages are deliberately excluded. This JSON can be shared for troubleshooting.
+
 ## Verification evidence
 
 The configuration/helper tests run without cloud mutations:
@@ -154,9 +178,11 @@ The configuration/helper tests run without cloud mutations:
 python3 -m unittest discover -s infrastructure/gcp/tests -p 'test_sepay_*.py' -v
 ```
 
-8 Production helper tests and 4 existing Sandbox helper tests passed, covering hidden key handling, stdin-only secret creation,
+12 Production helper tests and 4 existing Sandbox helper tests passed, covering hidden key handling, stdin-only secret creation,
 Production secret separation, partial updates, verified revision promotion,
 read-only checks, mismatched/unready revisions and sanitized subprocess failures.
+Additional coverage verifies failed-stage reporting, code-only cloud errors,
+read-only diagnosis and filtering literal keys/revision messages from output.
 The user supplied Sandbox acceptance; helper tests use synthetic credentials.
 
 A local PostgreSQL/ASGI acceptance test also passed for a normal verified customer
