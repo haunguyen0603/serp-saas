@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-12",
+  "evidence_source": "user-provided Cloud Shell screenshot",
+  "project": "serp-saas",
+  "region": "asia-southeast1",
+  "service": "serp-api",
+  "traffic": [{"revision": "serp-api-00014-hqj", "percent": 100}],
+  "helper_check": {
+    "environment": "production",
+    "ready_revision": "serp-api-00014-hqj",
+    "checkout_url": "https://pay.sepay.vn/v1/checkout/init",
+    "verified": true
+  },
+  "public_http_smoke": {
+    "evidence_source": "scripts/verify-sepay-production-http.mjs executed after confirmed cutover",
+    "passed": 18,
+    "orders_or_payments_created": false,
+    "report": "production-http.json"
+  },
+  "real_production_payment_acceptance": "not performed or reported"
+}

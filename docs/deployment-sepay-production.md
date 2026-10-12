@@ -6,12 +6,14 @@ Secret Key are available. Google Cloud configuration uses their chosen Cloud
 Shell workflow. Target: project `serp-saas`, region `asia-southeast1`, API service
 `serp-api`. The existing deployed application already supports Production.
 
-**Current state:** application and Invoices are deployed. The user's Cloud Shell
-diagnosis shows Production secret version 1 and a Production service template,
-with `serp-api-00014-hqj` reporting `Ready=True`, but traffic remains on
-`serp-api-00013-n7vv`. Promotion and post-promotion verification are still pending.
-This workstation has no gcloud/authenticated Google Cloud session and has not
-changed live gateway configuration or performed a real payment.
+**Current state:** the Production gateway cutover is complete. The user's
+2026-10-12 Cloud Shell output confirms 100% traffic on `serp-api-00014-hqj`;
+the post-promotion helper check reports `environment: production`,
+`checkout_url: https://pay.sepay.vn/v1/checkout/init` and `verified: true`.
+Application and Invoices are deployed. Configuration and traffic were changed
+through the user's authenticated Cloud Shell; no real payment has been performed
+or reported as part of this rollout. Production transaction/IPN acceptance remains
+to be verified with an intended real purchase.
 
 ## 1. Configure the Production merchant IPN
 
@@ -119,7 +121,7 @@ python3 infrastructure/gcp/configure-sepay-production.py --check
 `--check` is read-only, requires no key prompts and verifies current configuration,
 pinned Production secret references, readiness and traffic. Cloud Shell needs
 permission to manage the two secrets/IAM, update the existing API and act as its
-runtime service account. A read-only check only needs service read access.
+runtime service account. A read-only check needs service and revision read access.
 
 In the app, use an eligible verified customer account:
 
@@ -197,6 +199,11 @@ need to be recreated merely to perform this readiness check.
 
 ### Resume the ready Production revision
 
+This recovery was completed by the user on 2026-10-12: the traffic command
+succeeded with 100% on `serp-api-00014-hqj`, and `--check` returned `verified: true`.
+The commands below document that recovery; they do not need to be rerun after a
+successful cutover, especially if a later release has created another revision.
+
 The user's subsequent revision response reported `Ready=True`,
 `ContainerReady=True`, `Active=False` and reason `Retired`. A non-current revision
 can be retired while not serving traffic; see
@@ -244,6 +251,14 @@ is no longer the service's current candidate, is not ready, or differs from the
 expected Production configuration. It verifies 100% traffic after promotion.
 
 ## Verification evidence
+
+After the confirmed traffic cutover, `scripts/verify-sepay-production-http.mjs`
+passed all 18 public HTTP checks: API/database health, SePay and invoice routes,
+authentication enforcement, callback/app pages and the public site. The IPN URL
+is publicly reachable and rejects requests without a provider key. This smoke
+test creates no orders and does not validate a provider-signed Production IPN.
+The [cutover evidence](verification-artifacts/milestone-7k/production-gateway-cutover.json)
+records the user's Cloud Shell confirmation separately from the HTTP smoke.
 
 The configuration/helper tests run without cloud mutations:
 

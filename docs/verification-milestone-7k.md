@@ -183,3 +183,26 @@ the payment gateway to Production. They also confirmed Production merchant
 credentials are available. This supersedes the Sandbox-only rollout scope above.
 Actual Cloud Run gateway configuration is handled through the user's chosen
 Cloud Shell workflow; see [Production gateway rollout](deployment-sepay-production.md).
+
+## 2026-10-12 — Production gateway cutover verified
+
+The user's Cloud Shell output confirms `gcloud run services update-traffic`
+completed and routes 100% of `serp-api` traffic to `serp-api-00014-hqj`.
+The subsequent read-only helper check returned `environment: production`,
+`ready_revision: serp-api-00014-hqj`, Production checkout URL
+`https://pay.sepay.vn/v1/checkout/init` and `verified: true`.
+This supersedes the earlier pending Cloud Run configuration and Sandbox-only
+gateway status. Secret version metadata and gateway configuration were verified
+in Cloud Shell; no credentials are stored in the evidence.
+
+The post-cutover public HTTP smoke passed all 18 checks, covering API/database
+health, route availability, authentication, reachable IPN with missing-key
+rejection, app callback/invoice pages and the public site. These checks created
+no orders or payments. See the
+[cutover evidence](verification-artifacts/milestone-7k/production-gateway-cutover.json).
+
+This establishes Production gateway configuration and routing. No real Production
+purchase, provider IPN reconciliation, subscription activation or invoice/PDF for
+a real purchase has been performed or reported in this rollout. Follow the
+[Production verification steps](deployment-sepay-production.md#3-verify) for an
+intended real purchase.
