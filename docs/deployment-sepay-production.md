@@ -180,10 +180,13 @@ The next read-only check for that exact revision is:
 ```sh
 gcloud run revisions describe serp-api-00014-hqj \
   --project=serp-saas --region=asia-southeast1 \
-  --format='json(status.conditions.type,status.conditions.status,status.conditions.reason)'
+  --format=json | python3 -c 'import json,sys; d=json.load(sys.stdin); s=d.get("status",d); print(json.dumps({"response_fields":sorted(d.keys()),"conditions":[{"type":c.get("type"),"status":c.get("status",c.get("state")),"reason":c.get("reason")} for c in s.get("conditions",[])]},indent=2))'
 ```
 
-This projection excludes environment values and condition messages. Inspect the
+The previous nested projection can produce `null` for a repeated conditions
+field. Fetch the JSON object and filter locally instead, supporting both nested
+v1 status and top-level v2 conditions. The printed output excludes environment
+values and condition messages. Inspect the
 revision's own `Ready` condition before deciding whether to promote it or repair
 startup. [Cloud Run revision status](https://docs.cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions)
 is the evidence for that decision. The existing enabled secret versions do not
