@@ -136,14 +136,13 @@ export function BillingPage() {
         ))}
       </div>
       <Card>
-        <h2 className="mb-2">Need more room to grow?</h2>
+        <h2 className="mb-2">Need help?</h2>
         <p>
-          To change your Plan, email{" "}
+          For information or assistance, contact our support team at{" "}
           <a className="ui-text-link" href={SUPPORT_EMAIL_HREF}>
             {SUPPORT_EMAIL}
-          </a>{" "}
-          for assistance and bank-transfer instructions. Paid Plans are
-          activated after payment is confirmed.
+          </a>
+          .
         </p>
       </Card>
       <Link className="text-brand underline" href={siteHref("/pricing")}>
