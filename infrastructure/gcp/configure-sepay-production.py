@@ -146,9 +146,9 @@ def runtime(service: dict) -> tuple[dict, dict]:
     return spec, environment
 
 
-def verify(
+def verify_configuration(
     service: dict, config: dict[str, str], versions: dict[str, str] | None = None
-) -> str:
+) -> None:
     _, environment = runtime(service)
     for key, value in config.items():
         if environment.get(key, {}).get("value") != value:
@@ -162,16 +162,80 @@ def verify(
             raise SetupError(f"Expected a pinned Production secret: {key}")
         if versions and version != versions[key]:
             raise SetupError(f"Cloud Run secret version verification failed: {key}")
-    status = service.get("status", {})
-    revision = status.get("latestReadyRevisionName")
-    if not revision or revision != status.get("latestCreatedRevisionName"):
-        raise SetupError("The configured Production revision is not ready.")
+
+
+def verify_candidate(
+    args: argparse.Namespace,
+    service: dict,
+    config: dict[str, str],
+    versions: dict[str, str] | None = None,
+    expected_revision: str | None = None,
+) -> str:
+    verify_configuration(service, config, versions)
+    candidate = service.get("status", {}).get("latestCreatedRevisionName")
+    if not isinstance(candidate, str) or not re.fullmatch(
+        r"[a-z][a-z0-9-]{0,62}", candidate
+    ):
+        raise SetupError("The configured candidate revision is missing.")
+    if expected_revision and candidate != expected_revision:
+        raise SetupError(
+            "The API candidate changed; the requested revision was not promoted."
+        )
+    artifact = json.loads(
+        gcloud(
+            "run",
+            "revisions",
+            "describe",
+            candidate,
+            f"--project={args.project}",
+            f"--region={args.region}",
+            "--format=json",
+        )
+    )
+    if artifact.get("metadata", {}).get("name") != candidate:
+        raise SetupError("Revision metadata does not match the requested candidate.")
+    owner = (
+        artifact.get("metadata", {})
+        .get("labels", {})
+        .get("serving.knative.dev/service")
+    )
+    if owner and owner != args.service:
+        raise SetupError("The candidate belongs to another Cloud Run service.")
+    snapshot = {"spec": {"template": {"spec": artifact["spec"]}}}
+    verify_configuration(snapshot, config, versions)
+    candidate_spec, candidate_env = runtime(snapshot)
+    current_spec, current_env = runtime(service)
+    if candidate_spec["serviceAccountName"] != current_spec["serviceAccountName"]:
+        raise SetupError("Candidate runtime identity differs from the configured API.")
+    for key in SECRETS:
+        if (
+            candidate_env[key]["valueFrom"]["secretKeyRef"]
+            != current_env[key]["valueFrom"]["secretKeyRef"]
+        ):
+            raise SetupError(
+                f"Candidate secret binding differs from the template: {key}"
+            )
     if not any(
         c.get("type") == "Ready" and c.get("status") == "True"
-        for c in status.get("conditions", [])
+        for c in artifact.get("status", {}).get("conditions", [])
     ):
-        raise SetupError("The Cloud Run API is not ready.")
-    return revision
+        raise SetupError("The candidate revision's own Ready condition is not True.")
+    # Retired/Active=False is valid for a ready revision with zero traffic.
+    return candidate
+
+
+def promote(args: argparse.Namespace, revision: str) -> None:
+    stage("promote_verified_production_revision")
+    gcloud(
+        "run",
+        "services",
+        "update-traffic",
+        args.service,
+        f"--project={args.project}",
+        f"--region={args.region}",
+        f"--to-revisions={revision}=100",
+        "--quiet",
+    )
 
 
 def verify_traffic(service: dict, revision: str) -> None:
@@ -332,7 +396,16 @@ def main() -> None:
         action="store_true",
         help="Read-only metadata diagnosis; no key prompts or cloud mutations.",
     )
+    parser.add_argument(
+        "--resume-revision",
+        help="Validate and promote an existing candidate using its pinned secrets.",
+    )
     args = parser.parse_args()
+    if (
+        sum(bool(value) for value in (args.check, args.diagnose, args.resume_revision))
+        > 1
+    ):
+        parser.error("Choose only one of --check, --diagnose or --resume-revision.")
     if not shutil.which("gcloud"):
         sys.exit("Run in an authenticated Google Cloud Shell.")
     if args.diagnose:
@@ -354,7 +427,7 @@ def main() -> None:
     if args.check:
         stage("verify_current_production_configuration")
         merchant = environment.get("SEPAY_MERCHANT_ID", {}).get("value", "")
-        revision = verify(before, nonsecret_config(merchant))
+        revision = verify_candidate(args, before, nonsecret_config(merchant))
         verify_traffic(before, revision)
         print(
             json.dumps(
@@ -364,6 +437,32 @@ def main() -> None:
                     "ready_revision": revision,
                     "checkout_url": CHECKOUT_URL,
                     "verified": True,
+                },
+                indent=2,
+            )
+        )
+        return
+    if args.resume_revision:
+        stage("verify_existing_production_candidate")
+        merchant = environment.get("SEPAY_MERCHANT_ID", {}).get("value", "")
+        config = nonsecret_config(merchant)
+        revision = verify_candidate(
+            args, before, config, expected_revision=args.resume_revision
+        )
+        promote(args, revision)
+        stage("verify_production_traffic")
+        after = describe(args)
+        verify_candidate(args, after, config, expected_revision=revision)
+        verify_traffic(after, revision)
+        print(
+            json.dumps(
+                {
+                    "service": args.service,
+                    "environment": "production",
+                    "ready_revision": revision,
+                    "checkout_url": CHECKOUT_URL,
+                    "verified": True,
+                    "resumed": True,
                 },
                 indent=2,
             )
@@ -412,7 +511,7 @@ def main() -> None:
     )
     stage("verify_staged_production_revision")
     staged = describe(args)
-    revision = verify(staged, config, versions)
+    revision = verify_candidate(args, staged, config, versions)
     staged_spec, _ = runtime(staged)
     if (
         staged_spec["serviceAccountName"] != identity
@@ -421,20 +520,10 @@ def main() -> None:
         raise SetupError(
             "API identity/image changed during setup; no traffic was promoted."
         )
-    stage("promote_verified_production_revision")
-    gcloud(
-        "run",
-        "services",
-        "update-traffic",
-        args.service,
-        f"--project={args.project}",
-        f"--region={args.region}",
-        f"--to-revisions={revision}=100",
-        "--quiet",
-    )
+    promote(args, revision)
     stage("verify_production_traffic")
     after = describe(args)
-    verify(after, config, versions)
+    verify_candidate(args, after, config, versions, expected_revision=revision)
     verify_traffic(after, revision)
     print(
         json.dumps(

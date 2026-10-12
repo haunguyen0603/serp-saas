@@ -6,10 +6,12 @@ Secret Key are available. Google Cloud configuration uses their chosen Cloud
 Shell workflow. Target: project `serp-saas`, region `asia-southeast1`, API service
 `serp-api`. The existing deployed application already supports Production.
 
-**Current state:** application and Invoices are deployed; the Production gateway
-switch requires running the helper in authenticated Cloud Shell. This workstation
-has no gcloud/authenticated Google Cloud session and has not changed live gateway
-configuration or performed a real payment.
+**Current state:** application and Invoices are deployed. The user's Cloud Shell
+diagnosis shows Production secret version 1 and a Production service template,
+with `serp-api-00014-hqj` reporting `Ready=True`, but traffic remains on
+`serp-api-00013-n7vv`. Promotion and post-promotion verification are still pending.
+This workstation has no gcloud/authenticated Google Cloud session and has not
+changed live gateway configuration or performed a real payment.
 
 ## 1. Configure the Production merchant IPN
 
@@ -74,7 +76,8 @@ serp-sepay-production-ipn-key → SEPAY_IPN_SECRET_KEY
 ```
 
 It grants the existing API runtime identity access to these two secrets. It uses
-partial environment/secret updates with `--no-traffic`, checks the ready revision,
+partial environment/secret updates with `--no-traffic`, checks the candidate's own
+`Ready` condition and immutable configuration,
 expected URLs, image/identity and pinned secret references, then sends 100% of API
 traffic to that specific verified revision. It does not print key values or
 subprocess output. It records only nonsecret revision and version metadata.
@@ -192,6 +195,54 @@ startup. [Cloud Run revision status](https://docs.cloud.google.com/run/docs/refe
 is the evidence for that decision. The existing enabled secret versions do not
 need to be recreated merely to perform this readiness check.
 
+### Resume the ready Production revision
+
+The user's subsequent revision response reported `Ready=True`,
+`ContainerReady=True`, `Active=False` and reason `Retired`. A non-current revision
+can be retired while not serving traffic; see
+[Cloud Run revision management](https://docs.cloud.google.com/run/docs/managing/revisions).
+The original helper incorrectly required the service's latest-created and
+latest-ready revision names to match before promotion. The corrected helper
+reads the candidate revision directly, verifies its Production configuration,
+runtime identity and pinned secret bindings, and requires its own `Ready=True`.
+It does not treat `Active=False` or `Retired` as a startup failure.
+
+For this exact ready candidate, continue directly in Cloud Shell:
+
+```sh
+gcloud run services update-traffic serp-api \
+  --project=serp-saas --region=asia-southeast1 \
+  --to-revisions=serp-api-00014-hqj=100
+
+gcloud run services describe serp-api \
+  --project=serp-saas --region=asia-southeast1 \
+  --format='yaml(status.traffic)'
+
+python3 ~/serp-saas-sepay-production/infrastructure/gcp/configure-sepay-production.py --check
+```
+
+The expected serving traffic is 100% on `serp-api-00014-hqj`. The final read-only
+check should report `environment: production` and `verified: true`. This traffic
+update reuses the existing revision and secrets; do not rerun initial setup just
+to recreate them. The command is documented in
+[gcloud update-traffic](https://docs.cloud.google.com/sdk/gcloud/reference/run/services/update-traffic).
+
+Alternatively, upload `dist/serp-saas-sepay-production-resume.tar.gz` to Cloud Shell
+Home and use the corrected helper to validate the immutable candidate before
+promoting it:
+
+```sh
+cd ~
+tar -xzf serp-saas-sepay-production-resume.tar.gz
+python3 ~/serp-saas-sepay-production/infrastructure/gcp/configure-sepay-production.py \
+  --resume-revision serp-api-00014-hqj
+```
+
+`--resume-revision` creates no secret versions and does not update environment
+variables or prompt for keys. It refuses to promote if the requested revision
+is no longer the service's current candidate, is not ready, or differs from the
+expected Production configuration. It verifies 100% traffic after promotion.
+
 ## Verification evidence
 
 The configuration/helper tests run without cloud mutations:
@@ -200,11 +251,16 @@ The configuration/helper tests run without cloud mutations:
 python3 -m unittest discover -s infrastructure/gcp/tests -p 'test_sepay_*.py' -v
 ```
 
-12 Production helper tests and 4 existing Sandbox helper tests passed, covering hidden key handling, stdin-only secret creation,
+16 Production helper tests and 4 existing Sandbox helper tests passed, covering hidden key handling, stdin-only secret creation,
 Production secret separation, partial updates, verified revision promotion,
 read-only checks, mismatched/unready revisions and sanitized subprocess failures.
 Additional coverage verifies failed-stage reporting, code-only cloud errors,
 read-only diagnosis and filtering literal keys/revision messages from output.
+Regression coverage reproduces the user's ready/retired candidate with an old
+service-level latest-ready name, rejects a genuinely unready candidate even when
+the service is ready, checks immutable candidate configuration/secret pins and
+verifies resuming without key prompts or secret creation. All 56 infrastructure
+unit tests passed; Ruff format/lint checks also passed for the changed scripts.
 The user supplied Sandbox acceptance; helper tests use synthetic credentials.
 
 A local PostgreSQL/ASGI acceptance test also passed for a normal verified customer

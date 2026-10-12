@@ -6,6 +6,7 @@ import json
 import subprocess
 import unittest
 from contextlib import redirect_stdout
+from copy import deepcopy
 from pathlib import Path
 from unittest.mock import patch
 
@@ -82,16 +83,56 @@ def service(*, production=False, promoted=False):
     }
 
 
+def revision(current, *, ready=True):
+    return {
+        "metadata": {
+            "name": current["status"]["latestCreatedRevisionName"],
+            "labels": {"serving.knative.dev/service": "serp-api"},
+        },
+        "spec": deepcopy(current["spec"]["template"]["spec"]),
+        "status": {
+            "conditions": [
+                {
+                    "type": "Ready",
+                    "status": "True" if ready else "False",
+                    "reason": "Retired",
+                },
+                {"type": "Active", "status": "False", "reason": "Retired"},
+                {"type": "ContainerReady", "status": "True"},
+                {
+                    "type": "ResourcesAvailable",
+                    "status": "Unknown",
+                    "reason": "Retired",
+                },
+            ]
+        },
+    }
+
+
 class ProductionSetupTests(unittest.TestCase):
-    def run_main(self, services, *, check=False, keys=None, cloud_extra=None):
+    def run_main(
+        self,
+        services,
+        *,
+        check=False,
+        resume=None,
+        keys=None,
+        cloud_extra=None,
+        candidate=None,
+    ):
         calls = []
         self.cloud_calls = calls
         descriptions = iter(services)
+        current = None
 
         def cloud(*args, value=None):
+            nonlocal current
             calls.append((args, value))
             if args[:3] == ("run", "services", "describe"):
-                return json.dumps(next(descriptions))
+                current = next(descriptions)
+                return json.dumps(current)
+            if args[:3] == ("run", "revisions", "describe"):
+                return json.dumps(candidate or revision(current))
             if cloud_extra:
                 return cloud_extra(args)
             if args[:2] == ("secrets", "list"):
@@ -118,6 +159,8 @@ class ProductionSetupTests(unittest.TestCase):
                 "argv",
                 [str(PATH), "--check"]
                 if check
+                else [str(PATH), "--resume-revision", resume]
+                if resume
                 else [str(PATH), "--merchant-id", "LIVE-MERCHANT"],
             ),
             patch.object(setup.shutil, "which", return_value="gcloud"),
@@ -227,29 +270,103 @@ class ProductionSetupTests(unittest.TestCase):
             [service(production=True, promoted=True)], check=True
         )
         self.assertEqual(
-            [args[:3] for args, _ in calls], [("run", "services", "describe")]
+            [args[:3] for args, _ in calls],
+            [("run", "services", "describe"), ("run", "revisions", "describe")],
         )
         prompt.assert_not_called()
         self.assertTrue(json.loads(output)["verified"])
 
-    def test_mismatched_secret_and_unready_revision_rejected(self):
-        for mutation in ("secret", "not_ready", "condition", "endpoint"):
+    def test_mismatched_configuration_rejected(self):
+        for mutation in ("secret", "endpoint"):
             staged = service(production=True)
             if mutation == "secret":
                 staged["spec"]["template"]["spec"]["containers"][0]["env"][-1][
                     "valueFrom"
                 ]["secretKeyRef"]["name"] = "serp-sepay-sandbox-ipn-key"
-            elif mutation == "not_ready":
-                staged["status"]["latestReadyRevisionName"] = "api-before"
-            elif mutation == "condition":
-                staged["status"]["conditions"][0]["status"] = "False"
             else:
                 env = staged["spec"]["template"]["spec"]["containers"][0]["env"]
                 next(e for e in env if e["name"] == "SEPAY_CHECKOUT_URL")["value"] = (
                     "https://pay-sandbox.sepay.vn/v1/checkout/init"
                 )
             with self.subTest(mutation=mutation), self.assertRaises(RuntimeError):
-                setup.verify(staged, EXPECTED)
+                setup.verify_configuration(staged, EXPECTED)
+
+    def test_ready_retired_candidate_promoted_despite_old_latest_ready(self):
+        staged = service(production=True)
+        staged["status"]["latestReadyRevisionName"] = "api-before"
+        calls, output, _ = self.run_main(
+            [service(), staged, service(production=True, promoted=True)]
+        )
+        self.assertTrue(json.loads(output)["verified"])
+        self.assertTrue(
+            any(args[:3] == ("run", "services", "update-traffic") for args, _ in calls)
+        )
+
+    def test_unready_candidate_not_promoted_despite_ready_service(self):
+        current = service(production=True)
+        with self.assertRaisesRegex(RuntimeError, "own Ready condition"):
+            self.run_main(
+                [service(), current], candidate=revision(current, ready=False)
+            )
+        self.assertFalse(
+            any(
+                args[:3] == ("run", "services", "update-traffic")
+                for args, _ in self.cloud_calls
+            )
+        )
+
+    def test_candidate_snapshot_and_requested_revision_must_match(self):
+        current = service(production=True)
+        for mutation in ("owner", "identity", "pin", "endpoint", "metadata"):
+            artifact = revision(current)
+            if mutation == "owner":
+                artifact["metadata"]["labels"]["serving.knative.dev/service"] = "other"
+            elif mutation == "metadata":
+                artifact["metadata"]["name"] = "other"
+            elif mutation == "identity":
+                artifact["spec"]["serviceAccountName"] = (
+                    "other@test.iam.gserviceaccount.com"
+                )
+            elif mutation == "pin":
+                artifact["spec"]["containers"][0]["env"][-1]["valueFrom"][
+                    "secretKeyRef"
+                ]["key"] = "8"
+            else:
+                env = artifact["spec"]["containers"][0]["env"]
+                next(e for e in env if e["name"] == "SEPAY_CHECKOUT_URL")["value"] = (
+                    "https://wrong.example"
+                )
+            with self.subTest(mutation=mutation), self.assertRaises(RuntimeError):
+                self.run_main([current], resume="api-production", candidate=artifact)
+            self.assertFalse(
+                any(
+                    args[:3] == ("run", "services", "update-traffic")
+                    for args, _ in self.cloud_calls
+                )
+            )
+        with self.assertRaisesRegex(RuntimeError, "candidate changed"):
+            self.run_main([current], resume="api-older")
+
+    def test_resume_uses_existing_secrets_without_prompts_or_service_update(self):
+        staged = service(production=True)
+        staged["status"]["latestReadyRevisionName"] = "api-before"
+        calls, output, prompt = self.run_main(
+            [staged, service(production=True, promoted=True)], resume="api-production"
+        )
+        prompt.assert_not_called()
+        self.assertEqual(
+            [args[:3] for args, _ in calls],
+            [
+                ("run", "services", "describe"),
+                ("run", "revisions", "describe"),
+                ("run", "services", "update-traffic"),
+                ("run", "services", "describe"),
+                ("run", "revisions", "describe"),
+            ],
+        )
+        self.assertTrue(all(value is None for _, value in calls))
+        self.assertTrue(json.loads(output)["resumed"])
+        self.assertTrue(json.loads(output)["verified"])
 
     def test_no_promotion_after_staged_validation_failure(self):
         staged = service(production=True)
