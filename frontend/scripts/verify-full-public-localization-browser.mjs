@@ -217,8 +217,15 @@ try {
   const entries = [...sitemap.body.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
     (match) => match[1],
   );
-  assert.equal(entries.length, 24);
-  assert.equal(new Set(entries).size, 24);
+  const unpairedVietnamesePosts = getPublishedPosts(undefined, "vi").filter(
+    (post) => !pairFor(`/vi/blog/${post.slug}`),
+  );
+  const expectedEntries =
+    publicLocalePairs.length * 2 + unpairedVietnamesePosts.length;
+  assert.equal(entries.length, expectedEntries);
+  assert.equal(new Set(entries).size, expectedEntries);
+  for (const post of unpairedVietnamesePosts)
+    assert(entries.includes(`${origin}/vi/blog/${post.slug}`));
   for (const pair of publicLocalePairs)
     for (const path of [pair.en, pair.vi])
       assert(entries.includes(origin + path));
@@ -416,7 +423,10 @@ try {
       const select = page.locator("header .public-language-select"),
         trigger = select.locator("summary");
       await trigger.waitFor({ state: "visible" });
-      assert.equal(await trigger.getAttribute("aria-label"), "Change language");
+      assert.equal(
+        await trigger.getAttribute("aria-label"),
+        `Change language: ${locale === "vi" ? "Tiếng Việt" : "English"}`,
+      );
       assert(
         (await trigger.innerText()).includes(
           locale === "vi" ? "Tiếng Việt" : "English",
@@ -588,7 +598,7 @@ try {
   const vietnamese = metadata.filter((entry) => entry.locale === "vi");
   assert.equal(new Set(vietnamese.map((entry) => entry.title)).size, 12);
   assert.equal(new Set(vietnamese.map((entry) => entry.description)).size, 12);
-  assert.equal(getPublishedPosts(undefined, "vi").length, 3);
+  assert.equal(getPublishedPosts(undefined, "vi").length, 4);
   await snapshot();
   console.log(
     JSON.stringify({

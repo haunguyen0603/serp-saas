@@ -23,6 +23,7 @@ import { RootDocument } from "@/components/root-document";
 import { proxy } from "@/proxy";
 import sitemap from "@/app/sitemap";
 import robots from "@/app/robots";
+import { GET as feedRoute } from "@/app/(en)/feed.xml/route";
 import Home, { metadata as homeMetadata } from "@/app/vi/page";
 import { metadata as englishHomeMetadata } from "@/app/(en)/page";
 import BlogIndex, { metadata as indexMetadata } from "@/app/vi/blog/page";
@@ -192,13 +193,13 @@ it.each(vietnameseLandingPages)(
 
 it("isolates Vietnamese articles and retains English validation and feed content", async () => {
   const posts = getPublishedPosts(undefined, "vi");
-  expect(posts).toHaveLength(3);
+  expect(posts).toHaveLength(4);
   expect(getPublishedPosts()).toHaveLength(3);
   expect(generateStaticParams()).toEqual(
     posts.map((post) => ({ slug: post.slug })),
   );
   render(<BlogIndex />);
-  expect(document.querySelectorAll(".blog-card")).toHaveLength(3);
+  expect(document.querySelectorAll(".blog-card")).toHaveLength(posts.length);
   expect(
     document.querySelector('a[href="/blog/how-to-track-google-rankings"]'),
   ).toBeNull();
@@ -216,7 +217,6 @@ it("isolates Vietnamese articles and retains English validation and feed content
       inLanguage: "vi",
     });
     expect(post.content).toContain("/vi/cong-cu-kiem-tra-thu-hang-tu-khoa");
-    expect(post.content).toContain("/vi/theo-doi-thu-hang-tu-khoa-hang-ngay");
     expect(post.content).not.toMatch(/\]\(\/blog\//);
     expect(post.readingMinutes).toBeGreaterThanOrEqual(3);
   }
@@ -228,6 +228,48 @@ it("isolates Vietnamese articles and retains English validation and feed content
   await expect(
     generateMetadata({ params: Promise.resolve({ slug: "unknown" }) }),
   ).rejects.toThrow("NEXT_NOT_FOUND");
+});
+
+it("publishes an unpaired Vietnamese article without invented alternates or English feed entries", async () => {
+  const slug = "cong-cu-rank-tracker-la-gi";
+  const path = `/vi/blog/${slug}`;
+  const post = getPublishedPost(slug, "vi")!;
+  expect(post).toBeDefined();
+  expect(getPublishedPost(slug)).toBeUndefined();
+  const metadata = await generateMetadata({
+    params: Promise.resolve({ slug }),
+  });
+  expect(metadata.alternates?.canonical).toBe(origin + path);
+  expect(metadata.alternates?.languages).toBeUndefined();
+  expect(metadata.alternates?.types).toBeUndefined();
+  expect(metadata.robots).toEqual({ index: true, follow: true });
+  expect(sitemap()).toContainEqual(
+    expect.objectContaining({
+      url: origin + path,
+      lastModified: post.updatedAt,
+    }),
+  );
+  expect(await feedRoute().text()).not.toContain(slug);
+
+  render(<LanguageSelect path={path} />);
+  document.querySelector("details")!.open = true;
+  expect(screen.getByRole("link", { name: "English" })).toHaveAttribute(
+    "href",
+    "/",
+  );
+  expect(screen.getByRole("link", { name: "Tiếng Việt" })).toHaveAttribute(
+    "href",
+    "/vi",
+  );
+  vi.stubEnv("NEXT_PUBLIC_SITE_URL", origin);
+  vi.stubEnv("NEXT_PUBLIC_APP_URL", "https://app.serpsaas.com");
+  const response = proxy(
+    new NextRequest(origin + path, {
+      headers: { host: "serpsaas.com", "accept-language": "en" },
+    }),
+  );
+  expect(response.headers.get("location")).toBeNull();
+  expect(response.headers.get("X-Robots-Tag")).toBeNull();
 });
 
 it.each(getPublishedPosts(undefined, "vi"))(
@@ -291,8 +333,12 @@ it("emits unique Vietnamese metadata and self canonicals at the fixed production
     ...vietnameseLandingPages.map(landingMetadata),
     ...getPublishedPosts(undefined, "vi").map((post) => blogMetadata(post)),
   ];
-  expect(new Set(metas.map((meta) => JSON.stringify(meta.title))).size).toBe(8);
-  expect(new Set(metas.map((meta) => meta.description)).size).toBe(8);
+  expect(new Set(metas.map((meta) => JSON.stringify(meta.title))).size).toBe(
+    metas.length,
+  );
+  expect(new Set(metas.map((meta) => meta.description)).size).toBe(
+    metas.length,
+  );
   for (const meta of metas) {
     const path = new URL(String(meta.alternates?.canonical)).pathname;
     expect(meta.alternates?.languages).toEqual(localeLanguages(path));

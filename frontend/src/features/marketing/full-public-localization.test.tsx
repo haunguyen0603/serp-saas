@@ -87,7 +87,10 @@ it.each(["/", "/vi", "/pricing", "/vi/chinh-sach-bao-mat"])(
   (path) => {
     const vietnamese = path.startsWith("/vi");
     const { container } = render(<LanguageSelect path={path} />);
-    const summary = screen.getByLabelText("Change language");
+    const summary = screen.getByLabelText(/^Change language:/);
+    expect(summary).toHaveAccessibleName(
+      `Change language: ${vietnamese ? "Tiếng Việt" : "English"}`,
+    );
     expect(summary).toHaveTextContent(vietnamese ? "Tiếng Việt" : "English");
     expect(summary.querySelector("img")).toHaveAttribute(
       "src",
@@ -289,7 +292,7 @@ it("adds the educational agency guide and keeps it distinct from the commercial 
   expect(container.querySelector('main a[href="/pricing"]')).toBeNull();
 });
 
-it("provides self-canonical metadata and reciprocal alternates for all new pairs and includes 24 unique sitemap URLs", async () => {
+it("provides self-canonical metadata and reciprocal alternates for all new pairs and includes 25 unique sitemap URLs", async () => {
   const metas = [
     pricingMetadata,
     aboutMetadata,
@@ -310,8 +313,8 @@ it("provides self-canonical metadata and reciprocal alternates for all new pairs
     expect(meta.twitter).toBeDefined();
   }
   const urls = sitemap().map((page) => page.url);
-  expect(new Set(urls).size).toBe(24);
-  expect(urls).toHaveLength(24);
+  expect(new Set(urls).size).toBe(25);
+  expect(urls).toHaveLength(25);
   for (const pair of publicLocalePairs)
     for (const path of [pair.en, pair.vi])
       expect(urls).toContain(`https://serpsaas.com${path}`);

@@ -50,7 +50,7 @@ export function PostCard({
       <Link
         className="public-text-link"
         href={siteHref(postPath)}
-        aria-label={`${vi ? "Đọc" : "Read"} ${post.title}`}
+        aria-label={`${vi ? "Đọc hướng dẫn" : "Read guide"}: ${post.title}`}
       >
         {vi ? "Đọc hướng dẫn" : "Read guide"} <span aria-hidden="true">→</span>
       </Link>
