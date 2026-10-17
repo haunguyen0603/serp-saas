@@ -1,0 +1,25 @@
+{
+  "releaseCommit": "bc0c86edb8c7c3cca52bd0ae34d93d31e48a3b28",
+  "pullRequest": "https://github.com/haunguyen0603/serp-saas/pull/1",
+  "checks": [
+    {
+      "name": "serp-backend-main (serp-saas)",
+      "status": "completed",
+      "conclusion": "neutral",
+      "detailsUrl": "https://console.cloud.google.com/cloud-build/triggers;region=europe-west1/edit/afed77f4-293c-4a1d-8a68-2da8cbbf3a63?project=833917440392",
+      "startedAt": "2026-10-17T16:52:53Z",
+      "completedAt": "2026-10-17T16:52:52Z",
+      "summary": "Changed files did not match file filter"
+    },
+    {
+      "name": "serp-web-main (serp-saas)",
+      "status": "completed",
+      "conclusion": "success",
+      "detailsUrl": "https://console.cloud.google.com/cloud-build/builds;region=europe-west1/58d2bdc0-92b6-43fb-9bee-5c7a91158212?project=833917440392",
+      "startedAt": "2026-10-17T16:52:53Z",
+      "completedAt": "2026-10-17T17:01:04Z",
+      "summary": "Build 58d2bdc0-92b6-43fb-9bee-5c7a91158212 successful"
+    }
+  ]
+}
+
