@@ -44,7 +44,10 @@ export function LanguageSelect({ path }: { path: string }) {
           event.currentTarget.open = false;
       }}
     >
-      <summary aria-label="Change language" aria-describedby={labelId}>
+      <summary
+        aria-label={`Change language: ${current.label}`}
+        aria-describedby={labelId}
+      >
         <Image
           src={current.flag}
           alt=""
