@@ -24,6 +24,7 @@ it("publishes only commercial pages in the main site's sitemap", () => {
       "/vi/seo-rank-tracking-cho-agency",
       "/vi/blog/cach-theo-doi-thu-hang-google",
       "/vi/blog/cong-cu-rank-tracker-la-gi",
+      "/vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay",
       "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
       "/vi/bang-gia",
       "/vi/gioi-thieu",

@@ -167,4 +167,3 @@ Evidence: [production QA JSON](verification-artifacts/blog-vi-rank-tracker/produ
 Production browser checks intercepted anonymous session refresh calls; no real
 account, payment or SERP-provider operation was performed. Google indexing,
 Search Console and traffic have **not** been verified or claimed.
-

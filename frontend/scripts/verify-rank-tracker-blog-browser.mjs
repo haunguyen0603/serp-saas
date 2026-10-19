@@ -211,7 +211,7 @@ try {
       await page.waitForURL(base + "/vi");
       assert.equal(await page.locator("html").getAttribute("lang"), "vi");
       await page.goto(base + "/vi/blog", { waitUntil: "networkidle" });
-      assert.equal(await page.locator(".blog-card").count(), 4);
+      assert.equal(await page.locator(".blog-card").count(), 5);
       assert.equal(
         await page
           .getByRole("link", { name: title, exact: true })
@@ -230,7 +230,7 @@ try {
         overflow: false,
         languageFallback: "/",
         roundTrip: "/vi",
-        listingCards: 4,
+        listingCards: 5,
         pageErrors: errors,
       });
       await context.close();
