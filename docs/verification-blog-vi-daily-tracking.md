@@ -141,22 +141,50 @@ earlier evidence.
 
 ## Deployment status and limitations
 
-**Not deployed.** The article is published in repository content (`draft: false`)
-and verified in the local production build only. No remote publication, merge,
-hosting or production configuration change was performed.
+**Deployed successfully at 23:19 on 2026-10-19 (Asia/Saigon).** The user explicitly
+authorized production deployment, then commit
+[`a2976f5`](https://github.com/haunguyen0603/serp-saas/commit/a2976f534854c75ef972650b0e8b95c275adf3af)
+was pushed to `main`, preserving the existing remote history. The existing
+`serp-web-main` trigger ran
+[Cloud Build 5a92178e](https://console.cloud.google.com/cloud-build/builds;region=europe-west1/5a92178e-fda2-42fb-9eb8-3beda011205e?project=833917440392),
+which completed successfully at `2026-10-19T16:19:00Z`. The backend trigger was
+skipped by its file filter; no backend or infrastructure change was deployed.
 
-Live URL availability, Google indexing, Search Console and traffic have not been
-verified. Accessibility results cover automated axe checks and the documented
-keyboard/visual checks; they do not claim a complete assistive-technology audit.
+Post-deployment verification passed on
+[the live article](https://serpsaas.com/vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay):
+
+- HTTP 200, including with English language preferences; exact SEO title and
+  description, Vietnamese document language, one H1, self-canonical and
+  `index, follow`.
+- `BlogPosting` and `BreadcrumbList`, canonical URLs and both dates `2026-10-19`;
+  no fabricated hreflang or English article route.
+- The article appears in the Vietnamese blog listing. Both editorial links,
+  English/Vietnamese Home and English blog return HTTP 200.
+- Sitemap has 26 entries and includes the article exactly once. English RSS
+  retains three items and excludes this article.
+- App-host requests return the existing 307 redirect with path/query preserved;
+  the nonexistent English article returns HTTP 404.
+- Browser checks passed at 375, 768, 1024 and 1440 px, with JavaScript both
+  enabled and disabled: no page-level overflow, exceptions or hydration errors;
+  zero axe WCAG violations in all four JavaScript-enabled cases. Both article
+  tables and the unpaired English Home language fallback work.
+- Inspected production mobile and desktop screenshots; Vietnamese accents,
+  heading wrapping and layout remain legible.
+
+Production browser checks intercepted anonymous session-refresh requests. No real
+account, payment or SERP-provider operation was performed. Google indexing,
+Search Console and traffic remain unverified. Accessibility results cover
+automated axe checks and the documented keyboard/visual checks; they do not
+claim a complete assistive-technology audit.
+
+Production evidence:
+
+- [Cloud Build checks](verification-artifacts/blog-vi-daily-tracking/production/cloud-build-checks.json)
+- [HTTP and browser QA](verification-artifacts/blog-vi-daily-tracking/production/production-qa.json)
+- [Mobile screenshot](verification-artifacts/blog-vi-daily-tracking/production/article-375.png)
+- [Desktop screenshot](verification-artifacts/blog-vi-daily-tracking/production/article-1440.png)
 
 The standalone server logged four Next.js `NoFallbackError` messages during the
 four intentional missing-article probes (unknown slug, draft slug and the two
 untranslated English slugs). All four responses were verified as HTTP 404;
 published article and internal-link checks returned HTTP 200.
-
-## Subsequent release authorization
-
-On **2026-10-19**, the user authorized a direct push to GitHub `main`. The
-repository's existing frontend pipeline automatically builds and deploys after
-a main-branch push. Production deployment and live validation for this article
-have not yet been confirmed; the results above describe the local production build.

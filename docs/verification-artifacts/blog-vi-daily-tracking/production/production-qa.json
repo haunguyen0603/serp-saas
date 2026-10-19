@@ -1,0 +1,160 @@
+{
+  "checkedAt": "2026-10-19T16:19:30.018Z",
+  "releaseCommit": "a2976f534854c75ef972650b0e8b95c275adf3af",
+  "buildId": "5a92178e-fda2-42fb-9eb8-3beda011205e",
+  "http": [
+    {
+      "url": "https://serpsaas.com/vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "status": 200,
+      "location": null,
+      "xRobotsTag": null,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/vi/blog",
+      "status": 200,
+      "location": null,
+      "xRobotsTag": null,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "status": 200,
+      "location": null,
+      "xRobotsTag": null,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/vi/blog/cong-cu-rank-tracker-la-gi",
+      "status": 200,
+      "location": null,
+      "xRobotsTag": null,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/",
+      "status": 200,
+      "location": null,
+      "xRobotsTag": null,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/vi",
+      "status": 200,
+      "location": null,
+      "xRobotsTag": null,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/blog",
+      "status": 200,
+      "location": null,
+      "xRobotsTag": null,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://serpsaas.com/sitemap.xml",
+      "status": 200,
+      "location": null,
+      "xRobotsTag": null,
+      "contentType": "application/xml"
+    },
+    {
+      "url": "https://serpsaas.com/feed.xml",
+      "status": 200,
+      "location": null,
+      "xRobotsTag": null,
+      "contentType": "application/rss+xml; charset=utf-8"
+    },
+    {
+      "url": "https://app.serpsaas.com/vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay?source=production-qa",
+      "status": 307,
+      "location": "https://serpsaas.com/vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay?source=production-qa",
+      "xRobotsTag": null,
+      "contentType": "text/html"
+    },
+    {
+      "url": "https://serpsaas.com/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "status": 404,
+      "location": null,
+      "xRobotsTag": null,
+      "contentType": "text/html; charset=utf-8"
+    }
+  ],
+  "browser": [
+    {
+      "width": 375,
+      "javaScriptEnabled": true,
+      "status": 200,
+      "horizontalOverflow": false,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "englishFallback": "/"
+    },
+    {
+      "width": 375,
+      "javaScriptEnabled": false,
+      "status": 200,
+      "horizontalOverflow": false,
+      "accessibilityViolations": null,
+      "pageErrors": [],
+      "englishFallback": "/"
+    },
+    {
+      "width": 768,
+      "javaScriptEnabled": true,
+      "status": 200,
+      "horizontalOverflow": false,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "englishFallback": "/"
+    },
+    {
+      "width": 768,
+      "javaScriptEnabled": false,
+      "status": 200,
+      "horizontalOverflow": false,
+      "accessibilityViolations": null,
+      "pageErrors": [],
+      "englishFallback": "/"
+    },
+    {
+      "width": 1024,
+      "javaScriptEnabled": true,
+      "status": 200,
+      "horizontalOverflow": false,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "englishFallback": "/"
+    },
+    {
+      "width": 1024,
+      "javaScriptEnabled": false,
+      "status": 200,
+      "horizontalOverflow": false,
+      "accessibilityViolations": null,
+      "pageErrors": [],
+      "englishFallback": "/"
+    },
+    {
+      "width": 1440,
+      "javaScriptEnabled": true,
+      "status": 200,
+      "horizontalOverflow": false,
+      "accessibilityViolations": 0,
+      "pageErrors": [],
+      "englishFallback": "/"
+    },
+    {
+      "width": 1440,
+      "javaScriptEnabled": false,
+      "status": 200,
+      "horizontalOverflow": false,
+      "accessibilityViolations": null,
+      "pageErrors": [],
+      "englishFallback": "/"
+    }
+  ],
+  "sitemapEntries": 26,
+  "englishRssItems": 3
+}

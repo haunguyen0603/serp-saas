@@ -1,0 +1,36 @@
+{
+  "releaseCommit": "a2976f534854c75ef972650b0e8b95c275adf3af",
+  "buildId": "5a92178e-fda2-42fb-9eb8-3beda011205e",
+  "checks": [
+    {
+      "name": "serp-web-main (serp-saas)",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://console.cloud.google.com/cloud-build/builds;region=europe-west1/5a92178e-fda2-42fb-9eb8-3beda011205e?project=833917440392",
+      "started_at": "2026-10-19T16:11:51Z",
+      "completed_at": "2026-10-19T16:19:00Z",
+      "output": {
+        "title": "Summary",
+        "summary": "Build 5a92178e-fda2-42fb-9eb8-3beda011205e successful",
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/haunguyen0603/serp-saas/check-runs/118163088683/annotations"
+      }
+    },
+    {
+      "name": "serp-backend-main (serp-saas)",
+      "status": "completed",
+      "conclusion": "neutral",
+      "details_url": "https://console.cloud.google.com/cloud-build/triggers;region=europe-west1/edit/afed77f4-293c-4a1d-8a68-2da8cbbf3a63?project=833917440392",
+      "started_at": "2026-10-19T16:11:51Z",
+      "completed_at": "2026-10-19T16:11:51Z",
+      "output": {
+        "title": "Summary",
+        "summary": "Changed files did not match file filter",
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/haunguyen0603/serp-saas/check-runs/118163088011/annotations"
+      }
+    }
+  ]
+}
