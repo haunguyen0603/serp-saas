@@ -1,6 +1,7 @@
 # Vietnamese competitor-analysis article verification
 
-Implemented and verified locally on **2026-10-21** (Asia/Saigon).
+Implemented and verified locally on **2026-10-21** (Asia/Saigon); production release
+details are recorded below.
 
 ## Article and integration
 
@@ -11,7 +12,7 @@ Implemented and verified locally on **2026-10-21** (Asia/Saigon).
 - H1: `Cách theo dõi thứ hạng đối thủ SEO bằng dữ liệu SERP`.
 - SEO title: `Cách theo dõi thứ hạng đối thủ SEO bằng dữ liệu SERP | SERP SaaS`.
 - Description: `Hướng dẫn xác định đối thủ SEO từ kết quả Google, so sánh thứ hạng theo nhóm từ khóa và tìm cơ hội nội dung bằng dữ liệu SERP.`
-- Both `publishedAt` and `updatedAt`: `2026-10-21`, the date of this local publication-ready edit. Production publication has not been performed.
+- Both `publishedAt` and `updatedAt`: `2026-10-21`, the date of editing and production publication.
 - `locale: vi`, `draft: false`, `featured: false`, author `SERP SaaS`.
 - Category: `Phân tích đối thủ`; tags: `đối thủ SEO`, `phân tích SERP`, `thứ hạng Google`. The parser supports free-text categories; the shared Google-ranking tag allows contextual related-post discovery.
 
@@ -188,11 +189,55 @@ editorial brief in the repository's `docs/` directory for its fidelity compariso
 
 ## Production status and limits
 
-**Production deployment authorized by the user on 2026-10-21.** The verified
-change is being released through the existing `serp-web-main` push-to-main
-pipeline. Deployment completion and production QA will be recorded after that
-pipeline succeeds. No indexing request was submitted; indexing, traffic and
-ranking outcomes remain unverified.
+**Deployed successfully at 15:18:52 on 2026-10-21 (Asia/Saigon).** After the user
+explicitly authorized production deployment, commit
+[`0d04f64`](https://github.com/haunguyen0603/serp-saas/commit/0d04f64286f9e2f1acc1354294faea7f98027de5)
+was pushed to `main` with the existing remote history preserved. The
+`serp-web-main` pipeline ran
+[Cloud Build 24a59711](https://console.cloud.google.com/cloud-build/builds;region=europe-west1/24a59711-56fc-470a-9355-8f64287372cf?project=833917440392),
+which completed successfully at `2026-10-21T08:18:52Z`. The backend pipeline was
+skipped by its file filter; no backend or infrastructure change was deployed.
+The [live article](https://serpsaas.com/vi/blog/cach-theo-doi-thu-hang-doi-thu-seo)
+returned HTTP 200 after the release.
+
+Production QA completed at `2026-10-21T08:19:48Z` (15:19:48 Asia/Saigon):
+
+- Passed all eight viewport/JavaScript combinations at 375, 768, 1024 and 1440 px.
+  No page exceptions, hydration errors or page-level horizontal overflow.
+- Exact title/description, one H1, Vietnamese document language, self-canonical,
+  `index, follow`, `BlogPosting` and `BreadcrumbList` with both dates `2026-10-21`.
+- Six VI listing cards, the new article present once, three VI related guides,
+  and discovery from the existing Rank Tracker guide.
+- All 13 distinct linked VI URLs returned HTTP 200, including both editorial
+  destinations. Sitemap contains 27 URLs and this article exactly once; English
+  RSS retains three items and excludes the article.
+- No invented English hreflang or article route; the untranslated EN URL returns 404. Unpaired language fallback and the Home round trip work with and without
+  JavaScript. The app-host path/query redirect remains HTTP 307.
+- All four tables are reachable with Tab in every case; mobile ArrowRight
+  scrolling works with JavaScript enabled and disabled. Zero axe violations at
+  all four JS-enabled widths. Inspected production mobile/desktop article and
+  mobile no-JS table screenshots; accents, wrapping and focus are legible.
+
+Production browser checks intercepted anonymous session-refresh requests. No real
+account, payment or SERP-provider operation was performed.
+
+Production evidence:
+
+- [Cloud Build checks](verification-artifacts/blog-vi-seo-competitors/production/cloud-build-checks.json)
+- [HTTP/browser QA](verification-artifacts/blog-vi-seo-competitors/production/browser-qa.json)
+- [Sitemap](verification-artifacts/blog-vi-seo-competitors/production/sitemap.xml)
+- [Mobile screenshot](verification-artifacts/blog-vi-seo-competitors/production/article-375.png)
+- [Desktop screenshot](verification-artifacts/blog-vi-seo-competitors/production/article-1440.png)
+- [Mobile no-JS table](verification-artifacts/blog-vi-seo-competitors/production/article-tables-375-no-js.png)
+- [Repeatable production QA script](verification-artifacts/blog-vi-seo-competitors/production/verify-production.mjs)
+
+To repeat production QA, run the saved script from `frontend/` with the same
+`QA_TOOLS_DIRECTORY` and `QA_CHROME_PATH` used locally, and set
+`QA_BASE_URL=https://serpsaas.com`. Its default artifact directory is the
+production evidence directory above.
+
+No indexing request was submitted. Google indexing, Search Console measurements,
+traffic and ranking outcomes remain unverified.
 
 Accessibility evidence covers automated axe, keyboard and the documented visual
 checks; a complete assistive-technology audit was not performed. No live Google
