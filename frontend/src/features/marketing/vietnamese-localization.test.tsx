@@ -193,7 +193,7 @@ it.each(vietnameseLandingPages)(
 
 it("isolates Vietnamese articles and retains English validation and feed content", async () => {
   const posts = getPublishedPosts(undefined, "vi");
-  expect(posts).toHaveLength(5);
+  expect(posts).toHaveLength(6);
   expect(getPublishedPosts()).toHaveLength(3);
   expect(generateStaticParams()).toEqual(
     posts.map((post) => ({ slug: post.slug })),
@@ -233,6 +233,7 @@ it("isolates Vietnamese articles and retains English validation and feed content
 it.each([
   "cong-cu-rank-tracker-la-gi",
   "co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay",
+  "cach-theo-doi-thu-hang-doi-thu-seo",
 ])(
   "publishes unpaired Vietnamese article %s without invented alternates or English feed entries",
   async (slug) => {

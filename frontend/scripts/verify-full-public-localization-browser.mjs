@@ -598,7 +598,7 @@ try {
   const vietnamese = metadata.filter((entry) => entry.locale === "vi");
   assert.equal(new Set(vietnamese.map((entry) => entry.title)).size, 12);
   assert.equal(new Set(vietnamese.map((entry) => entry.description)).size, 12);
-  assert.equal(getPublishedPosts(undefined, "vi").length, 5);
+  assert.equal(getPublishedPosts(undefined, "vi").length, 6);
   await snapshot();
   console.log(
     JSON.stringify({

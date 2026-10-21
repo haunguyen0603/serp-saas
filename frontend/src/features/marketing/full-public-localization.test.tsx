@@ -292,7 +292,7 @@ it("adds the educational agency guide and keeps it distinct from the commercial 
   expect(container.querySelector('main a[href="/pricing"]')).toBeNull();
 });
 
-it("provides self-canonical metadata and reciprocal alternates for all new pairs and includes 26 unique sitemap URLs", async () => {
+it("provides self-canonical metadata and reciprocal alternates for all new pairs and includes 27 unique sitemap URLs", async () => {
   const metas = [
     pricingMetadata,
     aboutMetadata,
@@ -313,8 +313,8 @@ it("provides self-canonical metadata and reciprocal alternates for all new pairs
     expect(meta.twitter).toBeDefined();
   }
   const urls = sitemap().map((page) => page.url);
-  expect(new Set(urls).size).toBe(26);
-  expect(urls).toHaveLength(26);
+  expect(new Set(urls).size).toBe(27);
+  expect(urls).toHaveLength(27);
   for (const pair of publicLocalePairs)
     for (const path of [pair.en, pair.vi])
       expect(urls).toContain(`https://serpsaas.com${path}`);

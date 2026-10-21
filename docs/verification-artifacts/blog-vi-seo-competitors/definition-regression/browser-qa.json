@@ -1,0 +1,103 @@
+{
+  "results": [
+    {
+      "width": 375,
+      "javaScriptEnabled": true,
+      "status": 200,
+      "overflow": false,
+      "languageFallback": "/",
+      "roundTrip": "/vi",
+      "listingCards": 6,
+      "pageErrors": []
+    },
+    {
+      "width": 375,
+      "javaScriptEnabled": false,
+      "status": 200,
+      "overflow": false,
+      "languageFallback": "/",
+      "roundTrip": "/vi",
+      "listingCards": 6,
+      "pageErrors": []
+    },
+    {
+      "width": 768,
+      "javaScriptEnabled": true,
+      "status": 200,
+      "overflow": false,
+      "languageFallback": "/",
+      "roundTrip": "/vi",
+      "listingCards": 6,
+      "pageErrors": []
+    },
+    {
+      "width": 768,
+      "javaScriptEnabled": false,
+      "status": 200,
+      "overflow": false,
+      "languageFallback": "/",
+      "roundTrip": "/vi",
+      "listingCards": 6,
+      "pageErrors": []
+    },
+    {
+      "width": 1024,
+      "javaScriptEnabled": true,
+      "status": 200,
+      "overflow": false,
+      "languageFallback": "/",
+      "roundTrip": "/vi",
+      "listingCards": 6,
+      "pageErrors": []
+    },
+    {
+      "width": 1024,
+      "javaScriptEnabled": false,
+      "status": 200,
+      "overflow": false,
+      "languageFallback": "/",
+      "roundTrip": "/vi",
+      "listingCards": 6,
+      "pageErrors": []
+    },
+    {
+      "width": 1440,
+      "javaScriptEnabled": true,
+      "status": 200,
+      "overflow": false,
+      "languageFallback": "/",
+      "roundTrip": "/vi",
+      "listingCards": 6,
+      "pageErrors": []
+    },
+    {
+      "width": 1440,
+      "javaScriptEnabled": false,
+      "status": 200,
+      "overflow": false,
+      "languageFallback": "/",
+      "roundTrip": "/vi",
+      "listingCards": 6,
+      "pageErrors": []
+    }
+  ],
+  "internalLinks": [
+    "/vi/blog/cong-cu-rank-tracker-la-gi",
+    "/vi",
+    "/vi/bang-gia",
+    "/vi/blog",
+    "/vi/gioi-thieu",
+    "/vi/chinh-sach-bao-mat",
+    "/vi/dieu-khoan-dich-vu",
+    "/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+    "/vi/blog/cach-theo-doi-thu-hang-google",
+    "/vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay",
+    "/vi/blog/cach-theo-doi-thu-hang-doi-thu-seo",
+    "/vi/theo-doi-thu-hang-tu-khoa-hang-ngay",
+    "/vi/seo-rank-tracking-cho-agency"
+  ],
+  "sitemapOccurrences": 1,
+  "englishRssItems": 3,
+  "forcedLanguageRedirect": false,
+  "appHostRedirect": 307
+}
