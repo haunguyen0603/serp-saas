@@ -20,6 +20,7 @@ import type { Device, Project, ProjectUpdate } from "./types";
 import { ProjectAnalytics } from "@/features/analytics/project-analytics";
 import { CountrySelect, LanguageSelect } from "./locale-select";
 
+import { RankingAlertPreferences } from "@/features/ranking-alerts/alert-preferences";
 const field = "";
 
 function ProjectSettings({ project }: { project: Project }) {
@@ -228,6 +229,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
         <a href="#rankings">Rankings</a>
         <a href="#batches">Batch History</a>
         <a href="#schedule">Schedule</a>
+        <a href="#ranking-alert-preferences">Alert Preferences</a>
         <a className="text-brand" href="#settings">
           Project Settings
         </a>
@@ -235,6 +237,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
       <ProjectAnalytics project={value} />
       <KeywordManager project={value} />
       <ProjectSettings project={value} />
+      <RankingAlertPreferences projectId={projectId} />
     </main>
   );
 }
