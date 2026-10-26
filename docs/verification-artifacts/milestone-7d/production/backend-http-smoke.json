@@ -1,0 +1,70 @@
+{
+  "checked_at_utc": "2026-10-26T16:49:51.076Z",
+  "mode": "public unauthenticated production smoke",
+  "backend_only": true,
+  "passed": 14,
+  "checks": [
+    {
+      "name": "API health",
+      "status": 200
+    },
+    {
+      "name": "PostgreSQL health",
+      "status": 200
+    },
+    {
+      "name": "M7D deployed OpenAPI",
+      "status": 200
+    },
+    {
+      "name": "Authentication: GET /ranking-alerts",
+      "status": 401
+    },
+    {
+      "name": "Authentication: GET /ranking-alerts/unread-count",
+      "status": 401
+    },
+    {
+      "name": "Authentication: PATCH /ranking-alerts/00000000-0000-0000-0000-000000000000/read",
+      "status": 401
+    },
+    {
+      "name": "Authentication: POST /ranking-alerts/mark-all-read",
+      "status": 401
+    },
+    {
+      "name": "Authentication: GET /projects/00000000-0000-0000-0000-000000000000/ranking-alert-preferences",
+      "status": 401
+    },
+    {
+      "name": "Authentication: PUT /projects/00000000-0000-0000-0000-000000000000/ranking-alert-preferences",
+      "status": 401
+    },
+    {
+      "name": "Worker alerts route remains IAM protected",
+      "status": 403
+    },
+    {
+      "name": "Worker status remains IAM protected",
+      "status": 403
+    },
+    {
+      "name": "SePay options auth boundary",
+      "status": 401
+    },
+    {
+      "name": "Invoices auth boundary",
+      "status": 401
+    },
+    {
+      "name": "VND plan catalog",
+      "status": 200
+    }
+  ],
+  "accounts_created": 0,
+  "rank_checks_created": 0,
+  "payments_created": 0,
+  "emails_sent": 0,
+  "authenticated_tenant_flow": "not performed",
+  "real_smtp_deliverability": "not tested"
+}

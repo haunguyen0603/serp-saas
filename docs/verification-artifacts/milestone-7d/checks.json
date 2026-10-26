@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-26",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "backend_tests": 402,
+  "focused_tests": 57,
+  "frontend_tests": 333,
+  "infrastructure_tests": 56,
+  "ruff": "passed",
+  "ruff_format": "passed",
+  "mypy": "passed",
+  "frontend_lint": "passed",
+  "frontend_typecheck": "passed",
+  "frontend_format": "passed",
+  "frontend_build": "passed",
+  "migration_roundtrip_and_metadata": "passed",
+  "runtime_audit": {
+    "total": 0,
+    "high": 0,
+    "critical": 0
+  },
+  "browser": {
+    "widths": [
+      375,
+      768,
+      1024,
+      1440
+    ],
+    "screenshots": 30,
+    "axe_violations": 0,
+    "page_errors": 0
+  },
+  "production_deployed": true,
+  "real_email_validated": false,
+  "temporary_test_services_cleaned_up": true,
+  "production": {
+    "backend_commit": "052bec3ca1e0189b0ad6947bce989f3a79582d05",
+    "backend_build_id": "f5eb6bfc-45e8-43b4-a71a-98a8412bef07",
+    "frontend_commit": "a037da0d9e415dfee82463fe9c1db513d8563476",
+    "frontend_build_id": "1c730fbd-d6a9-4c71-b7f8-901324a125cd",
+    "http_smoke_passed": 23,
+    "anonymous_browser_checks_passed": 3,
+    "verified_at_utc": "2026-10-26T16:58:59.977Z",
+    "authenticated_tenant_flow": "not performed",
+    "outbound_ranking_email_enablement": "not performed; defaults off"
+  }
+}
