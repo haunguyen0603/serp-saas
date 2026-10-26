@@ -90,6 +90,7 @@ class RankCheck(Base):
         Integer, nullable=False, default=0, server_default="0"
     )
     provider_request_id: Mapped[str | None] = mapped_column(String(255))
+    alert_context: Mapped[str | None] = mapped_column(String(64))
     provider_metadata: Mapped[dict[str, object] | None] = mapped_column(JSONB)
     requested_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False

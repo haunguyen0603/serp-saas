@@ -9,6 +9,8 @@ from app.db.session import create_engine, create_session_factory
 from app.services.rank_batches import RankBatchService
 from app.services.rank_schedules import RankScheduleService
 from app.services.rank_worker import RankCheckWorker
+from app.services.ranking_alert_email import AlertEmailWorker
+from app.services.ranking_alerts import AlertEvaluationService, enqueue_alerts
 from app.services.report_email import create_report_email_sender
 from app.services.report_storage import create_report_storage
 from app.services.report_worker import ReportWorker
@@ -44,6 +46,11 @@ async def run(loop: bool) -> None:
             await worker.recover(local=settings.task_queue_provider == "local")
             await report_worker.dispatch_schedules()
             await report_worker.recover(local=settings.task_queue_provider == "local")
+            if settings.task_queue_provider == "local":
+                await AlertEvaluationService(factory, settings).drain()
+                await AlertEmailWorker(factory, settings).drain(limit=10)
+            else:
+                await enqueue_alerts(create_task_queue(settings))
             if not loop:
                 break
             await asyncio.sleep(2)

@@ -126,3 +126,38 @@ class CloudTasksRankCheckQueue:
             )
             raise TaskQueueError("REPORT_TASK_ENQUEUE_FAILED") from None
         return TaskEnqueueResult(name)
+
+    async def enqueue_ranking_alerts(self, *, attempt: int) -> TaskEnqueueResult:
+        s = self.settings
+        parent = (
+            f"projects/{s.gcp_project_id}/locations/{s.gcp_location}"
+            f"/queues/{s.cloud_tasks_queue}"
+        )
+        name = f"{parent}/tasks/ranking-alerts-{attempt}"
+        task = {
+            "name": name,
+            "http_request": {
+                "http_method": tasks_v2.HttpMethod.POST,
+                "url": s.cloud_tasks_worker_url.rstrip("/")
+                + "/internal/tasks/ranking-alerts",
+                "headers": {"Content-Type": "application/json"},
+                "body": json.dumps({"version": 1}).encode(),
+                "oidc_token": {
+                    "service_account_email": s.cloud_tasks_service_account_email,
+                    "audience": s.cloud_tasks_worker_url.rstrip("/"),
+                },
+            },
+            "dispatch_deadline": {"seconds": 300},
+        }
+        try:
+            await asyncio.to_thread(
+                self.client.create_task,
+                request={"parent": parent, "task": task},
+                timeout=5,
+                retry=None,
+            )
+        except AlreadyExists:
+            return TaskEnqueueResult(name, already_exists=True)
+        except Exception:
+            raise TaskQueueError("ALERT_TASK_ENQUEUE_FAILED") from None
+        return TaskEnqueueResult(name)

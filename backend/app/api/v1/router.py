@@ -12,6 +12,7 @@ from app.api.v1.payments import router as payments_router
 from app.api.v1.projects import router as projects_router
 from app.api.v1.rank_batches import router as rank_batches_router
 from app.api.v1.rank_checks import router as rank_checks_router
+from app.api.v1.ranking_alerts import router as ranking_alerts_router
 from app.api.v1.ranking_explorer import router as ranking_explorer_router
 from app.api.v1.rankings import router as rankings_router
 from app.api.v1.reports import router as reports_router
@@ -29,6 +30,7 @@ router.include_router(users_router)
 router.include_router(projects_router)
 router.include_router(rank_checks_router)
 router.include_router(rankings_router)
+router.include_router(ranking_alerts_router)
 router.include_router(keywords_router)
 router.include_router(keyword_organization_router)
 router.include_router(reports_router)

@@ -86,6 +86,9 @@ def main() -> None:
         "REPORT_STORAGE_BUCKET": f"{project}-reports-{number}",
         "REPORT_STORAGE_PREFIX": "reports",
         "REPORT_EMAIL_PROVIDER": "disabled",
+        "RANKING_ALERTS_ENABLED": "true",
+        "RANKING_ALERT_EMAIL_ENABLED": "false",
+        "RANKING_ALERT_EMAIL_HOURLY_CAP": "20",
     }
     output = Path(__file__).resolve().parents[2] / ".env.cloud-run.yaml"
     # JSON is valid YAML. All values are strings as required by Cloud Run env vars.

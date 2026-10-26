@@ -19,6 +19,8 @@ class TaskQueueError(Exception):
 
 
 class RankCheckTaskQueue(Protocol):
+    async def enqueue_ranking_alerts(self, *, attempt: int) -> TaskEnqueueResult: ...
+
     async def enqueue_rank_check_job(
         self, job_id: UUID, *, schedule_time: datetime | None = None
     ) -> TaskEnqueueResult: ...

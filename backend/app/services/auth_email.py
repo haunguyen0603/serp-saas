@@ -9,7 +9,9 @@ from app.core.config import Settings
 
 
 class AuthEmailError(Exception):
-    pass
+    def __init__(self, code: str, *, transient: bool = True) -> None:
+        super().__init__(code)
+        self.transient = transient
 
 
 @dataclass(frozen=True)
@@ -77,38 +79,48 @@ class SMTPAuthEmailSender:
                 "Never share your password or this verification link."
             )
 
-        def deliver() -> None:
-            try:
-                client: smtplib.SMTP
-                if settings.auth_smtp_ssl:
-                    client = smtplib.SMTP_SSL(
-                        settings.auth_smtp_host,
-                        settings.auth_smtp_port,
-                        local_hostname=settings.auth_smtp_local_hostname,
-                        timeout=10,
-                        context=ssl.create_default_context(),
-                    )
-                else:
-                    client = smtplib.SMTP(
-                        settings.auth_smtp_host,
-                        settings.auth_smtp_port,
-                        local_hostname=settings.auth_smtp_local_hostname,
-                        timeout=10,
-                    )
-                with client:
-                    if settings.auth_smtp_starttls:
-                        client.starttls(context=ssl.create_default_context())
-                    if settings.auth_smtp_username:
-                        assert settings.auth_smtp_password is not None
-                        client.login(
-                            settings.auth_smtp_username,
-                            settings.auth_smtp_password.get_secret_value(),
-                        )
-                    client.send_message(email)
-            except (OSError, smtplib.SMTPException):
-                raise AuthEmailError("AUTH_EMAIL_DELIVERY_FAILED") from None
+        await send_smtp_email(settings, email)
 
-        await asyncio.to_thread(deliver)
+
+async def send_smtp_email(settings: Settings, email: EmailMessage) -> None:
+    """Shared bounded SMTP transport for account and ranking-alert mail."""
+
+    def deliver() -> None:
+        try:
+            client: smtplib.SMTP
+            if settings.auth_smtp_ssl:
+                client = smtplib.SMTP_SSL(
+                    settings.auth_smtp_host,
+                    settings.auth_smtp_port,
+                    local_hostname=settings.auth_smtp_local_hostname,
+                    timeout=10,
+                    context=ssl.create_default_context(),
+                )
+            else:
+                client = smtplib.SMTP(
+                    settings.auth_smtp_host,
+                    settings.auth_smtp_port,
+                    local_hostname=settings.auth_smtp_local_hostname,
+                    timeout=10,
+                )
+            with client:
+                if settings.auth_smtp_starttls:
+                    client.starttls(context=ssl.create_default_context())
+                if settings.auth_smtp_username:
+                    assert settings.auth_smtp_password is not None
+                    client.login(
+                        settings.auth_smtp_username,
+                        settings.auth_smtp_password.get_secret_value(),
+                    )
+                client.send_message(email)
+        except smtplib.SMTPRecipientsRefused:
+            raise AuthEmailError(
+                "AUTH_EMAIL_RECIPIENT_REJECTED", transient=False
+            ) from None
+        except (OSError, smtplib.SMTPException):
+            raise AuthEmailError("AUTH_EMAIL_DELIVERY_FAILED") from None
+
+    await asyncio.to_thread(deliver)
 
 
 def create_auth_email_sender(settings: Settings) -> AuthEmailSender:

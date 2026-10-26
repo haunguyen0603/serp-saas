@@ -1,6 +1,7 @@
 """Private Cloud Run entry point: uvicorn app.worker_main:app --port 8080."""
 
 import asyncio
+import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Annotated
@@ -17,10 +18,17 @@ from app.core.errors import register_error_handlers
 from app.core.logging import configure_logging
 from app.db.session import create_session_factory
 from app.schemas.rank_job import TaskPayload
+from app.schemas.ranking_alert import AlertTaskPayload
 from app.schemas.report import ReportTaskPayload
 from app.services.rank_batches import RankBatchService
 from app.services.rank_schedules import RankScheduleService
 from app.services.rank_worker import RankCheckWorker
+from app.services.ranking_alert_email import AlertEmailWorker
+from app.services.ranking_alerts import (
+    AlertEvaluationService,
+    alert_backlog,
+    enqueue_alerts,
+)
 from app.services.report_email import create_report_email_sender
 from app.services.report_storage import create_report_storage
 from app.services.report_worker import ReportWorker
@@ -129,13 +137,37 @@ def create_worker_app(settings: Settings | None = None) -> FastAPI:
             status_code=200 if handled else 503,
         )
 
+    @app.get(
+        "/internal/ranking-alerts/status", dependencies=[Depends(authenticate_internal)]
+    )
+    async def alerts_status(request: Request) -> dict[str, object]:
+        return await alert_backlog(request.app.state.session_factory)
+
+    @app.post(
+        "/internal/tasks/ranking-alerts", dependencies=[Depends(authenticate_internal)]
+    )
+    async def run_alerts(payload: AlertTaskPayload, request: Request) -> dict[str, int]:
+        factory = request.app.state.session_factory
+        evaluated = await AlertEvaluationService(factory, settings).drain()
+        delivered = await AlertEmailWorker(factory, settings).drain(limit=10)
+        logging.getLogger(__name__).info(
+            "ranking_alert_sweep_completed",
+            extra={
+                "evaluated_count": evaluated,
+                "delivered_count": delivered,
+            },
+        )
+        return {"evaluated": evaluated, "delivered": delivered}
+
     @app.post(
         "/internal/schedules/dispatch", dependencies=[Depends(authenticate_internal)]
     )
     async def dispatch(
+        request: Request,
         service: Annotated[RankCheckWorker, Depends(worker)],
         reports: Annotated[ReportWorker, Depends(report_worker)],
     ) -> dict[str, int]:
+        await enqueue_alerts(request.app.state.task_queue)
         count = await RankScheduleService(service.batches).dispatch()
         recovered = await service.recover()
         report_dispatched = await reports.dispatch_schedules()

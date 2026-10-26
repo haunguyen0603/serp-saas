@@ -7,6 +7,9 @@ from app.services.task_queue.base import TaskEnqueueResult
 class LocalTaskQueue:
     """Deterministic acceptance; local runner reads durable DB jobs."""
 
+    async def enqueue_ranking_alerts(self, *, attempt: int) -> TaskEnqueueResult:
+        return TaskEnqueueResult(f"local/ranking-alerts-{attempt}")
+
     async def enqueue_rank_check_job(
         self, job_id: UUID, *, schedule_time: datetime | None = None
     ) -> TaskEnqueueResult:
