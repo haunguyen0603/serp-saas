@@ -1,0 +1,5 @@
+
+> serp-saas-frontend@0.1.0 prebuild
+> node --experimental-strip-types scripts/validate-blog.mjs
+
+Blog content validated: 9 published, 0 drafts.

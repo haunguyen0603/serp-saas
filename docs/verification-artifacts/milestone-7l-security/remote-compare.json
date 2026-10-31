@@ -1,0 +1,726 @@
+{
+  "repository_full_name": "haunguyen0603/serp-saas",
+  "base": "8ebfb715ee6f25abb09ac2df230708d5f32b8cdb",
+  "head": "main",
+  "status": "ahead",
+  "ahead_by": 4,
+  "behind_by": 0,
+  "total_commits": 4,
+  "too_large": null,
+  "base_commit": {
+    "sha": "8ebfb715ee6f25abb09ac2df230708d5f32b8cdb",
+    "url": "https://api.github.com/repos/haunguyen0603/serp-saas/commits/8ebfb715ee6f25abb09ac2df230708d5f32b8cdb",
+    "html_url": "https://github.com/haunguyen0603/serp-saas/commit/8ebfb715ee6f25abb09ac2df230708d5f32b8cdb"
+  },
+  "merge_base_commit": {
+    "sha": "8ebfb715ee6f25abb09ac2df230708d5f32b8cdb",
+    "url": "https://api.github.com/repos/haunguyen0603/serp-saas/commits/8ebfb715ee6f25abb09ac2df230708d5f32b8cdb",
+    "html_url": "https://github.com/haunguyen0603/serp-saas/commit/8ebfb715ee6f25abb09ac2df230708d5f32b8cdb"
+  },
+  "files": [
+    {
+      "filename": ".env.example",
+      "status": "modified",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/alembic/versions/0017_ranking_alerts_ranking_alerts.py",
+      "status": "added",
+      "additions": 318,
+      "deletions": 0,
+      "changes": 318,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/api/v1/ranking_alerts.py",
+      "status": "added",
+      "additions": 92,
+      "deletions": 0,
+      "changes": 92,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/api/v1/router.py",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/core/config.py",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 0,
+      "changes": 4,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/core/logging.py",
+      "status": "modified",
+      "additions": 6,
+      "deletions": 0,
+      "changes": 6,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/db/models.py",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 0,
+      "changes": 10,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/models/rank_check.py",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/models/ranking_alert.py",
+      "status": "added",
+      "additions": 210,
+      "deletions": 0,
+      "changes": 210,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/repositories/ranking_alert.py",
+      "status": "added",
+      "additions": 124,
+      "deletions": 0,
+      "changes": 124,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/schemas/ranking_alert.py",
+      "status": "added",
+      "additions": 54,
+      "deletions": 0,
+      "changes": 54,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/services/auth_email.py",
+      "status": "modified",
+      "additions": 44,
+      "deletions": 32,
+      "changes": 76,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/services/rank_checks.py",
+      "status": "modified",
+      "additions": 23,
+      "deletions": 1,
+      "changes": 24,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/services/ranking_alert_email.py",
+      "status": "added",
+      "additions": 251,
+      "deletions": 0,
+      "changes": 251,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/services/ranking_alerts.py",
+      "status": "added",
+      "additions": 385,
+      "deletions": 0,
+      "changes": 385,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/services/task_queue/base.py",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/services/task_queue/cloud_tasks.py",
+      "status": "modified",
+      "additions": 35,
+      "deletions": 0,
+      "changes": 35,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/services/task_queue/local.py",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 0,
+      "changes": 3,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/app/worker_main.py",
+      "status": "modified",
+      "additions": 32,
+      "deletions": 0,
+      "changes": 32,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/scripts/rank_jobs.py",
+      "status": "modified",
+      "additions": 7,
+      "deletions": 0,
+      "changes": 7,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/scripts/seed_ranking_alerts_qa.py",
+      "status": "added",
+      "additions": 122,
+      "deletions": 0,
+      "changes": 122,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/tests/test_auth_invariants.py",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 0,
+      "changes": 4,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/tests/test_migrations.py",
+      "status": "modified",
+      "additions": 7,
+      "deletions": 3,
+      "changes": 10,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/tests/test_ranking_alert_migration.py",
+      "status": "added",
+      "additions": 46,
+      "deletions": 0,
+      "changes": 46,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/tests/test_ranking_alerts.py",
+      "status": "added",
+      "additions": 633,
+      "deletions": 0,
+      "changes": 633,
+      "previous_filename": null
+    },
+    {
+      "filename": "backend/tests/test_task_queue.py",
+      "status": "modified",
+      "additions": 35,
+      "deletions": 0,
+      "changes": 35,
+      "previous_filename": null
+    },
+    {
+      "filename": "docker-compose.yml",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 0,
+      "changes": 3,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/deployment-milestone-7d.md",
+      "status": "added",
+      "additions": 95,
+      "deletions": 0,
+      "changes": 95,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/milestone-7d-ranking-alerts.md",
+      "status": "added",
+      "additions": 356,
+      "deletions": 0,
+      "changes": 356,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/backend-tests.txt",
+      "status": "added",
+      "additions": 7,
+      "deletions": 0,
+      "changes": 7,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/browser-qa.json",
+      "status": "added",
+      "additions": 60,
+      "deletions": 0,
+      "changes": 60,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/checks.json",
+      "status": "added",
+      "additions": 46,
+      "deletions": 0,
+      "changes": 46,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/focused-tests.txt",
+      "status": "added",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/frontend-build.txt",
+      "status": "added",
+      "additions": 96,
+      "deletions": 0,
+      "changes": 96,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/frontend-tests.txt",
+      "status": "added",
+      "additions": 12,
+      "deletions": 0,
+      "changes": 12,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-dark-scheme-1024.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-dark-scheme-1440.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-dark-scheme-375.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-dark-scheme-768.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-empty-other-account-1024.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-empty-other-account-1440.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-empty-other-account-375.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-empty-other-account-768.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-error-1024.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-error-1440.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-error-375.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-error-768.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-loading-1024.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-loading-1440.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-loading-375.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-loading-768.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-populated-1024.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-populated-1440.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-populated-375.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-populated-768.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-populated-viewport-1440.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-populated-viewport-375.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-unread-empty-1024.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-unread-empty-1440.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-unread-empty-375.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/inbox-unread-empty-768.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/infrastructure-tests.txt",
+      "status": "added",
+      "additions": 61,
+      "deletions": 0,
+      "changes": 61,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/production/backend-build.json",
+      "status": "added",
+      "additions": 24,
+      "deletions": 0,
+      "changes": 24,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/production/backend-http-smoke.json",
+      "status": "added",
+      "additions": 70,
+      "deletions": 0,
+      "changes": 70,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/production/browser-smoke.json",
+      "status": "added",
+      "additions": 33,
+      "deletions": 0,
+      "changes": 33,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/production/frontend-build.json",
+      "status": "added",
+      "additions": 24,
+      "deletions": 0,
+      "changes": 24,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/production/http-smoke.json",
+      "status": "added",
+      "additions": 106,
+      "deletions": 0,
+      "changes": 106,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/project-preferences-1024.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/project-preferences-1440.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/project-preferences-375.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/project-preferences-768.png",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-artifacts/milestone-7d/runtime-audit.json",
+      "status": "added",
+      "additions": 22,
+      "deletions": 0,
+      "changes": 22,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/verification-milestone-7d.md",
+      "status": "added",
+      "additions": 139,
+      "deletions": 0,
+      "changes": 139,
+      "previous_filename": null
+    },
+    {
+      "filename": "frontend/package-lock.json",
+      "status": "modified",
+      "additions": 51,
+      "deletions": 51,
+      "changes": 102,
+      "previous_filename": null
+    },
+    {
+      "filename": "frontend/package.json",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "previous_filename": null
+    },
+    {
+      "filename": "frontend/src/app/(en)/app/ranking-alerts/page.tsx",
+      "status": "added",
+      "additions": 4,
+      "deletions": 0,
+      "changes": 4,
+      "previous_filename": null
+    },
+    {
+      "filename": "frontend/src/design-system/app-shell.tsx",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 0,
+      "changes": 10,
+      "previous_filename": null
+    },
+    {
+      "filename": "frontend/src/features/projects/project-detail.tsx",
+      "status": "modified",
+      "additions": 33,
+      "deletions": 2,
+      "changes": 35,
+      "previous_filename": null
+    },
+    {
+      "filename": "frontend/src/features/projects/projects.test.tsx",
+      "status": "modified",
+      "additions": 95,
+      "deletions": 0,
+      "changes": 95,
+      "previous_filename": null
+    },
+    {
+      "filename": "frontend/src/features/ranking-alerts/alert-preferences.tsx",
+      "status": "added",
+      "additions": 125,
+      "deletions": 0,
+      "changes": 125,
+      "previous_filename": null
+    },
+    {
+      "filename": "frontend/src/features/ranking-alerts/api.ts",
+      "status": "added",
+      "additions": 96,
+      "deletions": 0,
+      "changes": 96,
+      "previous_filename": null
+    },
+    {
+      "filename": "frontend/src/features/ranking-alerts/ranking-alerts-page.tsx",
+      "status": "added",
+      "additions": 282,
+      "deletions": 0,
+      "changes": 282,
+      "previous_filename": null
+    },
+    {
+      "filename": "frontend/src/features/ranking-alerts/ranking-alerts.test.tsx",
+      "status": "added",
+      "additions": 208,
+      "deletions": 0,
+      "changes": 208,
+      "previous_filename": null
+    },
+    {
+      "filename": "frontend/src/features/ranking-alerts/unread-badge.tsx",
+      "status": "added",
+      "additions": 28,
+      "deletions": 0,
+      "changes": 28,
+      "previous_filename": null
+    },
+    {
+      "filename": "infrastructure/gcp/create-cloud-run-config.py",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 0,
+      "changes": 3,
+      "previous_filename": null
+    },
+    {
+      "filename": "scripts/verify-ranking-alerts-browser.mjs",
+      "status": "added",
+      "additions": 261,
+      "deletions": 0,
+      "changes": 261,
+      "previous_filename": null
+    },
+    {
+      "filename": "scripts/verify-ranking-alerts-production-browser.mjs",
+      "status": "added",
+      "additions": 89,
+      "deletions": 0,
+      "changes": 89,
+      "previous_filename": null
+    },
+    {
+      "filename": "scripts/verify-ranking-alerts-production.mjs",
+      "status": "added",
+      "additions": 174,
+      "deletions": 0,
+      "changes": 174,
+      "previous_filename": null
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "all27PageSnapshotsIdenticalToM7L": true,
+  "standalone": {
+    "next": "16.4.3",
+    "sharp": "0.35.5",
+    "vite": null,
+    "vitest": null,
+    "@vitest/mocker": null,
+    "zod": null
+  }
+}

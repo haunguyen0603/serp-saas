@@ -116,6 +116,8 @@ try {
       } else if (url.pathname === "/api/v1/users/me") body = sessionUser;
       else if (url.pathname === "/api/v1/billing/plans") body = plans;
       else if (url.pathname === "/api/v1/billing/me") body = billing;
+      else if (url.pathname === "/api/v1/billing/payments/sepay/options")
+        body = { enabled: false, eligible_plan_ids: [] };
       else if (url.pathname === "/api/v1/auth/email-verification")
         body = {
           verified: false,

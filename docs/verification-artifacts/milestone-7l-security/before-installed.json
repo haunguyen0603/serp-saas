@@ -1,0 +1,33 @@
+{
+  "version": "0.1.0",
+  "name": "serp-saas-frontend",
+  "dependencies": {
+    "eslint-config-next": {
+      "version": "16.3.8",
+      "resolved": "https://registry.npmjs.org/eslint-config-next/-/eslint-config-next-16.3.8.tgz",
+      "overridden": false
+    },
+    "next": {
+      "version": "16.3.8",
+      "resolved": "https://registry.npmjs.org/next/-/next-16.3.8.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@next/env": {
+          "version": "16.3.8",
+          "resolved": "https://registry.npmjs.org/@next/env/-/env-16.3.8.tgz",
+          "overridden": false
+        },
+        "@next/swc-win32-x64-msvc": {
+          "version": "16.3.8",
+          "resolved": "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-16.3.8.tgz",
+          "overridden": false
+        },
+        "sharp": {
+          "version": "0.35.5",
+          "resolved": "https://registry.npmjs.org/sharp/-/sharp-0.35.5.tgz",
+          "overridden": false
+        }
+      }
+    }
+  }
+}

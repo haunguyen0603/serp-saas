@@ -4,7 +4,7 @@ title: Rank Tracker là gì? Cách theo dõi thứ hạng từ khóa hiệu qu�
 slug: cong-cu-rank-tracker-la-gi
 description: Tìm hiểu Rank Tracker là gì, cách công cụ theo dõi thứ hạng từ khóa hoạt động, khác gì Google Search Console và cách lựa chọn Rank Tracker phù hợp.
 publishedAt: 2026-10-17
-updatedAt: 2026-10-17
+updatedAt: 2026-10-29
 author: SERP SaaS
 category: Theo dõi thứ hạng
 tags: [rank tracker, thứ hạng Google, quy trình SEO]
@@ -75,6 +75,8 @@ Ví dụ minh họa:
 | Tuần 4       |               5 |
 
 Dữ liệu này cho thấy xu hướng cải thiện trong bốn tuần, dù thứ hạng có dao động ở từng kỳ. Đây là ví dụ minh họa, không phải dữ liệu thật của SERP SaaS.
+
+Nếu muốn thực hành từng bước và đọc kết quả của một lần kiểm tra, bạn có thể tham khảo hướng dẫn [cách kiểm tra thứ hạng từ khóa](/vi/blog/cach-kiem-tra-thu-hang-tu-khoa).
 
 ## Rank Tracker khác gì Google Search Console?
 

@@ -1,0 +1,13 @@
+
+> serp-saas-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 C:/Users/Admin/Desktop/serp-saas-main/frontend
+
+
+ Test Files  36 passed (36)
+      Tests  331 passed (331)
+   Start at  23:47:14
+   Duration  15.78s (transform 10.79s, setup 16.77s, import 26.69s, tests 43.20s, environment 62.70s)
+

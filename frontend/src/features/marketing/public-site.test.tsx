@@ -130,6 +130,16 @@ it("renders truthful Home sections and safe preview data", () => {
   ).toBeVisible();
   expect(screen.getByText(/not available yet/i)).toBeVisible();
   expect(screen.getAllByText("seo-demo.com").length).toBeGreaterThan(0);
+  expect(
+    screen.getByText(
+      "Checks cover Google's Top 10. Desktop and Mobile tracking are managed separately; available schedules depend on your plan.",
+    ),
+  ).toBeVisible();
+  expect(
+    screen.getByText(
+      "Illustrative interface preview. Sample domains, rankings and usage numbers are not live customer results or current plan limits.",
+    ),
+  ).toBeVisible();
   expect(document.body).not.toHaveTextContent(
     /Serper|SerpApi|Cloud Tasks|real-time|unlimited/i,
   );

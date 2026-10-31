@@ -1,0 +1,1803 @@
+........................................................................ [ 17%]
+..............................................................F.....FFFF [ 35%]
+FFFFFF.F................................................................ [ 53%]
+........................................................................ [ 71%]
+...........FFF........F................................................. [ 89%]
+..........................................                               [100%]
+================================== FAILURES ===================================
+____________________ test_live_dependencies[/health/redis] ____________________
+
+client = <httpx.AsyncClient object at 0x00000240E7C45C70>
+path = '/health/redis'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("path", ["/health/db", "/health/redis"])
+    async def test_live_dependencies(client: AsyncClient, path: str) -> None:
+        response = await client.get(path)
+>       assert response.status_code == 200
+E       assert 503 == 200
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+tests\test_health.py:23: AssertionError
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-10-31T06:49:53.723854+00:00", "level": "WARNING", "logger": "app.services.health", "message": "Redis health check failed"}
+{"timestamp": "2026-10-31T06:49:53.723854+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/health/redis", "status_code": 503, "duration": 2.050041}
+{"timestamp": "2026-10-31T06:49:53.723854+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/health/redis \"HTTP/1.1 503 Service Unavailable\""}
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.health:health.py:31 Redis health check failed
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/health/redis "HTTP/1.1 503 Service Unavailable"
+_________ test_invoice_pdf_unicode_status_and_escaped_fields[pending] _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000240E7A13C80>
+status = 'pending'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="Gói di động <Starter> & Nguyễn Hậu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+____ test_invoice_pdf_unicode_status_and_escaped_fields[checkout_created] _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000240EA528380>
+status = 'checkout_created'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="Gói di động <Starter> & Nguyễn Hậu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+__________ test_invoice_pdf_unicode_status_and_escaped_fields[paid] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000240EA588800>
+status = 'paid'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="Gói di động <Starter> & Nguyễn Hậu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_________ test_invoice_pdf_unicode_status_and_escaped_fields[failed] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000240EA528380>
+status = 'failed'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="Gói di động <Starter> & Nguyễn Hậu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+________ test_invoice_pdf_unicode_status_and_escaped_fields[cancelled] ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000240E7A124E0>
+status = 'cancelled'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="Gói di động <Starter> & Nguyễn Hậu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_________ test_invoice_pdf_unicode_status_and_escaped_fields[voided] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000240EA55A4E0>
+status = 'voided'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="Gói di động <Starter> & Nguyễn Hậu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_________ test_invoice_pdf_unicode_status_and_escaped_fields[expired] _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000240EA55A180>
+status = 'expired'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="Gói di động <Starter> & Nguyễn Hậu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_____ test_invoice_pdf_unicode_status_and_escaped_fields[review_required] _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000240EA4AC740>
+status = 'review_required'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="Gói di động <Starter> & Nguyễn Hậu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+__________ test_production_pdf_environment_and_missing_legacy_terms ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000240EA4AE7B0>
+
+    def test_production_pdf_environment_and_missing_legacy_terms(monkeypatch):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_PRODUCTION",
+            status="paid",
+            product_line="desktop",
+            plan_code="desktop_pro",
+            plan_name="Desktop Pro",
+            amount_minor=2579550,
+            currency="VND",
+            provider="sepay",
+            provider_environment="production",
+            created_at=now,
+            paid_at=now,
+            account_email="buyer@example.test",
+            payment_method=None,
+            provider_order_id=None,
+            provider_transaction_id=None,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(),
+        )
+>       assert invoice_renderer.render_invoice_pdf(invoice).startswith(b"%PDF-")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+______________ test_invoice_ownership_auth_and_private_download _______________
+
+auth_client = <httpx.AsyncClient object at 0x00000240EA59F2F0>
+auth_app = <fastapi.applications.FastAPI object at 0x00000240EA4AD8E0>
+
+    async def test_invoice_ownership_auth_and_private_download(auth_client, auth_app):
+        headers, _ = await account(auth_client, auth_app)
+        body = (await checkout(auth_client, headers)).json()
+        own_id = body["payment_order_id"]
+        other, _ = await account(auth_client, auth_app)
+        for suffix in ("", f"/{own_id}", f"/{own_id}/pdf"):
+            assert (await auth_client.get(BASE + suffix)).status_code == 401
+        assert (await auth_client.get(BASE, headers=other)).json()["items"] == []
+        for suffix in (f"/{own_id}", f"/{own_id}/pdf", f"/{uuid4()}"):
+            assert (await auth_client.get(BASE + suffix, headers=other)).status_code == 404
+        auth_app.state.settings = auth_app.state.settings.model_copy(
+            update={"auth_require_verified_email": True}
+        )
+        unverified = authorization(await register(auth_client))
+        for suffix in ("", f"/{own_id}", f"/{own_id}/pdf"):
+            assert (
+                await auth_client.get(BASE + suffix, headers=unverified)
+            ).status_code == 403
+        for suffix in ("", f"/{own_id}", f"/{own_id}/pdf"):
+            response = await auth_client.get(BASE + suffix, headers=headers)
+>           assert response.status_code == 200
+E           assert 500 == 200
+E            +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+tests\test_invoices.py:38: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+{"timestamp": "2026-10-31T06:49:55.565327+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl PostgresqlImpl."}
+{"timestamp": "2026-10-31T06:49:55.565327+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume transactional DDL."}
+{"timestamp": "2026-10-31T06:49:55.596717+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade  -> 0001_foundation, Establish migration history without introducing business tables."}
+{"timestamp": "2026-10-31T06:49:55.599241+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0001_foundation -> 0002_authentication, User accounts and server-side refresh sessions."}
+{"timestamp": "2026-10-31T06:49:55.617878+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0002_authentication -> 0003_projects_keywords, User-owned projects and project-owned keyword configurations."}
+{"timestamp": "2026-10-31T06:49:55.649565+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0003_projects_keywords -> 0004_project_refactor_sites, Refactor Projects and create the user-global tracked-domain registry."}
+{"timestamp": "2026-10-31T06:49:55.690355+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0004_project_refactor_sites -> 0005_rank_tracking, Provider-independent rank checks, organic snapshots, and rankings."}
+{"timestamp": "2026-10-31T06:49:55.729860+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0005_rank_tracking -> 0006_multi_provider_routing, Persist provider usage and Rank Check provider attempts."}
+{"timestamp": "2026-10-31T06:49:55.747769+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0006_multi_provider_routing -> 0007_async_rank_check_jobs, Durable asynchronous rank checks and project schedules."}
+{"timestamp": "2026-10-31T06:49:55.780882+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0007_async_rank_check_jobs -> 0008_billing_usage_limits, billing_usage_limits"}
+{"timestamp": "2026-10-31T06:49:55.854515+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0008_billing_usage_limits -> 0009_plan_catalog_audit, Audit administrator changes to the Plan catalog."}
+{"timestamp": "2026-10-31T06:49:55.862544+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0009_plan_catalog_audit -> 0010_keyword_organization, Project-scoped Keyword Groups and Tags."}
+{"timestamp": "2026-10-31T06:49:55.893817+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0010_keyword_organization -> 0011_reports, Durable generated reports, schedules, and delivery attempts."}
+{"timestamp": "2026-10-31T06:49:55.924264+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0011_reports -> 0012_competitor_analytics, Project competitor selections for persisted SERP analytics."}
+{"timestamp": "2026-10-31T06:49:55.938184+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0012_competitor_analytics -> 0013_email_verification, Single-use hashed email verification challenges."}
+{"timestamp": "2026-10-31T06:49:55.949934+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0013_email_verification -> 0014_password_management, Password recovery challenges and immediate session revocation."}
+{"timestamp": "2026-10-31T06:49:55.960530+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0014_password_management -> 0015_vnd_pricing, Convert catalog USD cents to whole Vietnamese dong."}
+{"timestamp": "2026-10-31T06:49:55.965533+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0015_vnd_pricing -> 0016_sepay_payments, Persist one-time SePay purchases and provider events."}
+{"timestamp": "2026-10-31T06:49:55.995696+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0016_sepay_payments -> 0017_ranking_alerts, ranking_alerts"}
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-10-31T06:49:56.181200+00:00", "level": "INFO", "logger": "app.services.auth", "message": "Registration succeeded"}
+{"timestamp": "2026-10-31T06:49:56.184200+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/auth/register", "status_code": 201, "duration": 0.133532}
+{"timestamp": "2026-10-31T06:49:56.184200+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/auth/register \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:49:56.278039+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/plans", "status_code": 200, "duration": 0.086405}
+{"timestamp": "2026-10-31T06:49:56.278039+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/plans \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:49:56.313217+00:00", "level": "INFO", "logger": "app.services.payments.service", "message": "payment_checkout_created", "payment_order_id": "4ba451a3-c59c-4b62-a682-db4218a262a3"}
+{"timestamp": "2026-10-31T06:49:56.314214+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/billing/payments/sepay/checkout", "status_code": 201, "duration": 0.03336}
+{"timestamp": "2026-10-31T06:49:56.314214+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/billing/payments/sepay/checkout \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:49:56.372822+00:00", "level": "INFO", "logger": "app.services.auth", "message": "Registration succeeded"}
+{"timestamp": "2026-10-31T06:49:56.374823+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/auth/register", "status_code": 201, "duration": 0.05671}
+{"timestamp": "2026-10-31T06:49:56.374823+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/auth/register \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:49:56.385416+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices", "status_code": 401, "duration": 0.006275}
+{"timestamp": "2026-10-31T06:49:56.385416+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices \"HTTP/1.1 401 Unauthorized\""}
+{"timestamp": "2026-10-31T06:49:56.389957+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3", "status_code": 401, "duration": 0.001273}
+{"timestamp": "2026-10-31T06:49:56.389957+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3 \"HTTP/1.1 401 Unauthorized\""}
+{"timestamp": "2026-10-31T06:49:56.393958+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3/pdf", "status_code": 401, "duration": 0.001261}
+{"timestamp": "2026-10-31T06:49:56.393958+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3/pdf \"HTTP/1.1 401 Unauthorized\""}
+{"timestamp": "2026-10-31T06:49:56.405616+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices", "status_code": 200, "duration": 0.008408}
+{"timestamp": "2026-10-31T06:49:56.405616+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:49:56.415631+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3", "status_code": 404, "duration": 0.005977}
+{"timestamp": "2026-10-31T06:49:56.415631+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3 \"HTTP/1.1 404 Not Found\""}
+{"timestamp": "2026-10-31T06:49:56.423257+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3/pdf", "status_code": 404, "duration": 0.003575}
+{"timestamp": "2026-10-31T06:49:56.423257+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3/pdf \"HTTP/1.1 404 Not Found\""}
+{"timestamp": "2026-10-31T06:49:56.429785+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices/26c1bdef-9231-4842-9e4d-18bbdefa6d99", "status_code": 404, "duration": 0.003463}
+{"timestamp": "2026-10-31T06:49:56.429785+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices/26c1bdef-9231-4842-9e4d-18bbdefa6d99 \"HTTP/1.1 404 Not Found\""}
+{"timestamp": "2026-10-31T06:49:56.495929+00:00", "level": "INFO", "logger": "app.services.auth", "message": "Registration succeeded"}
+{"timestamp": "2026-10-31T06:49:56.497930+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/auth/register", "status_code": 201, "duration": 0.063453}
+{"timestamp": "2026-10-31T06:49:56.497930+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/auth/register \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:49:56.504470+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices", "status_code": 403, "duration": 0.002969}
+{"timestamp": "2026-10-31T06:49:56.505470+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices \"HTTP/1.1 403 Forbidden\""}
+{"timestamp": "2026-10-31T06:49:56.512333+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3", "status_code": 403, "duration": 0.002492}
+{"timestamp": "2026-10-31T06:49:56.512333+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3 \"HTTP/1.1 403 Forbidden\""}
+{"timestamp": "2026-10-31T06:49:56.516337+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3/pdf", "status_code": 403, "duration": 0.002284}
+{"timestamp": "2026-10-31T06:49:56.517843+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3/pdf \"HTTP/1.1 403 Forbidden\""}
+{"timestamp": "2026-10-31T06:49:56.523959+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices", "status_code": 200, "duration": 0.003358}
+{"timestamp": "2026-10-31T06:49:56.523959+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:49:56.529972+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3", "status_code": 200, "duration": 0.002998}
+{"timestamp": "2026-10-31T06:49:56.529972+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3 \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:49:56.538069+00:00", "level": "ERROR", "logger": "app.requests", "message": "Unhandled request failure"}
+{"timestamp": "2026-10-31T06:49:56.538069+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3/pdf", "status_code": 500, "duration": 0.004359}
+{"timestamp": "2026-10-31T06:49:56.538580+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3/pdf \"HTTP/1.1 500 Internal Server Error\""}
+------------------------------ Captured log call ------------------------------
+INFO     app.services.auth:auth.py:85 Registration succeeded
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 201 Created"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/plans "HTTP/1.1 200 OK"
+INFO     app.services.payments.service:service.py:161 payment_checkout_created
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/billing/payments/sepay/checkout "HTTP/1.1 201 Created"
+INFO     app.services.auth:auth.py:85 Registration succeeded
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 201 Created"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices "HTTP/1.1 401 Unauthorized"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3 "HTTP/1.1 401 Unauthorized"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3/pdf "HTTP/1.1 401 Unauthorized"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3 "HTTP/1.1 404 Not Found"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3/pdf "HTTP/1.1 404 Not Found"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices/26c1bdef-9231-4842-9e4d-18bbdefa6d99 "HTTP/1.1 404 Not Found"
+INFO     app.services.auth:auth.py:85 Registration succeeded
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 201 Created"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices "HTTP/1.1 403 Forbidden"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3 "HTTP/1.1 403 Forbidden"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3/pdf "HTTP/1.1 403 Forbidden"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3 "HTTP/1.1 200 OK"
+ERROR    app.requests:middleware.py:33 Unhandled request failure
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices/4ba451a3-c59c-4b62-a682-db4218a262a3/pdf "HTTP/1.1 500 Internal Server Error"
+__________ test_invoice_paid_snapshot_redaction_and_gateway_disabled __________
+
+auth_client = <httpx.AsyncClient object at 0x00000240E7508380>
+auth_app = <fastapi.applications.FastAPI object at 0x00000240E794FD70>
+
+    async def test_invoice_paid_snapshot_redaction_and_gateway_disabled(
+        auth_client, auth_app
+    ):
+        headers, uid = await account(auth_client, auth_app)
+        body = (await checkout(auth_client, headers)).json()
+        assert (await send(auth_client, paid(body))).status_code == 200
+        invoice_id = UUID(body["payment_order_id"])
+        async with auth_app.state.session_factory() as session, session.begin():
+            order = await session.get(PaymentOrder, invoice_id)
+            await session.execute(
+                update(Plan)
+                .where(Plan.id == order.plan_id)
+                .values(
+                    name="New price name", max_projects=99, price_monthly_minor_units=999999
+                )
+            )
+            order.provider_payload_snapshot = {
+                "card_number": "DO-NOT-EXPOSE",
+                "secret": "DO-NOT-EXPOSE",
+            }
+            order.commercial_snapshot = {
+                **order.commercial_snapshot,
+                "secret": "DO-NOT-EXPOSE",
+            }
+            before = (order.status, order.subscription_id, order.paid_at)
+            subscriptions = list(
+                await session.scalars(
+                    select(Subscription).where(Subscription.user_id == uid)
+                )
+            )
+            periods = [(s.id, s.period_start, s.period_end) for s in subscriptions]
+        auth_app.state.settings = auth_app.state.settings.model_copy(
+            update={"sepay_enabled": False}
+        )
+        response = await auth_client.get(f"{BASE}/{invoice_id}", headers=headers)
+        assert response.status_code == 200
+        detail = response.json()
+        assert detail["status"] == "paid"
+        assert detail["amount_minor"] == 495330 and detail["currency"] == "VND"
+        assert detail["plan_name"] == "Desktop Starter"
+        assert detail["terms"]["max_projects"] == 5
+        assert detail["terms"]["billing_months"] == 1
+        assert detail["provider_environment"] == "sandbox"
+        assert detail["payment_method"] == "CARD"
+        assert detail["provider_transaction_id"] and detail["paid_at"]
+        assert "DO-NOT-EXPOSE" not in response.text
+        assert "secret" not in detail["terms"] and "provider_payload_snapshot" not in detail
+>       assert (
+            await auth_client.get(f"{BASE}/{invoice_id}/pdf", headers=headers)
+        ).status_code == 200
+E       assert 500 == 200
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+tests\test_invoices.py:172: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+{"timestamp": "2026-10-31T06:49:57.999143+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl PostgresqlImpl."}
+{"timestamp": "2026-10-31T06:49:58.000150+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume transactional DDL."}
+{"timestamp": "2026-10-31T06:49:58.029969+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade  -> 0001_foundation, Establish migration history without introducing business tables."}
+{"timestamp": "2026-10-31T06:49:58.031980+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0001_foundation -> 0002_authentication, User accounts and server-side refresh sessions."}
+{"timestamp": "2026-10-31T06:49:58.051430+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0002_authentication -> 0003_projects_keywords, User-owned projects and project-owned keyword configurations."}
+{"timestamp": "2026-10-31T06:49:58.079370+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0003_projects_keywords -> 0004_project_refactor_sites, Refactor Projects and create the user-global tracked-domain registry."}
+{"timestamp": "2026-10-31T06:49:58.116430+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0004_project_refactor_sites -> 0005_rank_tracking, Provider-independent rank checks, organic snapshots, and rankings."}
+{"timestamp": "2026-10-31T06:49:58.159472+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0005_rank_tracking -> 0006_multi_provider_routing, Persist provider usage and Rank Check provider attempts."}
+{"timestamp": "2026-10-31T06:49:58.176916+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0006_multi_provider_routing -> 0007_async_rank_check_jobs, Durable asynchronous rank checks and project schedules."}
+{"timestamp": "2026-10-31T06:49:58.210252+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0007_async_rank_check_jobs -> 0008_billing_usage_limits, billing_usage_limits"}
+{"timestamp": "2026-10-31T06:49:58.283997+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0008_billing_usage_limits -> 0009_plan_catalog_audit, Audit administrator changes to the Plan catalog."}
+{"timestamp": "2026-10-31T06:49:58.292249+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0009_plan_catalog_audit -> 0010_keyword_organization, Project-scoped Keyword Groups and Tags."}
+{"timestamp": "2026-10-31T06:49:58.323257+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0010_keyword_organization -> 0011_reports, Durable generated reports, schedules, and delivery attempts."}
+{"timestamp": "2026-10-31T06:49:58.353132+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0011_reports -> 0012_competitor_analytics, Project competitor selections for persisted SERP analytics."}
+{"timestamp": "2026-10-31T06:49:58.366648+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0012_competitor_analytics -> 0013_email_verification, Single-use hashed email verification challenges."}
+{"timestamp": "2026-10-31T06:49:58.377786+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0013_email_verification -> 0014_password_management, Password recovery challenges and immediate session revocation."}
+{"timestamp": "2026-10-31T06:49:58.386301+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0014_password_management -> 0015_vnd_pricing, Convert catalog USD cents to whole Vietnamese dong."}
+{"timestamp": "2026-10-31T06:49:58.391915+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0015_vnd_pricing -> 0016_sepay_payments, Persist one-time SePay purchases and provider events."}
+{"timestamp": "2026-10-31T06:49:58.421982+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0016_sepay_payments -> 0017_ranking_alerts, ranking_alerts"}
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-10-31T06:49:58.598687+00:00", "level": "INFO", "logger": "app.services.auth", "message": "Registration succeeded"}
+{"timestamp": "2026-10-31T06:49:58.601260+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/auth/register", "status_code": 201, "duration": 0.131941}
+{"timestamp": "2026-10-31T06:49:58.601260+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/auth/register \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:49:58.697865+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/plans", "status_code": 200, "duration": 0.088528}
+{"timestamp": "2026-10-31T06:49:58.697865+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/plans \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:49:58.737014+00:00", "level": "INFO", "logger": "app.services.payments.service", "message": "payment_checkout_created", "payment_order_id": "18caf8c1-7977-4dcc-8a8d-4a881074990f"}
+{"timestamp": "2026-10-31T06:49:58.739441+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/billing/payments/sepay/checkout", "status_code": 201, "duration": 0.038705}
+{"timestamp": "2026-10-31T06:49:58.739441+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/billing/payments/sepay/checkout \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:49:58.743945+00:00", "level": "INFO", "logger": "app.services.payments.sepay", "message": "payment_ipn_authenticated"}
+{"timestamp": "2026-10-31T06:49:58.776616+00:00", "level": "INFO", "logger": "app.services.payments.service", "message": "payment_paid", "payment_order_id": "18caf8c1-7977-4dcc-8a8d-4a881074990f"}
+{"timestamp": "2026-10-31T06:49:58.784259+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/billing/payments/sepay/ipn", "status_code": 200, "duration": 0.042349}
+{"timestamp": "2026-10-31T06:49:58.785261+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/billing/payments/sepay/ipn \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:49:58.805467+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices/18caf8c1-7977-4dcc-8a8d-4a881074990f", "status_code": 200, "duration": 0.009355}
+{"timestamp": "2026-10-31T06:49:58.805467+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices/18caf8c1-7977-4dcc-8a8d-4a881074990f \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:49:58.815108+00:00", "level": "ERROR", "logger": "app.requests", "message": "Unhandled request failure"}
+{"timestamp": "2026-10-31T06:49:58.815108+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/billing/invoices/18caf8c1-7977-4dcc-8a8d-4a881074990f/pdf", "status_code": 500, "duration": 0.005722}
+{"timestamp": "2026-10-31T06:49:58.815108+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/billing/invoices/18caf8c1-7977-4dcc-8a8d-4a881074990f/pdf \"HTTP/1.1 500 Internal Server Error\""}
+------------------------------ Captured log call ------------------------------
+INFO     app.services.auth:auth.py:85 Registration succeeded
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 201 Created"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/plans "HTTP/1.1 200 OK"
+INFO     app.services.payments.service:service.py:161 payment_checkout_created
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/billing/payments/sepay/checkout "HTTP/1.1 201 Created"
+INFO     app.services.payments.sepay:sepay.py:131 payment_ipn_authenticated
+INFO     app.services.payments.service:service.py:305 payment_paid
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/billing/payments/sepay/ipn "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices/18caf8c1-7977-4dcc-8a8d-4a881074990f "HTTP/1.1 200 OK"
+ERROR    app.requests:middleware.py:33 Unhandled request failure
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/billing/invoices/18caf8c1-7977-4dcc-8a8d-4a881074990f/pdf "HTTP/1.1 500 Internal Server Error"
+______ test_explorer_performance_at_one_thousand_keywords_and_two_sites _______
+
+auth_client = <httpx.AsyncClient object at 0x00000240E7B71BE0>
+auth_app = <fastapi.applications.FastAPI object at 0x00000240EC335B50>
+
+    async def test_explorer_performance_at_one_thousand_keywords_and_two_sites(
+        auth_client: AsyncClient, auth_app: FastAPI
+    ) -> None:
+        account = await register(auth_client, "explorer-performance")
+        headers = authorization(account)
+        sites: list[dict] = []
+        for index in range(2):
+            response = await auth_client.post(
+                "/api/v1/tracked-sites",
+                headers=headers,
+                json={
+                    "name": f"Performance site {index}",
+                    "primary_domain": f"performance-{index}.example",
+                },
+            )
+            assert response.status_code == 201
+            sites.append(response.json())
+        project = project_body(
+            await create_project(auth_client, headers, keywords=["keyword 0000"])
+        )
+        project_id = UUID(str(project["id"]))
+        user_id = UUID(account.json()["user"]["id"])
+        now = datetime.now(UTC).replace(microsecond=0)
+        previous = now - timedelta(days=31)
+        performance_group_ids = [uuid4() for _ in range(10)]
+        performance_tag_ids = [uuid4() for _ in range(20)]
+        performance_group_id = performance_group_ids[0]
+        performance_tag_one_id = performance_tag_ids[0]
+        performance_tag_two_id = performance_tag_ids[1]
+        async with auth_app.state.session_factory() as session, session.begin():
+            first = await session.scalar(
+                select(Keyword).where(Keyword.project_id == project_id)
+            )
+            assert first is not None
+            keywords = [first]
+            keywords.extend(
+                Keyword(
+                    project_id=project_id,
+                    keyword=f"keyword {index:04d}",
+                    keyword_normalized=f"keyword {index:04d}",
+                )
+                for index in range(1, 1000)
+            )
+            session.add_all(keywords[1:])
+            session.add_all(
+                [
+                    KeywordGroup(
+                        id=group_id,
+                        project_id=project_id,
+                        name=f"Performance Group {index:02d}",
+                        normalized_name=f"performance group {index:02d}",
+                    )
+                    for index, group_id in enumerate(performance_group_ids)
+                ]
+            )
+            session.add_all(
+                [
+                    KeywordTag(
+                        id=tag_id,
+                        project_id=project_id,
+                        name=f"Performance Tag {index:02d}",
+                        normalized_name=f"performance tag {index:02d}",
+                    )
+                    for index, tag_id in enumerate(performance_tag_ids)
+                ]
+            )
+            stored_sites: list[TrackedSite] = []
+            for site in sites:
+                stored = await session.get(TrackedSite, UUID(site["id"]))
+                assert stored is not None
+                stored.created_at = previous - timedelta(days=1)
+                stored_sites.append(stored)
+            await session.flush()
+            for index, keyword in enumerate(keywords):
+                keyword.keyword_group_id = performance_group_ids[index % 10]
+                for tag_id in {
+                    performance_tag_ids[index % 20],
+                    performance_tag_ids[(index + 1) % 20],
+                }:
+                    session.add(
+                        KeywordTagAssignment(
+                            project_id=project_id,
+                            keyword_id=keyword.id,
+                            tag_id=tag_id,
+                        )
+                    )
+            checks: list[RankCheck] = []
+            rankings: list[Ranking] = []
+            for index, keyword in enumerate(keywords):
+                current_position = (index % 10) + 1
+                for when, adjustment in ((previous, 2), (now, 0)):
+                    check_id = uuid4()
+                    checks.append(
+                        RankCheck(
+                            id=check_id,
+                            user_id=user_id,
+                            project_id=project_id,
+                            keyword_id=keyword.id,
+                            provider="fake",
+                            status=RankCheckStatus.SUCCEEDED,
+                            query_snapshot=keyword.keyword,
+                            search_engine_snapshot="google",
+                            country_code_snapshot="VN",
+                            language_code_snapshot="vi",
+                            device_snapshot="desktop",
+                            location_snapshot=None,
+                            result_limit=10,
+                            provider_request_count=1,
+                            requested_at=when,
+                            completed_at=when,
+                            created_at=when,
+                        )
+                    )
+                    for site_index, site in enumerate(sites):
+                        position = min(10, current_position + adjustment + site_index)
+                        rankings.append(
+                            Ranking(
+                                rank_check_id=check_id,
+                                tracked_site_id=UUID(site["id"]),
+                                tracked_domain_id=UUID(site["domains"][0]["id"]),
+                                tracked_site_name_snapshot=site["name"],
+                                matched_domain_snapshot=site["domains"][0]["domain"],
+                                position=position,
+                                result_url=f"https://{site['domains'][0]['domain']}/page",
+                                result_hostname=site["domains"][0]["domain"],
+                                title=keyword.keyword,
+                                created_at=when,
+                            )
+                        )
+            session.add_all(checks)
+            session.add_all(rankings)
+    
+        queries = {
+            "default": "",
+            "movement": "movement=improved",
+            "position": "position_bucket=top_3",
+            "search": "q=keyword%200777",
+            "change_sort": "sort=change&order=desc",
+            "group": f"group_id={performance_group_id}",
+            "tags_any": (
+                f"tag_ids={performance_tag_one_id},{performance_tag_two_id}&tag_match=any"
+            ),
+            "tags_all": (
+                f"tag_ids={performance_tag_one_id},{performance_tag_two_id}&tag_match=all"
+            ),
+        }
+        timings: dict[str, float] = {}
+        first_cursor: str | None = None
+        for label, query in queries.items():
+            started = perf_counter()
+            response = await auth_client.get(
+                f"/api/v1/projects/{project_id}/ranking-explorer?{query}",
+                headers=headers,
+            )
+            timings[label] = round((perf_counter() - started) * 1000, 2)
+            assert response.status_code == 200
+            if label == "default":
+                assert response.json()["summary"]["total"] == 2000
+                first_cursor = response.json()["page"]["next_cursor"]
+        assert first_cursor
+        started = perf_counter()
+        next_page = await auth_client.get(
+            f"/api/v1/projects/{project_id}/ranking-explorer?cursor={first_cursor}",
+            headers=headers,
+        )
+        timings["next_page"] = round((perf_counter() - started) * 1000, 2)
+        assert next_page.status_code == 200
+        started = perf_counter()
+        keyword_list = await auth_client.get(
+            f"/api/v1/projects/{project_id}/keywords",
+            headers=headers,
+            params={
+                "group_id": str(performance_group_id),
+                "tag_ids": str(performance_tag_one_id),
+                "tag_match": "all",
+                "limit": 200,
+            },
+        )
+        timings["organized_keyword_list"] = round((perf_counter() - started) * 1000, 2)
+        assert keyword_list.status_code == 200
+        started = perf_counter()
+        organization_summary = await auth_client.get(
+            f"/api/v1/projects/{project_id}/analytics/organization-summary",
+            headers=headers,
+            params={"group_id": str(performance_group_id), "range": "30d"},
+        )
+        timings["organization_summary"] = round((perf_counter() - started) * 1000, 2)
+        assert organization_summary.status_code == 200
+        bulk_tag = await auth_client.post(
+            f"/api/v1/projects/{project_id}/keyword-tags",
+            headers=headers,
+            json={"name": "Bulk Performance"},
+        )
+        assert bulk_tag.status_code == 201
+        started = perf_counter()
+        bulk = await auth_client.post(
+            f"/api/v1/projects/{project_id}/keywords/bulk-organize",
+            headers=headers,
+            json={
+                "keyword_ids": [str(keyword.id) for keyword in keywords[:100]],
+                "operation": "add_tags",
+                "tag_ids": [bulk_tag.json()["id"]],
+            },
+        )
+        timings["bulk_add_tag_100"] = round((perf_counter() - started) * 1000, 2)
+        assert bulk.status_code == 200
+        assert bulk.json()["assignment_count"] == 100
+        print(json.dumps({"ranking_explorer_performance_ms": timings}))
+    
+        worker = ReportWorker(
+            ReportService(
+                auth_app.state.session_factory,
+                auth_app.state.settings,
+                auth_app.state.task_queue,
+                auth_app.state.report_storage,
+                auth_app.state.report_email_sender,
+            )
+        )
+        engine = auth_app.state.session_factory.kw["bind"]
+        report_results: dict[str, dict[str, float | int]] = {}
+    
+        async def benchmark_report(
+            label: str,
+            report_type: str,
+            filters: dict[str, object] | None = None,
+        ) -> None:
+            response = await auth_client.post(
+                f"/api/v1/projects/{project_id}/reports",
+                headers=headers,
+                json={
+                    "report_type": report_type,
+                    "period": "30d",
+                    "include_keyword_details": True,
+                    "idempotency_key": f"performance-{label}",
+                    **(filters or {}),
+                },
+            )
+            assert response.status_code == 202, response.text
+            report_id = UUID(response.json()["id"])
+            query_count = 0
+    
+            def count_query(*_args: object) -> None:
+                nonlocal query_count
+                query_count += 1
+    
+            event.listen(engine.sync_engine, "before_cursor_execute", count_query)
+            tracemalloc.start()
+            started = perf_counter()
+            try:
+                assert await worker.execute(report_id)
+                elapsed_ms = round((perf_counter() - started) * 1000, 2)
+                _, peak_bytes = tracemalloc.get_traced_memory()
+            finally:
+                tracemalloc.stop()
+                event.remove(engine.sync_engine, "before_cursor_execute", count_query)
+            detail = await auth_client.get(
+                f"/api/v1/projects/{project_id}/reports/{report_id}", headers=headers
+            )
+            assert detail.status_code == 200
+            payload = detail.json()
+            assert payload["status"] == "ready"
+            report_results[label] = {
+                "queries": query_count,
+                "generation_ms": elapsed_ms,
+                "peak_python_mib": round(peak_bytes / 1024 / 1024, 2),
+                "artifact_bytes": int(payload["byte_size"]),
+            }
+    
+>       await benchmark_report("comparison_csv", "comparison_csv")
+
+tests\test_ranking_explorer.py:631: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+label = 'comparison_csv', report_type = 'comparison_csv', filters = None
+
+    async def benchmark_report(
+        label: str,
+        report_type: str,
+        filters: dict[str, object] | None = None,
+    ) -> None:
+        response = await auth_client.post(
+            f"/api/v1/projects/{project_id}/reports",
+            headers=headers,
+            json={
+                "report_type": report_type,
+                "period": "30d",
+                "include_keyword_details": True,
+                "idempotency_key": f"performance-{label}",
+                **(filters or {}),
+            },
+        )
+        assert response.status_code == 202, response.text
+        report_id = UUID(response.json()["id"])
+        query_count = 0
+    
+        def count_query(*_args: object) -> None:
+            nonlocal query_count
+            query_count += 1
+    
+        event.listen(engine.sync_engine, "before_cursor_execute", count_query)
+        tracemalloc.start()
+        started = perf_counter()
+        try:
+>           assert await worker.execute(report_id)
+E           assert False
+
+tests\test_ranking_explorer.py:612: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+{"timestamp": "2026-10-31T06:53:01.376684+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl PostgresqlImpl."}
+{"timestamp": "2026-10-31T06:53:01.377688+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume transactional DDL."}
+{"timestamp": "2026-10-31T06:53:01.402858+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade  -> 0001_foundation, Establish migration history without introducing business tables."}
+{"timestamp": "2026-10-31T06:53:01.404568+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0001_foundation -> 0002_authentication, User accounts and server-side refresh sessions."}
+{"timestamp": "2026-10-31T06:53:01.421323+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0002_authentication -> 0003_projects_keywords, User-owned projects and project-owned keyword configurations."}
+{"timestamp": "2026-10-31T06:53:01.445200+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0003_projects_keywords -> 0004_project_refactor_sites, Refactor Projects and create the user-global tracked-domain registry."}
+{"timestamp": "2026-10-31T06:53:01.482107+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0004_project_refactor_sites -> 0005_rank_tracking, Provider-independent rank checks, organic snapshots, and rankings."}
+{"timestamp": "2026-10-31T06:53:01.518985+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0005_rank_tracking -> 0006_multi_provider_routing, Persist provider usage and Rank Check provider attempts."}
+{"timestamp": "2026-10-31T06:53:01.535043+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0006_multi_provider_routing -> 0007_async_rank_check_jobs, Durable asynchronous rank checks and project schedules."}
+{"timestamp": "2026-10-31T06:53:01.566588+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0007_async_rank_check_jobs -> 0008_billing_usage_limits, billing_usage_limits"}
+{"timestamp": "2026-10-31T06:53:01.641352+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0008_billing_usage_limits -> 0009_plan_catalog_audit, Audit administrator changes to the Plan catalog."}
+{"timestamp": "2026-10-31T06:53:01.649395+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0009_plan_catalog_audit -> 0010_keyword_organization, Project-scoped Keyword Groups and Tags."}
+{"timestamp": "2026-10-31T06:53:01.680493+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0010_keyword_organization -> 0011_reports, Durable generated reports, schedules, and delivery attempts."}
+{"timestamp": "2026-10-31T06:53:01.712473+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0011_reports -> 0012_competitor_analytics, Project competitor selections for persisted SERP analytics."}
+{"timestamp": "2026-10-31T06:53:01.726496+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0012_competitor_analytics -> 0013_email_verification, Single-use hashed email verification challenges."}
+{"timestamp": "2026-10-31T06:53:01.736105+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0013_email_verification -> 0014_password_management, Password recovery challenges and immediate session revocation."}
+{"timestamp": "2026-10-31T06:53:01.744457+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0014_password_management -> 0015_vnd_pricing, Convert catalog USD cents to whole Vietnamese dong."}
+{"timestamp": "2026-10-31T06:53:01.751468+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0015_vnd_pricing -> 0016_sepay_payments, Persist one-time SePay purchases and provider events."}
+{"timestamp": "2026-10-31T06:53:01.787895+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0016_sepay_payments -> 0017_ranking_alerts, ranking_alerts"}
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-10-31T06:53:01.964381+00:00", "level": "INFO", "logger": "app.services.auth", "message": "Registration succeeded"}
+{"timestamp": "2026-10-31T06:53:01.967820+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/auth/register", "status_code": 201, "duration": 0.121231}
+{"timestamp": "2026-10-31T06:53:01.967820+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/auth/register \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:02.063432+00:00", "level": "INFO", "logger": "app.services.tracked_sites", "message": "Tracked Site created", "tracked_site_id": "6bf0e4b0-a66a-4d81-ab88-735e51ef26ba"}
+{"timestamp": "2026-10-31T06:53:02.063432+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/tracked-sites", "status_code": 201, "duration": 0.087323}
+{"timestamp": "2026-10-31T06:53:02.064435+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/tracked-sites \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:02.078984+00:00", "level": "INFO", "logger": "app.services.tracked_sites", "message": "Tracked Site created", "tracked_site_id": "a45cfb7c-4da5-46f0-ab67-2bde8ac8d055"}
+{"timestamp": "2026-10-31T06:53:02.078984+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/tracked-sites", "status_code": 201, "duration": 0.00576}
+{"timestamp": "2026-10-31T06:53:02.080147+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/tracked-sites \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:02.123722+00:00", "level": "INFO", "logger": "app.services.projects", "message": "Project created", "project_id": "d7170905-327b-4b77-a2ee-d69cf223fbae", "submitted": 1, "created_count": 1}
+{"timestamp": "2026-10-31T06:53:02.124721+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/projects", "status_code": 201, "duration": 0.036611}
+{"timestamp": "2026-10-31T06:53:02.124721+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/projects \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:05.446655+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer", "status_code": 200, "duration": 2.184682}
+{"timestamp": "2026-10-31T06:53:05.446655+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer? \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:53:07.728834+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer", "status_code": 200, "duration": 2.270314}
+{"timestamp": "2026-10-31T06:53:07.728834+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?movement=improved \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:53:11.269108+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer", "status_code": 200, "duration": 3.53243}
+{"timestamp": "2026-10-31T06:53:11.269108+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?position_bucket=top_3 \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:53:11.340238+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer", "status_code": 200, "duration": 0.063139}
+{"timestamp": "2026-10-31T06:53:11.340238+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?q=keyword%200777 \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:53:13.617646+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer", "status_code": 200, "duration": 2.266875}
+{"timestamp": "2026-10-31T06:53:13.618698+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?sort=change&order=desc \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:53:14.032359+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer", "status_code": 200, "duration": 0.404782}
+{"timestamp": "2026-10-31T06:53:14.032359+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?group_id=304c542d-40d0-442f-92a0-9fa59baecf61 \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:53:14.640200+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer", "status_code": 200, "duration": 0.601668}
+{"timestamp": "2026-10-31T06:53:14.641207+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?tag_ids=e3c2e645-ae73-4872-96f8-0ad2b6dcb8d1,23b60204-910f-4749-8198-4d8285b102f5&tag_match=any \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:53:14.875094+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer", "status_code": 200, "duration": 0.223786}
+{"timestamp": "2026-10-31T06:53:14.875094+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?tag_ids=e3c2e645-ae73-4872-96f8-0ad2b6dcb8d1,23b60204-910f-4749-8198-4d8285b102f5&tag_match=all \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:53:17.171161+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer", "status_code": 200, "duration": 2.287689}
+{"timestamp": "2026-10-31T06:53:17.171161+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?cursor=eyJvZmZzZXQiOjUwfQ \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:53:17.208473+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/keywords", "status_code": 200, "duration": 0.029866}
+{"timestamp": "2026-10-31T06:53:17.208473+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/keywords?group_id=304c542d-40d0-442f-92a0-9fa59baecf61&tag_ids=e3c2e645-ae73-4872-96f8-0ad2b6dcb8d1&tag_match=all&limit=200 \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:53:17.242209+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/analytics/organization-summary", "status_code": 200, "duration": 0.026304}
+{"timestamp": "2026-10-31T06:53:17.242209+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/analytics/organization-summary?group_id=304c542d-40d0-442f-92a0-9fa59baecf61&range=30d \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:53:17.255627+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/keyword-tags", "status_code": 201, "duration": 0.006545}
+{"timestamp": "2026-10-31T06:53:17.255627+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/keyword-tags \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:17.288986+00:00", "level": "INFO", "logger": "app.services.keyword_organization", "message": "Keyword bulk organization updated", "project_id": "d7170905-327b-4b77-a2ee-d69cf223fbae"}
+{"timestamp": "2026-10-31T06:53:17.288986+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/keywords/bulk-organize", "status_code": 200, "duration": 0.023263}
+{"timestamp": "2026-10-31T06:53:17.288986+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/keywords/bulk-organize \"HTTP/1.1 200 OK\""}
+{"ranking_explorer_performance_ms": {"default": 2195.19, "movement": 2281.8, "position": 3540.23, "search": 70.56, "change_sort": 2278.28, "group": 413.88, "tags_any": 608.67, "tags_all": 234.04, "next_page": 2296.4, "organized_keyword_list": 37.69, "organization_summary": 33.07, "bulk_add_tag_100": 33.76}}
+{"timestamp": "2026-10-31T06:53:22.463358+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/reports", "status_code": 202, "duration": 5.165895}
+{"timestamp": "2026-10-31T06:53:22.464369+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/reports \"HTTP/1.1 202 Accepted\""}
+{"timestamp": "2026-10-31T06:53:24.510218+00:00", "level": "ERROR", "logger": "app.services.report_worker", "message": "report_generation_failed", "safe_error_code": "REPORT_GENERATION_FAILED"}
+------------------------------ Captured log call ------------------------------
+INFO     app.services.auth:auth.py:85 Registration succeeded
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 201 Created"
+INFO     app.services.tracked_sites:tracked_sites.py:79 Tracked Site created
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/tracked-sites "HTTP/1.1 201 Created"
+INFO     app.services.tracked_sites:tracked_sites.py:79 Tracked Site created
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/tracked-sites "HTTP/1.1 201 Created"
+INFO     app.services.projects:projects.py:69 Project created
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/projects "HTTP/1.1 201 Created"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer? "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?movement=improved "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?position_bucket=top_3 "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?q=keyword%200777 "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?sort=change&order=desc "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?group_id=304c542d-40d0-442f-92a0-9fa59baecf61 "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?tag_ids=e3c2e645-ae73-4872-96f8-0ad2b6dcb8d1,23b60204-910f-4749-8198-4d8285b102f5&tag_match=any "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?tag_ids=e3c2e645-ae73-4872-96f8-0ad2b6dcb8d1,23b60204-910f-4749-8198-4d8285b102f5&tag_match=all "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/ranking-explorer?cursor=eyJvZmZzZXQiOjUwfQ "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/keywords?group_id=304c542d-40d0-442f-92a0-9fa59baecf61&tag_ids=e3c2e645-ae73-4872-96f8-0ad2b6dcb8d1&tag_match=all&limit=200 "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/analytics/organization-summary?group_id=304c542d-40d0-442f-92a0-9fa59baecf61&range=30d "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/keyword-tags "HTTP/1.1 201 Created"
+INFO     app.services.keyword_organization:keyword_organization.py:275 Keyword bulk organization updated
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/keywords/bulk-organize "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/projects/d7170905-327b-4b77-a2ee-d69cf223fbae/reports "HTTP/1.1 202 Accepted"
+ERROR    app.services.report_worker:report_worker.py:441 report_generation_failed
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\tmp\\serp-saas-reports\\5fa1b98b8ef44b59b6b5c2a18cbb0431'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\tmp\\serp-saas-reports'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\serp-saas-main\.tools\m7l-integration\backend\app\services\report_worker.py", line 437, in execute
+    await self.reports.storage.write(storage_key, data)
+  File "C:\Users\Admin\Desktop\serp-saas-main\.tools\m7l-integration\backend\app\services\report_storage.py", line 36, in write
+    await asyncio.to_thread(persist)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\asyncio\threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\serp-saas-main\.tools\m7l-integration\backend\app\services\report_storage.py", line 30, in persist
+    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [WinError 5] Access is denied: 'C:\\tmp'
+___________________ test_preview_csv_pdf_and_no_rank_usage ____________________
+
+auth_client = <httpx.AsyncClient object at 0x00000240EC0BC110>
+auth_app = <fastapi.applications.FastAPI object at 0x00000240EB3E4410>
+
+    async def test_preview_csv_pdf_and_no_rank_usage(
+        auth_client: AsyncClient, auth_app: FastAPI
+    ) -> None:
+        headers, project_id, _, site_id = await seed_reports(auth_client, auth_app)
+        preview = await auth_client.get(
+            f"/api/v1/projects/{project_id}/reports/preview?period=30d"
+            f"&tracked_site_id={site_id}",
+            headers=headers,
+        )
+        assert preview.status_code == 200, preview.text
+        metrics = preview.json()["metrics"]
+        assert metrics["distinct_keywords"] == 3
+        assert metrics["keyword_site_pairs"] == 3
+        assert metrics["observed_pairs"] == 2
+        assert metrics["never_checked"] == 1
+        assert metrics["effective_depth"] == 10
+        assert metrics["movements"]["improved"] == 1
+        assert metrics["movements"]["entered_checked_depth"] == 1
+        assert metrics["comparison_basis"] == "range_boundary"
+    
+        async with auth_app.state.session_factory() as session:
+            rank_jobs_before = int(
+                await session.scalar(select(func.count(RankCheckJob.id))) or 0
+            )
+    
+>       comparison, comparison_bytes = await generate(
+            auth_client,
+            auth_app,
+            headers,
+            project_id,
+            "comparison_csv",
+            "comparison-1",
+        )
+
+tests\test_reports.py:220: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+client = <httpx.AsyncClient object at 0x00000240EC0BC110>
+app = <fastapi.applications.FastAPI object at 0x00000240EB3E4410>
+headers = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGMxNTFhNi1lZjk4LTQ4YmQtYmJhMy05ZDlmZWExMzI...icGFzc3dvcmRfdmVyc2lvbiI6MCwiaWF0IjoxNzkzNDI5NjA1LCJleHAiOjE3OTM0MzA1MDV9.GklLTEuC9RRD0Kb3YtHBOq72MgKMTUdnPK7wY99aLQ4'}
+project_id = UUID('2c850f94-19fd-49a8-9ccb-7bab6522c851')
+report_type = 'comparison_csv', key = 'comparison-1'
+
+    async def generate(
+        client: AsyncClient,
+        app: FastAPI,
+        headers: dict[str, str],
+        project_id: UUID,
+        report_type: str,
+        key: str,
+    ) -> tuple[dict[str, object], bytes]:
+        response = await client.post(
+            f"/api/v1/projects/{project_id}/reports",
+            headers=headers,
+            json={
+                "report_type": report_type,
+                "period": "30d",
+                "tag_match": "any",
+                "include_keyword_details": True,
+                "idempotency_key": key,
+            },
+        )
+        assert response.status_code == 202, response.text
+        report_id = UUID(response.json()["id"])
+>       assert await report_worker(app).execute(report_id)
+E       assert False
+
+tests\test_reports.py:180: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+{"timestamp": "2026-10-31T06:53:24.833376+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl PostgresqlImpl."}
+{"timestamp": "2026-10-31T06:53:24.834376+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume transactional DDL."}
+{"timestamp": "2026-10-31T06:53:24.864434+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade  -> 0001_foundation, Establish migration history without introducing business tables."}
+{"timestamp": "2026-10-31T06:53:24.865432+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0001_foundation -> 0002_authentication, User accounts and server-side refresh sessions."}
+{"timestamp": "2026-10-31T06:53:24.884488+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0002_authentication -> 0003_projects_keywords, User-owned projects and project-owned keyword configurations."}
+{"timestamp": "2026-10-31T06:53:24.914853+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0003_projects_keywords -> 0004_project_refactor_sites, Refactor Projects and create the user-global tracked-domain registry."}
+{"timestamp": "2026-10-31T06:53:24.959268+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0004_project_refactor_sites -> 0005_rank_tracking, Provider-independent rank checks, organic snapshots, and rankings."}
+{"timestamp": "2026-10-31T06:53:25.000373+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0005_rank_tracking -> 0006_multi_provider_routing, Persist provider usage and Rank Check provider attempts."}
+{"timestamp": "2026-10-31T06:53:25.020288+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0006_multi_provider_routing -> 0007_async_rank_check_jobs, Durable asynchronous rank checks and project schedules."}
+{"timestamp": "2026-10-31T06:53:25.054669+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0007_async_rank_check_jobs -> 0008_billing_usage_limits, billing_usage_limits"}
+{"timestamp": "2026-10-31T06:53:25.125286+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0008_billing_usage_limits -> 0009_plan_catalog_audit, Audit administrator changes to the Plan catalog."}
+{"timestamp": "2026-10-31T06:53:25.133699+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0009_plan_catalog_audit -> 0010_keyword_organization, Project-scoped Keyword Groups and Tags."}
+{"timestamp": "2026-10-31T06:53:25.163299+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0010_keyword_organization -> 0011_reports, Durable generated reports, schedules, and delivery attempts."}
+{"timestamp": "2026-10-31T06:53:25.199136+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0011_reports -> 0012_competitor_analytics, Project competitor selections for persisted SERP analytics."}
+{"timestamp": "2026-10-31T06:53:25.214529+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0012_competitor_analytics -> 0013_email_verification, Single-use hashed email verification challenges."}
+{"timestamp": "2026-10-31T06:53:25.223634+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0013_email_verification -> 0014_password_management, Password recovery challenges and immediate session revocation."}
+{"timestamp": "2026-10-31T06:53:25.233259+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0014_password_management -> 0015_vnd_pricing, Convert catalog USD cents to whole Vietnamese dong."}
+{"timestamp": "2026-10-31T06:53:25.239258+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0015_vnd_pricing -> 0016_sepay_payments, Persist one-time SePay purchases and provider events."}
+{"timestamp": "2026-10-31T06:53:25.271213+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0016_sepay_payments -> 0017_ranking_alerts, ranking_alerts"}
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-10-31T06:53:25.449083+00:00", "level": "INFO", "logger": "app.services.auth", "message": "Registration succeeded"}
+{"timestamp": "2026-10-31T06:53:25.451101+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/auth/register", "status_code": 201, "duration": 0.129274}
+{"timestamp": "2026-10-31T06:53:25.452613+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/auth/register \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:25.542615+00:00", "level": "INFO", "logger": "app.services.tracked_sites", "message": "Tracked Site created", "tracked_site_id": "e1ad7407-de06-47a0-bf78-ea906a115a00"}
+{"timestamp": "2026-10-31T06:53:25.543668+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/tracked-sites", "status_code": 201, "duration": 0.083345}
+{"timestamp": "2026-10-31T06:53:25.543668+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/tracked-sites \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:25.589631+00:00", "level": "INFO", "logger": "app.services.projects", "message": "Project created", "project_id": "2c850f94-19fd-49a8-9ccb-7bab6522c851", "submitted": 3, "created_count": 3}
+{"timestamp": "2026-10-31T06:53:25.590632+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/projects", "status_code": 201, "duration": 0.040187}
+{"timestamp": "2026-10-31T06:53:25.590632+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/projects \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:25.727810+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/2c850f94-19fd-49a8-9ccb-7bab6522c851/reports/preview", "status_code": 200, "duration": 0.112519}
+{"timestamp": "2026-10-31T06:53:25.727810+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/2c850f94-19fd-49a8-9ccb-7bab6522c851/reports/preview?period=30d&tracked_site_id=e1ad7407-de06-47a0-bf78-ea906a115a00 \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-10-31T06:53:25.835590+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/projects/2c850f94-19fd-49a8-9ccb-7bab6522c851/reports", "status_code": 202, "duration": 0.091885}
+{"timestamp": "2026-10-31T06:53:25.835590+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/projects/2c850f94-19fd-49a8-9ccb-7bab6522c851/reports \"HTTP/1.1 202 Accepted\""}
+{"timestamp": "2026-10-31T06:53:25.895621+00:00", "level": "ERROR", "logger": "app.services.report_worker", "message": "report_generation_failed", "safe_error_code": "REPORT_GENERATION_FAILED"}
+------------------------------ Captured log call ------------------------------
+INFO     app.services.auth:auth.py:85 Registration succeeded
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 201 Created"
+INFO     app.services.tracked_sites:tracked_sites.py:79 Tracked Site created
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/tracked-sites "HTTP/1.1 201 Created"
+INFO     app.services.projects:projects.py:69 Project created
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/projects "HTTP/1.1 201 Created"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/2c850f94-19fd-49a8-9ccb-7bab6522c851/reports/preview?period=30d&tracked_site_id=e1ad7407-de06-47a0-bf78-ea906a115a00 "HTTP/1.1 200 OK"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/projects/2c850f94-19fd-49a8-9ccb-7bab6522c851/reports "HTTP/1.1 202 Accepted"
+ERROR    app.services.report_worker:report_worker.py:441 report_generation_failed
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\tmp\\serp-saas-reports\\adc151a6ef9848bdbba39d9fea1320c2'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\tmp\\serp-saas-reports'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\serp-saas-main\.tools\m7l-integration\backend\app\services\report_worker.py", line 437, in execute
+    await self.reports.storage.write(storage_key, data)
+  File "C:\Users\Admin\Desktop\serp-saas-main\.tools\m7l-integration\backend\app\services\report_storage.py", line 36, in write
+    await asyncio.to_thread(persist)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\asyncio\threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\serp-saas-main\.tools\m7l-integration\backend\app\services\report_storage.py", line 30, in persist
+    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [WinError 5] Access is denied: 'C:\\tmp'
+___________ test_idempotency_tenant_isolation_and_expired_download ____________
+
+auth_client = <httpx.AsyncClient object at 0x00000240E96133E0>
+auth_app = <fastapi.applications.FastAPI object at 0x00000240EC0BD850>
+
+    async def test_idempotency_tenant_isolation_and_expired_download(
+        auth_client: AsyncClient, auth_app: FastAPI
+    ) -> None:
+        headers, project_id, _, _ = await seed_reports(auth_client, auth_app, "owner")
+        payload = {
+            "report_type": "comparison_csv",
+            "period": "7d",
+            "idempotency_key": "same-click",
+        }
+        first = await auth_client.post(
+            f"/api/v1/projects/{project_id}/reports", headers=headers, json=payload
+        )
+        second = await auth_client.post(
+            f"/api/v1/projects/{project_id}/reports", headers=headers, json=payload
+        )
+        assert first.status_code == second.status_code == 202
+        assert first.json()["id"] == second.json()["id"]
+    
+        foreign_headers = authorization(await register(auth_client, "foreign"))
+        hidden = await auth_client.get(
+            f"/api/v1/projects/{project_id}/reports/{first.json()['id']}",
+            headers=foreign_headers,
+        )
+        assert hidden.status_code == 404
+        hidden_download = await auth_client.get(
+            f"/api/v1/projects/{project_id}/reports/{first.json()['id']}/download",
+            headers=foreign_headers,
+        )
+        assert hidden_download.status_code == 404
+    
+        report_id = UUID(first.json()["id"])
+>       assert await report_worker(auth_app).execute(report_id)
+E       assert False
+
+tests\test_reports.py:320: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+{"timestamp": "2026-10-31T06:53:26.145230+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl PostgresqlImpl."}
+{"timestamp": "2026-10-31T06:53:26.145230+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume transactional DDL."}
+{"timestamp": "2026-10-31T06:53:26.171607+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade  -> 0001_foundation, Establish migration history without introducing business tables."}
+{"timestamp": "2026-10-31T06:53:26.173125+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0001_foundation -> 0002_authentication, User accounts and server-side refresh sessions."}
+{"timestamp": "2026-10-31T06:53:26.188717+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0002_authentication -> 0003_projects_keywords, User-owned projects and project-owned keyword configurations."}
+{"timestamp": "2026-10-31T06:53:26.213480+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0003_projects_keywords -> 0004_project_refactor_sites, Refactor Projects and create the user-global tracked-domain registry."}
+{"timestamp": "2026-10-31T06:53:26.252362+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0004_project_refactor_sites -> 0005_rank_tracking, Provider-independent rank checks, organic snapshots, and rankings."}
+{"timestamp": "2026-10-31T06:53:26.296897+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0005_rank_tracking -> 0006_multi_provider_routing, Persist provider usage and Rank Check provider attempts."}
+{"timestamp": "2026-10-31T06:53:26.317148+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0006_multi_provider_routing -> 0007_async_rank_check_jobs, Durable asynchronous rank checks and project schedules."}
+{"timestamp": "2026-10-31T06:53:26.349526+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0007_async_rank_check_jobs -> 0008_billing_usage_limits, billing_usage_limits"}
+{"timestamp": "2026-10-31T06:53:26.416608+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0008_billing_usage_limits -> 0009_plan_catalog_audit, Audit administrator changes to the Plan catalog."}
+{"timestamp": "2026-10-31T06:53:26.425015+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0009_plan_catalog_audit -> 0010_keyword_organization, Project-scoped Keyword Groups and Tags."}
+{"timestamp": "2026-10-31T06:53:26.459237+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0010_keyword_organization -> 0011_reports, Durable generated reports, schedules, and delivery attempts."}
+{"timestamp": "2026-10-31T06:53:26.500380+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0011_reports -> 0012_competitor_analytics, Project competitor selections for persisted SERP analytics."}
+{"timestamp": "2026-10-31T06:53:26.514128+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0012_competitor_analytics -> 0013_email_verification, Single-use hashed email verification challenges."}
+{"timestamp": "2026-10-31T06:53:26.525681+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0013_email_verification -> 0014_password_management, Password recovery challenges and immediate session revocation."}
+{"timestamp": "2026-10-31T06:53:26.535265+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0014_password_management -> 0015_vnd_pricing, Convert catalog USD cents to whole Vietnamese dong."}
+{"timestamp": "2026-10-31T06:53:26.540265+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0015_vnd_pricing -> 0016_sepay_payments, Persist one-time SePay purchases and provider events."}
+{"timestamp": "2026-10-31T06:53:26.570479+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0016_sepay_payments -> 0017_ranking_alerts, ranking_alerts"}
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-10-31T06:53:26.740361+00:00", "level": "INFO", "logger": "app.services.auth", "message": "Registration succeeded"}
+{"timestamp": "2026-10-31T06:53:26.742785+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/auth/register", "status_code": 201, "duration": 0.119996}
+{"timestamp": "2026-10-31T06:53:26.743349+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/auth/register \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:26.834164+00:00", "level": "INFO", "logger": "app.services.tracked_sites", "message": "Tracked Site created", "tracked_site_id": "1e77c54c-680e-452f-9a15-07fc776685b3"}
+{"timestamp": "2026-10-31T06:53:26.835268+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/tracked-sites", "status_code": 201, "duration": 0.083719}
+{"timestamp": "2026-10-31T06:53:26.835268+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/tracked-sites \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:26.877687+00:00", "level": "INFO", "logger": "app.services.projects", "message": "Project created", "project_id": "a0c28726-730e-49c1-ae60-809e3c3d6cb3", "submitted": 3, "created_count": 3}
+{"timestamp": "2026-10-31T06:53:26.878686+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/projects", "status_code": 201, "duration": 0.034942}
+{"timestamp": "2026-10-31T06:53:26.878686+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/projects \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:27.028728+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/projects/a0c28726-730e-49c1-ae60-809e3c3d6cb3/reports", "status_code": 202, "duration": 0.125316}
+{"timestamp": "2026-10-31T06:53:27.028728+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/projects/a0c28726-730e-49c1-ae60-809e3c3d6cb3/reports \"HTTP/1.1 202 Accepted\""}
+{"timestamp": "2026-10-31T06:53:27.047176+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/projects/a0c28726-730e-49c1-ae60-809e3c3d6cb3/reports", "status_code": 202, "duration": 0.009231}
+{"timestamp": "2026-10-31T06:53:27.048176+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/projects/a0c28726-730e-49c1-ae60-809e3c3d6cb3/reports \"HTTP/1.1 202 Accepted\""}
+{"timestamp": "2026-10-31T06:53:27.122962+00:00", "level": "INFO", "logger": "app.services.auth", "message": "Registration succeeded"}
+{"timestamp": "2026-10-31T06:53:27.126964+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/auth/register", "status_code": 201, "duration": 0.071896}
+{"timestamp": "2026-10-31T06:53:27.126964+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/auth/register \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:27.141479+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/a0c28726-730e-49c1-ae60-809e3c3d6cb3/reports/9be43ee1-5a23-4f52-8c01-f49b1b450bbc", "status_code": 404, "duration": 0.004833}
+{"timestamp": "2026-10-31T06:53:27.141479+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/a0c28726-730e-49c1-ae60-809e3c3d6cb3/reports/9be43ee1-5a23-4f52-8c01-f49b1b450bbc \"HTTP/1.1 404 Not Found\""}
+{"timestamp": "2026-10-31T06:53:27.159438+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "GET", "path": "/api/v1/projects/a0c28726-730e-49c1-ae60-809e3c3d6cb3/reports/9be43ee1-5a23-4f52-8c01-f49b1b450bbc/download", "status_code": 404, "duration": 0.005628}
+{"timestamp": "2026-10-31T06:53:27.159438+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/projects/a0c28726-730e-49c1-ae60-809e3c3d6cb3/reports/9be43ee1-5a23-4f52-8c01-f49b1b450bbc/download \"HTTP/1.1 404 Not Found\""}
+{"timestamp": "2026-10-31T06:53:27.212917+00:00", "level": "ERROR", "logger": "app.services.report_worker", "message": "report_generation_failed", "safe_error_code": "REPORT_GENERATION_FAILED"}
+------------------------------ Captured log call ------------------------------
+INFO     app.services.auth:auth.py:85 Registration succeeded
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 201 Created"
+INFO     app.services.tracked_sites:tracked_sites.py:79 Tracked Site created
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/tracked-sites "HTTP/1.1 201 Created"
+INFO     app.services.projects:projects.py:69 Project created
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/projects "HTTP/1.1 201 Created"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/projects/a0c28726-730e-49c1-ae60-809e3c3d6cb3/reports "HTTP/1.1 202 Accepted"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/projects/a0c28726-730e-49c1-ae60-809e3c3d6cb3/reports "HTTP/1.1 202 Accepted"
+INFO     app.services.auth:auth.py:85 Registration succeeded
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 201 Created"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/a0c28726-730e-49c1-ae60-809e3c3d6cb3/reports/9be43ee1-5a23-4f52-8c01-f49b1b450bbc "HTTP/1.1 404 Not Found"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/projects/a0c28726-730e-49c1-ae60-809e3c3d6cb3/reports/9be43ee1-5a23-4f52-8c01-f49b1b450bbc/download "HTTP/1.1 404 Not Found"
+ERROR    app.services.report_worker:report_worker.py:441 report_generation_failed
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\tmp\\serp-saas-reports\\03552b2e4bee4f94b086c6adfe8e8a5f'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\tmp\\serp-saas-reports'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\serp-saas-main\.tools\m7l-integration\backend\app\services\report_worker.py", line 437, in execute
+    await self.reports.storage.write(storage_key, data)
+  File "C:\Users\Admin\Desktop\serp-saas-main\.tools\m7l-integration\backend\app\services\report_storage.py", line 36, in write
+    await asyncio.to_thread(persist)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\asyncio\threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\serp-saas-main\.tools\m7l-integration\backend\app\services\report_storage.py", line 30, in persist
+    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [WinError 5] Access is denied: 'C:\\tmp'
+_______________ test_schedule_dispatch_and_fake_verified_email ________________
+
+auth_client = <httpx.AsyncClient object at 0x00000240E994F890>
+auth_app = <fastapi.applications.FastAPI object at 0x00000240EE30D160>
+
+    async def test_schedule_dispatch_and_fake_verified_email(
+        auth_client: AsyncClient, auth_app: FastAPI
+    ) -> None:
+        headers, project_id, user_id, _ = await seed_reports(
+            auth_client, auth_app, "schedule"
+        )
+        fake = TransientOnceEmailSender()
+        auth_app.state.report_email_sender = fake
+        async with auth_app.state.session_factory() as session, session.begin():
+            user = await session.get(User, user_id)
+            assert user is not None
+            user.email_verified_at = datetime.now(UTC)
+        created = await auth_client.post(
+            f"/api/v1/projects/{project_id}/report-schedules",
+            headers=headers,
+            json={
+                "name": "Thứ hai hàng tuần",
+                "frequency": "weekly",
+                "scheduled_hour": 9,
+                "weekday": 0,
+                "active": True,
+                "period": "30d",
+            },
+        )
+        assert created.status_code == 201, created.text
+        schedule_id = UUID(created.json()["id"])
+        async with auth_app.state.session_factory() as session, session.begin():
+            schedule = await session.get(ReportSchedule, schedule_id)
+            assert schedule is not None
+            schedule.next_run_at_utc = datetime.now(UTC) - timedelta(seconds=1)
+        worker = report_worker(auth_app)
+        assert await worker.dispatch_schedules() == 1
+        async with auth_app.state.session_factory() as session:
+            report_id = await session.scalar(
+                select(GeneratedReport.id).where(
+                    GeneratedReport.report_schedule_id == schedule_id
+                )
+            )
+        assert report_id is not None
+>       assert await worker.execute(report_id)
+E       assert False
+
+tests\test_reports.py:447: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+{"timestamp": "2026-10-31T06:53:29.091431+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl PostgresqlImpl."}
+{"timestamp": "2026-10-31T06:53:29.091431+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume transactional DDL."}
+{"timestamp": "2026-10-31T06:53:29.120247+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade  -> 0001_foundation, Establish migration history without introducing business tables."}
+{"timestamp": "2026-10-31T06:53:29.122299+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0001_foundation -> 0002_authentication, User accounts and server-side refresh sessions."}
+{"timestamp": "2026-10-31T06:53:29.139593+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0002_authentication -> 0003_projects_keywords, User-owned projects and project-owned keyword configurations."}
+{"timestamp": "2026-10-31T06:53:29.166022+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0003_projects_keywords -> 0004_project_refactor_sites, Refactor Projects and create the user-global tracked-domain registry."}
+{"timestamp": "2026-10-31T06:53:29.204546+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0004_project_refactor_sites -> 0005_rank_tracking, Provider-independent rank checks, organic snapshots, and rankings."}
+{"timestamp": "2026-10-31T06:53:29.239412+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0005_rank_tracking -> 0006_multi_provider_routing, Persist provider usage and Rank Check provider attempts."}
+{"timestamp": "2026-10-31T06:53:29.255228+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0006_multi_provider_routing -> 0007_async_rank_check_jobs, Durable asynchronous rank checks and project schedules."}
+{"timestamp": "2026-10-31T06:53:29.285569+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0007_async_rank_check_jobs -> 0008_billing_usage_limits, billing_usage_limits"}
+{"timestamp": "2026-10-31T06:53:29.347699+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0008_billing_usage_limits -> 0009_plan_catalog_audit, Audit administrator changes to the Plan catalog."}
+{"timestamp": "2026-10-31T06:53:29.356165+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0009_plan_catalog_audit -> 0010_keyword_organization, Project-scoped Keyword Groups and Tags."}
+{"timestamp": "2026-10-31T06:53:29.383023+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0010_keyword_organization -> 0011_reports, Durable generated reports, schedules, and delivery attempts."}
+{"timestamp": "2026-10-31T06:53:29.414739+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0011_reports -> 0012_competitor_analytics, Project competitor selections for persisted SERP analytics."}
+{"timestamp": "2026-10-31T06:53:29.429356+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0012_competitor_analytics -> 0013_email_verification, Single-use hashed email verification challenges."}
+{"timestamp": "2026-10-31T06:53:29.438606+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0013_email_verification -> 0014_password_management, Password recovery challenges and immediate session revocation."}
+{"timestamp": "2026-10-31T06:53:29.446777+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0014_password_management -> 0015_vnd_pricing, Convert catalog USD cents to whole Vietnamese dong."}
+{"timestamp": "2026-10-31T06:53:29.452323+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0015_vnd_pricing -> 0016_sepay_payments, Persist one-time SePay purchases and provider events."}
+{"timestamp": "2026-10-31T06:53:29.478480+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0016_sepay_payments -> 0017_ranking_alerts, ranking_alerts"}
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-10-31T06:53:29.632863+00:00", "level": "INFO", "logger": "app.services.auth", "message": "Registration succeeded"}
+{"timestamp": "2026-10-31T06:53:29.634817+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/auth/register", "status_code": 201, "duration": 0.110223}
+{"timestamp": "2026-10-31T06:53:29.634817+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/auth/register \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:29.725831+00:00", "level": "INFO", "logger": "app.services.tracked_sites", "message": "Tracked Site created", "tracked_site_id": "d5f3e24e-38d5-4e7b-b467-a6534a4af26e"}
+{"timestamp": "2026-10-31T06:53:29.726871+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/tracked-sites", "status_code": 201, "duration": 0.084653}
+{"timestamp": "2026-10-31T06:53:29.726871+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/tracked-sites \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:29.764377+00:00", "level": "INFO", "logger": "app.services.projects", "message": "Project created", "project_id": "c1861cd6-1b0b-42af-8685-f11f0bbd3c52", "submitted": 3, "created_count": 3}
+{"timestamp": "2026-10-31T06:53:29.765374+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/projects", "status_code": 201, "duration": 0.031447}
+{"timestamp": "2026-10-31T06:53:29.765374+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/projects \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:29.842667+00:00", "level": "INFO", "logger": "app.requests", "message": "HTTP request completed", "method": "POST", "path": "/api/v1/projects/c1861cd6-1b0b-42af-8685-f11f0bbd3c52/report-schedules", "status_code": 201, "duration": 0.042224}
+{"timestamp": "2026-10-31T06:53:29.842667+00:00", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/projects/c1861cd6-1b0b-42af-8685-f11f0bbd3c52/report-schedules \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-10-31T06:53:30.056518+00:00", "level": "ERROR", "logger": "app.services.report_worker", "message": "report_generation_failed", "safe_error_code": "REPORT_GENERATION_FAILED"}
+------------------------------ Captured log call ------------------------------
+INFO     app.services.auth:auth.py:85 Registration succeeded
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 201 Created"
+INFO     app.services.tracked_sites:tracked_sites.py:79 Tracked Site created
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/tracked-sites "HTTP/1.1 201 Created"
+INFO     app.services.projects:projects.py:69 Project created
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/projects "HTTP/1.1 201 Created"
+INFO     app.requests:middleware.py:39 HTTP request completed
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/projects/c1861cd6-1b0b-42af-8685-f11f0bbd3c52/report-schedules "HTTP/1.1 201 Created"
+ERROR    app.services.report_worker:report_worker.py:441 report_generation_failed
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\tmp\\serp-saas-reports\\3b052a85f50c4b6aabad6c882f60d317'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\tmp\\serp-saas-reports'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\serp-saas-main\.tools\m7l-integration\backend\app\services\report_worker.py", line 437, in execute
+    await self.reports.storage.write(storage_key, data)
+  File "C:\Users\Admin\Desktop\serp-saas-main\.tools\m7l-integration\backend\app\services\report_storage.py", line 36, in write
+    await asyncio.to_thread(persist)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\asyncio\threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\serp-saas-main\.tools\m7l-integration\backend\app\services\report_storage.py", line 30, in persist
+    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [WinError 5] Access is denied: 'C:\\tmp'
+=========================== short test summary info ===========================
+FAILED tests/test_health.py::test_live_dependencies[/health/redis] - assert 5...
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[pending]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[checkout_created]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[paid]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[failed]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[cancelled]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[voided]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[expired]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[review_required]
+FAILED tests/test_invoice_renderer.py::test_production_pdf_environment_and_missing_legacy_terms
+FAILED tests/test_invoices.py::test_invoice_ownership_auth_and_private_download
+FAILED tests/test_invoices.py::test_invoice_paid_snapshot_redaction_and_gateway_disabled
+FAILED tests/test_ranking_explorer.py::test_explorer_performance_at_one_thousand_keywords_and_two_sites
+FAILED tests/test_reports.py::test_preview_csv_pdf_and_no_rank_usage - assert...
+FAILED tests/test_reports.py::test_idempotency_tenant_isolation_and_expired_download
+FAILED tests/test_reports.py::test_schedule_dispatch_and_fake_verified_email
+16 failed, 386 passed in 310.59s (0:05:10)

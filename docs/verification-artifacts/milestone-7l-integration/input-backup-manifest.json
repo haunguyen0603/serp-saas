@@ -1,0 +1,482 @@
+[
+    {
+        "Path":  "docs/milestone-7l-seo-content-internal-linking-optimization.md",
+        "SHA256":  "8D0ED37007EE591069E2D97FDD46E3C81910F3799C732DE1C188FB9598EFFE41",
+        "Bytes":  19260
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/after-full.json",
+        "SHA256":  "F2AAF131E12C6C3EC9AD05D4BEBA070B0C1EAECC1F88EBB026BE9CAAD0994E18",
+        "Bytes":  6617
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/after-installed.json",
+        "SHA256":  "FEBD870D97B5DF6AD754FC9179392CF00330A1B584A1C34EB43C24AB0C83F5FD",
+        "Bytes":  3063
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/after-runtime.json",
+        "SHA256":  "7ABEDFDFE738A0D1F53DFD6911D0F2CF01C0CD27C9A542F128D94553FD75F57B",
+        "Bytes":  388
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/after.json",
+        "SHA256":  "1FEFED1A4BC2D8CA13166DDD5E445E5BE7F07EF8ABF3FBD2DF03B6118291BE2F",
+        "Bytes":  459628
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/app-browser-initial.txt",
+        "SHA256":  "8383D87FCCCEF28623FA5909EEC2EDE75519BCF249A0FFC13CF88364C4ABA44C",
+        "Bytes":  945
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/app-browser-qa.json",
+        "SHA256":  "EA75FAE8728499629A5BFB830E43FE4D4AE8CE23DC62656B58E31A3BAB43A853",
+        "Bytes":  8056
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/app-browser.txt",
+        "SHA256":  "3EB905AA0018606A89A25B2A4EFA9587C1A82BEA0BFFC751087E6731C3B6E4DA",
+        "Bytes":  91
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/before-full.json",
+        "SHA256":  "D973756AABB425BCB719550133D738FD59156217A07DBB2BE0524EAFA073D92B",
+        "Bytes":  8529
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/before-installed.json",
+        "SHA256":  "183B74BD64926AF8E53E2D13EFBD378206CF53187ECB71660B8BA17CC7BF4D28",
+        "Bytes":  1039
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/before-lock.json",
+        "SHA256":  "E7C808FE3342871EFAE319A36FF21AA596FF7604FDD2AC9BA900A572535D410B",
+        "Bytes":  342223
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/before-runtime.json",
+        "SHA256":  "04BDF6C2CA8A1B294DE588CA7EB3FE81A751030E3473CD18EE45E57A389D6FE2",
+        "Bytes":  2196
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/blog-1024.png",
+        "SHA256":  "3D2FFE4714FFFE92FFB984117909338E6BB2DDCEA580C1BA61A8254495766AA0",
+        "Bytes":  44791
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/blog-1440.png",
+        "SHA256":  "B7A6BA2F01D3C851E18982B14A997209DC63C732C1CD0DEC817FFDDB8EF1C235",
+        "Bytes":  50839
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/blog-375.png",
+        "SHA256":  "43412DE8C027D7A84C4A6848ADCE209B7FA910AE7503FDF566C98D41CE0CBC67",
+        "Bytes":  31465
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/blog-768.png",
+        "SHA256":  "E8A9340FF2F25B6BEFF89EBA66C221BB1183ACA2C7FD7A8002295DD109F171AC",
+        "Bytes":  40656
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/browser-qa.json",
+        "SHA256":  "16B0D5D563F1EA31341D4AC11436B95EC0963682B6586469F4287DBA7DC1B7A2",
+        "Bytes":  23671
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/build.txt",
+        "SHA256":  "FDEFB73295987ADBE76F9DCE40796CA9F89CC0CFC052294CE76CCE5237D7C017",
+        "Bytes":  2838
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/checks.json",
+        "SHA256":  "9409A2711E5A5C0A2E1D371F4D87BC347119312B44B0097308DFB9A370218218",
+        "Bytes":  755
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/dependency-changes.json",
+        "SHA256":  "8E4F852102B102A3622D4FCE51D38613D888AB7EAD8A9690D015F0BFB510597B",
+        "Bytes":  16311
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/dev-dependency-chains.json",
+        "SHA256":  "C7D2EFF2A5184AE8E34ACB381EC4A18021800D88C8CEA87EA749A093D0F0D2C8",
+        "Bytes":  1806
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/diff-check.txt",
+        "SHA256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "Bytes":  0
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/final-script-format.txt",
+        "SHA256":  "F20510A9DA4717C51C4CFFEE6D0DD88D6C9A723D0A83711D01216F5B48961283",
+        "Bytes":  68
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/final-script-lint.txt",
+        "SHA256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "Bytes":  0
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/format-check.txt",
+        "SHA256":  "889B81B7CB997B7D3EA0BC566C0CDF146FC1CB22263678409A5F35FF07E29AE7",
+        "Bytes":  135
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/home-1024.png",
+        "SHA256":  "330AA1DE1B423030D5962F18EAF1BE222D0DB0BAEC9D28042A3B9757F229702F",
+        "Bytes":  203873
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/home-1440.png",
+        "SHA256":  "126D3EA9A1D608A2A259BBF4DF62176729A8D0AB311F92B5BBB683676AA6CB6C",
+        "Bytes":  210760
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/home-375.png",
+        "SHA256":  "0B5B83CD4724CBCEBFC6DBB013A7F9A93B5F39AAFF278373A14EB88A879BE9E0",
+        "Bytes":  38000
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/home-768.png",
+        "SHA256":  "4D36B72EB607E31C6DE23DAC8901A4C10E1338F5D6624D7AC988206669538006",
+        "Bytes":  52761
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/image-smoke.json",
+        "SHA256":  "4B3EEFC0230E7B90443F28C3C2DB65463D653885F8CB2A5FDD5E815388DDD261",
+        "Bytes":  66
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/install.txt",
+        "SHA256":  "15CBA84D4CDE70BBF2FC505BC3B869E2C7E749AE749197C7E0D49CDB2E378E71",
+        "Bytes":  643
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/lint.txt",
+        "SHA256":  "7CCD6B1979D2D9C20F63F9C7EDE0E58AA01E20286C13A3261ED1988A98A0827A",
+        "Bytes":  49
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/local-history.txt",
+        "SHA256":  "9AA8F73E85D28312425FB8EFB11F330185518F1E31273655C419012D30123D08",
+        "Bytes":  409
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/m7l-source-hashes.json",
+        "SHA256":  "3BC571F49FB11E6B22DB76DF4709B71AF8CC9493127FC4FC04D4D2296A511B16",
+        "Bytes":  482
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/prebuild.txt",
+        "SHA256":  "AE94C4886BB080C18CB4D618A05304621EC3F502333C408F11C94504504A446B",
+        "Bytes":  150
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/preservation.json",
+        "SHA256":  "A95A947147EC3AA3B80DE72E730500225705902A0594818C933443F34B0D78FD",
+        "Bytes":  720
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/registry-next-16.4.1.json",
+        "SHA256":  "470DF60EFEB7AE8FB4581B1648BBFB63324E9B859A7F0454F214E15D6AA477F5",
+        "Bytes":  1122
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/registry-next-16.4.3.json",
+        "SHA256":  "093624DF93EB85539BC19FC787C326A8363341538E438F447502577602DC7301",
+        "Bytes":  1122
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/remote-compare.json",
+        "SHA256":  "42CD705ED6558BB0DE9E1A3DE49568B04A5E6E259522AC15DDC2725F50B84DB9",
+        "Bytes":  19315
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/remote-evidence.json",
+        "SHA256":  "51EBF257E08E4BC32AFD6CEB7828AD7104B2EFA0C19C12BF419D3434609D98DD",
+        "Bytes":  42443
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/semantic-preservation.json",
+        "SHA256":  "5A5CE126A55810958D29ED45879BB034B1885327D05C1CFF9FB49AC053855224",
+        "Bytes":  197
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/ssr-browser.txt",
+        "SHA256":  "0C7D61C2F82DCDF051F55BAC7BE0F759F9C523C7B0CCC842D04494E716449E19",
+        "Bytes":  237
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/ssr-final.txt",
+        "SHA256":  "E6DB74846E08A5ADBD4547F399D0923EDC22E866BE8A590549117AB10AE3D76E",
+        "Bytes":  125
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/test.txt",
+        "SHA256":  "89FAC0FB3463930760F60F405DA6A2416FB7A7E0086C1976C4DD35C1A2C7BE00",
+        "Bytes":  307
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/typecheck.txt",
+        "SHA256":  "1581E6C814EA9753296564A56B894C7C637F5705F71C642CF9B4BFA5A492C098",
+        "Bytes":  58
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/vi-cong-cu-kiem-tra-thu-hang-tu-khoa-1024.png",
+        "SHA256":  "AB004B4AE6335ABDEDF2180D5D640199D5B52AADE31CF4700599D26EC7BCD972",
+        "Bytes":  69638
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/vi-cong-cu-kiem-tra-thu-hang-tu-khoa-1440.png",
+        "SHA256":  "CD67EE71857F9CB888E1DE24BE1C1906F7A9AEBC3E77B32701BD427AC689E1FE",
+        "Bytes":  77909
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/vi-cong-cu-kiem-tra-thu-hang-tu-khoa-375.png",
+        "SHA256":  "D42AFA4AF4CCBFDCDF1F1CFB321EB5FECAB22C1C457F6D870CF9DAE261E547A7",
+        "Bytes":  44171
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/vi-cong-cu-kiem-tra-thu-hang-tu-khoa-768.png",
+        "SHA256":  "E3CBCB6E735D5B857922AB9C64159E7156853F94FE865E51276B148306435EBC",
+        "Bytes":  54456
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/vi-seo-rank-tracking-cho-agency-1024.png",
+        "SHA256":  "692213A0BF67C35B85EC21E0C614C9A58FF4A0C98A98800E51598EBA6DAB5161",
+        "Bytes":  59873
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/vi-seo-rank-tracking-cho-agency-1440.png",
+        "SHA256":  "B3CF52C45CD0A775F05CC512C8A58289E10DCD42671D84EF540805428879B29E",
+        "Bytes":  70288
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/vi-seo-rank-tracking-cho-agency-375.png",
+        "SHA256":  "DECF79F043DC5B2ECAA6A9E5FA654DD7795E1FCDADE047229AA51F5EA091568B",
+        "Bytes":  45536
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/vi-seo-rank-tracking-cho-agency-768.png",
+        "SHA256":  "C6CF627C12BA78825B753AF77136B30287D78A7B66F5DC992420B3704F32B32D",
+        "Bytes":  57348
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/vi-theo-doi-thu-hang-tu-khoa-hang-ngay-1024.png",
+        "SHA256":  "77FA66EE3F5FA2992BE531D27583D1E0380666976E8F02C801670A66B8E055CE",
+        "Bytes":  60813
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/vi-theo-doi-thu-hang-tu-khoa-hang-ngay-1440.png",
+        "SHA256":  "5BC63194C9F02C9EBC7BA69BF824D925083FE2F51F0C709FBA13AF7DB5679D84",
+        "Bytes":  69146
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/vi-theo-doi-thu-hang-tu-khoa-hang-ngay-375.png",
+        "SHA256":  "B536CB7DFA22ED6058692124C861BF73E3FBCB4B093A0B805D5BAE3F3C67A160",
+        "Bytes":  44251
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l-security/vi-theo-doi-thu-hang-tu-khoa-hang-ngay-768.png",
+        "SHA256":  "13C17557B84FBB3149EE5365E30BFDD469EF03B5C560A37D605598B4B2D4A8A6",
+        "Bytes":  55176
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/after.json",
+        "SHA256":  "1FEFED1A4BC2D8CA13166DDD5E445E5BE7F07EF8ABF3FBD2DF03B6118291BE2F",
+        "Bytes":  459628
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/baseline.json",
+        "SHA256":  "96B5C44EE0D6D7A3B749247CA42979D777AC7FC14DF26A0F926B8D26AA18D571",
+        "Bytes":  457180
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/blog-1024.png",
+        "SHA256":  "3D2FFE4714FFFE92FFB984117909338E6BB2DDCEA580C1BA61A8254495766AA0",
+        "Bytes":  44791
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/blog-1440.png",
+        "SHA256":  "B7A6BA2F01D3C851E18982B14A997209DC63C732C1CD0DEC817FFDDB8EF1C235",
+        "Bytes":  50839
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/blog-375.png",
+        "SHA256":  "43412DE8C027D7A84C4A6848ADCE209B7FA910AE7503FDF566C98D41CE0CBC67",
+        "Bytes":  31465
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/blog-768.png",
+        "SHA256":  "E8A9340FF2F25B6BEFF89EBA66C221BB1183ACA2C7FD7A8002295DD109F171AC",
+        "Bytes":  40656
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/browser-qa.json",
+        "SHA256":  "16B0D5D563F1EA31341D4AC11436B95EC0963682B6586469F4287DBA7DC1B7A2",
+        "Bytes":  23671
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/checks.txt",
+        "SHA256":  "233DE82DB6C4917049D90F5EA2828DA5510C8537AABD89D70687F621360C4339",
+        "Bytes":  4610
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/home-1024.png",
+        "SHA256":  "330AA1DE1B423030D5962F18EAF1BE222D0DB0BAEC9D28042A3B9757F229702F",
+        "Bytes":  203873
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/home-1440.png",
+        "SHA256":  "126D3EA9A1D608A2A259BBF4DF62176729A8D0AB311F92B5BBB683676AA6CB6C",
+        "Bytes":  210760
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/home-375.png",
+        "SHA256":  "0B5B83CD4724CBCEBFC6DBB013A7F9A93B5F39AAFF278373A14EB88A879BE9E0",
+        "Bytes":  38000
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/home-768.png",
+        "SHA256":  "4D36B72EB607E31C6DE23DAC8901A4C10E1338F5D6624D7AC988206669538006",
+        "Bytes":  52761
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/vi-cong-cu-kiem-tra-thu-hang-tu-khoa-1024.png",
+        "SHA256":  "AB004B4AE6335ABDEDF2180D5D640199D5B52AADE31CF4700599D26EC7BCD972",
+        "Bytes":  69638
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/vi-cong-cu-kiem-tra-thu-hang-tu-khoa-1440.png",
+        "SHA256":  "CD67EE71857F9CB888E1DE24BE1C1906F7A9AEBC3E77B32701BD427AC689E1FE",
+        "Bytes":  77909
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/vi-cong-cu-kiem-tra-thu-hang-tu-khoa-375.png",
+        "SHA256":  "D42AFA4AF4CCBFDCDF1F1CFB321EB5FECAB22C1C457F6D870CF9DAE261E547A7",
+        "Bytes":  44171
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/vi-cong-cu-kiem-tra-thu-hang-tu-khoa-768.png",
+        "SHA256":  "E3CBCB6E735D5B857922AB9C64159E7156853F94FE865E51276B148306435EBC",
+        "Bytes":  54456
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/vi-seo-rank-tracking-cho-agency-1024.png",
+        "SHA256":  "692213A0BF67C35B85EC21E0C614C9A58FF4A0C98A98800E51598EBA6DAB5161",
+        "Bytes":  59873
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/vi-seo-rank-tracking-cho-agency-1440.png",
+        "SHA256":  "B3CF52C45CD0A775F05CC512C8A58289E10DCD42671D84EF540805428879B29E",
+        "Bytes":  70288
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/vi-seo-rank-tracking-cho-agency-375.png",
+        "SHA256":  "DECF79F043DC5B2ECAA6A9E5FA654DD7795E1FCDADE047229AA51F5EA091568B",
+        "Bytes":  45536
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/vi-seo-rank-tracking-cho-agency-768.png",
+        "SHA256":  "C6CF627C12BA78825B753AF77136B30287D78A7B66F5DC992420B3704F32B32D",
+        "Bytes":  57348
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/vi-theo-doi-thu-hang-tu-khoa-hang-ngay-1024.png",
+        "SHA256":  "77FA66EE3F5FA2992BE531D27583D1E0380666976E8F02C801670A66B8E055CE",
+        "Bytes":  60813
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/vi-theo-doi-thu-hang-tu-khoa-hang-ngay-1440.png",
+        "SHA256":  "5BC63194C9F02C9EBC7BA69BF824D925083FE2F51F0C709FBA13AF7DB5679D84",
+        "Bytes":  69146
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/vi-theo-doi-thu-hang-tu-khoa-hang-ngay-375.png",
+        "SHA256":  "B536CB7DFA22ED6058692124C861BF73E3FBCB4B093A0B805D5BAE3F3C67A160",
+        "Bytes":  44251
+    },
+    {
+        "Path":  "docs/verification-artifacts/milestone-7l/vi-theo-doi-thu-hang-tu-khoa-hang-ngay-768.png",
+        "SHA256":  "13C17557B84FBB3149EE5365E30BFDD469EF03B5C560A37D605598B4B2D4A8A6",
+        "Bytes":  55176
+    },
+    {
+        "Path":  "docs/verification-milestone-7l-security-remediation.md",
+        "SHA256":  "59AB555D3FED331EBC0BC9B32423F5A6094169EFD68087C966565A5B363E41C4",
+        "Bytes":  20747
+    },
+    {
+        "Path":  "docs/verification-milestone-7l.md",
+        "SHA256":  "0A68B9665A14E84873846ACDF0196173011C88D8FB8C1EBF8CFCE884511D525E",
+        "Bytes":  16906
+    },
+    {
+        "Path":  "docs/verification-seo-content-internal-link-audit.md",
+        "SHA256":  "93330BAFF563E0DC8C36583A3BD008224815CECEA97210031FA4D0ABDC5594BC",
+        "Bytes":  77730
+    },
+    {
+        "Path":  "frontend/scripts/verify-milestone-7l.mjs",
+        "SHA256":  "0CFB838C3735CAE469793C93D85EA56AF8916BAAC5FA8AF42FB0026BFCEE1D9E",
+        "Bytes":  15012
+    },
+    {
+        "Path":  "frontend/content/blog/vi/cong-cu-rank-tracker-la-gi.md",
+        "SHA256":  "BF7628EF58E8DAFA1E3F317DBACFFD51E4E9A82B12F2BD39A1EF2ADB1E017ACD",
+        "Bytes":  10030
+    },
+    {
+        "Path":  "frontend/package-lock.json",
+        "SHA256":  "634A1B1F989140CCBD2A01DDC48FC441777A747E03469CA518D9DF2AE7500F1B",
+        "Bytes":  342223
+    },
+    {
+        "Path":  "frontend/package.json",
+        "SHA256":  "D217E3989B289ABEDC130C271510BA21F23208C4F057F0829A3D6D8925C49C25",
+        "Bytes":  1167
+    },
+    {
+        "Path":  "frontend/scripts/verify-rank-tracker-blog-browser.mjs",
+        "SHA256":  "FD814B67DCDB9D9EB55725574CF6731B0232F27935EE0621EE94FF59E6F7FDAA",
+        "Bytes":  10660
+    },
+    {
+        "Path":  "frontend/scripts/verify-security-regression.mjs",
+        "SHA256":  "7E2CD8DB3E67C69D637E9F57098EC8541E4647A263BFE8EE57217F59AE227368",
+        "Bytes":  11580
+    },
+    {
+        "Path":  "frontend/src/app/(en)/page.tsx",
+        "SHA256":  "7CFFA463FC1705835A30430DAF983145AFD806894A9C80DF8E2696C8C792625F",
+        "Bytes":  13018
+    },
+    {
+        "Path":  "frontend/src/features/blog/blog-components.tsx",
+        "SHA256":  "352C8EA14E459ED80BA7F6AD52395D39BC1849E0EE21A74FA99DF1C668A95BA8",
+        "Bytes":  5130
+    },
+    {
+        "Path":  "frontend/src/features/blog/blog.test.tsx",
+        "SHA256":  "EBFFFB6D09345A69193DA4466BF18A26AB440C8DDD2B7BF62A7E2200E1CE8C8E",
+        "Bytes":  12863
+    },
+    {
+        "Path":  "frontend/src/features/marketing/public-site.test.tsx",
+        "SHA256":  "EA5E887D842B53102CA564416F89DEB7EEAABF3688877A55556ED526662AE704",
+        "Bytes":  9830
+    },
+    {
+        "Path":  "frontend/src/features/marketing/vietnamese-content.ts",
+        "SHA256":  "F4E83D3414FD0D12B1BE3DD9024DCBDEC8211FD7CABD74C3C6CE174331FAF8B2",
+        "Bytes":  15200
+    },
+    {
+        "Path":  "frontend/src/features/marketing/vietnamese-localization.test.tsx",
+        "SHA256":  "E7797823E184DC1A0D63FD9006F2565BE3F39A829C69CCA68C0F238B2621D379",
+        "Bytes":  16532
+    }
+]

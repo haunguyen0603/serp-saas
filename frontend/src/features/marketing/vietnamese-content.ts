@@ -7,17 +7,23 @@ const start = {
     "Tạo tài khoản, chọn môi trường tìm kiếm và thêm nhóm từ khóa bạn muốn theo dõi.",
   label: "Bắt đầu theo dõi",
 };
-const baselineGuide = {
-  path: "/vi/blog/cach-theo-doi-thu-hang-google",
-  label: "Đọc hướng dẫn theo dõi thứ hạng Google",
-  description:
-    "Chọn bộ từ khóa, thiết lập môi trường tìm kiếm và xây dựng mốc so sánh cho những lần kiểm tra sau.",
-};
 const checkGuide = {
   path: "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
   label: "Đọc cách kiểm tra thứ hạng từ khóa",
   description:
-    "Hiểu sự khác nhau giữa kiểm tra thủ công và công cụ, đồng thời đọc kết quả đúng với phạm vi được kiểm tra.",
+    "Thiết lập một lần kiểm tra và đọc vị trí quan sát được trên Google trong phạm vi đã kiểm tra.",
+};
+const dailyGuide = {
+  path: "/vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay",
+  label: "Khi nào nên theo dõi thứ hạng hàng ngày?",
+  description:
+    "So sánh nhu cầu theo dõi hàng ngày và hàng tuần để chọn nhịp kiểm tra phù hợp với dự án.",
+};
+const agencyGuide = {
+  path: "/vi/blog/serp-tracking-cho-agency",
+  label: "Đọc quy trình báo cáo thứ hạng cho agency",
+  description:
+    "Tham khảo quy trình chuẩn bị, đối chiếu và trình bày dữ liệu thứ hạng trong báo cáo khách hàng.",
 };
 
 export const vietnameseRankTracker: LandingContent = {
@@ -25,9 +31,9 @@ export const vietnameseRankTracker: LandingContent = {
   title: "Công cụ kiểm tra thứ hạng từ khóa Google | SERP SaaS",
   description:
     "Kiểm tra thứ hạng từ khóa Google, xem lịch sử, phân tích biến động và so sánh đối thủ với SERP SaaS. Theo dõi Desktop và Mobile riêng biệt.",
-  heading: "Theo dõi thứ hạng từ khóa trên Google",
+  heading: "Công cụ kiểm tra thứ hạng từ khóa Google",
   eyebrow: "Công cụ kiểm tra thứ hạng từ khóa",
-  lead: "Đưa từ khóa, vị trí trên Google và lịch sử kiểm tra vào cùng một dự án để biết đâu là thay đổi cần chú ý trong công việc SEO.",
+  lead: "SERP SaaS là công cụ kiểm tra thứ hạng từ khóa trên Google: bạn chọn bộ từ khóa và môi trường tìm kiếm, kiểm tra theo quyền lợi gói cước, rồi xem lại kết quả đã lưu từ các lần kiểm tra hoàn tất để theo dõi lịch sử và biến động thứ hạng.",
   note: "Các lần kiểm tra hiện tại bao phủ Top 10. Desktop và Mobile được theo dõi trong các dự án riêng biệt.",
   workflow: {
     heading: "Từ thiết lập đến kết quả đầu tiên",
@@ -84,7 +90,7 @@ export const vietnameseRankTracker: LandingContent = {
   ],
   midCta: { ...start, heading: "Tạo mốc so sánh cho bộ từ khóa của bạn" },
   finalCta: { ...start, heading: "Bắt đầu theo dõi thứ hạng" },
-  guide: baselineGuide,
+  guide: checkGuide,
 };
 
 export const vietnameseDailyTracker: LandingContent = {
@@ -144,7 +150,7 @@ export const vietnameseDailyTracker: LandingContent = {
   ],
   midCta: { ...start, heading: "Chọn nhịp theo dõi bạn có thể sử dụng" },
   finalCta: { ...start, heading: "Bắt đầu theo dõi biến động từ khóa" },
-  guide: checkGuide,
+  guide: dailyGuide,
 };
 
 export const vietnameseAgencyTracker: LandingContent = {
@@ -204,7 +210,7 @@ export const vietnameseAgencyTracker: LandingContent = {
   ],
   midCta: { ...start, heading: "Tạo dự án cho kỳ báo cáo tiếp theo" },
   finalCta: { ...start, heading: "Bắt đầu theo dõi từ khóa khách hàng" },
-  guide: baselineGuide,
+  guide: agencyGuide,
 };
 
 export const vietnameseLandingPages = [

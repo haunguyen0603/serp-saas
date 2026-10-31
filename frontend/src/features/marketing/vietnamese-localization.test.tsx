@@ -191,6 +191,49 @@ it.each(vietnameseLandingPages)(
   },
 );
 
+it("identifies the checking tool and assigns task-specific Vietnamese guides", () => {
+  expect(vietnameseLandingPages[0].heading).toBe(
+    "Công cụ kiểm tra thứ hạng từ khóa Google",
+  );
+  expect(vietnameseLandingPages[0].lead).toContain("kiểm tra hoàn tất");
+  expect(
+    vietnameseLandingPages.map((page) => [page.guide.path, page.guide.label]),
+  ).toEqual([
+    [
+      "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+      "Đọc cách kiểm tra thứ hạng từ khóa",
+    ],
+    [
+      "/vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay",
+      "Khi nào nên theo dõi thứ hạng hàng ngày?",
+    ],
+    [
+      "/vi/blog/serp-tracking-cho-agency",
+      "Đọc quy trình báo cáo thứ hạng cho agency",
+    ],
+  ]);
+});
+
+it("hands definition readers to one practical checking guide while preserving article history and the product link", async () => {
+  const post = getPublishedPost("cong-cu-rank-tracker-la-gi", "vi")!;
+  expect(post.publishedAt).toBe("2026-10-17");
+  expect(post.updatedAt).toBe("2026-10-29");
+  const { container } = render(
+    await BlogArticle({ params: Promise.resolve({ slug: post.slug }) }),
+  );
+  const prose = container.querySelector(".blog-prose")!;
+  expect(
+    prose.querySelectorAll('a[href="/vi/blog/cach-kiem-tra-thu-hang-tu-khoa"]'),
+  ).toHaveLength(1);
+  expect(
+    prose.querySelectorAll('a[href="/vi/cong-cu-kiem-tra-thu-hang-tu-khoa"]'),
+  ).toHaveLength(1);
+  expect(container.querySelectorAll("h1")).toHaveLength(1);
+  expect(container.querySelector(".blog-cta")).not.toHaveTextContent(
+    "Explore the Google rank tracker",
+  );
+});
+
 it("isolates Vietnamese articles and retains English validation and feed content", async () => {
   const posts = getPublishedPosts(undefined, "vi");
   expect(posts).toHaveLength(6);

@@ -93,6 +93,10 @@ export default function HomePage() {
           <p className="public-cta-note">
             Free Desktop and Mobile Plans included. No card required.
           </p>
+          <p className="public-cta-note">
+            Checks cover Google&apos;s Top 10. Desktop and Mobile tracking are
+            managed separately; available schedules depend on your plan.
+          </p>
         </div>
         <div
           className="public-product-preview"
@@ -145,6 +149,10 @@ export default function HomePage() {
               <i />
             </div>
           </div>
+          <p className="public-cta-note">
+            Illustrative interface preview. Sample domains, rankings and usage
+            numbers are not live customer results or current plan limits.
+          </p>
         </div>
       </section>
 

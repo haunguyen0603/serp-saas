@@ -1,0 +1,2 @@
+SSR regression passed: all metadata, locale mappings, counts, retained links, R1–R5 and expected date/breadcrumb changes.
+Browser QA passed: 88 route/viewport/JS cases, keyboard navigation and WCAG 2/2.1 A/AA axe with no exclusions.

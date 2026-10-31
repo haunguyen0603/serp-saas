@@ -1,0 +1,974 @@
+.................................................................FFFFFFF [ 46%]
+FF...................................................................... [ 92%]
+.....FFF....                                                             [100%]
+================================== FAILURES ===================================
+_________ test_invoice_pdf_unicode_status_and_escaped_fields[pending] _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001765DEF1E80>
+status = 'pending'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+____ test_invoice_pdf_unicode_status_and_escaped_fields[checkout_created] _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001765DF66300>
+status = 'checkout_created'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+__________ test_invoice_pdf_unicode_status_and_escaped_fields[paid] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001765DF65A60>
+status = 'paid'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_________ test_invoice_pdf_unicode_status_and_escaped_fields[failed] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001765DEDC740>
+status = 'failed'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+________ test_invoice_pdf_unicode_status_and_escaped_fields[cancelled] ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001765DEDE960>
+status = 'cancelled'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_________ test_invoice_pdf_unicode_status_and_escaped_fields[voided] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001765DEDCF20>
+status = 'voided'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_________ test_invoice_pdf_unicode_status_and_escaped_fields[expired] _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001765DF646B0>
+status = 'expired'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_____ test_invoice_pdf_unicode_status_and_escaped_fields[review_required] _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001765DEDF6B0>
+status = 'review_required'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+__________ test_production_pdf_environment_and_missing_legacy_terms ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001765DEDC200>
+
+    def test_production_pdf_environment_and_missing_legacy_terms(monkeypatch):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_PRODUCTION",
+            status="paid",
+            product_line="desktop",
+            plan_code="desktop_pro",
+            plan_name="Desktop Pro",
+            amount_minor=2579550,
+            currency="VND",
+            provider="sepay",
+            provider_environment="production",
+            created_at=now,
+            paid_at=now,
+            account_email="buyer@example.test",
+            payment_method=None,
+            provider_order_id=None,
+            provider_transaction_id=None,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(),
+        )
+>       assert invoice_renderer.render_invoice_pdf(invoice).startswith(b"%PDF-")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_ test_next_run[daily-Asia/Ho_Chi_Minh-2026-09-12T01:00:00+00:00-2026-09-13T00:00:00+00:00] _
+
+key = 'Asia/Ho_Chi_Minh'
+
+    def load_tzdata(key):
+        from importlib import resources
+    
+        components = key.split("/")
+        package_name = ".".join(["tzdata.zoneinfo"] + components[:-1])
+        resource_name = components[-1]
+    
+        try:
+>           return resources.files(package_name).joinpath(resource_name).open("rb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\zoneinfo\_common.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\importlib\resources\_common.py:46: in wrapper
+    return func(anchor)
+           ^^^^^^^^^^^^
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\importlib\resources\_common.py:56: in files
+    return from_package(resolve(anchor))
+                        ^^^^^^^^^^^^^^^
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\functools.py:912: in wrapper
+    return dispatch(args[0].__class__)(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\importlib\resources\_common.py:82: in _
+    return importlib.import_module(cand)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'tzdata.zoneinfo.Asia', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                raise TypeError("the 'package' argument is required to perform a "
+                                f"relative import for {name!r}")
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+>       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'tzdata'
+
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\importlib\__init__.py:90: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+frequency = 'daily', timezone = 'Asia/Ho_Chi_Minh'
+now = '2026-09-12T01:00:00+00:00', expected = '2026-09-13T00:00:00+00:00'
+
+    @pytest.mark.parametrize(
+        "frequency,timezone,now,expected",
+        [
+            (
+                "daily",
+                "Asia/Ho_Chi_Minh",
+                "2026-09-12T01:00:00+00:00",
+                "2026-09-13T00:00:00+00:00",
+            ),
+            ("weekly", "UTC", "2026-09-12T01:00:00+00:00", "2026-09-14T07:00:00+00:00"),
+        ],
+    )
+    def test_next_run(frequency, timezone, now, expected):
+        assert (
+>           next_run(datetime.fromisoformat(now), frequency, "07:00", timezone).isoformat()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            == expected
+        )
+
+tests\test_task_queue.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\rank_schedules.py:26: in next_run
+    zone = ZoneInfo(timezone)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+key = 'Asia/Ho_Chi_Minh'
+
+    def load_tzdata(key):
+        from importlib import resources
+    
+        components = key.split("/")
+        package_name = ".".join(["tzdata.zoneinfo"] + components[:-1])
+        resource_name = components[-1]
+    
+        try:
+            return resources.files(package_name).joinpath(resource_name).open("rb")
+        except (ImportError, FileNotFoundError, UnicodeEncodeError):
+            # There are three types of exception that can be raised that all amount
+            # to "we cannot find this key":
+            #
+            # ImportError: If package_name doesn't exist (e.g. if tzdata is not
+            #   installed, or if there's an error in the folder name like
+            #   Amrica/New_York)
+            # FileNotFoundError: If resource_name doesn't exist in the package
+            #   (e.g. Europe/Krasnoy)
+            # UnicodeEncodeError: If package_name or resource_name are not UTF-8,
+            #   such as keys containing a surrogate character.
+>           raise ZoneInfoNotFoundError(f"No time zone found with key {key}")
+E           zoneinfo._common.ZoneInfoNotFoundError: 'No time zone found with key Asia/Ho_Chi_Minh'
+
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\zoneinfo\_common.py:24: ZoneInfoNotFoundError
+_ test_next_run[weekly-UTC-2026-09-12T01:00:00+00:00-2026-09-14T07:00:00+00:00] _
+
+key = 'UTC'
+
+    def load_tzdata(key):
+        from importlib import resources
+    
+        components = key.split("/")
+        package_name = ".".join(["tzdata.zoneinfo"] + components[:-1])
+        resource_name = components[-1]
+    
+        try:
+>           return resources.files(package_name).joinpath(resource_name).open("rb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\zoneinfo\_common.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\importlib\resources\_common.py:46: in wrapper
+    return func(anchor)
+           ^^^^^^^^^^^^
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\importlib\resources\_common.py:56: in files
+    return from_package(resolve(anchor))
+                        ^^^^^^^^^^^^^^^
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\functools.py:912: in wrapper
+    return dispatch(args[0].__class__)(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\importlib\resources\_common.py:82: in _
+    return importlib.import_module(cand)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'tzdata.zoneinfo', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                raise TypeError("the 'package' argument is required to perform a "
+                                f"relative import for {name!r}")
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+>       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'tzdata'
+
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\importlib\__init__.py:90: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+frequency = 'weekly', timezone = 'UTC', now = '2026-09-12T01:00:00+00:00'
+expected = '2026-09-14T07:00:00+00:00'
+
+    @pytest.mark.parametrize(
+        "frequency,timezone,now,expected",
+        [
+            (
+                "daily",
+                "Asia/Ho_Chi_Minh",
+                "2026-09-12T01:00:00+00:00",
+                "2026-09-13T00:00:00+00:00",
+            ),
+            ("weekly", "UTC", "2026-09-12T01:00:00+00:00", "2026-09-14T07:00:00+00:00"),
+        ],
+    )
+    def test_next_run(frequency, timezone, now, expected):
+        assert (
+>           next_run(datetime.fromisoformat(now), frequency, "07:00", timezone).isoformat()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            == expected
+        )
+
+tests\test_task_queue.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\rank_schedules.py:26: in next_run
+    zone = ZoneInfo(timezone)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+key = 'UTC'
+
+    def load_tzdata(key):
+        from importlib import resources
+    
+        components = key.split("/")
+        package_name = ".".join(["tzdata.zoneinfo"] + components[:-1])
+        resource_name = components[-1]
+    
+        try:
+            return resources.files(package_name).joinpath(resource_name).open("rb")
+        except (ImportError, FileNotFoundError, UnicodeEncodeError):
+            # There are three types of exception that can be raised that all amount
+            # to "we cannot find this key":
+            #
+            # ImportError: If package_name doesn't exist (e.g. if tzdata is not
+            #   installed, or if there's an error in the folder name like
+            #   Amrica/New_York)
+            # FileNotFoundError: If resource_name doesn't exist in the package
+            #   (e.g. Europe/Krasnoy)
+            # UnicodeEncodeError: If package_name or resource_name are not UTF-8,
+            #   such as keys containing a surrogate character.
+>           raise ZoneInfoNotFoundError(f"No time zone found with key {key}")
+E           zoneinfo._common.ZoneInfoNotFoundError: 'No time zone found with key UTC'
+
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\zoneinfo\_common.py:24: ZoneInfoNotFoundError
+______________________ test_dst_and_schedule_validation _______________________
+
+key = 'America/New_York'
+
+    def load_tzdata(key):
+        from importlib import resources
+    
+        components = key.split("/")
+        package_name = ".".join(["tzdata.zoneinfo"] + components[:-1])
+        resource_name = components[-1]
+    
+        try:
+>           return resources.files(package_name).joinpath(resource_name).open("rb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\zoneinfo\_common.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\importlib\resources\_common.py:46: in wrapper
+    return func(anchor)
+           ^^^^^^^^^^^^
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\importlib\resources\_common.py:56: in files
+    return from_package(resolve(anchor))
+                        ^^^^^^^^^^^^^^^
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\functools.py:912: in wrapper
+    return dispatch(args[0].__class__)(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\importlib\resources\_common.py:82: in _
+    return importlib.import_module(cand)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'tzdata.zoneinfo.America', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                raise TypeError("the 'package' argument is required to perform a "
+                                f"relative import for {name!r}")
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+>       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'tzdata'
+
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\importlib\__init__.py:90: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_dst_and_schedule_validation():
+        assert (
+>           next_run(
+                datetime(2026, 3, 8, 5, tzinfo=UTC), "daily", "02:30", "America/New_York"
+            ).hour
+            == 7
+        )
+
+tests\test_task_queue.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\rank_schedules.py:26: in next_run
+    zone = ZoneInfo(timezone)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+key = 'America/New_York'
+
+    def load_tzdata(key):
+        from importlib import resources
+    
+        components = key.split("/")
+        package_name = ".".join(["tzdata.zoneinfo"] + components[:-1])
+        resource_name = components[-1]
+    
+        try:
+            return resources.files(package_name).joinpath(resource_name).open("rb")
+        except (ImportError, FileNotFoundError, UnicodeEncodeError):
+            # There are three types of exception that can be raised that all amount
+            # to "we cannot find this key":
+            #
+            # ImportError: If package_name doesn't exist (e.g. if tzdata is not
+            #   installed, or if there's an error in the folder name like
+            #   Amrica/New_York)
+            # FileNotFoundError: If resource_name doesn't exist in the package
+            #   (e.g. Europe/Krasnoy)
+            # UnicodeEncodeError: If package_name or resource_name are not UTF-8,
+            #   such as keys containing a surrogate character.
+>           raise ZoneInfoNotFoundError(f"No time zone found with key {key}")
+E           zoneinfo._common.ZoneInfoNotFoundError: 'No time zone found with key America/New_York'
+
+C:\Users\Admin\AppData\Local\Temp\serp-m7l-integration-python\cpython-3.12.12-windows-x86_64-none\Lib\zoneinfo\_common.py:24: ZoneInfoNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[pending]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[checkout_created]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[paid]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[failed]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[cancelled]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[voided]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[expired]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[review_required]
+FAILED tests/test_invoice_renderer.py::test_production_pdf_environment_and_missing_legacy_terms
+FAILED tests/test_task_queue.py::test_next_run[daily-Asia/Ho_Chi_Minh-2026-09-12T01:00:00+00:00-2026-09-13T00:00:00+00:00]
+FAILED tests/test_task_queue.py::test_next_run[weekly-UTC-2026-09-12T01:00:00+00:00-2026-09-14T07:00:00+00:00]
+FAILED tests/test_task_queue.py::test_dst_and_schedule_validation - zoneinfo....
+12 failed, 144 passed, 246 deselected in 7.01s

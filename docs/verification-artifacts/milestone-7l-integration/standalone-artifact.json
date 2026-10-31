@@ -1,0 +1,14 @@
+{
+  "platform": "win32",
+  "node": "v22.22.0",
+  "next": "16.4.3",
+  "buildId": "QSVSbHyjXrc3TKsQ_MhYs",
+  "image": {
+    "status": 200,
+    "contentType": "image/png",
+    "bytes": 364
+  },
+  "rankingAlertsGenerated": true,
+  "linuxBuild": false,
+  "rankingAlertsCompiled": true
+}

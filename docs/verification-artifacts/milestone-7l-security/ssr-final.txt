@@ -1,0 +1,1 @@
+SSR regression passed: all metadata, locale mappings, counts, retained links, R1–R5 and expected date/breadcrumb changes.

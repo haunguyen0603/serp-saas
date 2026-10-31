@@ -1,0 +1,12 @@
+npm.cmd : npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster 
+implementation
+At line:2 char:131
++ ... ity-cache"; npm.cmd ci --no-audit --no-fund *> ../docs/verification-a ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn deprec... implementation:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+npm warn deprecated eslint@9.39.4: This version is no longer supported. Please see https://eslint.org/version-support 
+for other options.
+
+added 555 packages in 57s

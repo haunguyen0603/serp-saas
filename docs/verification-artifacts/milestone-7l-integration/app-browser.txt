@@ -1,0 +1,1 @@
+Security browser regression passed: 44 cases, no page/hydration errors or admin requests.

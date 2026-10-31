@@ -1,0 +1,646 @@
+.................................................................FFFFFFF [ 46%]
+FF...................................................................... [ 92%]
+............                                                             [100%]
+================================== FAILURES ===================================
+_________ test_invoice_pdf_unicode_status_and_escaped_fields[pending] _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B28C677200>
+status = 'pending'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+____ test_invoice_pdf_unicode_status_and_escaped_fields[checkout_created] _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B28CB344D0>
+status = 'checkout_created'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+__________ test_invoice_pdf_unicode_status_and_escaped_fields[paid] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B28CB36000>
+status = 'paid'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_________ test_invoice_pdf_unicode_status_and_escaped_fields[failed] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B28CB365D0>
+status = 'failed'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+________ test_invoice_pdf_unicode_status_and_escaped_fields[cancelled] ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B28CB35C40>
+status = 'cancelled'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_________ test_invoice_pdf_unicode_status_and_escaped_fields[voided] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B28CB372F0>
+status = 'voided'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_________ test_invoice_pdf_unicode_status_and_escaped_fields[expired] _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B28CB37470>
+status = 'expired'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+_____ test_invoice_pdf_unicode_status_and_escaped_fields[review_required] _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B28CB349B0>
+status = 'review_required'
+
+    @pytest.mark.parametrize("status", list(invoice_renderer.STATUS_LABELS))
+    def test_invoice_pdf_unicode_status_and_escaped_fields(monkeypatch, status):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_TEST",
+            status=status,
+            product_line="mobile",
+            plan_code="mobile_starter",
+            plan_name="G\xf3i di \u0111\u1ed9ng <Starter> & Nguy\u1ec5n H\u1eadu",
+            amount_minor=1016730,
+            currency="VND",
+            provider="sepay",
+            provider_environment="sandbox",
+            created_at=now,
+            paid_at=now if status == "paid" else None,
+            account_email="buyer@example.test",
+            payment_method="CARD",
+            provider_order_id="a" * 200,
+            provider_transaction_id="b" * 200,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(
+                billing_months=1,
+                max_projects=3,
+                max_keywords=200,
+                monthly_keyword_checks=1000,
+                scheduled_checks_enabled=False,
+            ),
+        )
+>       data = invoice_renderer.render_invoice_pdf(invoice)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+__________ test_production_pdf_environment_and_missing_legacy_terms ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B28C82FEC0>
+
+    def test_production_pdf_environment_and_missing_legacy_terms(monkeypatch):
+        paragraphs = []
+        original = invoice_renderer.Paragraph
+    
+        def paragraph(value, style):
+            paragraphs.append(value)
+            return original(value, style)
+    
+        monkeypatch.setattr(invoice_renderer, "Paragraph", paragraph)
+        now = datetime.now(UTC)
+        invoice = InvoiceDetail(
+            id=uuid4(),
+            invoice_number="PAY_PRODUCTION",
+            status="paid",
+            product_line="desktop",
+            plan_code="desktop_pro",
+            plan_name="Desktop Pro",
+            amount_minor=2579550,
+            currency="VND",
+            provider="sepay",
+            provider_environment="production",
+            created_at=now,
+            paid_at=now,
+            account_email="buyer@example.test",
+            payment_method=None,
+            provider_order_id=None,
+            provider_transaction_id=None,
+            provider_transaction_uuid=None,
+            updated_at=now,
+            expires_at=now,
+            cancelled_at=None,
+            failed_at=None,
+            terms=InvoiceTerms(),
+        )
+>       assert invoice_renderer.render_invoice_pdf(invoice).startswith(b"%PDF-")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_invoice_renderer.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app\services\invoice_renderer.py:33: in render_invoice_pdf
+    _register_fonts()
+app\services\report_renderers.py:112: in _register_fonts
+    path = _font_path()
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _font_path() -> Path:
+        candidates = (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            Path("/Library/Fonts/Arial Unicode.ttf"),
+        )
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+>       raise RuntimeError("REPORT_FONT_UNAVAILABLE")
+E       RuntimeError: REPORT_FONT_UNAVAILABLE
+
+app\services\report_renderers.py:107: RuntimeError
+=========================== short test summary info ===========================
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[pending]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[checkout_created]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[paid]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[failed]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[cancelled]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[voided]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[expired]
+FAILED tests/test_invoice_renderer.py::test_invoice_pdf_unicode_status_and_escaped_fields[review_required]
+FAILED tests/test_invoice_renderer.py::test_production_pdf_environment_and_missing_legacy_terms
+9 failed, 147 passed, 246 deselected in 2.87s

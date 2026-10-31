@@ -1,0 +1,28 @@
+node : node:internal/modules/run_main:123
+At line:2 char:347
++ ... .0.1:3010'; node scripts/verify-security-regression.mjs *> ../docs/ve ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:123:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   'Unexpected API request: /api/v1/billing/payments/sepay/options'
++ ]
+- []
+
+    at file:///C:/Users/Admin/Desktop/serp-saas-main/frontend/scripts/verify-security-regression.mjs:303:14 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [ 'Unexpected API request: /api/v1/billing/payments/sepay/options' ],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v22.22.0

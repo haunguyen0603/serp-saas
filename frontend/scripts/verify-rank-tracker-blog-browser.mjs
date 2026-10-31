@@ -131,7 +131,7 @@ try {
       assert.equal(graph[0].inLanguage, "vi");
       assert.equal(graph[0].mainEntityOfPage["@id"], origin + path);
       assert.equal(graph[0].datePublished, "2026-10-17");
-      assert.equal(graph[0].dateModified, "2026-10-17");
+      assert.equal(graph[0].dateModified, "2026-10-29");
       assert.equal(graph[1]["@type"], "BreadcrumbList");
       assert.equal(graph[1].itemListElement.at(-1).item, origin + path);
       assert.equal(await page.locator(".blog-prose table").count(), 2);

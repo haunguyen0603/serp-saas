@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="16" time="21.501" timestamp="2026-10-31T13:54:08.215954+07:00" hostname="H-Tyler"><testcase classname="tests.test_health" name="test_live_dependencies[/health/redis]" time="2.240"><failure message="assert 503 == 200&#10; +  where 503 = &lt;Response [503 Service Unavailable]&gt;.status_code">client = &lt;httpx.AsyncClient object at 0x000002272CF2B4D0&gt;
+path = '/health/redis'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("path", ["/health/db", "/health/redis"])
+    async def test_live_dependencies(client: AsyncClient, path: str) -&gt; None:
+        response = await client.get(path)
+&gt;       assert response.status_code == 200
+E       assert 503 == 200
+E        +  where 503 = &lt;Response [503 Service Unavailable]&gt;.status_code
+
+tests\test_health.py:23: AssertionError</failure></testcase><testcase classname="tests.test_invoice_renderer" name="test_invoice_pdf_unicode_status_and_escaped_fields[pending]" time="0.024" /><testcase classname="tests.test_invoice_renderer" name="test_invoice_pdf_unicode_status_and_escaped_fields[checkout_created]" time="0.010" /><testcase classname="tests.test_invoice_renderer" name="test_invoice_pdf_unicode_status_and_escaped_fields[paid]" time="0.011" /><testcase classname="tests.test_invoice_renderer" name="test_invoice_pdf_unicode_status_and_escaped_fields[failed]" time="0.013" /><testcase classname="tests.test_invoice_renderer" name="test_invoice_pdf_unicode_status_and_escaped_fields[cancelled]" time="0.011" /><testcase classname="tests.test_invoice_renderer" name="test_invoice_pdf_unicode_status_and_escaped_fields[voided]" time="0.011" /><testcase classname="tests.test_invoice_renderer" name="test_invoice_pdf_unicode_status_and_escaped_fields[expired]" time="0.012" /><testcase classname="tests.test_invoice_renderer" name="test_invoice_pdf_unicode_status_and_escaped_fields[review_required]" time="0.010" /><testcase classname="tests.test_invoice_renderer" name="test_production_pdf_environment_and_missing_legacy_terms" time="0.008" /><testcase classname="tests.test_invoices" name="test_invoice_ownership_auth_and_private_download" time="1.188" /><testcase classname="tests.test_invoices" name="test_invoice_paid_snapshot_redaction_and_gateway_disabled" time="0.960" /><testcase classname="tests.test_ranking_explorer" name="test_explorer_performance_at_one_thousand_keywords_and_two_sites" time="13.000"><failure message="assert False">auth_client = &lt;httpx.AsyncClient object at 0x000002272E0B29C0&gt;
+auth_app = &lt;fastapi.applications.FastAPI object at 0x000002272DE27980&gt;
+
+    async def test_explorer_performance_at_one_thousand_keywords_and_two_sites(
+        auth_client: AsyncClient, auth_app: FastAPI
+    ) -&gt; None:
+        account = await register(auth_client, "explorer-performance")
+        headers = authorization(account)
+        sites: list[dict] = []
+        for index in range(2):
+            response = await auth_client.post(
+                "/api/v1/tracked-sites",
+                headers=headers,
+                json={
+                    "name": f"Performance site {index}",
+                    "primary_domain": f"performance-{index}.example",
+                },
+            )
+            assert response.status_code == 201
+            sites.append(response.json())
+        project = project_body(
+            await create_project(auth_client, headers, keywords=["keyword 0000"])
+        )
+        project_id = UUID(str(project["id"]))
+        user_id = UUID(account.json()["user"]["id"])
+        now = datetime.now(UTC).replace(microsecond=0)
+        previous = now - timedelta(days=31)
+        performance_group_ids = [uuid4() for _ in range(10)]
+        performance_tag_ids = [uuid4() for _ in range(20)]
+        performance_group_id = performance_group_ids[0]
+        performance_tag_one_id = performance_tag_ids[0]
+        performance_tag_two_id = performance_tag_ids[1]
+        async with auth_app.state.session_factory() as session, session.begin():
+            first = await session.scalar(
+                select(Keyword).where(Keyword.project_id == project_id)
+            )
+            assert first is not None
+            keywords = [first]
+            keywords.extend(
+                Keyword(
+                    project_id=project_id,
+                    keyword=f"keyword {index:04d}",
+                    keyword_normalized=f"keyword {index:04d}",
+                )
+                for index in range(1, 1000)
+            )
+            session.add_all(keywords[1:])
+            session.add_all(
+                [
+                    KeywordGroup(
+                        id=group_id,
+                        project_id=project_id,
+                        name=f"Performance Group {index:02d}",
+                        normalized_name=f"performance group {index:02d}",
+                    )
+                    for index, group_id in enumerate(performance_group_ids)
+                ]
+            )
+            session.add_all(
+                [
+                    KeywordTag(
+                        id=tag_id,
+                        project_id=project_id,
+                        name=f"Performance Tag {index:02d}",
+                        normalized_name=f"performance tag {index:02d}",
+                    )
+                    for index, tag_id in enumerate(performance_tag_ids)
+                ]
+            )
+            stored_sites: list[TrackedSite] = []
+            for site in sites:
+                stored = await session.get(TrackedSite, UUID(site["id"]))
+                assert stored is not None
+                stored.created_at = previous - timedelta(days=1)
+                stored_sites.append(stored)
+            await session.flush()
+            for index, keyword in enumerate(keywords):
+                keyword.keyword_group_id = performance_group_ids[index % 10]
+                for tag_id in {
+                    performance_tag_ids[index % 20],
+                    performance_tag_ids[(index + 1) % 20],
+                }:
+                    session.add(
+                        KeywordTagAssignment(
+                            project_id=project_id,
+                            keyword_id=keyword.id,
+                            tag_id=tag_id,
+                        )
+                    )
+            checks: list[RankCheck] = []
+            rankings: list[Ranking] = []
+            for index, keyword in enumerate(keywords):
+                current_position = (index % 10) + 1
+                for when, adjustment in ((previous, 2), (now, 0)):
+                    check_id = uuid4()
+                    checks.append(
+                        RankCheck(
+                            id=check_id,
+                            user_id=user_id,
+                            project_id=project_id,
+                            keyword_id=keyword.id,
+                            provider="fake",
+                            status=RankCheckStatus.SUCCEEDED,
+                            query_snapshot=keyword.keyword,
+                            search_engine_snapshot="google",
+                            country_code_snapshot="VN",
+                            language_code_snapshot="vi",
+                            device_snapshot="desktop",
+                            location_snapshot=None,
+                            result_limit=10,
+                            provider_request_count=1,
+                            requested_at=when,
+                            completed_at=when,
+                            created_at=when,
+                        )
+                    )
+                    for site_index, site in enumerate(sites):
+                        position = min(10, current_position + adjustment + site_index)
+                        rankings.append(
+                            Ranking(
+                                rank_check_id=check_id,
+                                tracked_site_id=UUID(site["id"]),
+                                tracked_domain_id=UUID(site["domains"][0]["id"]),
+                                tracked_site_name_snapshot=site["name"],
+                                matched_domain_snapshot=site["domains"][0]["domain"],
+                                position=position,
+                                result_url=f"https://{site['domains'][0]['domain']}/page",
+                                result_hostname=site["domains"][0]["domain"],
+                                title=keyword.keyword,
+                                created_at=when,
+                            )
+                        )
+            session.add_all(checks)
+            session.add_all(rankings)
+    
+        queries = {
+            "default": "",
+            "movement": "movement=improved",
+            "position": "position_bucket=top_3",
+            "search": "q=keyword%200777",
+            "change_sort": "sort=change&amp;order=desc",
+            "group": f"group_id={performance_group_id}",
+            "tags_any": (
+                f"tag_ids={performance_tag_one_id},{performance_tag_two_id}&amp;tag_match=any"
+            ),
+            "tags_all": (
+                f"tag_ids={performance_tag_one_id},{performance_tag_two_id}&amp;tag_match=all"
+            ),
+        }
+        timings: dict[str, float] = {}
+        first_cursor: str | None = None
+        for label, query in queries.items():
+            started = perf_counter()
+            response = await auth_client.get(
+                f"/api/v1/projects/{project_id}/ranking-explorer?{query}",
+                headers=headers,
+            )
+            timings[label] = round((perf_counter() - started) * 1000, 2)
+            assert response.status_code == 200
+            if label == "default":
+                assert response.json()["summary"]["total"] == 2000
+                first_cursor = response.json()["page"]["next_cursor"]
+        assert first_cursor
+        started = perf_counter()
+        next_page = await auth_client.get(
+            f"/api/v1/projects/{project_id}/ranking-explorer?cursor={first_cursor}",
+            headers=headers,
+        )
+        timings["next_page"] = round((perf_counter() - started) * 1000, 2)
+        assert next_page.status_code == 200
+        started = perf_counter()
+        keyword_list = await auth_client.get(
+            f"/api/v1/projects/{project_id}/keywords",
+            headers=headers,
+            params={
+                "group_id": str(performance_group_id),
+                "tag_ids": str(performance_tag_one_id),
+                "tag_match": "all",
+                "limit": 200,
+            },
+        )
+        timings["organized_keyword_list"] = round((perf_counter() - started) * 1000, 2)
+        assert keyword_list.status_code == 200
+        started = perf_counter()
+        organization_summary = await auth_client.get(
+            f"/api/v1/projects/{project_id}/analytics/organization-summary",
+            headers=headers,
+            params={"group_id": str(performance_group_id), "range": "30d"},
+        )
+        timings["organization_summary"] = round((perf_counter() - started) * 1000, 2)
+        assert organization_summary.status_code == 200
+        bulk_tag = await auth_client.post(
+            f"/api/v1/projects/{project_id}/keyword-tags",
+            headers=headers,
+            json={"name": "Bulk Performance"},
+        )
+        assert bulk_tag.status_code == 201
+        started = perf_counter()
+        bulk = await auth_client.post(
+            f"/api/v1/projects/{project_id}/keywords/bulk-organize",
+            headers=headers,
+            json={
+                "keyword_ids": [str(keyword.id) for keyword in keywords[:100]],
+                "operation": "add_tags",
+                "tag_ids": [bulk_tag.json()["id"]],
+            },
+        )
+        timings["bulk_add_tag_100"] = round((perf_counter() - started) * 1000, 2)
+        assert bulk.status_code == 200
+        assert bulk.json()["assignment_count"] == 100
+        print(json.dumps({"ranking_explorer_performance_ms": timings}))
+    
+        worker = ReportWorker(
+            ReportService(
+                auth_app.state.session_factory,
+                auth_app.state.settings,
+                auth_app.state.task_queue,
+                auth_app.state.report_storage,
+                auth_app.state.report_email_sender,
+            )
+        )
+        engine = auth_app.state.session_factory.kw["bind"]
+        report_results: dict[str, dict[str, float | int]] = {}
+    
+        async def benchmark_report(
+            label: str,
+            report_type: str,
+            filters: dict[str, object] | None = None,
+        ) -&gt; None:
+            response = await auth_client.post(
+                f"/api/v1/projects/{project_id}/reports",
+                headers=headers,
+                json={
+                    "report_type": report_type,
+                    "period": "30d",
+                    "include_keyword_details": True,
+                    "idempotency_key": f"performance-{label}",
+                    **(filters or {}),
+                },
+            )
+            assert response.status_code == 202, response.text
+            report_id = UUID(response.json()["id"])
+            query_count = 0
+    
+            def count_query(*_args: object) -&gt; None:
+                nonlocal query_count
+                query_count += 1
+    
+            event.listen(engine.sync_engine, "before_cursor_execute", count_query)
+            tracemalloc.start()
+            started = perf_counter()
+            try:
+                assert await worker.execute(report_id)
+                elapsed_ms = round((perf_counter() - started) * 1000, 2)
+                _, peak_bytes = tracemalloc.get_traced_memory()
+            finally:
+                tracemalloc.stop()
+                event.remove(engine.sync_engine, "before_cursor_execute", count_query)
+            detail = await auth_client.get(
+                f"/api/v1/projects/{project_id}/reports/{report_id}", headers=headers
+            )
+            assert detail.status_code == 200
+            payload = detail.json()
+            assert payload["status"] == "ready"
+            report_results[label] = {
+                "queries": query_count,
+                "generation_ms": elapsed_ms,
+                "peak_python_mib": round(peak_bytes / 1024 / 1024, 2),
+                "artifact_bytes": int(payload["byte_size"]),
+            }
+    
+&gt;       await benchmark_report("comparison_csv", "comparison_csv")
+
+tests\test_ranking_explorer.py:631: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+label = 'comparison_csv', report_type = 'comparison_csv', filters = None
+
+    async def benchmark_report(
+        label: str,
+        report_type: str,
+        filters: dict[str, object] | None = None,
+    ) -&gt; None:
+        response = await auth_client.post(
+            f"/api/v1/projects/{project_id}/reports",
+            headers=headers,
+            json={
+                "report_type": report_type,
+                "period": "30d",
+                "include_keyword_details": True,
+                "idempotency_key": f"performance-{label}",
+                **(filters or {}),
+            },
+        )
+        assert response.status_code == 202, response.text
+        report_id = UUID(response.json()["id"])
+        query_count = 0
+    
+        def count_query(*_args: object) -&gt; None:
+            nonlocal query_count
+            query_count += 1
+    
+        event.listen(engine.sync_engine, "before_cursor_execute", count_query)
+        tracemalloc.start()
+        started = perf_counter()
+        try:
+&gt;           assert await worker.execute(report_id)
+E           assert False
+
+tests\test_ranking_explorer.py:612: AssertionError</failure></testcase><testcase classname="tests.test_reports" name="test_preview_csv_pdf_and_no_rank_usage" time="1.258"><failure message="assert False">auth_client = &lt;httpx.AsyncClient object at 0x000002272ED01100&gt;
+auth_app = &lt;fastapi.applications.FastAPI object at 0x000002272F1E81A0&gt;
+
+    async def test_preview_csv_pdf_and_no_rank_usage(
+        auth_client: AsyncClient, auth_app: FastAPI
+    ) -&gt; None:
+        headers, project_id, _, site_id = await seed_reports(auth_client, auth_app)
+        preview = await auth_client.get(
+            f"/api/v1/projects/{project_id}/reports/preview?period=30d"
+            f"&amp;tracked_site_id={site_id}",
+            headers=headers,
+        )
+        assert preview.status_code == 200, preview.text
+        metrics = preview.json()["metrics"]
+        assert metrics["distinct_keywords"] == 3
+        assert metrics["keyword_site_pairs"] == 3
+        assert metrics["observed_pairs"] == 2
+        assert metrics["never_checked"] == 1
+        assert metrics["effective_depth"] == 10
+        assert metrics["movements"]["improved"] == 1
+        assert metrics["movements"]["entered_checked_depth"] == 1
+        assert metrics["comparison_basis"] == "range_boundary"
+    
+        async with auth_app.state.session_factory() as session:
+            rank_jobs_before = int(
+                await session.scalar(select(func.count(RankCheckJob.id))) or 0
+            )
+    
+&gt;       comparison, comparison_bytes = await generate(
+            auth_client,
+            auth_app,
+            headers,
+            project_id,
+            "comparison_csv",
+            "comparison-1",
+        )
+
+tests\test_reports.py:220: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+client = &lt;httpx.AsyncClient object at 0x000002272ED01100&gt;
+app = &lt;fastapi.applications.FastAPI object at 0x000002272F1E81A0&gt;
+headers = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOGMxMzM0ZC02YTkzLTQ2ZDUtYTkyMS00OGFjMTc0MDE...icGFzc3dvcmRfdmVyc2lvbiI6MCwiaWF0IjoxNzkzNDI5NjY2LCJleHAiOjE3OTM0MzA1NjZ9.vTtkh4SzKBZ2P7QmqxJdlZi6ZRLfZhgRY37Nn7soIcI'}
+project_id = UUID('76fc0790-a9a4-45b7-a3d8-0f42454c838e')
+report_type = 'comparison_csv', key = 'comparison-1'
+
+    async def generate(
+        client: AsyncClient,
+        app: FastAPI,
+        headers: dict[str, str],
+        project_id: UUID,
+        report_type: str,
+        key: str,
+    ) -&gt; tuple[dict[str, object], bytes]:
+        response = await client.post(
+            f"/api/v1/projects/{project_id}/reports",
+            headers=headers,
+            json={
+                "report_type": report_type,
+                "period": "30d",
+                "tag_match": "any",
+                "include_keyword_details": True,
+                "idempotency_key": key,
+            },
+        )
+        assert response.status_code == 202, response.text
+        report_id = UUID(response.json()["id"])
+&gt;       assert await report_worker(app).execute(report_id)
+E       assert False
+
+tests\test_reports.py:180: AssertionError</failure></testcase><testcase classname="tests.test_reports" name="test_idempotency_tenant_isolation_and_expired_download" time="1.132"><failure message="assert False">auth_client = &lt;httpx.AsyncClient object at 0x0000022730474D10&gt;
+auth_app = &lt;fastapi.applications.FastAPI object at 0x00000227306C8DA0&gt;
+
+    async def test_idempotency_tenant_isolation_and_expired_download(
+        auth_client: AsyncClient, auth_app: FastAPI
+    ) -&gt; None:
+        headers, project_id, _, _ = await seed_reports(auth_client, auth_app, "owner")
+        payload = {
+            "report_type": "comparison_csv",
+            "period": "7d",
+            "idempotency_key": "same-click",
+        }
+        first = await auth_client.post(
+            f"/api/v1/projects/{project_id}/reports", headers=headers, json=payload
+        )
+        second = await auth_client.post(
+            f"/api/v1/projects/{project_id}/reports", headers=headers, json=payload
+        )
+        assert first.status_code == second.status_code == 202
+        assert first.json()["id"] == second.json()["id"]
+    
+        foreign_headers = authorization(await register(auth_client, "foreign"))
+        hidden = await auth_client.get(
+            f"/api/v1/projects/{project_id}/reports/{first.json()['id']}",
+            headers=foreign_headers,
+        )
+        assert hidden.status_code == 404
+        hidden_download = await auth_client.get(
+            f"/api/v1/projects/{project_id}/reports/{first.json()['id']}/download",
+            headers=foreign_headers,
+        )
+        assert hidden_download.status_code == 404
+    
+        report_id = UUID(first.json()["id"])
+&gt;       assert await report_worker(auth_app).execute(report_id)
+E       assert False
+
+tests\test_reports.py:320: AssertionError</failure></testcase><testcase classname="tests.test_reports" name="test_schedule_dispatch_and_fake_verified_email" time="1.217"><failure message="assert False">auth_client = &lt;httpx.AsyncClient object at 0x000002272F1AF4A0&gt;
+auth_app = &lt;fastapi.applications.FastAPI object at 0x000002272EAEDCA0&gt;
+
+    async def test_schedule_dispatch_and_fake_verified_email(
+        auth_client: AsyncClient, auth_app: FastAPI
+    ) -&gt; None:
+        headers, project_id, user_id, _ = await seed_reports(
+            auth_client, auth_app, "schedule"
+        )
+        fake = TransientOnceEmailSender()
+        auth_app.state.report_email_sender = fake
+        async with auth_app.state.session_factory() as session, session.begin():
+            user = await session.get(User, user_id)
+            assert user is not None
+            user.email_verified_at = datetime.now(UTC)
+        created = await auth_client.post(
+            f"/api/v1/projects/{project_id}/report-schedules",
+            headers=headers,
+            json={
+                "name": "Thứ hai hàng tuần",
+                "frequency": "weekly",
+                "scheduled_hour": 9,
+                "weekday": 0,
+                "active": True,
+                "period": "30d",
+            },
+        )
+        assert created.status_code == 201, created.text
+        schedule_id = UUID(created.json()["id"])
+        async with auth_app.state.session_factory() as session, session.begin():
+            schedule = await session.get(ReportSchedule, schedule_id)
+            assert schedule is not None
+            schedule.next_run_at_utc = datetime.now(UTC) - timedelta(seconds=1)
+        worker = report_worker(auth_app)
+        assert await worker.dispatch_schedules() == 1
+        async with auth_app.state.session_factory() as session:
+            report_id = await session.scalar(
+                select(GeneratedReport.id).where(
+                    GeneratedReport.report_schedule_id == schedule_id
+                )
+            )
+        assert report_id is not None
+&gt;       assert await worker.execute(report_id)
+E       assert False
+
+tests\test_reports.py:447: AssertionError</failure></testcase></testsuite></testsuites>

@@ -153,9 +153,17 @@ export function BlogCta({ locale = "en" }: { locale?: "en" | "vi" }) {
         in SERP SaaS. Compare Desktop and Mobile Plan limits before getting
         started.
       </p>
-      <Link href={siteHref("/pricing")} className="ui-link-button">
-        Explore rank-tracking Plans
-      </Link>
+      <div className="public-cta-row">
+        <Link href={siteHref("/pricing")} className="ui-link-button">
+          Explore rank-tracking Plans
+        </Link>
+        <Link
+          href={siteHref("/google-serp-rank-tracker")}
+          className="public-text-link"
+        >
+          Explore the Google rank tracker
+        </Link>
+      </div>
     </aside>
   );
 }

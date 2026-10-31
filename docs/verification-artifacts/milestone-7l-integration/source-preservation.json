@@ -1,0 +1,565 @@
+{
+  "originalHead": "8ebfb715ee6f25abb09ac2df230708d5f32b8cdb",
+  "integrationHead": "84f549e02f6fd9541e139af20df853b05c242580",
+  "branch": "codex/m7l-integration-20261031",
+  "upstreamFiles": [
+    {
+      "path": ".env.example",
+      "unchanged": true,
+      "upstreamBlob": "8f7f8ba12cad08806fdd2739a638096380b6bfb5",
+      "currentBlob": "8f7f8ba12cad08806fdd2739a638096380b6bfb5"
+    },
+    {
+      "path": "backend/alembic/versions/0017_ranking_alerts_ranking_alerts.py",
+      "unchanged": true,
+      "upstreamBlob": "208e4df9e5b4572a7e6b71e78a50b683ee23a698",
+      "currentBlob": "208e4df9e5b4572a7e6b71e78a50b683ee23a698"
+    },
+    {
+      "path": "backend/app/api/v1/ranking_alerts.py",
+      "unchanged": true,
+      "upstreamBlob": "6377cd923c35835772837ec8ee887c891b144c63",
+      "currentBlob": "6377cd923c35835772837ec8ee887c891b144c63"
+    },
+    {
+      "path": "backend/app/api/v1/router.py",
+      "unchanged": true,
+      "upstreamBlob": "f8f8dcb6db6bd6864036a7204ee61ecf56681f6b",
+      "currentBlob": "f8f8dcb6db6bd6864036a7204ee61ecf56681f6b"
+    },
+    {
+      "path": "backend/app/core/config.py",
+      "unchanged": true,
+      "upstreamBlob": "487aba7d2c7142c4161a537d77c1205bcb230a4c",
+      "currentBlob": "487aba7d2c7142c4161a537d77c1205bcb230a4c"
+    },
+    {
+      "path": "backend/app/core/logging.py",
+      "unchanged": true,
+      "upstreamBlob": "a99750506e22baaf90c5fd354842cd60236341cc",
+      "currentBlob": "a99750506e22baaf90c5fd354842cd60236341cc"
+    },
+    {
+      "path": "backend/app/db/models.py",
+      "unchanged": true,
+      "upstreamBlob": "8148596ecc08eed47083c83388b603e3db1746b0",
+      "currentBlob": "8148596ecc08eed47083c83388b603e3db1746b0"
+    },
+    {
+      "path": "backend/app/models/rank_check.py",
+      "unchanged": true,
+      "upstreamBlob": "f65215a0a1e2c2f354263d188c0c876700bfaacc",
+      "currentBlob": "f65215a0a1e2c2f354263d188c0c876700bfaacc"
+    },
+    {
+      "path": "backend/app/models/ranking_alert.py",
+      "unchanged": true,
+      "upstreamBlob": "c485926a9868106a2678391cd3292d3a6602b91b",
+      "currentBlob": "c485926a9868106a2678391cd3292d3a6602b91b"
+    },
+    {
+      "path": "backend/app/repositories/ranking_alert.py",
+      "unchanged": true,
+      "upstreamBlob": "43c6b5eeb160d1fd331a25317b254cf3d565dab2",
+      "currentBlob": "43c6b5eeb160d1fd331a25317b254cf3d565dab2"
+    },
+    {
+      "path": "backend/app/schemas/ranking_alert.py",
+      "unchanged": true,
+      "upstreamBlob": "457186010fc7726ac59896aa013379fef4c97970",
+      "currentBlob": "457186010fc7726ac59896aa013379fef4c97970"
+    },
+    {
+      "path": "backend/app/services/auth_email.py",
+      "unchanged": true,
+      "upstreamBlob": "c02b8dd939222bf3c92ada0d4622a5e6908a2541",
+      "currentBlob": "c02b8dd939222bf3c92ada0d4622a5e6908a2541"
+    },
+    {
+      "path": "backend/app/services/rank_checks.py",
+      "unchanged": true,
+      "upstreamBlob": "85aee289fcd58cd098e8a8b9a2aa277b7fd5d5a6",
+      "currentBlob": "85aee289fcd58cd098e8a8b9a2aa277b7fd5d5a6"
+    },
+    {
+      "path": "backend/app/services/ranking_alert_email.py",
+      "unchanged": true,
+      "upstreamBlob": "7d196a07e4f1ddd5546e3bbc15c36cbcebd5af1d",
+      "currentBlob": "7d196a07e4f1ddd5546e3bbc15c36cbcebd5af1d"
+    },
+    {
+      "path": "backend/app/services/ranking_alerts.py",
+      "unchanged": true,
+      "upstreamBlob": "ebdc292b7f653276516680509b07f61e6699f122",
+      "currentBlob": "ebdc292b7f653276516680509b07f61e6699f122"
+    },
+    {
+      "path": "backend/app/services/task_queue/base.py",
+      "unchanged": true,
+      "upstreamBlob": "9e42965592318b47865228b53656fb860bac8e18",
+      "currentBlob": "9e42965592318b47865228b53656fb860bac8e18"
+    },
+    {
+      "path": "backend/app/services/task_queue/cloud_tasks.py",
+      "unchanged": true,
+      "upstreamBlob": "911e001b28d86bb01d260fd7122dc934ef1ff1fe",
+      "currentBlob": "911e001b28d86bb01d260fd7122dc934ef1ff1fe"
+    },
+    {
+      "path": "backend/app/services/task_queue/local.py",
+      "unchanged": true,
+      "upstreamBlob": "bba52164bde15792b3ec5356c78724733ec5093c",
+      "currentBlob": "bba52164bde15792b3ec5356c78724733ec5093c"
+    },
+    {
+      "path": "backend/app/worker_main.py",
+      "unchanged": true,
+      "upstreamBlob": "82d1e1523878beb368da7a019c475aaa6d92704d",
+      "currentBlob": "82d1e1523878beb368da7a019c475aaa6d92704d"
+    },
+    {
+      "path": "backend/scripts/rank_jobs.py",
+      "unchanged": true,
+      "upstreamBlob": "26b441b40240b9fbdcd9c0709dacdf88153cc735",
+      "currentBlob": "26b441b40240b9fbdcd9c0709dacdf88153cc735"
+    },
+    {
+      "path": "backend/scripts/seed_ranking_alerts_qa.py",
+      "unchanged": true,
+      "upstreamBlob": "b41db13820b4256e0a255a669ac42c3d254711a2",
+      "currentBlob": "b41db13820b4256e0a255a669ac42c3d254711a2"
+    },
+    {
+      "path": "backend/tests/test_auth_invariants.py",
+      "unchanged": true,
+      "upstreamBlob": "63fe3864f257f2c5ab0765a81239d712c41c433a",
+      "currentBlob": "63fe3864f257f2c5ab0765a81239d712c41c433a"
+    },
+    {
+      "path": "backend/tests/test_migrations.py",
+      "unchanged": true,
+      "upstreamBlob": "d85276e7b37e553f651be25343bbc0ce727fbff7",
+      "currentBlob": "d85276e7b37e553f651be25343bbc0ce727fbff7"
+    },
+    {
+      "path": "backend/tests/test_ranking_alert_migration.py",
+      "unchanged": true,
+      "upstreamBlob": "30a4d8edbefc2c4c3bb30a59a091372b9383cf50",
+      "currentBlob": "30a4d8edbefc2c4c3bb30a59a091372b9383cf50"
+    },
+    {
+      "path": "backend/tests/test_ranking_alerts.py",
+      "unchanged": true,
+      "upstreamBlob": "d9aab4b78718a2b6b71e920f9a616757e1f29f9f",
+      "currentBlob": "d9aab4b78718a2b6b71e920f9a616757e1f29f9f"
+    },
+    {
+      "path": "backend/tests/test_task_queue.py",
+      "unchanged": true,
+      "upstreamBlob": "1db6032c1d2bcebded0b759f611036abb3aaca13",
+      "currentBlob": "1db6032c1d2bcebded0b759f611036abb3aaca13"
+    },
+    {
+      "path": "docker-compose.yml",
+      "unchanged": true,
+      "upstreamBlob": "ef38c61a9e3e6b263386b7a4e7b24c1ff11eab18",
+      "currentBlob": "ef38c61a9e3e6b263386b7a4e7b24c1ff11eab18"
+    },
+    {
+      "path": "docs/deployment-milestone-7d.md",
+      "unchanged": true,
+      "upstreamBlob": "55f1d9c27451465ab2007eed43e3be44ab1ac04d",
+      "currentBlob": "55f1d9c27451465ab2007eed43e3be44ab1ac04d"
+    },
+    {
+      "path": "docs/milestone-7d-ranking-alerts.md",
+      "unchanged": true,
+      "upstreamBlob": "936268fe5ef5b991434d66c6582450b2f7dad5e6",
+      "currentBlob": "936268fe5ef5b991434d66c6582450b2f7dad5e6"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/backend-tests.txt",
+      "unchanged": true,
+      "upstreamBlob": "0720fb6563ad4ada502ffd3ed9146169e5bd9a6a",
+      "currentBlob": "0720fb6563ad4ada502ffd3ed9146169e5bd9a6a"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/browser-qa.json",
+      "unchanged": true,
+      "upstreamBlob": "967dbdab7a92fa18b2727a92e23ae589b3d60bb8",
+      "currentBlob": "967dbdab7a92fa18b2727a92e23ae589b3d60bb8"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/checks.json",
+      "unchanged": true,
+      "upstreamBlob": "1adcdc5154963780a22d4138d2c27c9b9e7a4f8f",
+      "currentBlob": "1adcdc5154963780a22d4138d2c27c9b9e7a4f8f"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/focused-tests.txt",
+      "unchanged": true,
+      "upstreamBlob": "d51b382f3498c15f412979539c4af163b4b4cf9d",
+      "currentBlob": "d51b382f3498c15f412979539c4af163b4b4cf9d"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/frontend-build.txt",
+      "unchanged": true,
+      "upstreamBlob": "ac2222b32471e7f1cacbe51ad6d43ea66a075cae",
+      "currentBlob": "ac2222b32471e7f1cacbe51ad6d43ea66a075cae"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/frontend-tests.txt",
+      "unchanged": true,
+      "upstreamBlob": "ace3c622a5948f74c43b60d82ad4ec3e0f35bfe1",
+      "currentBlob": "ace3c622a5948f74c43b60d82ad4ec3e0f35bfe1"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-dark-scheme-1024.png",
+      "unchanged": true,
+      "upstreamBlob": "f2aa20243dc5d783708f9af6032a08535825eefb",
+      "currentBlob": "f2aa20243dc5d783708f9af6032a08535825eefb"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-dark-scheme-1440.png",
+      "unchanged": true,
+      "upstreamBlob": "4a8a1305566b98023f8c11eb6bfe50e8123b2f12",
+      "currentBlob": "4a8a1305566b98023f8c11eb6bfe50e8123b2f12"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-dark-scheme-375.png",
+      "unchanged": true,
+      "upstreamBlob": "d6485d1a382f9c7359d0072cebdcc41e7b9ae30a",
+      "currentBlob": "d6485d1a382f9c7359d0072cebdcc41e7b9ae30a"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-dark-scheme-768.png",
+      "unchanged": true,
+      "upstreamBlob": "9989b2110e422b7652c3f2211952205d4cb1647a",
+      "currentBlob": "9989b2110e422b7652c3f2211952205d4cb1647a"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-empty-other-account-1024.png",
+      "unchanged": true,
+      "upstreamBlob": "fcfe646a263fd1fc4a6caa4b5f3076e1b34f671a",
+      "currentBlob": "fcfe646a263fd1fc4a6caa4b5f3076e1b34f671a"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-empty-other-account-1440.png",
+      "unchanged": true,
+      "upstreamBlob": "8de3da82bda406f910451d7659d63ecb72bed03d",
+      "currentBlob": "8de3da82bda406f910451d7659d63ecb72bed03d"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-empty-other-account-375.png",
+      "unchanged": true,
+      "upstreamBlob": "ba6eec88dc8b00280b8ffe96771676aa5e6d0afc",
+      "currentBlob": "ba6eec88dc8b00280b8ffe96771676aa5e6d0afc"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-empty-other-account-768.png",
+      "unchanged": true,
+      "upstreamBlob": "c6273c64044b83c59fbaea93e0b8287926a9498d",
+      "currentBlob": "c6273c64044b83c59fbaea93e0b8287926a9498d"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-error-1024.png",
+      "unchanged": true,
+      "upstreamBlob": "e6b00ab12e69453b4d781b1dc44f233b9ec97098",
+      "currentBlob": "e6b00ab12e69453b4d781b1dc44f233b9ec97098"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-error-1440.png",
+      "unchanged": true,
+      "upstreamBlob": "976bec2086e7eb145ead3b8722b2618e67b79254",
+      "currentBlob": "976bec2086e7eb145ead3b8722b2618e67b79254"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-error-375.png",
+      "unchanged": true,
+      "upstreamBlob": "19f89869310fd300464b6cae1d7d516f4f4d3231",
+      "currentBlob": "19f89869310fd300464b6cae1d7d516f4f4d3231"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-error-768.png",
+      "unchanged": true,
+      "upstreamBlob": "314a0803cbbdc41dc278c88c20e623dea7b5ffee",
+      "currentBlob": "314a0803cbbdc41dc278c88c20e623dea7b5ffee"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-loading-1024.png",
+      "unchanged": true,
+      "upstreamBlob": "78895cc91141bf8d64170a785f22b18b0e363cb5",
+      "currentBlob": "78895cc91141bf8d64170a785f22b18b0e363cb5"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-loading-1440.png",
+      "unchanged": true,
+      "upstreamBlob": "0c06d2cefe5437b9a9f98e09024c6274a54b9074",
+      "currentBlob": "0c06d2cefe5437b9a9f98e09024c6274a54b9074"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-loading-375.png",
+      "unchanged": true,
+      "upstreamBlob": "c01f02be60dcf2bfe63674133dfbf5477ac58d4e",
+      "currentBlob": "c01f02be60dcf2bfe63674133dfbf5477ac58d4e"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-loading-768.png",
+      "unchanged": true,
+      "upstreamBlob": "061c3d5cfa0c112cdd7ae1a3738abe20d4db8320",
+      "currentBlob": "061c3d5cfa0c112cdd7ae1a3738abe20d4db8320"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-populated-1024.png",
+      "unchanged": true,
+      "upstreamBlob": "f2aa20243dc5d783708f9af6032a08535825eefb",
+      "currentBlob": "f2aa20243dc5d783708f9af6032a08535825eefb"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-populated-1440.png",
+      "unchanged": true,
+      "upstreamBlob": "4a8a1305566b98023f8c11eb6bfe50e8123b2f12",
+      "currentBlob": "4a8a1305566b98023f8c11eb6bfe50e8123b2f12"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-populated-375.png",
+      "unchanged": true,
+      "upstreamBlob": "d6485d1a382f9c7359d0072cebdcc41e7b9ae30a",
+      "currentBlob": "d6485d1a382f9c7359d0072cebdcc41e7b9ae30a"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-populated-768.png",
+      "unchanged": true,
+      "upstreamBlob": "9989b2110e422b7652c3f2211952205d4cb1647a",
+      "currentBlob": "9989b2110e422b7652c3f2211952205d4cb1647a"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-populated-viewport-1440.png",
+      "unchanged": true,
+      "upstreamBlob": "9837077236577ce024578f7bc0a047b47981e8cc",
+      "currentBlob": "9837077236577ce024578f7bc0a047b47981e8cc"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-populated-viewport-375.png",
+      "unchanged": true,
+      "upstreamBlob": "7919f2830d84050cd1f31abcc07a458f41e05829",
+      "currentBlob": "7919f2830d84050cd1f31abcc07a458f41e05829"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-unread-empty-1024.png",
+      "unchanged": true,
+      "upstreamBlob": "7aa9335b2c917de40dd4189047d3229e7a4e9057",
+      "currentBlob": "7aa9335b2c917de40dd4189047d3229e7a4e9057"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-unread-empty-1440.png",
+      "unchanged": true,
+      "upstreamBlob": "5f01df6ed74e3a990ab475686b9489eed7aeb0bc",
+      "currentBlob": "5f01df6ed74e3a990ab475686b9489eed7aeb0bc"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-unread-empty-375.png",
+      "unchanged": true,
+      "upstreamBlob": "d2786e9527e9389fa7662d0851753ab2dc7a017a",
+      "currentBlob": "d2786e9527e9389fa7662d0851753ab2dc7a017a"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/inbox-unread-empty-768.png",
+      "unchanged": true,
+      "upstreamBlob": "3599ecbf0931cf54f60a85b32785a7423329f04a",
+      "currentBlob": "3599ecbf0931cf54f60a85b32785a7423329f04a"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/infrastructure-tests.txt",
+      "unchanged": true,
+      "upstreamBlob": "49ed4a6f28473e1c303eea7a0483e5dfb58612e1",
+      "currentBlob": "49ed4a6f28473e1c303eea7a0483e5dfb58612e1"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/production/backend-build.json",
+      "unchanged": true,
+      "upstreamBlob": "1f122d8fe35236cb7f5c3edc571c168eea1bd226",
+      "currentBlob": "1f122d8fe35236cb7f5c3edc571c168eea1bd226"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/production/backend-http-smoke.json",
+      "unchanged": true,
+      "upstreamBlob": "ac0c5afb2c8a53435b5c4ac4de862026086bcda5",
+      "currentBlob": "ac0c5afb2c8a53435b5c4ac4de862026086bcda5"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/production/browser-smoke.json",
+      "unchanged": true,
+      "upstreamBlob": "3f02b0ad8d2e4b8d0a9ff20bbc8c5bc6bce8724e",
+      "currentBlob": "3f02b0ad8d2e4b8d0a9ff20bbc8c5bc6bce8724e"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/production/frontend-build.json",
+      "unchanged": true,
+      "upstreamBlob": "9f3abc0e1c829ee6dda335411abe82773ec5ed1a",
+      "currentBlob": "9f3abc0e1c829ee6dda335411abe82773ec5ed1a"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/production/http-smoke.json",
+      "unchanged": true,
+      "upstreamBlob": "fad7c721dfbdb09d385140c6c2ce6866768c0cca",
+      "currentBlob": "fad7c721dfbdb09d385140c6c2ce6866768c0cca"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/project-preferences-1024.png",
+      "unchanged": true,
+      "upstreamBlob": "834ad179baf3caf7d949f4909831bf150da30a75",
+      "currentBlob": "834ad179baf3caf7d949f4909831bf150da30a75"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/project-preferences-1440.png",
+      "unchanged": true,
+      "upstreamBlob": "1617455ad7f3b42442093da948602d58fdd5a6c0",
+      "currentBlob": "1617455ad7f3b42442093da948602d58fdd5a6c0"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/project-preferences-375.png",
+      "unchanged": true,
+      "upstreamBlob": "6bbcad21a096aa6a0417361919fc8540749c1a85",
+      "currentBlob": "6bbcad21a096aa6a0417361919fc8540749c1a85"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/project-preferences-768.png",
+      "unchanged": true,
+      "upstreamBlob": "fd7e526cfb5b74503bd60180557cd06f773c1803",
+      "currentBlob": "fd7e526cfb5b74503bd60180557cd06f773c1803"
+    },
+    {
+      "path": "docs/verification-artifacts/milestone-7d/runtime-audit.json",
+      "unchanged": true,
+      "upstreamBlob": "d9149c0b6858b952f6874c29450d1c7962e7c458",
+      "currentBlob": "d9149c0b6858b952f6874c29450d1c7962e7c458"
+    },
+    {
+      "path": "docs/verification-milestone-7d.md",
+      "unchanged": true,
+      "upstreamBlob": "95e22a8b3bc3596c1c00350996f5a3b532c9a826",
+      "currentBlob": "95e22a8b3bc3596c1c00350996f5a3b532c9a826"
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "unchanged": true,
+      "upstreamBlob": "bf6da34a9143676b9782356e791d3e055ec9ff41",
+      "currentBlob": "bf6da34a9143676b9782356e791d3e055ec9ff41"
+    },
+    {
+      "path": "frontend/package.json",
+      "unchanged": true,
+      "upstreamBlob": "7140f91195bcaaaa3c615ff52994353d1c53b883",
+      "currentBlob": "7140f91195bcaaaa3c615ff52994353d1c53b883"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/ranking-alerts/page.tsx",
+      "unchanged": true,
+      "upstreamBlob": "47d7316eaa55a0c98d66d410c94f50ce1f2c2f13",
+      "currentBlob": "47d7316eaa55a0c98d66d410c94f50ce1f2c2f13"
+    },
+    {
+      "path": "frontend/src/design-system/app-shell.tsx",
+      "unchanged": true,
+      "upstreamBlob": "0f998101cc92b1b27b60fb69f6da4425aa145251",
+      "currentBlob": "0f998101cc92b1b27b60fb69f6da4425aa145251"
+    },
+    {
+      "path": "frontend/src/features/projects/project-detail.tsx",
+      "unchanged": true,
+      "upstreamBlob": "6b5e2f3af47cb204236f04259d774811237bf489",
+      "currentBlob": "6b5e2f3af47cb204236f04259d774811237bf489"
+    },
+    {
+      "path": "frontend/src/features/projects/projects.test.tsx",
+      "unchanged": true,
+      "upstreamBlob": "ea0eb9de43e51cc8bebe8cb4f51177c5678d267e",
+      "currentBlob": "ea0eb9de43e51cc8bebe8cb4f51177c5678d267e"
+    },
+    {
+      "path": "frontend/src/features/ranking-alerts/alert-preferences.tsx",
+      "unchanged": true,
+      "upstreamBlob": "8576e3c38f34464b6ac0e3e56cb71e1c75f252d0",
+      "currentBlob": "8576e3c38f34464b6ac0e3e56cb71e1c75f252d0"
+    },
+    {
+      "path": "frontend/src/features/ranking-alerts/api.ts",
+      "unchanged": true,
+      "upstreamBlob": "76968d993d7ef9568e5a32a94d0b582355df0ead",
+      "currentBlob": "76968d993d7ef9568e5a32a94d0b582355df0ead"
+    },
+    {
+      "path": "frontend/src/features/ranking-alerts/ranking-alerts-page.tsx",
+      "unchanged": true,
+      "upstreamBlob": "cd65180b7d71d26578708293c9ccfce15bdc9267",
+      "currentBlob": "cd65180b7d71d26578708293c9ccfce15bdc9267"
+    },
+    {
+      "path": "frontend/src/features/ranking-alerts/ranking-alerts.test.tsx",
+      "unchanged": true,
+      "upstreamBlob": "fd78463309c1725bc7b89934c2bbb633bad963c8",
+      "currentBlob": "fd78463309c1725bc7b89934c2bbb633bad963c8"
+    },
+    {
+      "path": "frontend/src/features/ranking-alerts/unread-badge.tsx",
+      "unchanged": true,
+      "upstreamBlob": "e110456cd2c88dc023ca1dc5ba613e18407eb509",
+      "currentBlob": "e110456cd2c88dc023ca1dc5ba613e18407eb509"
+    },
+    {
+      "path": "infrastructure/gcp/create-cloud-run-config.py",
+      "unchanged": true,
+      "upstreamBlob": "322cfd4227a97371b69baf9db8d722e059e9eca4",
+      "currentBlob": "322cfd4227a97371b69baf9db8d722e059e9eca4"
+    },
+    {
+      "path": "scripts/verify-ranking-alerts-browser.mjs",
+      "unchanged": false,
+      "upstreamBlob": "844a2068cc608c38a825e3b6698866e571df35dc",
+      "currentBlob": "b609f7de72e42d740e090251dec2de8d7d1aed8c"
+    },
+    {
+      "path": "scripts/verify-ranking-alerts-production-browser.mjs",
+      "unchanged": true,
+      "upstreamBlob": "ece973dd74419880b922ad0a18dda912cde55a18",
+      "currentBlob": "ece973dd74419880b922ad0a18dda912cde55a18"
+    },
+    {
+      "path": "scripts/verify-ranking-alerts-production.mjs",
+      "unchanged": true,
+      "upstreamBlob": "ea81b58b995b72bd060b02f13124b8cc924db1e3",
+      "currentBlob": "ea81b58b995b72bd060b02f13124b8cc924db1e3"
+    }
+  ],
+  "changedFiles": [
+    "frontend/content/blog/vi/cong-cu-rank-tracker-la-gi.md",
+    "frontend/scripts/verify-rank-tracker-blog-browser.mjs",
+    "frontend/scripts/verify-security-regression.mjs",
+    "frontend/src/app/(en)/page.tsx",
+    "frontend/src/features/blog/blog-components.tsx",
+    "frontend/src/features/blog/blog.test.tsx",
+    "frontend/src/features/marketing/public-site.test.tsx",
+    "frontend/src/features/marketing/vietnamese-content.ts",
+    "frontend/src/features/marketing/vietnamese-localization.test.tsx",
+    "infrastructure/gcp/tests/test_auth_email_tools.py",
+    "infrastructure/gcp/tests/test_cloud_run_ci.py",
+    "scripts/verify-ranking-alerts-browser.mjs"
+  ],
+  "sourceSha256": {
+    "frontend/content/blog/vi/cong-cu-rank-tracker-la-gi.md": "bf7628ef58e8dafa1e3f317dbacffd51e4e9a82b12f2bd39a1ef2adb1e017acd",
+    "frontend/scripts/verify-rank-tracker-blog-browser.mjs": "fd814b67dcdb9d9eb55725574cf6731b0232f27935ee0621ee94ff59e6f7fdaa",
+    "frontend/scripts/verify-security-regression.mjs": "d2cb3f68aaea2fdaaaa94c58455dfdc5395c1a89959b0a9205d8b5e6657f4e8d",
+    "frontend/src/app/(en)/page.tsx": "7cffa463fc1705835a30430daf983145afd806894a9c80df8e2696c8c792625f",
+    "frontend/src/features/blog/blog-components.tsx": "352c8ea14e459ed80ba7f6ad52395d39bc1849e0ee21a74fa99df1c668a95ba8",
+    "frontend/src/features/blog/blog.test.tsx": "ebfffb6d09345a69193da4466bf18a26ab440c8ddd2b7bf62a7e2200e1ce8c8e",
+    "frontend/src/features/marketing/public-site.test.tsx": "ea5e887d842b53102ca564416f89deb7eeaabf3688877a55556ed526662ae704",
+    "frontend/src/features/marketing/vietnamese-content.ts": "f4e83d3414fd0d12b1be3dd9024dcbdec8211fd7cabd74c3c6ce174331faf8b2",
+    "frontend/src/features/marketing/vietnamese-localization.test.tsx": "e7797823e184dc1a0d63fd9006f2565be3f39a829c69cca68c0f238b2621d379",
+    "infrastructure/gcp/tests/test_auth_email_tools.py": "d30389f30d9ba04625027ec4665b95fbeb093322676abd1a97e1b7a385002c65",
+    "infrastructure/gcp/tests/test_cloud_run_ci.py": "ced0bbfa72eaeaa55fb50bf945421578b28dd7669ade6ba74d19e1a5584d2920",
+    "scripts/verify-ranking-alerts-browser.mjs": "2dbfd68176ca0befcc5c4ee490e6be5e2d15b306fdd982cedc1ba949316fa5f3"
+  },
+  "packageJsonBlob": "7140f91195bcaaaa3c615ff52994353d1c53b883",
+  "packageLockBlob": "bf6da34a9143676b9782356e791d3e055ec9ff41"
+}

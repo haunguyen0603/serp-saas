@@ -1,0 +1,2024 @@
+{
+  "method": "Latest observed outcome per test across original full suite and two explicit environment-remediation reruns; not a new full-suite PASS",
+  "totalDistinct": 402,
+  "passed": 401,
+  "unresolved": {
+    "tests.test_health::test_live_dependencies[/health/redis]": {
+      "status": "failed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": "assert 503 == 200\n +  where 503 = <Response [503 Service Unavailable]>.status_code"
+    }
+  },
+  "outcomes": {
+    "tests.test_analytics::test_depth_aware_summary_movers_history_and_tenant_isolation": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_analytics::test_analytics_queries_are_bounded_for_one_thousand_keywords": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_registration_and_persistence": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_registration_validation[change0-VALIDATION_ERROR]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_registration_validation[change1-PASSWORD_POLICY_VIOLATION]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_registration_validation[change2-PASSWORD_POLICY_VIOLATION]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_registration_validation[change3-TERMS_NOT_ACCEPTED]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_registration_validation[change4-VALIDATION_ERROR]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_registration_validation[change5-VALIDATION_ERROR]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_registration_validation[change6-VALIDATION_ERROR]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_registration_validation[change7-VALIDATION_ERROR]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_registration_validation[change8-VALIDATION_ERROR]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_registration_validation[change9-VALIDATION_ERROR]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_duplicate_and_registration_race": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_login_and_generic_errors": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_protected_failures[missing-AUTHENTICATION_REQUIRED]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_protected_failures[malformed-INVALID_ACCESS_TOKEN]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_protected_failures[expired-EXPIRED_ACCESS_TOKEN]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_protected_failures[wrong_type-INVALID_ACCESS_TOKEN]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_protected_failures[absent_user-INVALID_ACCESS_TOKEN]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_protected_failures[bad_signature-INVALID_ACCESS_TOKEN]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_refresh_rotation_and_race": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_invalid_refresh_state[expired]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_invalid_refresh_state[revoked]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_logout": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_disabled_user": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_user_identity_comes_only_from_access_token": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_registration_rolls_back_when_session_storage_fails": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_repositories_and_database_constraints": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_service_without_http": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_csrf_and_credentialed_cors": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_openapi": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth::test_auth_logs_exclude_secrets": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_password_reset_message": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_tls_credentials_and_message[app.serpsaas.com-False]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_tls_credentials_and_message[app.serpsaas.com-True]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_tls_credentials_and_message[mail.client.example-False]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_tls_credentials_and_message[mail.client.example-True]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_failure_is_sanitized": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_default_and_environment": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[localhost]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[127.0.0.1]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[[127.0.0.1]]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[::1]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[https://app.serpsaas.com]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[app.serpsaas.com:465]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[app.serpsaas.com/path]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[app.serpsaas.com\\r\\nMAIL FROM:<attacker@example.com>]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[app.serpsaas.com\\n]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[ app.serpsaas.com]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[bad_name.example.com]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[-app.example.com]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[app-.example.com]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[app..example.com]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_smtp_local_hostname_rejects_unsafe_values[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.example.com]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_verification_origin_rejects_unsafe_values[javascript:alert(1)]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_verification_origin_rejects_unsafe_values[https://user:secret@app.example.com]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_verification_origin_rejects_unsafe_values[https://app.example.com/path]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_verification_origin_rejects_unsafe_values[https://app.example.com?redirect=evil]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_verification_origin_rejects_unsafe_values[https://app.example.com#token=evil]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_email::test_production_verification_configuration": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_invariants::test_migration_matches_models": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_invariants::test_refresh_hash_is_not_a_bearer_secret": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_invariants::test_failed_rotation_preserves_old_session": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_auth_invariants::test_authentication_does_not_depend_on_redis": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_catalog_free_and_security": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_transitions_snapshots_extension_and_device_independence": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_activation_race_and_scheduled_expiry": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_resources_bulk_reactivation_and_device_change[desktop-50]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_resources_bulk_reactivation_and_device_change[mobile-20]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_atomic_reservation_race_and_reset_adjustment": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_m5_partial_cancel_replay_and_compensation": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_schedule_limits_downgrade_and_no_partial_batch": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_fallback_and_retry_count_one_logical_check": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_no_quota_no_batch_and_forged_unreserved_job": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_manual_scheduled_race_reserves_only_one_full_batch": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_downgrade_preserves_over_limit_and_blocks_expansion": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_customer_search_cursor_and_resource_race": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_archived_job_and_stranded_enqueue_release": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing::test_stale_project_read_cannot_bypass_reactivation_quota": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing_currency::test_legacy_usd_replacement_uses_equivalent_vnd_amounts[495330-12900-subscription_downgraded]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing_currency::test_legacy_usd_replacement_uses_equivalent_vnd_amounts[3363030-1900-subscription_upgraded]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing_currency::test_legacy_usd_replacement_uses_equivalent_vnd_amounts[495330-1900-subscription_upgraded]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing_currency::test_legacy_usd_replacement_uses_equivalent_vnd_amounts[0-1900-subscription_downgraded]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_billing_currency::test_same_currency_replacement_still_compares_prices": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_business_invariants::test_database_constraints_indexes_and_schema_match": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_business_invariants::test_user_cascade_and_timezone_timestamps": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_business_invariants::test_repositories_and_services_without_http": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_business_invariants::test_openapi_documents_milestone_3_1_contract": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_business_invariants::test_business_cors_preflight[GET]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_business_invariants::test_business_cors_preflight[POST]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_business_invariants::test_business_cors_preflight[PUT]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_business_invariants::test_business_cors_preflight[PATCH]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_business_invariants::test_business_cors_preflight[DELETE]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_business_invariants::test_bulk_logging_uses_counts_not_payload": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_competitor_analytics::test_selection_is_tenant_safe_and_durable": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_competitor_analytics::test_same_check_metrics_opportunities_and_partial_evidence": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_competitor_analytics::test_competitor_performance_at_one_thousand_keywords_and_four_sites": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_config::test_configuration_loads_from_environment": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_config::test_multi_provider_configuration": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_config::test_invalid_provider_lists_are_rejected[SERP_ENABLED_PROVIDERS-serper,unknown-unknown providers]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_config::test_invalid_provider_lists_are_rejected[SERP_PROVIDER_PRIORITY-serper,serper-duplicate providers]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_config::test_invalid_provider_lists_are_rejected[SERP_PROVIDER_PRIORITY--at least one provider]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_config::test_required_configuration_is_missing": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_config::test_production_rejects_debug": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_config::test_production_rejects_fake_provider": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_config::test_rejects_invalid_origins[[\"*\"]]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_config::test_rejects_invalid_origins[[\"https://example.com/path\"]]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_config::test_invalid_url_does_not_expose_input[DATABASE_URL]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_config::test_invalid_url_does_not_expose_input[REDIS_URL]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_cookie::test_secure_cookie_flags": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_database_config::test_cloud_sql_socket_and_encoded_password": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_database_config::test_database_only_settings_ignore_missing_runtime_configuration": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_database_config::test_invalid_database_url_is_redacted[postgresql://app:private-test-password@localhost/db]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_database_config::test_invalid_database_url_is_redacted[postgresql+asyncpg://app:private-test-password@/db]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_database_config::test_invalid_database_url_is_redacted[postgresql+asyncpg://app:private-test-password@/db?host=relative/path]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_database_config::test_invalid_database_url_is_redacted[postgresql+asyncpg://app:private-test-password@/db?host=/one&host=/two]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_database_config::test_invalid_database_url_is_redacted[postgresql+asyncpg://app:private-test-password@/db?host=/%00]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_database_config::test_invalid_database_url_is_redacted[postgresql+asyncpg://app:private-test-password@localhost/]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_database_config::test_invalid_database_url_is_redacted[postgresql+asyncpg://app:private-test-password@localhost/db#fragment]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_domain_matching::test_exact_www_and_no_arbitrary_subdomain_matching": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_domain_matching::test_exact_wins_and_same_site_aliases_collapse_to_best_position": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_domain_matching::test_reverse_www_equivalence_and_multiple_sites": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_email_verification::test_registration_email_commit_gate_and_confirmation": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_email_verification::test_expiry_invalid_token_and_disabled_account": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_email_verification::test_resend_rotation_cooldown_and_concurrent_requests": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_email_verification::test_verification_race_is_single_use": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_email_verification::test_hourly_limit": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_email_verification::test_delivery_failure_keeps_account_and_allows_retry": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_email_verification::test_registration_rollback_sends_no_email": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_email_verification::test_resend_requires_login_and_verify_rejects_forms_and_extra_fields": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_health::test_health": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_health::test_live_dependencies[/health/db]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_health::test_live_dependencies[/health/redis]": {
+      "status": "failed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": "assert 503 == 200\n +  where 503 = <Response [503 Service Unavailable]>.status_code"
+    },
+    "tests.test_health::test_database_unavailable": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_health::test_redis_unavailable": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_health::test_openapi_and_docs": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_health::test_cors": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_health::test_errors_are_consistent": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_invoice_renderer::test_invoice_pdf_unicode_status_and_escaped_fields[pending]": {
+      "status": "passed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": ""
+    },
+    "tests.test_invoice_renderer::test_invoice_pdf_unicode_status_and_escaped_fields[checkout_created]": {
+      "status": "passed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": ""
+    },
+    "tests.test_invoice_renderer::test_invoice_pdf_unicode_status_and_escaped_fields[paid]": {
+      "status": "passed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": ""
+    },
+    "tests.test_invoice_renderer::test_invoice_pdf_unicode_status_and_escaped_fields[failed]": {
+      "status": "passed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": ""
+    },
+    "tests.test_invoice_renderer::test_invoice_pdf_unicode_status_and_escaped_fields[cancelled]": {
+      "status": "passed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": ""
+    },
+    "tests.test_invoice_renderer::test_invoice_pdf_unicode_status_and_escaped_fields[voided]": {
+      "status": "passed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": ""
+    },
+    "tests.test_invoice_renderer::test_invoice_pdf_unicode_status_and_escaped_fields[expired]": {
+      "status": "passed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": ""
+    },
+    "tests.test_invoice_renderer::test_invoice_pdf_unicode_status_and_escaped_fields[review_required]": {
+      "status": "passed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": ""
+    },
+    "tests.test_invoice_renderer::test_production_pdf_environment_and_missing_legacy_terms": {
+      "status": "passed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": ""
+    },
+    "tests.test_invoices::test_invoice_ownership_auth_and_private_download": {
+      "status": "passed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": ""
+    },
+    "tests.test_invoices::test_invoice_cursor_filters_and_read_only_expiry": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_invoices::test_invoice_paid_snapshot_redaction_and_gateway_disabled": {
+      "status": "passed",
+      "evidence": "backend-rerun-junit.xml",
+      "message": ""
+    },
+    "tests.test_keyword_organization::test_catalog_crud_individual_assignment_and_filters": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keyword_organization::test_bulk_operations_are_atomic_and_catalog_deletes_preserve_keywords": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keyword_organization::test_database_rejects_cross_project_tag_assignment": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keyword_organization::test_bulk_restore_respects_keyword_quota": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keywords::test_query_only_create_and_duplicate_normalization": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keywords::test_keyword_rejects_configuration_and_owner_fields[search_engine]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keywords::test_keyword_rejects_configuration_and_owner_fields[country_code]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keywords::test_keyword_rejects_configuration_and_owner_fields[language_code]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keywords::test_keyword_rejects_configuration_and_owner_fields[device]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keywords::test_keyword_rejects_configuration_and_owner_fields[location]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keywords::test_keyword_rejects_configuration_and_owner_fields[user_id]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keywords::test_update_pause_resume_collision_delete": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keywords::test_list_search_state_cursor_bulk_and_limit": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_keywords::test_concurrent_duplicate_protection": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_logging::test_structured_logging_does_not_serialize_exception": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_migrations::test_vnd_catalog_migration_preserves_custom_prices_and_legacy_snapshots": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_migrations::test_fresh_database_upgrade_and_forward_only_boundary": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_migrations::test_realistic_milestone_3_data_is_preserved_and_split": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_migrations::test_existing_milestone_4_history_survives_upgrade_and_round_trip": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_migrations::test_m5_round_trip_and_schema_drift": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_migrations::test_m6a_existing_users_schedules_and_pending_jobs": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_overview::test_overview_requires_authentication": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_overview::test_overview_matches_billing_and_isolates_customers": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_password_management::test_reset_email_hash_single_use_password_and_all_sessions": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_password_management::test_generic_response_rotation_cooldown_and_hourly_limit": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_password_management::test_expired_invalid_and_concurrent_single_use": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_password_management::test_change_checks_current_password_and_keeps_only_new_session": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_password_management::test_reset_policy_and_mutation_protection": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_password_management::test_delivery_failure_is_generic_and_does_not_change_password": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_password_management::test_reset_racing_refresh_cannot_leave_a_valid_old_session": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_password_management::test_concurrent_changes_accept_current_password_only_once": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_password_management::test_failed_session_issuance_rolls_back_password_and_revocations": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_checkout_authority_snapshot_and_ownership": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_inconsistent_payment_review_without_activation[change0-PAYMENT_AMOUNT_MISMATCH]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_inconsistent_payment_review_without_activation[change1-PAYMENT_AMOUNT_MISMATCH]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_inconsistent_payment_review_without_activation[change2-PAYMENT_CURRENCY_MISMATCH]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_inconsistent_payment_review_without_activation[change3-PAYMENT_CURRENCY_MISMATCH]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_inconsistent_payment_review_without_activation[change4-PAYMENT_PROVIDER_EVENT_INVALID]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_inconsistent_payment_review_without_activation[change5-PAYMENT_PROVIDER_EVENT_INVALID]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_inconsistent_payment_review_without_activation[change6-PAYMENT_PROVIDER_EVENT_INVALID]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_inconsistent_payment_review_without_activation[change7-PAYMENT_PROVIDER_EVENT_INVALID]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_ipn_auth_unknown_invoice_unknown_event": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_concurrent_duplicate_renewal_upgrade_downgrade": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_provider_transaction_reuse_and_void": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_atomic_rollback_and_late_payment": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_catalog_unsupported_and_expired_manual_compatibility": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_migration_roundtrip_constraints": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_provider_reference_conflict_across_users[id]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_provider_reference_conflict_across_users[transaction_id]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_provider_reference_conflict_across_users[order_id]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_corrupt_snapshot_review": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_disabled_checkout": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_scheduled_transition_rechecked_at_confirmation": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_concurrent_transaction_reuse_across_orders": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_payments::test_production_sandbox_restricts_checkout_to_admin_or_qa": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_plan_catalog::test_plan_catalog_admin_only_and_validation": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_plan_catalog::test_plan_edit_preserves_existing_terms_and_updates_new_activations[desktop]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_plan_catalog::test_plan_edit_preserves_existing_terms_and_updates_new_activations[mobile]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_plan_catalog::test_plan_edit_race_rejects_stale_save": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_projects::test_create_project_atomically_creates_cleaned_keywords": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_projects::test_create_requires_keywords_and_rejects_old_or_owner_fields[change0]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_projects::test_create_requires_keywords_and_rejects_old_or_owner_fields[change1]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_projects::test_create_requires_keywords_and_rejects_old_or_owner_fields[change2]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_projects::test_create_requires_keywords_and_rejects_old_or_owner_fields[change3]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_projects::test_create_requires_keywords_and_rejects_old_or_owner_fields[change4]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_projects::test_create_limit_and_transactional_rollback": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_projects::test_unexpected_initial_keyword_failure_rolls_back_project": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_projects::test_project_list_search_status_cursor_and_counts": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_projects::test_project_settings_update_without_mutating_keywords": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_projects::test_duplicate_names_allowed_and_delete_cascades": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_safe_failure_falls_back_and_persists_attempts[SERP_PROVIDER_TIMEOUT]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_safe_failure_falls_back_and_persists_attempts[SERP_PROVIDER_UNAVAILABLE]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_safe_failure_falls_back_and_persists_attempts[SERP_PROVIDER_RATE_LIMITED]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_safe_failure_falls_back_and_persists_attempts[SERP_PROVIDER_QUOTA_EXHAUSTED]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_unsafe_failure_does_not_fallback[SERP_PROVIDER_AUTH_ERROR]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_unsafe_failure_does_not_fallback[SERP_PROVIDER_INVALID_REQUEST]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_unsafe_failure_does_not_fallback[SERP_PROVIDER_INVALID_RESPONSE]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_priority_skips_missing_incompatible_and_budget_exhausted_providers": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_fixed_strategy_and_fallback_limit_are_enforced": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_priority_fallback_limit_and_no_provider_error_are_stable": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_atomic_budget_reservation_prevents_concurrent_overspend": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_all_budgets_exhausted_uses_no_upstream_requests": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_serper_secret_never_appears_in_logs_api_or_attempts": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_provider_routing::test_real_adapters_produce_provider_independent_ranking_results": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_checks::test_full_fake_pipeline_snapshots_history_and_tenant_isolation": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_checks::test_zero_match_empty_results_and_provider_failure_are_distinct": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_checks::test_project_check_subset_cap_status_and_input_security": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_checks::test_inactive_alias_and_archived_site_do_not_match": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_checks::test_concurrent_checks_execute_provider_once": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_checks::test_success_persistence_rolls_back_atomically_and_marks_failed": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_api_queues_without_provider_and_worker_duplicate_delivery": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_racing_workers_exact_counters_and_single_claim": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_retry_reuses_check_and_preserves_attempt_history": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_cancel_and_archival_skip_provider": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_crash_after_success_reconciles_without_provider": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_pending_enqueue_failure_recovery": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_schedule_overlap_catchup_and_delete_preserves_history": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_tenant_isolation_pagination_and_history_protection": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_max_attempts_and_expired_claim": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_late_worker_cannot_persist_after_lease_reclaim": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_batch_validation_large_projects_and_single_keyword": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_schedule_disabled_empty_and_archived": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_worker_http_retry_terminal_and_payload_contract": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_rank_jobs::test_not_due_and_empty_project_schedule_are_safe": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alert_migration::test_alert_migration_roundtrip_and_metadata": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_classification[None-7-3-entered_top10]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_classification[6-None-3-left_top10]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_classification[9-4-3-rank_improved]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_classification[2-6-3-rank_declined]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_classification[6-4-3-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_classification[4-4-3-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_classification[None-None-3-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_classification[6-3-3-rank_improved]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_classification[3-6-3-rank_declined]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_classification[6-4-2-rank_improved]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_real_pipeline_and_deduplicated_evaluation[None-7-entered_top10]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_real_pipeline_and_deduplicated_evaluation[6-None-left_top10]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_real_pipeline_and_deduplicated_evaluation[9-4-rank_improved]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_real_pipeline_and_deduplicated_evaluation[2-6-rank_declined]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_real_pipeline_and_deduplicated_evaluation[6-4-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_real_pipeline_and_deduplicated_evaluation[4-4-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_partial_failed_and_unknown_baselines": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_preferences_tenant_pagination_and_read_api": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_environment_change_rebaseline_and_multiple_sites": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_late_arrival_does_not_alert_or_replace_newest": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_email_optin_verified_retry_concurrency_and_escape": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_email_eligibility_and_recovery[unverified]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_email_eligibility_and_recovery[optout]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_email_eligibility_and_recovery[global-off]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_email_eligibility_and_recovery[archived]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_email_eligibility_and_recovery[permanent]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_email_eligibility_and_recovery[throttled]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_email_eligibility_and_recovery[expired-lease]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_evaluation_rollback_and_retry": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_queue_failure_successful_rank_and_recovery": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_anonymous_and_verified_gate": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_all_environment_dimensions_rebaseline[change0]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_all_environment_dimensions_rebaseline[change1]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_all_environment_dimensions_rebaseline[change2]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_all_environment_dimensions_rebaseline[change3]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_partial_first_check_and_provider_warning_never_baseline": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_alias_edit_rebaseline_and_independent_matching": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_evaluation_time_preferences_disabled_types_and_no_retroactive": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_unique_alert_and_delivery_keys_survive_replay": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_alerts::test_internal_metrics_are_aggregate_only": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_explorer::test_default_filters_sort_and_pagination": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_explorer::test_custom_dates_validation_and_tenant_non_disclosure": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_ranking_explorer::test_explorer_performance_at_one_thousand_keywords_and_two_sites": {
+      "status": "passed",
+      "evidence": "backend-storage-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_preview_csv_pdf_and_no_rank_usage": {
+      "status": "passed",
+      "evidence": "backend-storage-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_idempotency_tenant_isolation_and_expired_download": {
+      "status": "passed",
+      "evidence": "backend-storage-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_preview_distinguishes_unobserved_pairs_and_enforces_csv_limit": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_csv_neutralizes_every_spreadsheet_formula_prefix[=]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_csv_neutralizes_every_spreadsheet_formula_prefix[+]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_csv_neutralizes_every_spreadsheet_formula_prefix[-]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_csv_neutralizes_every_spreadsheet_formula_prefix[@]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_csv_neutralizes_every_spreadsheet_formula_prefix[\\t]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_csv_neutralizes_every_spreadsheet_formula_prefix[\\r]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_report_filename_is_safe_predictable_and_transliterated": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_schedule_dispatch_and_fake_verified_email": {
+      "status": "passed",
+      "evidence": "backend-storage-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_schedule_boundaries_and_month_end": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_reports::test_cloud_recovery_requeues_expired_report_lease_with_new_attempt": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_password_hashing": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_access_token": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_invalid_tokens[expired]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_invalid_tokens[wrong_type]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_invalid_tokens[missing_exp]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_invalid_tokens[bad_sub]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_invalid_tokens[bad_signature]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_invalid_tokens[wrong_algorithm]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_invalid_tokens[future_iat]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_invalid_tokens[malformed]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_refresh_randomness_and_hashing": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_invalid_auth_configuration[JWT_SECRET_KEY-short]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_invalid_auth_configuration[JWT_ALGORITHM-none]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_invalid_auth_configuration[ACCESS_TOKEN_EXPIRE_MINUTES-0]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_invalid_auth_configuration[AUTH_COOKIE_NAME-bad;name]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_required_jwt_secret": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_production_cookie_and_secret": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_samesite_none_requires_secure": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_security::test_password_version_revokes_old_access_tokens": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_signature_documented_order[False-False]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_signature_documented_order[False-True]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_signature_documented_order[True-False]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_signature_documented_order[True-True]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[100000.00-100000]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[100000-100000_0]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[100000-100000_1]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[100000.0-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[100000.01-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[True-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[NaN-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[Infinity-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[1e999999-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[0-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[-1-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[None-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_exact_money[raw12-None]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_sepay::test_enabled_config_requires_explicit_https_and_secrets": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serp_provider::test_serpapi_maps_request_and_normalizes_organic_results": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serp_provider::test_fake_provider_is_deterministic_and_network_free": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serp_provider::test_serpapi_maps_http_failures[401-SERP_PROVIDER_AUTH_ERROR]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serp_provider::test_serpapi_maps_http_failures[403-SERP_PROVIDER_AUTH_ERROR]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serp_provider::test_serpapi_maps_http_failures[429-SERP_PROVIDER_RATE_LIMITED]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serp_provider::test_serpapi_maps_http_failures[500-SERP_PROVIDER_UNAVAILABLE]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serp_provider::test_serpapi_maps_http_failures[400-SERP_PROVIDER_INVALID_REQUEST]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serp_provider::test_serpapi_maps_timeout_invalid_json_and_provider_error_safely": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serp_provider::test_missing_key_never_makes_http_request": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serper_provider::test_serper_maps_request_and_normalizes_response": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serper_provider::test_serper_maps_http_failures[401--SERP_PROVIDER_AUTH_ERROR-1]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serper_provider::test_serper_maps_http_failures[403--SERP_PROVIDER_AUTH_ERROR-1]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serper_provider::test_serper_maps_http_failures[400--SERP_PROVIDER_INVALID_REQUEST-1]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serper_provider::test_serper_maps_http_failures[429-rate limited-SERP_PROVIDER_RATE_LIMITED-2]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serper_provider::test_serper_maps_http_failures[429-quota exhausted-SERP_PROVIDER_QUOTA_EXHAUSTED-1]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serper_provider::test_serper_maps_http_failures[500--SERP_PROVIDER_UNAVAILABLE-2]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serper_provider::test_serper_timeout_invalid_json_and_missing_key_are_safe": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_serper_provider::test_serper_accepts_empty_organic_results": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_session::test_session_transaction_and_cleanup[False]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_session::test_session_transaction_and_cleanup[True]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_session::test_real_commit_and_rollback": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_local_deterministic": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_cloud_task_contract_and_deduplication": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_cloud_report_task_identity_advances_per_attempt": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_payload_rejects_overrides[extra0]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_payload_rejects_overrides[extra1]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_payload_rejects_overrides[extra2]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_payload_rejects_overrides[extra3]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_next_run[daily-Asia/Ho_Chi_Minh-2026-09-12T01:00:00+00:00-2026-09-13T00:00:00+00:00]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_next_run[weekly-UTC-2026-09-12T01:00:00+00:00-2026-09-14T07:00:00+00:00]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_dst_and_schedule_validation": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_worker_authentication_and_payload": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_production_rejects_local_queue": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_permanent_enqueue_error_is_safe_and_compensatable": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_task_queue::test_alert_sweep_contract_and_deterministic_recovery": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tenant_isolation::test_project_and_keyword_non_disclosure": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tenant_isolation::test_tracked_site_and_domain_non_disclosure": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tenant_isolation::test_privileged_fields_are_rejected_everywhere[user_id]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tenant_isolation::test_privileged_fields_are_rejected_everywhere[owner_id]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tenant_isolation::test_privileged_fields_are_rejected_everywhere[organization_id]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tenant_isolation::test_privileged_fields_are_rejected_everywhere[workspace_id]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tenant_isolation::test_headers_and_query_cannot_change_owner": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tracked_sites::test_create_get_list_normalization_and_pagination": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tracked_sites::test_invalid_domains[]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tracked_sites::test_invalid_domains[localhost]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tracked_sites::test_invalid_domains[https://user:pass@example.com]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tracked_sites::test_invalid_domains[ftp://example.com]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tracked_sites::test_invalid_domains[bad host.example]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tracked_sites::test_invalid_domains[https://example.com:bad]": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tracked_sites::test_user_global_uniqueness_and_atomic_create": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tracked_sites::test_301_alias_flow_primary_switch_and_invariants": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    },
+    "tests.test_tracked_sites::test_archive_reactivate_delete_domain_and_site": {
+      "status": "passed",
+      "evidence": "backend-junit.xml",
+      "message": ""
+    }
+  }
+}

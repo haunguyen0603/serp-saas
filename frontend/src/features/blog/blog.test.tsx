@@ -8,7 +8,7 @@ import {
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { spawnSync } from "node:child_process";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import BlogPage from "@/app/(en)/blog/page";
 import BlogArticlePage, {
@@ -97,7 +97,31 @@ it("renders the blog listing with article cards and a contextual pricing CTA", (
     screen.getByRole("link", { name: "Explore rank-tracking Plans" }),
   ).toHaveAttribute("href", "/pricing");
   expect(document.querySelectorAll(".blog-card")).toHaveLength(3);
+  expect(
+    within(document.querySelector(".blog-cta") as HTMLElement).getByRole(
+      "link",
+      { name: "Explore the Google rank tracker" },
+    ),
+  ).toHaveAttribute("href", "/google-serp-rank-tracker");
 });
+
+it.each(getPublishedPosts())(
+  "offers product exploration and Pricing in the shared CTA: $slug",
+  async (post) => {
+    const { container } = render(
+      await BlogArticlePage({ params: Promise.resolve({ slug: post.slug }) }),
+    );
+    const cta = within(container.querySelector(".blog-cta") as HTMLElement);
+    expect(
+      cta.getByRole("link", {
+        name: "Explore the Google rank tracker",
+      }),
+    ).toHaveAttribute("href", "/google-serp-rank-tracker");
+    expect(
+      cta.getByRole("link", { name: "Explore rank-tracking Plans" }),
+    ).toHaveAttribute("href", "/pricing");
+  },
+);
 
 it("renders one article H1, Markdown tables, breadcrumbs, related articles and safe JSON-LD", async () => {
   const { container } = render(

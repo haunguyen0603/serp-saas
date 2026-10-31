@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-29",
+  "next": "16.4.3",
+  "runtimeAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "fullAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 2,
+    "high": 2,
+    "critical": 0,
+    "total": 4
+  },
+  "unitFiles": 36,
+  "unitTests": 331,
+  "browserCases": 88,
+  "axeAnalyses": 44,
+  "appBrowserCases": 41,
+  "m7lSnapshotIdentical": true,
+  "m7lSourceHashesUnchanged": true,
+  "sourceBaseline": "8ebfb715ee6f25abb09ac2df230708d5f32b8cdb",
+  "remoteHead": "84f549e02f6fd9541e139af20df853b05c242580",
+  "remoteAheadBy": 4,
+  "deployed": false,
+  "securityGate": "resolved",
+  "releaseDecision": "withheld pending integration onto current main and combined regression"
+}

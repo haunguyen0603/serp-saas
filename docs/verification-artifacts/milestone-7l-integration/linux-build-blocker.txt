@@ -1,0 +1,17 @@
+Docker command available: False
+wsl.exe : The Windows Subsystem for Linux is not installed. You 
+can install by running 'wsl.exe --install'.
+At line:2 char:129
++ ... lable: '+[bool]$docker; $wsl = (& wsl.exe --list --quiet 2>&1 | Out-S ...
++                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (The Wind...stall'.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+
+For more information please visit https://aka.ms/wslinstall
+
+
+
+
+No Docker/Linux build executed: no Docker engine/CLI or installed WSL distribution.

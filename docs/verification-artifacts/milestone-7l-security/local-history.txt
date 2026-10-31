@@ -1,0 +1,10 @@
+Local HEAD:
+8ebfb715ee6f25abb09ac2df230708d5f32b8cdb
+Cached origin/main:
+8ebfb715ee6f25abb09ac2df230708d5f32b8cdb
+Shallow:
+false
+Local dependency history:
+aab5b04 2026-10-10T16:06:05+07:00 add landing pages for milestone 7h
+7edae61 2026-10-07T18:20:57+07:00 feat(frontend): publish SEO blog with patched dependencies
+153841b 2026-09-12T14:04:31+07:00 Initial commit: SERP SaaS through Milestone 4.1

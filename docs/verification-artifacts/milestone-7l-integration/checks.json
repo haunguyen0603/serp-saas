@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-31",
+  "startingHead": "8ebfb715ee6f25abb09ac2df230708d5f32b8cdb",
+  "integrationHead": "84f549e02f6fd9541e139af20df853b05c242580",
+  "branch": "codex/m7l-integration-20261031",
+  "newCommits": false,
+  "packages": {
+    "next": "16.4.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "eslint-config-next": "16.4.3",
+    "typescript": "5.9.3",
+    "vitest": "4.1.11"
+  },
+  "node": "v22.22.0",
+  "browser": "156.0.8078.74",
+  "runtimeAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "fullAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 18,
+    "high": 2,
+    "critical": 0,
+    "total": 20
+  },
+  "frontend": {
+    "testFiles": 37,
+    "tests": 342,
+    "lint": "pass",
+    "typecheck": "pass",
+    "format": "pass",
+    "build": "pass"
+  },
+  "backend": {
+    "fullFirstRun": {
+      "passed": 386,
+      "failed": 16,
+      "total": 402
+    },
+    "distinctPassingAfterEnvironmentReruns": 401,
+    "unresolved": {
+      "tests.test_health::test_live_dependencies[/health/redis]": {
+        "status": "failed",
+        "evidence": "backend-rerun-junit.xml",
+        "message": "assert 503 == 200\n +  where 503 = <Response [503 Service Unavailable]>.status_code"
+      }
+    },
+    "focusedM7D": 59,
+    "unitFinal": 156,
+    "ruff": "pass",
+    "format": "pass",
+    "mypy": "pass"
+  },
+  "infrastructure": {
+    "tests": 56,
+    "result": "pass"
+  },
+  "m7l": {
+    "routes": 27,
+    "browserCases": 88,
+    "axeAnalyses": 44,
+    "errors": 0
+  },
+  "m7d": {
+    "checks": [
+      "anonymous redirect",
+      "inbox-populated",
+      "inbox-dark-scheme",
+      "keyboard filter focus order",
+      "inbox-unread-empty",
+      "ranking history deep link",
+      "project-preferences",
+      "inbox-error",
+      "error retry recovery",
+      "inbox-loading",
+      "inbox-empty-other-account",
+      "account switch cache isolation",
+      "unverified redirect"
+    ],
+    "screenshots": 30,
+    "axeViolations": 0,
+    "pageErrors": 0,
+    "consoleErrors": 0
+  },
+  "appSmoke": {
+    "cases": 44,
+    "adminRequests": 0
+  },
+  "migration": "fresh 0017 upgrade/check, downgrade 0016, re-upgrade/check passed",
+  "linuxDockerBuild": "blocked: Docker/WSL unavailable",
+  "redisHealth": "blocked: real Redis unavailable",
+  "readiness": "NOT READY / PARTIAL",
+  "deployed": false,
+  "pushed": false,
+  "merged": false,
+  "cleanup": {
+    "ports": [
+      {
+        "port": 8000,
+        "listening": false
+      },
+      {
+        "port": 3010,
+        "listening": false
+      },
+      {
+        "port": 55432,
+        "listening": false
+      }
+    ],
+    "temporaryFontRemoved": true,
+    "originalWorkingTreePreserved": true
+  }
+}

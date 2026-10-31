@@ -1,0 +1,13 @@
+
+> serp-saas-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 C:/Users/Admin/Desktop/serp-saas-main/.tools/m7l-integration/frontend
+
+
+ Test Files  37 passed (37)
+      Tests  342 passed (342)
+   Start at  13:45:31
+   Duration  16.61s (transform 9.81s, setup 17.07s, import 27.13s, tests 46.19s, environment 63.21s)
+

@@ -1,0 +1,58 @@
+COMMAND: python -m alembic upgrade head
+{"timestamp": "2026-10-31T06:56:02.856428+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl PostgresqlImpl."}
+{"timestamp": "2026-10-31T06:56:02.856428+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume transactional DDL."}
+{"timestamp": "2026-10-31T06:56:02.918157+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade  -> 0001_foundation, Establish migration history without introducing business tables."}
+{"timestamp": "2026-10-31T06:56:02.920664+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0001_foundation -> 0002_authentication, User accounts and server-side refresh sessions."}
+{"timestamp": "2026-10-31T06:56:02.939024+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0002_authentication -> 0003_projects_keywords, User-owned projects and project-owned keyword configurations."}
+{"timestamp": "2026-10-31T06:56:02.964765+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0003_projects_keywords -> 0004_project_refactor_sites, Refactor Projects and create the user-global tracked-domain registry."}
+{"timestamp": "2026-10-31T06:56:03.001558+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0004_project_refactor_sites -> 0005_rank_tracking, Provider-independent rank checks, organic snapshots, and rankings."}
+{"timestamp": "2026-10-31T06:56:03.041400+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0005_rank_tracking -> 0006_multi_provider_routing, Persist provider usage and Rank Check provider attempts."}
+{"timestamp": "2026-10-31T06:56:03.059066+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0006_multi_provider_routing -> 0007_async_rank_check_jobs, Durable asynchronous rank checks and project schedules."}
+{"timestamp": "2026-10-31T06:56:03.088764+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0007_async_rank_check_jobs -> 0008_billing_usage_limits, billing_usage_limits"}
+{"timestamp": "2026-10-31T06:56:03.156124+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0008_billing_usage_limits -> 0009_plan_catalog_audit, Audit administrator changes to the Plan catalog."}
+{"timestamp": "2026-10-31T06:56:03.164773+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0009_plan_catalog_audit -> 0010_keyword_organization, Project-scoped Keyword Groups and Tags."}
+{"timestamp": "2026-10-31T06:56:03.192127+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0010_keyword_organization -> 0011_reports, Durable generated reports, schedules, and delivery attempts."}
+{"timestamp": "2026-10-31T06:56:03.222098+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0011_reports -> 0012_competitor_analytics, Project competitor selections for persisted SERP analytics."}
+{"timestamp": "2026-10-31T06:56:03.234638+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0012_competitor_analytics -> 0013_email_verification, Single-use hashed email verification challenges."}
+{"timestamp": "2026-10-31T06:56:03.242873+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0013_email_verification -> 0014_password_management, Password recovery challenges and immediate session revocation."}
+{"timestamp": "2026-10-31T06:56:03.251386+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0014_password_management -> 0015_vnd_pricing, Convert catalog USD cents to whole Vietnamese dong."}
+{"timestamp": "2026-10-31T06:56:03.257898+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0015_vnd_pricing -> 0016_sepay_payments, Persist one-time SePay purchases and provider events."}
+{"timestamp": "2026-10-31T06:56:03.292319+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0016_sepay_payments -> 0017_ranking_alerts, ranking_alerts"}
+EXIT: 0
+COMMAND: python -m alembic current
+{"timestamp": "2026-10-31T06:56:04.280265+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl PostgresqlImpl."}
+{"timestamp": "2026-10-31T06:56:04.280265+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume transactional DDL."}
+0017_ranking_alerts (head)
+EXIT: 0
+COMMAND: python -m alembic check
+{"timestamp": "2026-10-31T06:56:05.333122+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl PostgresqlImpl."}
+{"timestamp": "2026-10-31T06:56:05.333122+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume transactional DDL."}
+{"timestamp": "2026-10-31T06:56:05.359104+00:00", "level": "INFO", "logger": "alembic.runtime.plugins", "message": "setting up autogenerate plugin alembic.autogenerate.schemas"}
+{"timestamp": "2026-10-31T06:56:05.359104+00:00", "level": "INFO", "logger": "alembic.runtime.plugins", "message": "setting up autogenerate plugin alembic.autogenerate.tables"}
+{"timestamp": "2026-10-31T06:56:05.359104+00:00", "level": "INFO", "logger": "alembic.runtime.plugins", "message": "setting up autogenerate plugin alembic.autogenerate.types"}
+{"timestamp": "2026-10-31T06:56:05.359104+00:00", "level": "INFO", "logger": "alembic.runtime.plugins", "message": "setting up autogenerate plugin alembic.autogenerate.constraints"}
+{"timestamp": "2026-10-31T06:56:05.359104+00:00", "level": "INFO", "logger": "alembic.runtime.plugins", "message": "setting up autogenerate plugin alembic.autogenerate.defaults"}
+{"timestamp": "2026-10-31T06:56:05.359104+00:00", "level": "INFO", "logger": "alembic.runtime.plugins", "message": "setting up autogenerate plugin alembic.autogenerate.comments"}
+No new upgrade operations detected.
+EXIT: 0
+COMMAND: python -m alembic downgrade 0016_sepay_payments
+{"timestamp": "2026-10-31T06:56:06.496581+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl PostgresqlImpl."}
+{"timestamp": "2026-10-31T06:56:06.496581+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume transactional DDL."}
+{"timestamp": "2026-10-31T06:56:06.520161+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running downgrade 0017_ranking_alerts -> 0016_sepay_payments, ranking_alerts"}
+EXIT: 0
+COMMAND: python -m alembic upgrade head
+{"timestamp": "2026-10-31T06:56:07.556132+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl PostgresqlImpl."}
+{"timestamp": "2026-10-31T06:56:07.556132+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume transactional DDL."}
+{"timestamp": "2026-10-31T06:56:07.578626+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Running upgrade 0016_sepay_payments -> 0017_ranking_alerts, ranking_alerts"}
+EXIT: 0
+COMMAND: python -m alembic check
+{"timestamp": "2026-10-31T06:56:08.703405+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl PostgresqlImpl."}
+{"timestamp": "2026-10-31T06:56:08.703405+00:00", "level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume transactional DDL."}
+{"timestamp": "2026-10-31T06:56:08.729034+00:00", "level": "INFO", "logger": "alembic.runtime.plugins", "message": "setting up autogenerate plugin alembic.autogenerate.schemas"}
+{"timestamp": "2026-10-31T06:56:08.729034+00:00", "level": "INFO", "logger": "alembic.runtime.plugins", "message": "setting up autogenerate plugin alembic.autogenerate.tables"}
+{"timestamp": "2026-10-31T06:56:08.729034+00:00", "level": "INFO", "logger": "alembic.runtime.plugins", "message": "setting up autogenerate plugin alembic.autogenerate.types"}
+{"timestamp": "2026-10-31T06:56:08.729034+00:00", "level": "INFO", "logger": "alembic.runtime.plugins", "message": "setting up autogenerate plugin alembic.autogenerate.constraints"}
+{"timestamp": "2026-10-31T06:56:08.729034+00:00", "level": "INFO", "logger": "alembic.runtime.plugins", "message": "setting up autogenerate plugin alembic.autogenerate.defaults"}
+{"timestamp": "2026-10-31T06:56:08.729034+00:00", "level": "INFO", "logger": "alembic.runtime.plugins", "message": "setting up autogenerate plugin alembic.autogenerate.comments"}
+No new upgrade operations detected.
+EXIT: 0

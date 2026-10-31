@@ -1,0 +1,393 @@
+diff --git a/frontend/content/blog/vi/cong-cu-rank-tracker-la-gi.md b/frontend/content/blog/vi/cong-cu-rank-tracker-la-gi.md
+index 61d4eb1..420cd53 100644
+--- a/frontend/content/blog/vi/cong-cu-rank-tracker-la-gi.md
++++ b/frontend/content/blog/vi/cong-cu-rank-tracker-la-gi.md
+@@ -4,7 +4,7 @@ title: Rank Tracker là gì? Cách theo dõi thứ hạng từ khóa hiệu qu
+ slug: cong-cu-rank-tracker-la-gi
+ description: Tìm hiểu Rank Tracker là gì, cách công cụ theo dõi thứ hạng từ khóa hoạt động, khác gì Google Search Console và cách lựa chọn Rank Tracker phù hợp.
+ publishedAt: 2026-10-17
+-updatedAt: 2026-10-17
++updatedAt: 2026-10-29
+ author: SERP SaaS
+ category: Theo dõi thứ hạng
+ tags: [rank tracker, thứ hạng Google, quy trình SEO]
+@@ -76,6 +76,8 @@ Ví dụ minh họa:
+ 
+ Dữ liệu này cho thấy xu hướng cải thiện trong bốn tuần, dù thứ hạng có dao động ở từng kỳ. Đây là ví dụ minh họa, không phải dữ liệu thật của SERP SaaS.
+ 
++Nếu muốn thực hành từng bước và đọc kết quả của một lần kiểm tra, bạn có thể tham khảo hướng dẫn [cách kiểm tra thứ hạng từ khóa](/vi/blog/cach-kiem-tra-thu-hang-tu-khoa).
++
+ ## Rank Tracker khác gì Google Search Console?
+ 
+ **Google Search Console** và **Rank Tracker** bổ sung cho nhau, không thay thế hoàn toàn cho nhau.
+diff --git a/frontend/scripts/verify-rank-tracker-blog-browser.mjs b/frontend/scripts/verify-rank-tracker-blog-browser.mjs
+index c257b68..f835898 100644
+--- a/frontend/scripts/verify-rank-tracker-blog-browser.mjs
++++ b/frontend/scripts/verify-rank-tracker-blog-browser.mjs
+@@ -131,7 +131,7 @@ try {
+       assert.equal(graph[0].inLanguage, "vi");
+       assert.equal(graph[0].mainEntityOfPage["@id"], origin + path);
+       assert.equal(graph[0].datePublished, "2026-10-17");
+-      assert.equal(graph[0].dateModified, "2026-10-17");
++      assert.equal(graph[0].dateModified, "2026-10-29");
+       assert.equal(graph[1]["@type"], "BreadcrumbList");
+       assert.equal(graph[1].itemListElement.at(-1).item, origin + path);
+       assert.equal(await page.locator(".blog-prose table").count(), 2);
+diff --git a/frontend/scripts/verify-security-regression.mjs b/frontend/scripts/verify-security-regression.mjs
+index 956232a..1b1434b 100644
+--- a/frontend/scripts/verify-security-regression.mjs
++++ b/frontend/scripts/verify-security-regression.mjs
+@@ -116,6 +116,22 @@ try {
+       } else if (url.pathname === "/api/v1/users/me") body = sessionUser;
+       else if (url.pathname === "/api/v1/billing/plans") body = plans;
+       else if (url.pathname === "/api/v1/billing/me") body = billing;
++      else if (url.pathname === "/api/v1/billing/payments/sepay/options")
++        body = { enabled: false, eligible_plan_ids: [] };
++      else if (url.pathname === "/api/v1/ranking-alerts/unread-count")
++        body = { count: 0 };
++      else if (url.pathname === "/api/v1/ranking-alerts") body = emptyPage;
++      else if (url.pathname.endsWith("/ranking-alert-preferences"))
++        body = {
++          enabled: true,
++          notify_entered_top10: true,
++          notify_left_top10: true,
++          notify_improvement: true,
++          notify_decline: true,
++          movement_threshold: 3,
++          email_enabled: false,
++          email_available: false,
++        };
+       else if (url.pathname === "/api/v1/auth/email-verification")
+         body = {
+           verified: false,
+@@ -258,6 +274,7 @@ try {
+     });
+     const protectedRoutes = [
+       ["/app", "Overview"],
++      ["/app/ranking-alerts", "Ranking Alerts"],
+       ["/app/projects", "Projects"],
+       ["/app/tracked-sites", "Tracked Sites"],
+       ["/app/rankings", "Rankings"],
+diff --git a/frontend/src/app/(en)/page.tsx b/frontend/src/app/(en)/page.tsx
+index 37f6b4b..ae78435 100644
+--- a/frontend/src/app/(en)/page.tsx
++++ b/frontend/src/app/(en)/page.tsx
+@@ -93,6 +93,10 @@ export default function HomePage() {
+           <p className="public-cta-note">
+             Free Desktop and Mobile Plans included. No card required.
+           </p>
++          <p className="public-cta-note">
++            Checks cover Google&apos;s Top 10. Desktop and Mobile tracking are
++            managed separately; available schedules depend on your plan.
++          </p>
+         </div>
+         <div
+           className="public-product-preview"
+@@ -145,6 +149,10 @@ export default function HomePage() {
+               <i />
+             </div>
+           </div>
++          <p className="public-cta-note">
++            Illustrative interface preview. Sample domains, rankings and usage
++            numbers are not live customer results or current plan limits.
++          </p>
+         </div>
+       </section>
+ 
+diff --git a/frontend/src/features/blog/blog-components.tsx b/frontend/src/features/blog/blog-components.tsx
+index 8cabbf2..4aa34d3 100644
+--- a/frontend/src/features/blog/blog-components.tsx
++++ b/frontend/src/features/blog/blog-components.tsx
+@@ -153,9 +153,17 @@ export function BlogCta({ locale = "en" }: { locale?: "en" | "vi" }) {
+         in SERP SaaS. Compare Desktop and Mobile Plan limits before getting
+         started.
+       </p>
+-      <Link href={siteHref("/pricing")} className="ui-link-button">
+-        Explore rank-tracking Plans
+-      </Link>
++      <div className="public-cta-row">
++        <Link href={siteHref("/pricing")} className="ui-link-button">
++          Explore rank-tracking Plans
++        </Link>
++        <Link
++          href={siteHref("/google-serp-rank-tracker")}
++          className="public-text-link"
++        >
++          Explore the Google rank tracker
++        </Link>
++      </div>
+     </aside>
+   );
+ }
+diff --git a/frontend/src/features/blog/blog.test.tsx b/frontend/src/features/blog/blog.test.tsx
+index ae39235..2601486 100644
+--- a/frontend/src/features/blog/blog.test.tsx
++++ b/frontend/src/features/blog/blog.test.tsx
+@@ -8,7 +8,7 @@ import {
+ import { join } from "node:path";
+ import { tmpdir } from "node:os";
+ import { spawnSync } from "node:child_process";
+-import { render, screen } from "@testing-library/react";
++import { render, screen, within } from "@testing-library/react";
+ import { afterEach, expect, it, vi } from "vitest";
+ import BlogPage from "@/app/(en)/blog/page";
+ import BlogArticlePage, {
+@@ -97,8 +97,32 @@ it("renders the blog listing with article cards and a contextual pricing CTA", (
+     screen.getByRole("link", { name: "Explore rank-tracking Plans" }),
+   ).toHaveAttribute("href", "/pricing");
+   expect(document.querySelectorAll(".blog-card")).toHaveLength(3);
++  expect(
++    within(document.querySelector(".blog-cta") as HTMLElement).getByRole(
++      "link",
++      { name: "Explore the Google rank tracker" },
++    ),
++  ).toHaveAttribute("href", "/google-serp-rank-tracker");
+ });
+ 
++it.each(getPublishedPosts())(
++  "offers product exploration and Pricing in the shared CTA: $slug",
++  async (post) => {
++    const { container } = render(
++      await BlogArticlePage({ params: Promise.resolve({ slug: post.slug }) }),
++    );
++    const cta = within(container.querySelector(".blog-cta") as HTMLElement);
++    expect(
++      cta.getByRole("link", {
++        name: "Explore the Google rank tracker",
++      }),
++    ).toHaveAttribute("href", "/google-serp-rank-tracker");
++    expect(
++      cta.getByRole("link", { name: "Explore rank-tracking Plans" }),
++    ).toHaveAttribute("href", "/pricing");
++  },
++);
++
+ it("renders one article H1, Markdown tables, breadcrumbs, related articles and safe JSON-LD", async () => {
+   const { container } = render(
+     await BlogArticlePage({ params: Promise.resolve({ slug: first.slug }) }),
+diff --git a/frontend/src/features/marketing/public-site.test.tsx b/frontend/src/features/marketing/public-site.test.tsx
+index c1edc3c..482450d 100644
+--- a/frontend/src/features/marketing/public-site.test.tsx
++++ b/frontend/src/features/marketing/public-site.test.tsx
+@@ -130,6 +130,16 @@ it("renders truthful Home sections and safe preview data", () => {
+   ).toBeVisible();
+   expect(screen.getByText(/not available yet/i)).toBeVisible();
+   expect(screen.getAllByText("seo-demo.com").length).toBeGreaterThan(0);
++  expect(
++    screen.getByText(
++      "Checks cover Google's Top 10. Desktop and Mobile tracking are managed separately; available schedules depend on your plan.",
++    ),
++  ).toBeVisible();
++  expect(
++    screen.getByText(
++      "Illustrative interface preview. Sample domains, rankings and usage numbers are not live customer results or current plan limits.",
++    ),
++  ).toBeVisible();
+   expect(document.body).not.toHaveTextContent(
+     /Serper|SerpApi|Cloud Tasks|real-time|unlimited/i,
+   );
+diff --git a/frontend/src/features/marketing/vietnamese-content.ts b/frontend/src/features/marketing/vietnamese-content.ts
+index a2b86d6..a6d466a 100644
+--- a/frontend/src/features/marketing/vietnamese-content.ts
++++ b/frontend/src/features/marketing/vietnamese-content.ts
+@@ -7,17 +7,23 @@ const start = {
+     "Tạo tài khoản, chọn môi trường tìm kiếm và thêm nhóm từ khóa bạn muốn theo dõi.",
+   label: "Bắt đầu theo dõi",
+ };
+-const baselineGuide = {
+-  path: "/vi/blog/cach-theo-doi-thu-hang-google",
+-  label: "Đọc hướng dẫn theo dõi thứ hạng Google",
+-  description:
+-    "Chọn bộ từ khóa, thiết lập môi trường tìm kiếm và xây dựng mốc so sánh cho những lần kiểm tra sau.",
+-};
+ const checkGuide = {
+   path: "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+   label: "Đọc cách kiểm tra thứ hạng từ khóa",
+   description:
+-    "Hiểu sự khác nhau giữa kiểm tra thủ công và công cụ, đồng thời đọc kết quả đúng với phạm vi được kiểm tra.",
++    "Thiết lập một lần kiểm tra và đọc vị trí quan sát được trên Google trong phạm vi đã kiểm tra.",
++};
++const dailyGuide = {
++  path: "/vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay",
++  label: "Khi nào nên theo dõi thứ hạng hàng ngày?",
++  description:
++    "So sánh nhu cầu theo dõi hàng ngày và hàng tuần để chọn nhịp kiểm tra phù hợp với dự án.",
++};
++const agencyGuide = {
++  path: "/vi/blog/serp-tracking-cho-agency",
++  label: "Đọc quy trình báo cáo thứ hạng cho agency",
++  description:
++    "Tham khảo quy trình chuẩn bị, đối chiếu và trình bày dữ liệu thứ hạng trong báo cáo khách hàng.",
+ };
+ 
+ export const vietnameseRankTracker: LandingContent = {
+@@ -25,9 +31,9 @@ export const vietnameseRankTracker: LandingContent = {
+   title: "Công cụ kiểm tra thứ hạng từ khóa Google | SERP SaaS",
+   description:
+     "Kiểm tra thứ hạng từ khóa Google, xem lịch sử, phân tích biến động và so sánh đối thủ với SERP SaaS. Theo dõi Desktop và Mobile riêng biệt.",
+-  heading: "Theo dõi thứ hạng từ khóa trên Google",
++  heading: "Công cụ kiểm tra thứ hạng từ khóa Google",
+   eyebrow: "Công cụ kiểm tra thứ hạng từ khóa",
+-  lead: "Đưa từ khóa, vị trí trên Google và lịch sử kiểm tra vào cùng một dự án để biết đâu là thay đổi cần chú ý trong công việc SEO.",
++  lead: "SERP SaaS là công cụ kiểm tra thứ hạng từ khóa trên Google: bạn chọn bộ từ khóa và môi trường tìm kiếm, kiểm tra theo quyền lợi gói cước, rồi xem lại kết quả đã lưu từ các lần kiểm tra hoàn tất để theo dõi lịch sử và biến động thứ hạng.",
+   note: "Các lần kiểm tra hiện tại bao phủ Top 10. Desktop và Mobile được theo dõi trong các dự án riêng biệt.",
+   workflow: {
+     heading: "Từ thiết lập đến kết quả đầu tiên",
+@@ -84,7 +90,7 @@ export const vietnameseRankTracker: LandingContent = {
+   ],
+   midCta: { ...start, heading: "Tạo mốc so sánh cho bộ từ khóa của bạn" },
+   finalCta: { ...start, heading: "Bắt đầu theo dõi thứ hạng" },
+-  guide: baselineGuide,
++  guide: checkGuide,
+ };
+ 
+ export const vietnameseDailyTracker: LandingContent = {
+@@ -144,7 +150,7 @@ export const vietnameseDailyTracker: LandingContent = {
+   ],
+   midCta: { ...start, heading: "Chọn nhịp theo dõi bạn có thể sử dụng" },
+   finalCta: { ...start, heading: "Bắt đầu theo dõi biến động từ khóa" },
+-  guide: checkGuide,
++  guide: dailyGuide,
+ };
+ 
+ export const vietnameseAgencyTracker: LandingContent = {
+@@ -204,7 +210,7 @@ export const vietnameseAgencyTracker: LandingContent = {
+   ],
+   midCta: { ...start, heading: "Tạo dự án cho kỳ báo cáo tiếp theo" },
+   finalCta: { ...start, heading: "Bắt đầu theo dõi từ khóa khách hàng" },
+-  guide: baselineGuide,
++  guide: agencyGuide,
+ };
+ 
+ export const vietnameseLandingPages = [
+diff --git a/frontend/src/features/marketing/vietnamese-localization.test.tsx b/frontend/src/features/marketing/vietnamese-localization.test.tsx
+index 2ac8085..f74583e 100644
+--- a/frontend/src/features/marketing/vietnamese-localization.test.tsx
++++ b/frontend/src/features/marketing/vietnamese-localization.test.tsx
+@@ -191,6 +191,49 @@ it.each(vietnameseLandingPages)(
+   },
+ );
+ 
++it("identifies the checking tool and assigns task-specific Vietnamese guides", () => {
++  expect(vietnameseLandingPages[0].heading).toBe(
++    "Công cụ kiểm tra thứ hạng từ khóa Google",
++  );
++  expect(vietnameseLandingPages[0].lead).toContain("kiểm tra hoàn tất");
++  expect(
++    vietnameseLandingPages.map((page) => [page.guide.path, page.guide.label]),
++  ).toEqual([
++    [
++      "/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
++      "Đọc cách kiểm tra thứ hạng từ khóa",
++    ],
++    [
++      "/vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay",
++      "Khi nào nên theo dõi thứ hạng hàng ngày?",
++    ],
++    [
++      "/vi/blog/serp-tracking-cho-agency",
++      "Đọc quy trình báo cáo thứ hạng cho agency",
++    ],
++  ]);
++});
++
++it("hands definition readers to one practical checking guide while preserving article history and the product link", async () => {
++  const post = getPublishedPost("cong-cu-rank-tracker-la-gi", "vi")!;
++  expect(post.publishedAt).toBe("2026-10-17");
++  expect(post.updatedAt).toBe("2026-10-29");
++  const { container } = render(
++    await BlogArticle({ params: Promise.resolve({ slug: post.slug }) }),
++  );
++  const prose = container.querySelector(".blog-prose")!;
++  expect(
++    prose.querySelectorAll('a[href="/vi/blog/cach-kiem-tra-thu-hang-tu-khoa"]'),
++  ).toHaveLength(1);
++  expect(
++    prose.querySelectorAll('a[href="/vi/cong-cu-kiem-tra-thu-hang-tu-khoa"]'),
++  ).toHaveLength(1);
++  expect(container.querySelectorAll("h1")).toHaveLength(1);
++  expect(container.querySelector(".blog-cta")).not.toHaveTextContent(
++    "Explore the Google rank tracker",
++  );
++});
++
+ it("isolates Vietnamese articles and retains English validation and feed content", async () => {
+   const posts = getPublishedPosts(undefined, "vi");
+   expect(posts).toHaveLength(6);
+diff --git a/infrastructure/gcp/tests/test_auth_email_tools.py b/infrastructure/gcp/tests/test_auth_email_tools.py
+index dbbb33a..46f0565 100644
+--- a/infrastructure/gcp/tests/test_auth_email_tools.py
++++ b/infrastructure/gcp/tests/test_auth_email_tools.py
+@@ -60,6 +60,9 @@ class AuthEmailToolTests(unittest.TestCase):
+                         "AUTH_SMTP_USERNAME": "test-user",
+                         "AUTH_SMTP_PASSWORD": "test-password",
+                     }
++                    if os.name == "nt":
++                        # Windows OpenSSL needs this OS path even in an isolated env.
++                        environment["SYSTEMROOT"] = os.environ["SYSTEMROOT"]
+                     if hostname:
+                         environment["AUTH_SMTP_LOCAL_HOSTNAME"] = hostname
+                     connection = MagicMock()
+diff --git a/infrastructure/gcp/tests/test_cloud_run_ci.py b/infrastructure/gcp/tests/test_cloud_run_ci.py
+index c27e5c0..fdec74e 100644
+--- a/infrastructure/gcp/tests/test_cloud_run_ci.py
++++ b/infrastructure/gcp/tests/test_cloud_run_ci.py
+@@ -53,11 +53,11 @@ class CloudRunCITests(unittest.TestCase):
+         self.log = directory / "calls.jsonl"
+         for name in ("gcloud", "curl"):
+             executable = directory / name
+-            executable.write_text(FAKE_CLI)
++            executable.write_text(FAKE_CLI, newline="\n")
+             executable.chmod(0o755)
+         self.env = {
+             **os.environ,
+-            "PATH": f"{directory}:{os.environ['PATH']}",
++            "PATH": f"{directory}{os.pathsep}{os.environ['PATH']}",
+             "FAKE_LOG": str(self.log),
+             "GCP_PROJECT_ID": "serp-saas",
+             "GCP_LOCATION": "asia-southeast1",
+diff --git a/scripts/verify-ranking-alerts-browser.mjs b/scripts/verify-ranking-alerts-browser.mjs
+index 844a206..b609f7d 100644
+--- a/scripts/verify-ranking-alerts-browser.mjs
++++ b/scripts/verify-ranking-alerts-browser.mjs
+@@ -10,15 +10,17 @@ const { chromium } = await import(pathToFileURL(modulePath).href);
+ const { default: AxeBuilder } = await import(pathToFileURL(axePath).href);
+ const fixture = JSON.parse(
+   execFileSync(
+-    "docker",
+-    [
+-      "exec",
+-      process.env.QA_CONTAINER ?? "serp-m7d-runtime",
+-      "python",
+-      "-m",
+-      "scripts.seed_ranking_alerts_qa",
+-    ],
+-    { encoding: "utf8" },
++    process.env.QA_SEED_PYTHON ?? "docker",
++    process.env.QA_SEED_PYTHON
++      ? ["-m", "scripts.seed_ranking_alerts_qa"]
++      : [
++          "exec",
++          process.env.QA_CONTAINER ?? "serp-m7d-runtime",
++          "python",
++          "-m",
++          "scripts.seed_ranking_alerts_qa",
++        ],
++    { encoding: "utf8", cwd: process.env.QA_SEED_WORKDIR },
+   ),
+ );
+ const browser = await chromium.launch({
+@@ -27,8 +29,11 @@ const browser = await chromium.launch({
+     process.env.CHROME_EXECUTABLE ??
+     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+ });
+-const base = "http://localhost:3000";
+-const folder = "docs/verification-artifacts/milestone-7d";
++const base = process.env.QA_BASE_URL ?? "http://localhost:3000";
++assert(["localhost", "127.0.0.1"].includes(new URL(base).hostname));
++const folder =
++  process.env.QA_ARTIFACT_DIRECTORY ??
++  "docs/verification-artifacts/milestone-7d";
+ await mkdir(folder, { recursive: true });
+ const report = {
+   runtime: "local production standalone",
