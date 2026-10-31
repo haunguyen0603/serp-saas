@@ -1,0 +1,33 @@
+{
+  "checked_at_utc": "2026-10-26T16:58:59.224Z",
+  "mode": "fresh anonymous production browser",
+  "checks": [
+    {
+      "name": "Anonymous Ranking Alerts redirects to login",
+      "width": 375,
+      "result": "passed"
+    },
+    {
+      "name": "Anonymous Ranking Alerts redirects to login",
+      "width": 1440,
+      "result": "passed"
+    },
+    {
+      "name": "Live frontend API origin and anonymous session gate",
+      "result": "passed"
+    }
+  ],
+  "refresh_responses": [
+    {
+      "origin": "https://api.serpsaas.com",
+      "status": 401
+    },
+    {
+      "origin": "https://api.serpsaas.com",
+      "status": 401
+    }
+  ],
+  "page_errors": [],
+  "hydration_errors": [],
+  "authenticated_flow": "not performed"
+}

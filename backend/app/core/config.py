@@ -103,6 +103,10 @@ class Settings(DatabaseSettings):
     worker_db_pool_size: int = Field(default=2, ge=1, le=10)
     worker_db_max_overflow: int = Field(default=0, ge=0, le=10)
 
+    ranking_alerts_enabled: bool = True
+    ranking_alert_email_enabled: bool = False
+    ranking_alert_email_hourly_cap: int = Field(default=20, ge=1, le=100)
+
     report_max_range_days: int = Field(default=365, ge=1, le=3660)
     report_max_csv_rows: int = Field(default=100000, ge=1, le=1000000)
     report_max_pdf_detail_rows: int = Field(default=1000, ge=1, le=10000)

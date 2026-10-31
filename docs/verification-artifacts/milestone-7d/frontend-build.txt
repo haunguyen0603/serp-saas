@@ -1,0 +1,96 @@
+
+> serp-saas-frontend@0.1.0 prebuild
+> node --experimental-strip-types scripts/validate-blog.mjs
+
+Blog content validated: 9 published, 0 drafts.
+
+> serp-saas-frontend@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.4.3 (webpack)
+✓ Running next.config.ts took 924ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 15.2s
+  Running TypeScript ...
+  Finished TypeScript in 2.1s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/58) ...
+  Generating static pages using 7 workers (14/58)
+  Generating static pages using 7 workers (28/58)
+  Generating static pages using 7 workers (43/58)
+✓ Generating static pages using 7 workers (58/58) in 659ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ○ /admin/customers
+├ ƒ /admin/customers/[userId]
+├ ○ /admin/plans
+├ ○ /app
+├ ○ /app/change-plan
+├ ○ /app/change-plan/payment/cancel
+├ ○ /app/change-plan/payment/error
+├ ○ /app/change-plan/payment/success
+├ ○ /app/invoices
+├ ƒ /app/invoices/[invoiceId]
+├ ○ /app/projects
+├ ƒ /app/projects/[projectId]
+├ ƒ /app/projects/[projectId]/competitors
+├ ƒ /app/projects/[projectId]/rankings
+├ ƒ /app/projects/[projectId]/reports
+├ ○ /app/projects/new
+├ ○ /app/ranking-alerts
+├ ○ /app/rankings
+├ ○ /app/settings
+├ ○ /app/tracked-sites
+├ ƒ /app/tracked-sites/[siteId]
+├ ○ /app/tracked-sites/new
+├ ○ /apple-icon.png
+├ ○ /blog
+├   /blog/[slug]
+│ ├ ● /blog/how-to-monitor-keyword-ranking
+│ ├ ● /blog/how-to-track-google-rankings
+│ └ ● /blog/serp-tracking-for-agencies
+├ ○ /daily-serp-tracker
+├ ○ /feed.xml
+├ ○ /forgot-password
+├ ○ /google-serp-rank-tracker
+├ ○ /health
+├ ○ /icon.svg
+├ ○ /login
+├ ○ /pricing
+├ ○ /privacy
+├ ○ /register
+├ ○ /reset-password
+├ ○ /robots.txt
+├ ○ /serp-tracking-for-agencies
+├ ○ /settings/billing
+├ ○ /signup
+├ ○ /sitemap.xml
+├ ○ /terms
+├ ○ /verify-email
+├ ○ /vi
+├ ○ /vi/bang-gia
+├ ○ /vi/blog
+├   /vi/blog/[slug]
+│ ├ ● /vi/blog/cach-theo-doi-thu-hang-doi-thu-seo
+│ ├ ● /vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay
+│ ├ ● /vi/blog/cong-cu-rank-tracker-la-gi
+│ └ ● [+3 more paths]
+├ ○ /vi/chinh-sach-bao-mat
+├ ○ /vi/cong-cu-kiem-tra-thu-hang-tu-khoa
+├ ○ /vi/dieu-khoan-dich-vu
+├ ○ /vi/gioi-thieu
+├ ○ /vi/seo-rank-tracking-cho-agency
+└ ○ /vi/theo-doi-thu-hang-tu-khoa-hang-ngay
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand

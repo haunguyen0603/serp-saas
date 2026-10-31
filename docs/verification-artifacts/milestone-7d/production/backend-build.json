@@ -1,0 +1,24 @@
+{
+  "commit": "052bec3ca1e0189b0ad6947bce989f3a79582d05",
+  "build_id": "f5eb6bfc-45e8-43b4-a71a-98a8412bef07",
+  "checks": [
+    {
+      "name": "serp-web-main (serp-saas)",
+      "status": "completed",
+      "conclusion": "neutral",
+      "details_url": "https://console.cloud.google.com/cloud-build/triggers;region=europe-west1/edit/41cde26e-53e7-4139-b303-7167261c0cd5?project=833917440392",
+      "started_at": "2026-10-26T16:43:51Z",
+      "completed_at": "2026-10-26T16:43:50Z",
+      "summary": "Changed files did not match file filter"
+    },
+    {
+      "name": "serp-backend-main (serp-saas)",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://console.cloud.google.com/cloud-build/builds;region=europe-west1/f5eb6bfc-45e8-43b4-a71a-98a8412bef07?project=833917440392",
+      "started_at": "2026-10-26T16:43:50Z",
+      "completed_at": "2026-10-26T16:49:01Z",
+      "summary": "Build f5eb6bfc-45e8-43b4-a71a-98a8412bef07 successful"
+    }
+  ]
+}

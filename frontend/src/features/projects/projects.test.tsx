@@ -10,6 +10,7 @@ import { Providers } from "@/components/providers";
 import { ProjectDetail } from "./project-detail";
 import { ProjectForm } from "./project-form";
 import { ProjectList } from "./project-list";
+import { ApiError } from "@/lib/api/client";
 import type { Keyword, Project } from "./types";
 
 const { replace, request, refresh } = vi.hoisted(() => ({
@@ -219,6 +220,100 @@ const summaryFixture = {
     buckets: { top_3: 0, positions_4_10: 0, not_found_in_depth: 0 },
   },
 };
+
+function rejectProjectDeletion(error: Error, settings: Partial<Project> = {}) {
+  detailApi(settings);
+  const implementation = request.getMockImplementation()!;
+  request.mockImplementation(async (path: string, options?: RequestInit) => {
+    if (path === "/api/v1/projects/project-1" && options?.method === "DELETE")
+      throw error;
+    return implementation(path, options);
+  });
+}
+
+it("explains retained history after Delete and guides the user to archive", async () => {
+  rejectProjectDeletion(new ApiError(409, "HISTORY_EXISTS"));
+  view(<ProjectDetail projectId="project-1" />);
+  fireEvent.click(
+    await screen.findByRole("button", { name: "Delete Project" }),
+  );
+  expect(screen.getByRole("dialog")).toHaveTextContent(
+    "including failed checks, cannot be permanently deleted",
+  );
+  expect(
+    request.mock.calls.some(([, options]) => options?.method === "DELETE"),
+  ).toBe(false);
+  fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
+  const notice = await screen.findByText("This Project could not be deleted.");
+  const alert = notice.closest('[role="alert"]')!;
+  expect(alert).toHaveTextContent("even if the checks failed");
+  expect(alert).toHaveTextContent("Choose Archive Project above");
+  expect(alert).toHaveTextContent("keeping your Keywords and ranking history");
+  expect(alert).toHaveTextContent("Archived filter");
+  expect(
+    within(alert as HTMLElement).getByRole("link", { name: "Schedule" }),
+  ).toHaveAttribute("href", "#schedule");
+  expect(replace).not.toHaveBeenCalled();
+  expect(
+    request.mock.calls.some(([, options]) => options?.method === "PATCH"),
+  ).toBe(false);
+
+  fireEvent.click(screen.getByRole("button", { name: "Archive Project" }));
+  await screen.findByRole("button", { name: "Reactivate Project" });
+  expect(request).toHaveBeenCalledWith(
+    "/api/v1/projects/project-1",
+    expect.objectContaining({ method: "PATCH", body: '{"status":"archived"}' }),
+  );
+  await waitFor(() =>
+    expect(screen.queryByText("This Project could not be deleted.")).toBeNull(),
+  );
+});
+
+it("explains why an archived Project with history still cannot be deleted", async () => {
+  rejectProjectDeletion(new ApiError(409, "HISTORY_EXISTS"), {
+    status: "archived",
+  });
+  view(<ProjectDetail projectId="project-1" />);
+  fireEvent.click(
+    await screen.findByRole("button", { name: "Delete Project" }),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
+  expect(
+    await screen.findByText(/This Project is already archived/),
+  ).toHaveTextContent("Archiving does not allow permanent deletion");
+  expect(screen.queryByText(/Choose Archive Project above/)).toBeNull();
+});
+
+it("keeps other deletion errors separate from history guidance", async () => {
+  rejectProjectDeletion(new ApiError(503, "SERVICE_UNAVAILABLE"));
+  view(<ProjectDetail projectId="project-1" />);
+  fireEvent.click(
+    await screen.findByRole("button", { name: "Delete Project" }),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
+  expect(
+    await screen.findByText("The project action could not be completed."),
+  ).toBeVisible();
+  expect(screen.queryByText("This Project could not be deleted.")).toBeNull();
+  expect(replace).not.toHaveBeenCalled();
+});
+
+it("cancels deletion and still deletes a Project without history after confirmation", async () => {
+  detailApi();
+  view(<ProjectDetail projectId="project-1" />);
+  const button = await screen.findByRole("button", { name: "Delete Project" });
+  fireEvent.click(button);
+  fireEvent.click(screen.getByRole("button", { name: "Keep current state" }));
+  expect(
+    request.mock.calls.some(([, options]) => options?.method === "DELETE"),
+  ).toBe(false);
+  fireEvent.click(button);
+  fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
+  await waitFor(() => expect(replace).toHaveBeenCalledWith("/app/projects"));
+  expect(request).toHaveBeenCalledWith("/api/v1/projects/project-1", {
+    method: "DELETE",
+  });
+});
 
 it("renders query-only Keyword columns and project-wide settings warning", async () => {
   detailApi();

@@ -6,6 +6,7 @@ import { useAuth } from "@/features/auth/auth-provider";
 import { Drawer, DropdownMenu, Icon, IconButton } from "./ui";
 import { PublicShell } from "./public-shell";
 import { isMarketingPath } from "@/lib/site";
+import { RankingAlertUnreadBadge } from "@/features/ranking-alerts/unread-badge";
 const routes = [
   { label: "Overview", href: "/app", icon: "grid", group: "" },
   {
@@ -15,6 +16,12 @@ const routes = [
     group: "Rank tracking",
   },
   { label: "Rankings", href: "/app/rankings", icon: "chart", group: "" },
+  {
+    label: "Ranking Alerts",
+    href: "/app/ranking-alerts",
+    icon: "chart",
+    group: "",
+  },
   {
     label: "Tracked Sites",
     href: "/app/tracked-sites",
@@ -123,6 +130,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           >
             <Icon name={route.icon} />
             {route.label}
+            {route.href === "/app/ranking-alerts" && (
+              <RankingAlertUnreadBadge />
+            )}
           </Link>
         </div>
       ))}

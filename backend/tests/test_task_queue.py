@@ -187,6 +187,16 @@ async def test_worker_authentication_and_payload(
                 "email_verified": True,
             },
         )
+        assert (
+            await client.post("/internal/tasks/ranking-alerts", json={})
+        ).status_code == 401
+        assert (await client.get("/internal/ranking-alerts/status")).status_code == 401
+        assert (
+            await client.get(
+                "/internal/ranking-alerts/status",
+                headers={"Authorization": "Bearer valid"},
+            )
+        ).status_code == 403
         # Reject task caller on scheduler endpoint, even with a valid signature.
         assert (
             await client.post(
@@ -222,3 +232,28 @@ async def test_permanent_enqueue_error_is_safe_and_compensatable(settings: Setti
         await queue.enqueue_rank_check_job(uuid4())
     assert error.value.permanent
     assert str(error.value) == "TASK_ENQUEUE_FAILED"
+
+
+async def test_alert_sweep_contract_and_deterministic_recovery(settings: Settings):
+    from google.cloud import tasks_v2
+
+    from app.schemas.ranking_alert import AlertTaskPayload
+
+    client = Mock()
+    queue = CloudTasksRankCheckQueue(cloud_settings(settings), client)
+    first = await queue.enqueue_ranking_alerts(attempt=10)
+    request = client.create_task.call_args.kwargs["request"]
+    task = tasks_v2.CreateTaskRequest(request).task
+    assert task.name.endswith("ranking-alerts-10")
+    assert task.http_request.url.endswith("/internal/tasks/ranking-alerts")
+    assert json.loads(task.http_request.body) == {"version": 1}
+    assert task.http_request.oidc_token.audience == "https://worker.example"
+    client.create_task.side_effect = AlreadyExists("private SDK error")
+    assert (await queue.enqueue_ranking_alerts(attempt=10)).already_exists
+    client.create_task.side_effect = None
+    assert (await queue.enqueue_ranking_alerts(attempt=11)).task_name != first.task_name
+    with pytest.raises(ValidationError):
+        AlertTaskPayload.model_validate({"user_id": str(uuid4())})
+    client.create_task.side_effect = ServiceUnavailable("private SDK error")
+    with pytest.raises(TaskQueueError, match="^ALERT_TASK_ENQUEUE_FAILED$"):
+        await queue.enqueue_ranking_alerts(attempt=12)

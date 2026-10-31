@@ -41,6 +41,9 @@ services:
       dockerfile: infrastructure/docker/backend.Dockerfile
       target: development
     environment: &backend_environment
+      RANKING_ALERTS_ENABLED: ${RANKING_ALERTS_ENABLED:-true}
+      RANKING_ALERT_EMAIL_ENABLED: ${RANKING_ALERT_EMAIL_ENABLED:-false}
+      RANKING_ALERT_EMAIL_HOURLY_CAP: ${RANKING_ALERT_EMAIL_HOURLY_CAP:-20}
       TASK_QUEUE_PROVIDER: ${TASK_QUEUE_PROVIDER:-local}
       REPORT_STORAGE_ROOT: ${REPORT_STORAGE_ROOT:-/var/lib/serp-saas/reports}
       REPORT_STORAGE_PROVIDER: ${REPORT_STORAGE_PROVIDER:-local}

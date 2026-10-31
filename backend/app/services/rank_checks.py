@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from app.core.config import Settings
 from app.core.errors import AppError
 from app.models.keyword import Keyword
-from app.models.project import ProjectStatus
+from app.models.project import Project, ProjectStatus
 from app.models.rank_check import RankCheck, RankCheckStatus
 from app.models.rank_check_provider_attempt import RankCheckProviderAttempt
 from app.models.rank_check_result import RankCheckResult
@@ -39,8 +39,14 @@ from app.schemas.rank_check import (
 from app.services.domain_matching import DomainMatcher, MatchableDomain
 from app.services.job_execution import JobExecution
 from app.services.normalization import decode_cursor, encode_cursor
+from app.services.ranking_alerts import (
+    context_fingerprint,
+    enqueue_alerts,
+    persist_evaluation,
+)
 from app.services.serp import OrganicResult, SerpProviderError, SerpSearchRequest
 from app.services.serp.router import ProviderRouter
+from app.services.task_queue import create_task_queue
 
 logger = logging.getLogger(__name__)
 
@@ -239,6 +245,11 @@ class RankCheckExecutionService:
                     )
                     if stored is None:
                         raise RuntimeError("Rank check disappeared before persistence")
+                    project = await session.get(
+                        Project, project_id, with_for_update=True
+                    )
+                    if project is None:
+                        raise RuntimeError("Project disappeared before persistence")
                     domain_rows = await TrackedDomainRepository(
                         session
                     ).list_active_for_matching(user_id)
@@ -295,6 +306,9 @@ class RankCheckExecutionService:
                         provider_request_count=request_count,
                         completed_at=provider_result.completed_at,
                     )
+                    await persist_evaluation(
+                        session, stored, project, domain_rows, bounded, rankings
+                    )
             logger.info(
                 "rank_check_succeeded",
                 extra={
@@ -307,6 +321,10 @@ class RankCheckExecutionService:
                     "match_count": len(rankings),
                 },
             )
+            try:
+                await enqueue_alerts(create_task_queue(self.settings))
+            except Exception:
+                logger.warning("ranking_alert_enqueue_failed")
             attempts = await self._attempts(check.id)
             return RankCheckDetailResponse.from_check_detail(
                 stored, results, rankings, attempts
@@ -399,6 +417,10 @@ class RankCheckExecutionService:
                         result_limit=self.settings.serp_default_result_limit,
                         requested_at=requested_at,
                     )
+                    domains = await TrackedDomainRepository(
+                        session
+                    ).list_active_for_matching(user_id)
+                    check.alert_context = context_fingerprint(project, domains)
                     if job is not None:
                         job.rank_check_id = check.id
                     request = SerpSearchRequest(

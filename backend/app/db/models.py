@@ -18,6 +18,12 @@ from app.models.rank_check_provider_attempt import RankCheckProviderAttempt
 from app.models.rank_check_result import RankCheckResult
 from app.models.rank_job import ProjectRankSchedule, RankCheckBatch, RankCheckJob
 from app.models.ranking import Ranking
+from app.models.ranking_alert import (
+    RankingAlert,
+    RankingAlertDelivery,
+    RankingAlertEvaluation,
+    RankingAlertPreference,
+)
 from app.models.refresh_token import RefreshToken
 from app.models.report import GeneratedReport, ReportDeliveryAttempt, ReportSchedule
 from app.models.tracked_domain import TrackedDomain
@@ -26,6 +32,10 @@ from app.models.user import User
 
 __all__ = [
     "Base",
+    "RankingAlert",
+    "RankingAlertPreference",
+    "RankingAlertEvaluation",
+    "RankingAlertDelivery",
     "PaymentEvent",
     "PaymentOrder",
     "Plan",
