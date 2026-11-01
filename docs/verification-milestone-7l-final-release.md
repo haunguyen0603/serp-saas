@@ -1,5 +1,7 @@
 # M7L final release gate verification
 
+**Production follow-up, 2026-11-01:** user-authorized frontend release of commit `18d3a19862a504c052f38533237bc01162b62d57` completed successfully at **14:40:34 Asia/Saigon**. Live production verification passed 27 public URLs, 88 M7L browser cases, 23 HTTP smoke checks and 3 anonymous Ranking Alerts browser checks. See [rollout and production evidence](deployment-milestone-7l.md). The report below preserves the pre-deployment release-gate checkpoint and its original Git state; the later authorization and deployment supersede its no-deployment status.
+
 Verified **2026-11-01, Asia/Saigon**, after the Windows restart and successful Docker/WSL startup.
 
 **Recommendation: READY FOR PRODUCTION for the reviewed release-candidate snapshot. All mandatory technical release gates passed.** Runtime npm audit has **zero vulnerabilities**. Full audit retains **16 moderate development-only affected packages**, reviewed separately below. This recommendation does not authorize deployment, push or merge; none was performed. The tested changes remain in the dedicated worktree, not merged into the main workspace.

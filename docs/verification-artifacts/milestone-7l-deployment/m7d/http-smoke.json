@@ -1,0 +1,106 @@
+{
+  "checked_at_utc": "2026-11-01T14:09:11.780Z",
+  "mode": "public unauthenticated production smoke",
+  "backend_only": false,
+  "passed": 23,
+  "checks": [
+    {
+      "name": "API health",
+      "status": 200
+    },
+    {
+      "name": "PostgreSQL health",
+      "status": 200
+    },
+    {
+      "name": "M7D deployed OpenAPI",
+      "status": 200
+    },
+    {
+      "name": "Authentication: GET /ranking-alerts",
+      "status": 401
+    },
+    {
+      "name": "Authentication: GET /ranking-alerts/unread-count",
+      "status": 401
+    },
+    {
+      "name": "Authentication: PATCH /ranking-alerts/00000000-0000-0000-0000-000000000000/read",
+      "status": 401
+    },
+    {
+      "name": "Authentication: POST /ranking-alerts/mark-all-read",
+      "status": 401
+    },
+    {
+      "name": "Authentication: GET /projects/00000000-0000-0000-0000-000000000000/ranking-alert-preferences",
+      "status": 401
+    },
+    {
+      "name": "Authentication: PUT /projects/00000000-0000-0000-0000-000000000000/ranking-alert-preferences",
+      "status": 401
+    },
+    {
+      "name": "Worker alerts route remains IAM protected",
+      "status": 403
+    },
+    {
+      "name": "Worker status remains IAM protected",
+      "status": 403
+    },
+    {
+      "name": "SePay options auth boundary",
+      "status": 401
+    },
+    {
+      "name": "Invoices auth boundary",
+      "status": 401
+    },
+    {
+      "name": "VND plan catalog",
+      "status": 200
+    },
+    {
+      "name": "Ranking Alerts production app route",
+      "status": 200
+    },
+    {
+      "name": "Deployed inbox/badge bundles",
+      "status": 200
+    },
+    {
+      "name": "Existing app route: /login",
+      "status": 200
+    },
+    {
+      "name": "Existing app route: /app/projects",
+      "status": 200
+    },
+    {
+      "name": "Existing app route: /settings/billing",
+      "status": 200
+    },
+    {
+      "name": "Existing app route: /app/change-plan",
+      "status": 200
+    },
+    {
+      "name": "Existing app route: /app/invoices",
+      "status": 200
+    },
+    {
+      "name": "Public site",
+      "status": 200
+    },
+    {
+      "name": "Published Vietnamese competitor guide",
+      "status": 200
+    }
+  ],
+  "accounts_created": 0,
+  "rank_checks_created": 0,
+  "payments_created": 0,
+  "emails_sent": 0,
+  "authenticated_tenant_flow": "not performed",
+  "real_smtp_deliverability": "not tested"
+}

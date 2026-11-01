@@ -1,0 +1,38 @@
+{
+  "result": "PASS",
+  "releaseSource": "18d3a19862a504c052f38533237bc01162b62d57",
+  "buildId": "767IBhnzxf_whvx7ob7ZT",
+  "previousBuildId": "BZfnOHRkuTRxE8VdouaaU",
+  "cloudBuildId": "d605560d-75e7-4c4b-a846-0bc93ab37a14",
+  "frontendDeployed": true,
+  "backendDeployed": false,
+  "publicUrls": 27,
+  "seoIdenticalToVerifiedLinuxArtifact": true,
+  "seoBrowserCases": 88,
+  "axeRuns": 44,
+  "browserVersion": "156.0.8078.74",
+  "m7dHttpChecks": 23,
+  "m7dBrowserChecks": 3,
+  "extraHttpChecks": 6,
+  "runtimeAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "fullAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 16,
+    "high": 0,
+    "critical": 0,
+    "total": 16
+  },
+  "productionAccountsCreated": 0,
+  "productionRankChecksCreated": 0,
+  "productionPaymentsCreated": 0,
+  "productionEmailsSent": 0,
+  "checkedAt": "2026-11-01T14:13:09.737Z"
+}

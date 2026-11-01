@@ -1,0 +1,26 @@
+{
+  "sha": "18d3a19862a504c052f38533237bc01162b62d57",
+  "checkedAt": "2026-11-01T14:08:26.848Z",
+  "checks": [
+    {
+      "name": "serp-backend-main (serp-saas)",
+      "provider": "google-cloud-developer-connect",
+      "status": "completed",
+      "conclusion": "neutral",
+      "details_url": "https://console.cloud.google.com/cloud-build/triggers;region=europe-west1/edit/afed77f4-293c-4a1d-8a68-2da8cbbf3a63?project=833917440392",
+      "started_at": "2026-11-01T07:30:41Z",
+      "completed_at": "2026-11-01T07:30:41Z",
+      "summary": "Changed files did not match file filter"
+    },
+    {
+      "name": "serp-web-main (serp-saas)",
+      "provider": "google-cloud-developer-connect",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://console.cloud.google.com/cloud-build/builds;region=europe-west1/d605560d-75e7-4c4b-a846-0bc93ab37a14?project=833917440392",
+      "started_at": "2026-11-01T07:30:41Z",
+      "completed_at": "2026-11-01T07:40:34Z",
+      "summary": "Build d605560d-75e7-4c4b-a846-0bc93ab37a14 successful"
+    }
+  ]
+}

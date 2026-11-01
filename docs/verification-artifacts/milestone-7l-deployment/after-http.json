@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-11-01T14:09:05.360Z",
+  "results": [
+    {
+      "url": "https://serpsaas.com/",
+      "status": 200,
+      "bytes": 41725,
+      "buildId": "767IBhnzxf_whvx7ob7ZT",
+      "etag": "\"152n72a7gcow5u\""
+    },
+    {
+      "url": "https://serpsaas.com/sitemap.xml",
+      "status": 200,
+      "bytes": 2996,
+      "buildId": null,
+      "etag": null
+    },
+    {
+      "url": "https://serpsaas.com/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "status": 200,
+      "bytes": 39423,
+      "buildId": "767IBhnzxf_whvx7ob7ZT",
+      "etag": "\"dn6inf007crk5\""
+    },
+    {
+      "url": "https://app.serpsaas.com/app/ranking-alerts",
+      "status": 200,
+      "bytes": 18150,
+      "buildId": "767IBhnzxf_whvx7ob7ZT",
+      "etag": "\"10p77stthoke04\""
+    },
+    {
+      "url": "https://api.serpsaas.com/health",
+      "status": 200,
+      "bytes": 15,
+      "buildId": null,
+      "etag": null
+    },
+    {
+      "url": "https://api.serpsaas.com/health/db",
+      "status": 200,
+      "bytes": 15,
+      "buildId": null,
+      "etag": null
+    }
+  ]
+}

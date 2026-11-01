@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-11-01T14:10:55.978Z",
+  "checks": [
+    {
+      "url": "http://serpsaas.com/",
+      "status": 301,
+      "rawLocation": "https://serpsaas.com:443/",
+      "normalizedLocation": "https://serpsaas.com/"
+    },
+    {
+      "url": "https://www.serpsaas.com/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "status": 301,
+      "rawLocation": "https://serpsaas.com/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+      "normalizedLocation": "https://serpsaas.com/vi/cong-cu-kiem-tra-thu-hang-tu-khoa"
+    },
+    {
+      "url": "https://app.serpsaas.com/blog",
+      "status": 307,
+      "rawLocation": "https://serpsaas.com/blog",
+      "normalizedLocation": "https://serpsaas.com/blog"
+    },
+    {
+      "url": "https://serpsaas.com/login",
+      "status": 307,
+      "rawLocation": "https://app.serpsaas.com/login",
+      "normalizedLocation": "https://app.serpsaas.com/login"
+    },
+    {
+      "url": "https://app.serpsaas.com/robots.txt",
+      "status": 200,
+      "disallowAll": true
+    },
+    {
+      "url": "https://serpsaas.com/_next/image?url=%2Fapple-icon.png&w=32&q=75",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 282
+    }
+  ]
+}
