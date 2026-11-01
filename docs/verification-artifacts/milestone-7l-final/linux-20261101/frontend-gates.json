@@ -1,0 +1,7 @@
+﻿{
+    "test":  0,
+    "lint":  0,
+    "prebuild":  0,
+    "typecheck":  0,
+    "format:check":  0
+}

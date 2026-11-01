@@ -1,0 +1,10 @@
+﻿{
+    "startedUtc":  "2026-11-01T06:31:18.8182901Z",
+    "rebootInitiated":  false,
+    "featureBefore":  "Disabled",
+    "featureRestartNeeded":  true,
+    "msiExitCode":  0,
+    "featureAfter":  "Enabled",
+    "success":  true,
+    "endedUtc":  "2026-11-01T06:31:50.4503558Z"
+}

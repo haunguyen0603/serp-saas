@@ -1,0 +1,10 @@
+﻿{
+    "unexpectedProductFiles":  [
+
+                               ],
+    "sourceAndAuthoredDocumentationCheckExit":  0,
+    "assertionsModified":  false,
+    "rawEvidenceCheckExit":  2,
+    "cause":  "Preserved original CLI/JUnit output contains trailing whitespace and final blank lines; evidence is retained byte-for-byte",
+    "scopeExcludesOnly":  "docs/verification-artifacts/**"
+}

@@ -1,0 +1,75 @@
+{
+  "mandatoryGates": "PASS",
+  "recommendation": "READY FOR PRODUCTION for the reviewed local snapshot; no deployment approval",
+  "backend": {
+    "focusedFailures": 0,
+    "focusedM7D": 59,
+    "errors": 0,
+    "tests": 402,
+    "failures": 0,
+    "skipped": 0,
+    "seconds": "241.909"
+  },
+  "frontendTests": 342,
+  "frontendFiles": 37,
+  "infrastructureTests": 56,
+  "migrations": "PASS",
+  "browser": {
+    "m7dScreenshots": 30,
+    "m7dChecks": 13,
+    "m7lAxeRuns": 44,
+    "m7lCases": 88,
+    "m7dAxeViolations": 0,
+    "m7lBrowser": "156.0.8078.74",
+    "m7dPageErrors": 0,
+    "m7dConsoleErrors": 0
+  },
+  "publicUrls": 27,
+  "seoIdenticalToIntegration": true,
+  "runtimeAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "fullAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 16,
+    "high": 0,
+    "critical": 0,
+    "total": 16
+  },
+  "remainingFindingsDevelopmentOnly": true,
+  "buildId": "MsT5DOwHWYPM9hqsSV0bO",
+  "artifacts": [
+    {
+      "name": "m7l-final-frontend-runtime",
+      "id": "e4ff4bec0b282afd7b993dc7a1ad5731687dc7b0c541b03ce2719920111434d9",
+      "image": "sha256:f8030d431f1a9e7e525869d5ac86faad3b7c73cc6b4bcb34099db23043c19ef4",
+      "imageName": "serp-m7l-final-frontend:local",
+      "user": "node",
+      "running": true,
+      "label": "m7l-final-20261101"
+    },
+    {
+      "name": "m7l-final-backend-runtime",
+      "id": "6cf57c7d62c69875a5cc49fdd0205995c2ea68930666521842e39ec98a4d7b8e",
+      "image": "sha256:5eeea0a8903e1e821052d8e2c3bbcef5edf2478a8ff72fd1102b5631f7ea4279",
+      "imageName": "serp-m7l-final-backend:local",
+      "user": "app",
+      "running": true,
+      "label": "m7l-final-20261101"
+    }
+  ],
+  "cleanupComplete": true,
+  "remote": {
+    "branch": "codex/m7l-final-release-20261101",
+    "timestampUtc": "2026-11-01T06:56:59.9150934Z",
+    "stagedFiles": [],
+    "head": "25dd7806a1385818541196785dc44c80261d5c29",
+    "remoteMain": "25dd7806a1385818541196785dc44c80261d5c29"
+  }
+}

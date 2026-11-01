@@ -1,0 +1,1095 @@
+{
+  "changed": [
+    {
+      "path": "frontend/.prettierignore",
+      "beforeBlob": "6dad85119baf96d3648c5070ea550a5ecf46e632",
+      "afterBlob": "6dad85119baf96d3648c5070ea550a5ecf46e632"
+    },
+    {
+      "path": "frontend/content/blog/how-to-monitor-keyword-ranking.md",
+      "beforeBlob": "f1670d0a96a9e6ca5c2dfef15c37208acf8de7e2",
+      "afterBlob": "f1670d0a96a9e6ca5c2dfef15c37208acf8de7e2"
+    },
+    {
+      "path": "frontend/content/blog/how-to-track-google-rankings.md",
+      "beforeBlob": "b970ecb57d22891072d1d8c27e00b6278e6f16c2",
+      "afterBlob": "b970ecb57d22891072d1d8c27e00b6278e6f16c2"
+    },
+    {
+      "path": "frontend/content/blog/serp-tracking-for-agencies.md",
+      "beforeBlob": "9388d771c61cafe61612dcadf0ac6343cea69b56",
+      "afterBlob": "9388d771c61cafe61612dcadf0ac6343cea69b56"
+    },
+    {
+      "path": "frontend/content/blog/vi/cach-kiem-tra-thu-hang-tu-khoa.md",
+      "beforeBlob": "790a59e2cc8bcd5739706e7931a76bb719799261",
+      "afterBlob": "790a59e2cc8bcd5739706e7931a76bb719799261"
+    },
+    {
+      "path": "frontend/content/blog/vi/cach-theo-doi-thu-hang-doi-thu-seo.md",
+      "beforeBlob": "813ce22799939f0c62c85e9cc502e7857ff55a40",
+      "afterBlob": "813ce22799939f0c62c85e9cc502e7857ff55a40"
+    },
+    {
+      "path": "frontend/content/blog/vi/cach-theo-doi-thu-hang-google.md",
+      "beforeBlob": "f7acee6c2db016f200da126d02aceb9c1227f46f",
+      "afterBlob": "f7acee6c2db016f200da126d02aceb9c1227f46f"
+    },
+    {
+      "path": "frontend/content/blog/vi/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay.md",
+      "beforeBlob": "a523a4363b928e4f76e8fb3e72a4b7c4d55a4e95",
+      "afterBlob": "a523a4363b928e4f76e8fb3e72a4b7c4d55a4e95"
+    },
+    {
+      "path": "frontend/content/blog/vi/cong-cu-rank-tracker-la-gi.md",
+      "beforeBlob": "420cd53faef27185e2e04dd75e9f2fcf6babaee5",
+      "afterBlob": "420cd53faef27185e2e04dd75e9f2fcf6babaee5"
+    },
+    {
+      "path": "frontend/content/blog/vi/serp-tracking-cho-agency.md",
+      "beforeBlob": "017f9fc5f48c22ffa6e6f5d001510dda276e42d4",
+      "afterBlob": "017f9fc5f48c22ffa6e6f5d001510dda276e42d4"
+    },
+    {
+      "path": "frontend/eslint.config.mjs",
+      "beforeBlob": "eb92b25efb8f9d3fccbb0352ff3f13f2ba26d489",
+      "afterBlob": "eb92b25efb8f9d3fccbb0352ff3f13f2ba26d489"
+    },
+    {
+      "path": "frontend/next-env.d.ts",
+      "beforeBlob": "ce4e94a6b10f160ee021fe18939af160d2927dcf",
+      "afterBlob": "ce4e94a6b10f160ee021fe18939af160d2927dcf"
+    },
+    {
+      "path": "frontend/next.config.ts",
+      "beforeBlob": "b0892e2b08cc638489574b3463e53161df09e95a",
+      "afterBlob": "b0892e2b08cc638489574b3463e53161df09e95a"
+    },
+    {
+      "path": "frontend/postcss.config.mjs",
+      "beforeBlob": "d062fcdae9dd9b353832f04e63a83de020ec4fbe",
+      "afterBlob": "d062fcdae9dd9b353832f04e63a83de020ec4fbe"
+    },
+    {
+      "path": "frontend/public/flags/us.svg",
+      "beforeBlob": "5e0e581c57d69938b7d1577db38ae5400be2a7ed",
+      "afterBlob": "5e0e581c57d69938b7d1577db38ae5400be2a7ed"
+    },
+    {
+      "path": "frontend/public/flags/vi.svg",
+      "beforeBlob": "8d629fe2918d5639ae362b981a980369e90b30fe",
+      "afterBlob": "8d629fe2918d5639ae362b981a980369e90b30fe"
+    },
+    {
+      "path": "frontend/scripts/validate-blog.mjs",
+      "beforeBlob": "ac0704ea599ded8c7c2fc312a43aa6fce6979c34",
+      "afterBlob": "ac0704ea599ded8c7c2fc312a43aa6fce6979c34"
+    },
+    {
+      "path": "frontend/scripts/verify-blog-browser.mjs",
+      "beforeBlob": "bed60ebf83212928e41178ff27faa4fb9b87308a",
+      "afterBlob": "bed60ebf83212928e41178ff27faa4fb9b87308a"
+    },
+    {
+      "path": "frontend/scripts/verify-change-plan-browser.mjs",
+      "beforeBlob": "b46a8f32739df7eeb2bd5830632379e9a6102318",
+      "afterBlob": "b46a8f32739df7eeb2bd5830632379e9a6102318"
+    },
+    {
+      "path": "frontend/scripts/verify-competitor-blog-browser.mjs",
+      "beforeBlob": "3f675bef096057920ddb2bac0fbf96d4fcdb1780",
+      "afterBlob": "3f675bef096057920ddb2bac0fbf96d4fcdb1780"
+    },
+    {
+      "path": "frontend/scripts/verify-daily-tracking-blog-browser.mjs",
+      "beforeBlob": "0a5e97705bd4d09ac649d2eb2be82b4a341dc51a",
+      "afterBlob": "0a5e97705bd4d09ac649d2eb2be82b4a341dc51a"
+    },
+    {
+      "path": "frontend/scripts/verify-full-public-localization-browser.mjs",
+      "beforeBlob": "edf129a068febe05ae66c46c232fd7f17bfd4bc7",
+      "afterBlob": "edf129a068febe05ae66c46c232fd7f17bfd4bc7"
+    },
+    {
+      "path": "frontend/scripts/verify-landing-browser.mjs",
+      "beforeBlob": "70072a074fb60974f44c6ad2b1f5d43e9c562335",
+      "afterBlob": "70072a074fb60974f44c6ad2b1f5d43e9c562335"
+    },
+    {
+      "path": "frontend/scripts/verify-localization-browser.mjs",
+      "beforeBlob": "2f3ee0f391a54aa53b6428b8075f7e42d484563f",
+      "afterBlob": "2f3ee0f391a54aa53b6428b8075f7e42d484563f"
+    },
+    {
+      "path": "frontend/scripts/verify-milestone-7l.mjs",
+      "beforeBlob": "92d637ccf73567d30d01a3ad1564a66522dc505c",
+      "afterBlob": "92d637ccf73567d30d01a3ad1564a66522dc505c"
+    },
+    {
+      "path": "frontend/scripts/verify-rank-tracker-blog-browser.mjs",
+      "beforeBlob": "f835898a3356bea1882e7904eb838c343d8ee651",
+      "afterBlob": "f835898a3356bea1882e7904eb838c343d8ee651"
+    },
+    {
+      "path": "frontend/scripts/verify-vnd-pricing-browser.mjs",
+      "beforeBlob": "78831fd8fb520ecb9f1374cdcfa60d8f7d24364d",
+      "afterBlob": "78831fd8fb520ecb9f1374cdcfa60d8f7d24364d"
+    },
+    {
+      "path": "frontend/src/app/(en)/about/page.tsx",
+      "beforeBlob": "d45380960eba0db717062d955f7823a77234fd73",
+      "afterBlob": "d45380960eba0db717062d955f7823a77234fd73"
+    },
+    {
+      "path": "frontend/src/app/(en)/admin/customers/[userId]/page.tsx",
+      "beforeBlob": "5f3f415d40035fef0a0a8e37e7ca89ed940eb3b0",
+      "afterBlob": "5f3f415d40035fef0a0a8e37e7ca89ed940eb3b0"
+    },
+    {
+      "path": "frontend/src/app/(en)/admin/customers/page.tsx",
+      "beforeBlob": "0cc42a178a656b46b446df47cb754feed6ca5981",
+      "afterBlob": "0cc42a178a656b46b446df47cb754feed6ca5981"
+    },
+    {
+      "path": "frontend/src/app/(en)/admin/plans/page.tsx",
+      "beforeBlob": "f1c1acf647c28703a520e28034389673dc064ae2",
+      "afterBlob": "f1c1acf647c28703a520e28034389673dc064ae2"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/change-plan/page.tsx",
+      "beforeBlob": "4675e5b2e037301f5f9aef9fde1f67b2ca0b810a",
+      "afterBlob": "4675e5b2e037301f5f9aef9fde1f67b2ca0b810a"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/change-plan/payment/cancel/page.tsx",
+      "beforeBlob": "05bed239aad9ed664bd37bf6261e1cbda9cb88e3",
+      "afterBlob": "05bed239aad9ed664bd37bf6261e1cbda9cb88e3"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/change-plan/payment/error/page.tsx",
+      "beforeBlob": "3c71c12fe4a61f7caff5d50942f7c5d217bd7ad6",
+      "afterBlob": "3c71c12fe4a61f7caff5d50942f7c5d217bd7ad6"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/change-plan/payment/success/page.tsx",
+      "beforeBlob": "9f8a79b96e5b74d566f2be18dae50324f7365ccb",
+      "afterBlob": "9f8a79b96e5b74d566f2be18dae50324f7365ccb"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/invoices/[invoiceId]/page.tsx",
+      "beforeBlob": "011c29827121168b9e10696dc52e1ec8214e2a90",
+      "afterBlob": "011c29827121168b9e10696dc52e1ec8214e2a90"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/invoices/page.tsx",
+      "beforeBlob": "158159efaebeaa72ce668d24555ebe54618078ce",
+      "afterBlob": "158159efaebeaa72ce668d24555ebe54618078ce"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/page.tsx",
+      "beforeBlob": "c8b0abfd023e123900c12be42a5fafb9d54a4276",
+      "afterBlob": "c8b0abfd023e123900c12be42a5fafb9d54a4276"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/projects/[projectId]/competitors/page.tsx",
+      "beforeBlob": "b4e3d16c74351193d3750d672109e72df03a3c2d",
+      "afterBlob": "b4e3d16c74351193d3750d672109e72df03a3c2d"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/projects/[projectId]/page.tsx",
+      "beforeBlob": "348a810ee51d11f5e3f5169cfb88c92ae2d413ca",
+      "afterBlob": "348a810ee51d11f5e3f5169cfb88c92ae2d413ca"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/projects/[projectId]/rankings/page.tsx",
+      "beforeBlob": "e1c2bc6c4db46cfcec64aa2500f18cd2b710b2f9",
+      "afterBlob": "e1c2bc6c4db46cfcec64aa2500f18cd2b710b2f9"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/projects/[projectId]/reports/page.tsx",
+      "beforeBlob": "58d854ee626533af194f9b13b87ff168553f31a5",
+      "afterBlob": "58d854ee626533af194f9b13b87ff168553f31a5"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/projects/new/page.tsx",
+      "beforeBlob": "3eba851605c1b244053a99c129898fd2d90953ad",
+      "afterBlob": "3eba851605c1b244053a99c129898fd2d90953ad"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/projects/page.tsx",
+      "beforeBlob": "9bba7f6196112cfc78b589fb202bdc9e311783f1",
+      "afterBlob": "9bba7f6196112cfc78b589fb202bdc9e311783f1"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/ranking-alerts/page.tsx",
+      "beforeBlob": "47d7316eaa55a0c98d66d410c94f50ce1f2c2f13",
+      "afterBlob": "47d7316eaa55a0c98d66d410c94f50ce1f2c2f13"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/rankings/page.tsx",
+      "beforeBlob": "cbed2eea3bdca3bf3db8b86557bcbd45448c595e",
+      "afterBlob": "cbed2eea3bdca3bf3db8b86557bcbd45448c595e"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/settings/page.tsx",
+      "beforeBlob": "3feba98f78add52a28a46bdb7039c10f8df60e8d",
+      "afterBlob": "3feba98f78add52a28a46bdb7039c10f8df60e8d"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/tracked-sites/[siteId]/page.tsx",
+      "beforeBlob": "906e59cc6ca268ba47871751cfa53f95ac5aad5a",
+      "afterBlob": "906e59cc6ca268ba47871751cfa53f95ac5aad5a"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/tracked-sites/new/page.tsx",
+      "beforeBlob": "eb4901010b2709c81ed0c46d0ff792ea2e89a36e",
+      "afterBlob": "eb4901010b2709c81ed0c46d0ff792ea2e89a36e"
+    },
+    {
+      "path": "frontend/src/app/(en)/app/tracked-sites/page.tsx",
+      "beforeBlob": "e74b566f4653b8a381a5f8ec22d801354340e24f",
+      "afterBlob": "e74b566f4653b8a381a5f8ec22d801354340e24f"
+    },
+    {
+      "path": "frontend/src/app/(en)/blog/[slug]/page.tsx",
+      "beforeBlob": "5f6f86f08bfbbc719f3f1de69f519a26e1f7ab55",
+      "afterBlob": "5f6f86f08bfbbc719f3f1de69f519a26e1f7ab55"
+    },
+    {
+      "path": "frontend/src/app/(en)/blog/page.tsx",
+      "beforeBlob": "4d8c7d445abb603dc0f71af698fce4cac032dcfe",
+      "afterBlob": "4d8c7d445abb603dc0f71af698fce4cac032dcfe"
+    },
+    {
+      "path": "frontend/src/app/(en)/daily-serp-tracker/page.tsx",
+      "beforeBlob": "909642b544cbee3c914770309f31a07f8a3cd9a7",
+      "afterBlob": "909642b544cbee3c914770309f31a07f8a3cd9a7"
+    },
+    {
+      "path": "frontend/src/app/(en)/feed.xml/route.ts",
+      "beforeBlob": "420a0722c6414966335b611bb5b8af75488be890",
+      "afterBlob": "420a0722c6414966335b611bb5b8af75488be890"
+    },
+    {
+      "path": "frontend/src/app/(en)/forgot-password/page.tsx",
+      "beforeBlob": "781df560b24a631504e1a249fc274607689d3791",
+      "afterBlob": "781df560b24a631504e1a249fc274607689d3791"
+    },
+    {
+      "path": "frontend/src/app/(en)/google-serp-rank-tracker/page.tsx",
+      "beforeBlob": "824aca1716fe1e16c765e3c7126b38f18926e875",
+      "afterBlob": "824aca1716fe1e16c765e3c7126b38f18926e875"
+    },
+    {
+      "path": "frontend/src/app/(en)/health/page.tsx",
+      "beforeBlob": "5dfa93faecd3cf0f1faf6dd15423d15680e80905",
+      "afterBlob": "5dfa93faecd3cf0f1faf6dd15423d15680e80905"
+    },
+    {
+      "path": "frontend/src/app/(en)/layout.tsx",
+      "beforeBlob": "5ec18eff72d66939df78fbb95e6d445cffb55788",
+      "afterBlob": "5ec18eff72d66939df78fbb95e6d445cffb55788"
+    },
+    {
+      "path": "frontend/src/app/(en)/login/page.tsx",
+      "beforeBlob": "ee1a8a9091b07170ef4b7beb74c84b239f84fd7b",
+      "afterBlob": "ee1a8a9091b07170ef4b7beb74c84b239f84fd7b"
+    },
+    {
+      "path": "frontend/src/app/(en)/page.tsx",
+      "beforeBlob": "ae7843539b6b1cd8ddd0bf55714927127b4370d9",
+      "afterBlob": "ae7843539b6b1cd8ddd0bf55714927127b4370d9"
+    },
+    {
+      "path": "frontend/src/app/(en)/pricing/page.tsx",
+      "beforeBlob": "75e31a7ebf95db6658b24c40ca948672f39ef6fb",
+      "afterBlob": "75e31a7ebf95db6658b24c40ca948672f39ef6fb"
+    },
+    {
+      "path": "frontend/src/app/(en)/privacy/page.tsx",
+      "beforeBlob": "b4472f4d0cf9127dcc9cea876c6b6643728e9f3a",
+      "afterBlob": "b4472f4d0cf9127dcc9cea876c6b6643728e9f3a"
+    },
+    {
+      "path": "frontend/src/app/(en)/register/page.tsx",
+      "beforeBlob": "7491eeecb7807c3b4d18c772c1405216788a5980",
+      "afterBlob": "7491eeecb7807c3b4d18c772c1405216788a5980"
+    },
+    {
+      "path": "frontend/src/app/(en)/reset-password/page.tsx",
+      "beforeBlob": "1984fde5c62b705229aaf35df759ca86b1943e81",
+      "afterBlob": "1984fde5c62b705229aaf35df759ca86b1943e81"
+    },
+    {
+      "path": "frontend/src/app/(en)/serp-tracking-for-agencies/page.tsx",
+      "beforeBlob": "f79bfee62f8ef8cd92ecf101e660056b0f56ad20",
+      "afterBlob": "f79bfee62f8ef8cd92ecf101e660056b0f56ad20"
+    },
+    {
+      "path": "frontend/src/app/(en)/settings/billing/page.tsx",
+      "beforeBlob": "86ea07e40476f9727d2932fd0c64197246a31998",
+      "afterBlob": "86ea07e40476f9727d2932fd0c64197246a31998"
+    },
+    {
+      "path": "frontend/src/app/(en)/signup/page.tsx",
+      "beforeBlob": "6656237c7c3e6aad64ee0cb0109c798dfe35c922",
+      "afterBlob": "6656237c7c3e6aad64ee0cb0109c798dfe35c922"
+    },
+    {
+      "path": "frontend/src/app/(en)/terms/page.tsx",
+      "beforeBlob": "16aba90335528e863c7f05a4c8ba59256bbce428",
+      "afterBlob": "16aba90335528e863c7f05a4c8ba59256bbce428"
+    },
+    {
+      "path": "frontend/src/app/(en)/verify-email/page.tsx",
+      "beforeBlob": "e7267e278723af55ce630dec043241eb583a067b",
+      "afterBlob": "e7267e278723af55ce630dec043241eb583a067b"
+    },
+    {
+      "path": "frontend/src/app/globals.css",
+      "beforeBlob": "dc3b2b4f2d9836f50ac5804fed8152db4a929ee8",
+      "afterBlob": "dc3b2b4f2d9836f50ac5804fed8152db4a929ee8"
+    },
+    {
+      "path": "frontend/src/app/icon.svg",
+      "beforeBlob": "c3936df220e55f83cc2b3f203c233a53459fd602",
+      "afterBlob": "c3936df220e55f83cc2b3f203c233a53459fd602"
+    },
+    {
+      "path": "frontend/src/app/robots.ts",
+      "beforeBlob": "936bf3d17817ec0385a300d941b9bcd2458e0353",
+      "afterBlob": "936bf3d17817ec0385a300d941b9bcd2458e0353"
+    },
+    {
+      "path": "frontend/src/app/sitemap.ts",
+      "beforeBlob": "4e3edc507b60527f0593c9b4c3c55e1312ba9653",
+      "afterBlob": "4e3edc507b60527f0593c9b4c3c55e1312ba9653"
+    },
+    {
+      "path": "frontend/src/app/vi/bang-gia/page.tsx",
+      "beforeBlob": "66e84f0d9179fd64083469d03b93f479a2c62351",
+      "afterBlob": "66e84f0d9179fd64083469d03b93f479a2c62351"
+    },
+    {
+      "path": "frontend/src/app/vi/blog/[slug]/page.tsx",
+      "beforeBlob": "e69d67511b20ec7d5dab0b75d2581cbb713e4492",
+      "afterBlob": "e69d67511b20ec7d5dab0b75d2581cbb713e4492"
+    },
+    {
+      "path": "frontend/src/app/vi/blog/page.tsx",
+      "beforeBlob": "a947be032bf11271816abfa53bf9e39a1427216b",
+      "afterBlob": "a947be032bf11271816abfa53bf9e39a1427216b"
+    },
+    {
+      "path": "frontend/src/app/vi/chinh-sach-bao-mat/page.tsx",
+      "beforeBlob": "5f2e5d0dce19b5cf201c7abc76d096c1a4241901",
+      "afterBlob": "5f2e5d0dce19b5cf201c7abc76d096c1a4241901"
+    },
+    {
+      "path": "frontend/src/app/vi/cong-cu-kiem-tra-thu-hang-tu-khoa/page.tsx",
+      "beforeBlob": "4a38d862b16bcef3803e30eafb06b52e1f878086",
+      "afterBlob": "4a38d862b16bcef3803e30eafb06b52e1f878086"
+    },
+    {
+      "path": "frontend/src/app/vi/dieu-khoan-dich-vu/page.tsx",
+      "beforeBlob": "dd88cef4146d34784a4047ae27ea8ce29b4bc4f8",
+      "afterBlob": "dd88cef4146d34784a4047ae27ea8ce29b4bc4f8"
+    },
+    {
+      "path": "frontend/src/app/vi/gioi-thieu/page.tsx",
+      "beforeBlob": "fb01c4c0ce2ca78d1ec0f4782c7e294fbd4fb16f",
+      "afterBlob": "fb01c4c0ce2ca78d1ec0f4782c7e294fbd4fb16f"
+    },
+    {
+      "path": "frontend/src/app/vi/layout.tsx",
+      "beforeBlob": "4c1d85009c2469bf12fe6977cb5d27e59be40461",
+      "afterBlob": "4c1d85009c2469bf12fe6977cb5d27e59be40461"
+    },
+    {
+      "path": "frontend/src/app/vi/page.tsx",
+      "beforeBlob": "534e73442fdb74649e5b2b94cfad77c8de20c900",
+      "afterBlob": "534e73442fdb74649e5b2b94cfad77c8de20c900"
+    },
+    {
+      "path": "frontend/src/app/vi/seo-rank-tracking-cho-agency/page.tsx",
+      "beforeBlob": "04cc1c2987907ec695f0817420e116edf456ed55",
+      "afterBlob": "04cc1c2987907ec695f0817420e116edf456ed55"
+    },
+    {
+      "path": "frontend/src/app/vi/theo-doi-thu-hang-tu-khoa-hang-ngay/page.tsx",
+      "beforeBlob": "10c2329af8ed575587d9e21fb4388a5a7a076768",
+      "afterBlob": "10c2329af8ed575587d9e21fb4388a5a7a076768"
+    },
+    {
+      "path": "frontend/src/components/health-dashboard.test.tsx",
+      "beforeBlob": "8f02eb550bee3bae26b092905b5755490c7edfc5",
+      "afterBlob": "8f02eb550bee3bae26b092905b5755490c7edfc5"
+    },
+    {
+      "path": "frontend/src/components/health-dashboard.tsx",
+      "beforeBlob": "daf25bc81583f6a0ddff9fc70e3790fa6c5c0993",
+      "afterBlob": "daf25bc81583f6a0ddff9fc70e3790fa6c5c0993"
+    },
+    {
+      "path": "frontend/src/components/providers.tsx",
+      "beforeBlob": "0b7f6f07871d984513e4a815a28e1b39409a3bc6",
+      "afterBlob": "0b7f6f07871d984513e4a815a28e1b39409a3bc6"
+    },
+    {
+      "path": "frontend/src/components/root-document.tsx",
+      "beforeBlob": "8a1b0c343b6f4a178952b9bcd07b36c0e6776665",
+      "afterBlob": "8a1b0c343b6f4a178952b9bcd07b36c0e6776665"
+    },
+    {
+      "path": "frontend/src/design-system/app-shell.tsx",
+      "beforeBlob": "0f998101cc92b1b27b60fb69f6da4425aa145251",
+      "afterBlob": "0f998101cc92b1b27b60fb69f6da4425aa145251"
+    },
+    {
+      "path": "frontend/src/design-system/language-select.tsx",
+      "beforeBlob": "daeede06cfa7459fe93ec3d8f2ae6a2b7066c0c6",
+      "afterBlob": "daeede06cfa7459fe93ec3d8f2ae6a2b7066c0c6"
+    },
+    {
+      "path": "frontend/src/design-system/public-shell.tsx",
+      "beforeBlob": "e36c966e21e38a80d47b420149b1000889733b67",
+      "afterBlob": "e36c966e21e38a80d47b420149b1000889733b67"
+    },
+    {
+      "path": "frontend/src/design-system/public.css",
+      "beforeBlob": "97a7715451dbe7eb2a887d3fa6b783facbf94084",
+      "afterBlob": "97a7715451dbe7eb2a887d3fa6b783facbf94084"
+    },
+    {
+      "path": "frontend/src/design-system/tokens.css",
+      "beforeBlob": "4527bac9e0e88d4a51140e57c72918fbf0568f24",
+      "afterBlob": "4527bac9e0e88d4a51140e57c72918fbf0568f24"
+    },
+    {
+      "path": "frontend/src/design-system/ui.test.tsx",
+      "beforeBlob": "6e8828b5aae82c6996e2ecaf67ddfa92d3154ad1",
+      "afterBlob": "6e8828b5aae82c6996e2ecaf67ddfa92d3154ad1"
+    },
+    {
+      "path": "frontend/src/design-system/ui.tsx",
+      "beforeBlob": "9a1c314717c5d00cfdf68b63e2d7473fb777d946",
+      "afterBlob": "9a1c314717c5d00cfdf68b63e2d7473fb777d946"
+    },
+    {
+      "path": "frontend/src/features/admin/billing/customer-billing.tsx",
+      "beforeBlob": "4fd04ba2578edad44db3d7e3fe60e22c40d74483",
+      "afterBlob": "4fd04ba2578edad44db3d7e3fe60e22c40d74483"
+    },
+    {
+      "path": "frontend/src/features/admin/customers/customer-list.tsx",
+      "beforeBlob": "2ed5a87eeaa217dbd96d642f3024a4f8470f8515",
+      "afterBlob": "2ed5a87eeaa217dbd96d642f3024a4f8470f8515"
+    },
+    {
+      "path": "frontend/src/features/admin/plans/plan-catalog.test.tsx",
+      "beforeBlob": "ca37800299bfef9f7b08492e5493a4ed3f9ab914",
+      "afterBlob": "ca37800299bfef9f7b08492e5493a4ed3f9ab914"
+    },
+    {
+      "path": "frontend/src/features/admin/plans/plan-catalog.tsx",
+      "beforeBlob": "3449410472aa0fc0788be4a896d60e169fef2f31",
+      "afterBlob": "3449410472aa0fc0788be4a896d60e169fef2f31"
+    },
+    {
+      "path": "frontend/src/features/analytics/api.ts",
+      "beforeBlob": "ecf83303a559496484779422a9d4eb77e5c44a6b",
+      "afterBlob": "ecf83303a559496484779422a9d4eb77e5c44a6b"
+    },
+    {
+      "path": "frontend/src/features/analytics/project-analytics.test.tsx",
+      "beforeBlob": "bb5d4d4dc0b967f8d22866dbddc3b7e492d07983",
+      "afterBlob": "bb5d4d4dc0b967f8d22866dbddc3b7e492d07983"
+    },
+    {
+      "path": "frontend/src/features/analytics/project-analytics.tsx",
+      "beforeBlob": "a77b51306554405fbd7295d39eb207da62a5dee4",
+      "afterBlob": "a77b51306554405fbd7295d39eb207da62a5dee4"
+    },
+    {
+      "path": "frontend/src/features/analytics/range-selector.tsx",
+      "beforeBlob": "f8b30374ee26e072bb4b552ad4c0383bca3feec7",
+      "afterBlob": "f8b30374ee26e072bb4b552ad4c0383bca3feec7"
+    },
+    {
+      "path": "frontend/src/features/analytics/ranking-chart.tsx",
+      "beforeBlob": "95d26aa49bc16a4c82a1840b102c4012121df194",
+      "afterBlob": "95d26aa49bc16a4c82a1840b102c4012121df194"
+    },
+    {
+      "path": "frontend/src/features/analytics/types.ts",
+      "beforeBlob": "dabed617a93de75392e48ee121b1b5784d7df64c",
+      "afterBlob": "dabed617a93de75392e48ee121b1b5784d7df64c"
+    },
+    {
+      "path": "frontend/src/features/auth/api.test.ts",
+      "beforeBlob": "2b4564d1e61227767d30dfe1dae5b84ae36f8886",
+      "afterBlob": "2b4564d1e61227767d30dfe1dae5b84ae36f8886"
+    },
+    {
+      "path": "frontend/src/features/auth/api.ts",
+      "beforeBlob": "3ec0aaebeaaa1d2e649a6e0390c43f25da5570f9",
+      "afterBlob": "3ec0aaebeaaa1d2e649a6e0390c43f25da5570f9"
+    },
+    {
+      "path": "frontend/src/features/auth/auth-form.tsx",
+      "beforeBlob": "61eb4a1dc0c619b46f00ffd6496d6504ae7aa75a",
+      "afterBlob": "61eb4a1dc0c619b46f00ffd6496d6504ae7aa75a"
+    },
+    {
+      "path": "frontend/src/features/auth/auth-provider.tsx",
+      "beforeBlob": "61a8926fb387a238e0e0f55a676c405278d1cf86",
+      "afterBlob": "61a8926fb387a238e0e0f55a676c405278d1cf86"
+    },
+    {
+      "path": "frontend/src/features/auth/auth.test.tsx",
+      "beforeBlob": "0eb3c8e0f74a713b1dbe4b4fc9a3c31ee7b32af8",
+      "afterBlob": "0eb3c8e0f74a713b1dbe4b4fc9a3c31ee7b32af8"
+    },
+    {
+      "path": "frontend/src/features/auth/change-password.tsx",
+      "beforeBlob": "5e14902be3ded76ae8b5fdc3b229b55592f186ba",
+      "afterBlob": "5e14902be3ded76ae8b5fdc3b229b55592f186ba"
+    },
+    {
+      "path": "frontend/src/features/auth/email-verification.test.tsx",
+      "beforeBlob": "f95e39bef352b1bd686ec57d011bba6827c4d99f",
+      "afterBlob": "f95e39bef352b1bd686ec57d011bba6827c4d99f"
+    },
+    {
+      "path": "frontend/src/features/auth/email-verification.tsx",
+      "beforeBlob": "9128e4e1aecde98f42e6eeaf99b45b22bf72099d",
+      "afterBlob": "9128e4e1aecde98f42e6eeaf99b45b22bf72099d"
+    },
+    {
+      "path": "frontend/src/features/auth/password-form.tsx",
+      "beforeBlob": "c2f4f0a986c1590d154957fc95e7435bf7d5751b",
+      "afterBlob": "c2f4f0a986c1590d154957fc95e7435bf7d5751b"
+    },
+    {
+      "path": "frontend/src/features/auth/password-management.test.tsx",
+      "beforeBlob": "623faa3c4aa74cf131d6548228644947dd491ea4",
+      "afterBlob": "623faa3c4aa74cf131d6548228644947dd491ea4"
+    },
+    {
+      "path": "frontend/src/features/auth/password-recovery.tsx",
+      "beforeBlob": "9cad92b757f1232014facea7c643e10db20a73b1",
+      "afterBlob": "9cad92b757f1232014facea7c643e10db20a73b1"
+    },
+    {
+      "path": "frontend/src/features/auth/protected-app.tsx",
+      "beforeBlob": "558248f3219962417b25d1c1d572972bf4d4bec3",
+      "afterBlob": "558248f3219962417b25d1c1d572972bf4d4bec3"
+    },
+    {
+      "path": "frontend/src/features/auth/session.test.ts",
+      "beforeBlob": "d80f00786d18e9e58d48c51e08cfb8f22a9ebedd",
+      "afterBlob": "d80f00786d18e9e58d48c51e08cfb8f22a9ebedd"
+    },
+    {
+      "path": "frontend/src/features/auth/session.ts",
+      "beforeBlob": "34a58c75efd4f8302f94067db2d2a35669c9a4aa",
+      "afterBlob": "34a58c75efd4f8302f94067db2d2a35669c9a4aa"
+    },
+    {
+      "path": "frontend/src/features/auth/types.ts",
+      "beforeBlob": "f72d2c8cf433eba267a13dfc437140ce54c7d2d5",
+      "afterBlob": "f72d2c8cf433eba267a13dfc437140ce54c7d2d5"
+    },
+    {
+      "path": "frontend/src/features/billing/billing-page.tsx",
+      "beforeBlob": "529b5aadf4ca2535868ba7e512b73d8e9113d6a0",
+      "afterBlob": "529b5aadf4ca2535868ba7e512b73d8e9113d6a0"
+    },
+    {
+      "path": "frontend/src/features/billing/billing.test.tsx",
+      "beforeBlob": "9bb811136394d8e957621e2f65581592d0359e6f",
+      "afterBlob": "9bb811136394d8e957621e2f65581592d0359e6f"
+    },
+    {
+      "path": "frontend/src/features/billing/change-plan-page.test.tsx",
+      "beforeBlob": "111e1c1f55016533f5d9bb1bd486433cac9e5521",
+      "afterBlob": "111e1c1f55016533f5d9bb1bd486433cac9e5521"
+    },
+    {
+      "path": "frontend/src/features/billing/change-plan-page.tsx",
+      "beforeBlob": "c34292427d67494f3070507290851875cc5dc785",
+      "afterBlob": "c34292427d67494f3070507290851875cc5dc785"
+    },
+    {
+      "path": "frontend/src/features/billing/invoices-page.test.tsx",
+      "beforeBlob": "e2169fbdaca3417185e10e8dd37095bd80281a15",
+      "afterBlob": "e2169fbdaca3417185e10e8dd37095bd80281a15"
+    },
+    {
+      "path": "frontend/src/features/billing/invoices-page.tsx",
+      "beforeBlob": "f81ccb89079ea76a7e4b5d5c080e8c395d8f5f45",
+      "afterBlob": "f81ccb89079ea76a7e4b5d5c080e8c395d8f5f45"
+    },
+    {
+      "path": "frontend/src/features/billing/invoices.ts",
+      "beforeBlob": "a82708cbd6f31f1af3942b047dde1997ccb336db",
+      "afterBlob": "a82708cbd6f31f1af3942b047dde1997ccb336db"
+    },
+    {
+      "path": "frontend/src/features/billing/money.test.ts",
+      "beforeBlob": "59a1c67565bc130bb74da43c3c27088e2efe22b3",
+      "afterBlob": "59a1c67565bc130bb74da43c3c27088e2efe22b3"
+    },
+    {
+      "path": "frontend/src/features/billing/money.ts",
+      "beforeBlob": "104c9dd696bcc62b4174bcd7c2a82726732c4831",
+      "afterBlob": "104c9dd696bcc62b4174bcd7c2a82726732c4831"
+    },
+    {
+      "path": "frontend/src/features/billing/payment-result-page.test.tsx",
+      "beforeBlob": "894a721cd71e95eb90f79a1fb6dc4ab3c7c7dfa8",
+      "afterBlob": "894a721cd71e95eb90f79a1fb6dc4ab3c7c7dfa8"
+    },
+    {
+      "path": "frontend/src/features/billing/payment-result-page.tsx",
+      "beforeBlob": "af8f2aac2b26f92851058edace9b949edfaa026f",
+      "afterBlob": "af8f2aac2b26f92851058edace9b949edfaa026f"
+    },
+    {
+      "path": "frontend/src/features/billing/payments.ts",
+      "beforeBlob": "ff0dfe357350f4a827fa04f69ee375cb181933e7",
+      "afterBlob": "ff0dfe357350f4a827fa04f69ee375cb181933e7"
+    },
+    {
+      "path": "frontend/src/features/billing/plan-catalog.ts",
+      "beforeBlob": "f74041cba9221432942ec74670ca4396b4fdfd2c",
+      "afterBlob": "f74041cba9221432942ec74670ca4396b4fdfd2c"
+    },
+    {
+      "path": "frontend/src/features/billing/types.ts",
+      "beforeBlob": "e54eb1ed99c1e7d97eb186be02ff75cb2fdad8a1",
+      "afterBlob": "e54eb1ed99c1e7d97eb186be02ff75cb2fdad8a1"
+    },
+    {
+      "path": "frontend/src/features/blog/blog-article.tsx",
+      "beforeBlob": "60a379f9bcb6e01f9913864ff292dc6193b01b63",
+      "afterBlob": "60a379f9bcb6e01f9913864ff292dc6193b01b63"
+    },
+    {
+      "path": "frontend/src/features/blog/blog-components.tsx",
+      "beforeBlob": "4aa34d3ed72e94da41a6aa4beefd1743929354ad",
+      "afterBlob": "4aa34d3ed72e94da41a6aa4beefd1743929354ad"
+    },
+    {
+      "path": "frontend/src/features/blog/blog-index.tsx",
+      "beforeBlob": "e090aed12dd9e714c834706ff2f9b12bb61efce6",
+      "afterBlob": "e090aed12dd9e714c834706ff2f9b12bb61efce6"
+    },
+    {
+      "path": "frontend/src/features/blog/blog.css",
+      "beforeBlob": "1d3e6cca3758a1bb635adae134bdd4fc5e250764",
+      "afterBlob": "1d3e6cca3758a1bb635adae134bdd4fc5e250764"
+    },
+    {
+      "path": "frontend/src/features/blog/blog.test.tsx",
+      "beforeBlob": "26014860610f0d03083a687a0c635ce619dd8d3c",
+      "afterBlob": "26014860610f0d03083a687a0c635ce619dd8d3c"
+    },
+    {
+      "path": "frontend/src/features/blog/competitor-article.test.tsx",
+      "beforeBlob": "9b1bf1c560d5fee58e6c9ebd25ebc63be8123aeb",
+      "afterBlob": "9b1bf1c560d5fee58e6c9ebd25ebc63be8123aeb"
+    },
+    {
+      "path": "frontend/src/features/blog/content.ts",
+      "beforeBlob": "b1c40425c40b0296163c26e07e7fc8888f88108a",
+      "afterBlob": "b1c40425c40b0296163c26e07e7fc8888f88108a"
+    },
+    {
+      "path": "frontend/src/features/blog/rss.ts",
+      "beforeBlob": "d52201b916aaf8ebb63808fbf74dfc40753d96d9",
+      "afterBlob": "d52201b916aaf8ebb63808fbf74dfc40753d96d9"
+    },
+    {
+      "path": "frontend/src/features/blog/seo.ts",
+      "beforeBlob": "d566df59d738d1bac4af9bb1c0f1357f21ce9405",
+      "afterBlob": "d566df59d738d1bac4af9bb1c0f1357f21ce9405"
+    },
+    {
+      "path": "frontend/src/features/competitors/api.ts",
+      "beforeBlob": "2bdc8e26d9aa218f5dee2df600a8a47fbea7003a",
+      "afterBlob": "2bdc8e26d9aa218f5dee2df600a8a47fbea7003a"
+    },
+    {
+      "path": "frontend/src/features/competitors/competitors-page.test.tsx",
+      "beforeBlob": "c0e1d861e0fea1a1edde533e3f574ee0b9200d95",
+      "afterBlob": "c0e1d861e0fea1a1edde533e3f574ee0b9200d95"
+    },
+    {
+      "path": "frontend/src/features/competitors/competitors-page.tsx",
+      "beforeBlob": "c95a218f6cd08bea18a7c9e78b152102b90bfe98",
+      "afterBlob": "c95a218f6cd08bea18a7c9e78b152102b90bfe98"
+    },
+    {
+      "path": "frontend/src/features/competitors/types.ts",
+      "beforeBlob": "c8593eb2cc8407fcb07affc6de75dcb9673a7bc8",
+      "afterBlob": "c8593eb2cc8407fcb07affc6de75dcb9673a7bc8"
+    },
+    {
+      "path": "frontend/src/features/marketing/full-public-localization.test.tsx",
+      "beforeBlob": "5657ccf320f79a78db1fb5b7024bce74916edc18",
+      "afterBlob": "5657ccf320f79a78db1fb5b7024bce74916edc18"
+    },
+    {
+      "path": "frontend/src/features/marketing/landing-content.ts",
+      "beforeBlob": "f41bfec178761439145f18355cced4ec5337701e",
+      "afterBlob": "f41bfec178761439145f18355cced4ec5337701e"
+    },
+    {
+      "path": "frontend/src/features/marketing/landing-page.tsx",
+      "beforeBlob": "0f74fc04a30ab496d9f8fc98901b70d2a068f83b",
+      "afterBlob": "0f74fc04a30ab496d9f8fc98901b70d2a068f83b"
+    },
+    {
+      "path": "frontend/src/features/marketing/landing-pages.test.tsx",
+      "beforeBlob": "6a9d6ee00a426b7cbb1e0b8858a9b67f8b88bf44",
+      "afterBlob": "6a9d6ee00a426b7cbb1e0b8858a9b67f8b88bf44"
+    },
+    {
+      "path": "frontend/src/features/marketing/pricing-catalog.tsx",
+      "beforeBlob": "ce6bda04296d76ad467d29684bc93856e9869202",
+      "afterBlob": "ce6bda04296d76ad467d29684bc93856e9869202"
+    },
+    {
+      "path": "frontend/src/features/marketing/public-document.tsx",
+      "beforeBlob": "ba52db644f71228c1df892335ee49a81f7c15137",
+      "afterBlob": "ba52db644f71228c1df892335ee49a81f7c15137"
+    },
+    {
+      "path": "frontend/src/features/marketing/public-site.test.tsx",
+      "beforeBlob": "482450d05f1ff6cbaf8de1c2849f1680c9962328",
+      "afterBlob": "482450d05f1ff6cbaf8de1c2849f1680c9962328"
+    },
+    {
+      "path": "frontend/src/features/marketing/seo.ts",
+      "beforeBlob": "e28765646a1c15b5de2080069ed633ff307d123d",
+      "afterBlob": "e28765646a1c15b5de2080069ed633ff307d123d"
+    },
+    {
+      "path": "frontend/src/features/marketing/vietnamese-content.ts",
+      "beforeBlob": "a6d466a6915c9cc381912bc13490fddbd03a0610",
+      "afterBlob": "a6d466a6915c9cc381912bc13490fddbd03a0610"
+    },
+    {
+      "path": "frontend/src/features/marketing/vietnamese-localization.test.tsx",
+      "beforeBlob": "f74583e295594c1791019e3cf9caf499605eb4bc",
+      "afterBlob": "f74583e295594c1791019e3cf9caf499605eb4bc"
+    },
+    {
+      "path": "frontend/src/features/overview/overview.test.tsx",
+      "beforeBlob": "97418108369a68553cd731d65cc8f5cd8c79adcc",
+      "afterBlob": "97418108369a68553cd731d65cc8f5cd8c79adcc"
+    },
+    {
+      "path": "frontend/src/features/overview/overview.tsx",
+      "beforeBlob": "8a2928076b8cdcb07de664420127493ff27c706f",
+      "afterBlob": "8a2928076b8cdcb07de664420127493ff27c706f"
+    },
+    {
+      "path": "frontend/src/features/projects/api.test.ts",
+      "beforeBlob": "418f13555cd7fb7be9de3f61e15dcbd9f98339cd",
+      "afterBlob": "418f13555cd7fb7be9de3f61e15dcbd9f98339cd"
+    },
+    {
+      "path": "frontend/src/features/projects/api.ts",
+      "beforeBlob": "fa9af2d4d68aed6d61a8e61a065aef4cb2e6c788",
+      "afterBlob": "fa9af2d4d68aed6d61a8e61a065aef4cb2e6c788"
+    },
+    {
+      "path": "frontend/src/features/projects/keyword-manager.tsx",
+      "beforeBlob": "3d5d4a469117ed07c42df9f241f26675c537cd42",
+      "afterBlob": "3d5d4a469117ed07c42df9f241f26675c537cd42"
+    },
+    {
+      "path": "frontend/src/features/projects/keyword-organization-manager.tsx",
+      "beforeBlob": "00e51af9f18ae7d6067577a6eed2c6a41beb074b",
+      "afterBlob": "00e51af9f18ae7d6067577a6eed2c6a41beb074b"
+    },
+    {
+      "path": "frontend/src/features/projects/locale-options.json",
+      "beforeBlob": "9e99c35630ea7874df02b419a117160f9558fa71",
+      "afterBlob": "9e99c35630ea7874df02b419a117160f9558fa71"
+    },
+    {
+      "path": "frontend/src/features/projects/locale-select.test.tsx",
+      "beforeBlob": "92e3f4d942e12a8b2b03aff0153800f4a27a35d8",
+      "afterBlob": "92e3f4d942e12a8b2b03aff0153800f4a27a35d8"
+    },
+    {
+      "path": "frontend/src/features/projects/locale-select.tsx",
+      "beforeBlob": "d50345f17f7a09d86d948e1c491cddc01ede47aa",
+      "afterBlob": "d50345f17f7a09d86d948e1c491cddc01ede47aa"
+    },
+    {
+      "path": "frontend/src/features/projects/project-activity.tsx",
+      "beforeBlob": "914d33690d74e30273c28bf599e824b713b60411",
+      "afterBlob": "914d33690d74e30273c28bf599e824b713b60411"
+    },
+    {
+      "path": "frontend/src/features/projects/project-detail.tsx",
+      "beforeBlob": "6b5e2f3af47cb204236f04259d774811237bf489",
+      "afterBlob": "6b5e2f3af47cb204236f04259d774811237bf489"
+    },
+    {
+      "path": "frontend/src/features/projects/project-form.tsx",
+      "beforeBlob": "fd30eb878a58b51d47b42d2b17b910a84e7d083f",
+      "afterBlob": "fd30eb878a58b51d47b42d2b17b910a84e7d083f"
+    },
+    {
+      "path": "frontend/src/features/projects/project-list.tsx",
+      "beforeBlob": "cb4812f808d861b822f4494f0e735fe3c95070e6",
+      "afterBlob": "cb4812f808d861b822f4494f0e735fe3c95070e6"
+    },
+    {
+      "path": "frontend/src/features/projects/projects.test.tsx",
+      "beforeBlob": "ea0eb9de43e51cc8bebe8cb4f51177c5678d267e",
+      "afterBlob": "ea0eb9de43e51cc8bebe8cb4f51177c5678d267e"
+    },
+    {
+      "path": "frontend/src/features/projects/protected.tsx",
+      "beforeBlob": "f78f6221cc6cd80ca8943d9e10a7391ef1913529",
+      "afterBlob": "f78f6221cc6cd80ca8943d9e10a7391ef1913529"
+    },
+    {
+      "path": "frontend/src/features/projects/types.ts",
+      "beforeBlob": "468d4168ea1c3883bbb0b1b3c0cc0ae9df669123",
+      "afterBlob": "468d4168ea1c3883bbb0b1b3c0cc0ae9df669123"
+    },
+    {
+      "path": "frontend/src/features/ranking-alerts/alert-preferences.tsx",
+      "beforeBlob": "8576e3c38f34464b6ac0e3e56cb71e1c75f252d0",
+      "afterBlob": "8576e3c38f34464b6ac0e3e56cb71e1c75f252d0"
+    },
+    {
+      "path": "frontend/src/features/ranking-alerts/api.ts",
+      "beforeBlob": "76968d993d7ef9568e5a32a94d0b582355df0ead",
+      "afterBlob": "76968d993d7ef9568e5a32a94d0b582355df0ead"
+    },
+    {
+      "path": "frontend/src/features/ranking-alerts/ranking-alerts-page.tsx",
+      "beforeBlob": "cd65180b7d71d26578708293c9ccfce15bdc9267",
+      "afterBlob": "cd65180b7d71d26578708293c9ccfce15bdc9267"
+    },
+    {
+      "path": "frontend/src/features/ranking-alerts/ranking-alerts.test.tsx",
+      "beforeBlob": "fd78463309c1725bc7b89934c2bbb633bad963c8",
+      "afterBlob": "fd78463309c1725bc7b89934c2bbb633bad963c8"
+    },
+    {
+      "path": "frontend/src/features/ranking-alerts/unread-badge.tsx",
+      "beforeBlob": "e110456cd2c88dc023ca1dc5ba613e18407eb509",
+      "afterBlob": "e110456cd2c88dc023ca1dc5ba613e18407eb509"
+    },
+    {
+      "path": "frontend/src/features/ranking-explorer/api.ts",
+      "beforeBlob": "4611c405ea357acc0ccc7585c69f5e8e7484a242",
+      "afterBlob": "4611c405ea357acc0ccc7585c69f5e8e7484a242"
+    },
+    {
+      "path": "frontend/src/features/ranking-explorer/ranking-explorer.test.tsx",
+      "beforeBlob": "e3ba20e2880962b1a61e99973dca4fe932fb395c",
+      "afterBlob": "e3ba20e2880962b1a61e99973dca4fe932fb395c"
+    },
+    {
+      "path": "frontend/src/features/ranking-explorer/ranking-explorer.tsx",
+      "beforeBlob": "34f048fbe1a28d0a80e4c25ffaa154f3650040dc",
+      "afterBlob": "34f048fbe1a28d0a80e4c25ffaa154f3650040dc"
+    },
+    {
+      "path": "frontend/src/features/ranking-explorer/types.ts",
+      "beforeBlob": "9f5adbcc07d7ddd3dd98ddb26f7da2f739afe319",
+      "afterBlob": "9f5adbcc07d7ddd3dd98ddb26f7da2f739afe319"
+    },
+    {
+      "path": "frontend/src/features/rankings/api.test.ts",
+      "beforeBlob": "43ce04f6ceb6dc9402e91fd7542a2f324c3a3d36",
+      "afterBlob": "43ce04f6ceb6dc9402e91fd7542a2f324c3a3d36"
+    },
+    {
+      "path": "frontend/src/features/rankings/api.ts",
+      "beforeBlob": "0ef8f1654f6b55c5fd185b600ce1d8a56107257a",
+      "afterBlob": "0ef8f1654f6b55c5fd185b600ce1d8a56107257a"
+    },
+    {
+      "path": "frontend/src/features/rankings/batch-panel.test.tsx",
+      "beforeBlob": "40f747a6a04fdddd430ac3192c617da51f5723f6",
+      "afterBlob": "40f747a6a04fdddd430ac3192c617da51f5723f6"
+    },
+    {
+      "path": "frontend/src/features/rankings/batch-panel.tsx",
+      "beforeBlob": "a69f0b1cc9090b650e25745f44b9fadf95ff330d",
+      "afterBlob": "a69f0b1cc9090b650e25745f44b9fadf95ff330d"
+    },
+    {
+      "path": "frontend/src/features/rankings/batches.ts",
+      "beforeBlob": "2c13fed8dfb4ab0c09f499dbe4ddd0713cb77977",
+      "afterBlob": "2c13fed8dfb4ab0c09f499dbe4ddd0713cb77977"
+    },
+    {
+      "path": "frontend/src/features/rankings/rank-check-detail.tsx",
+      "beforeBlob": "f31dc304900c5d8f808b225f210e96865d2a3367",
+      "afterBlob": "f31dc304900c5d8f808b225f210e96865d2a3367"
+    },
+    {
+      "path": "frontend/src/features/rankings/rank-check-history.tsx",
+      "beforeBlob": "88f923d9f43ab1501b78255296533037a3ba4360",
+      "afterBlob": "88f923d9f43ab1501b78255296533037a3ba4360"
+    },
+    {
+      "path": "frontend/src/features/rankings/rankings-page.tsx",
+      "beforeBlob": "6bd7c1bf2a08f31e2b4c58de694d76619241d65d",
+      "afterBlob": "6bd7c1bf2a08f31e2b4c58de694d76619241d65d"
+    },
+    {
+      "path": "frontend/src/features/rankings/rankings.test.tsx",
+      "beforeBlob": "7a9623d9ef62542c0a042455adcd4f3d32779017",
+      "afterBlob": "7a9623d9ef62542c0a042455adcd4f3d32779017"
+    },
+    {
+      "path": "frontend/src/features/rankings/types.ts",
+      "beforeBlob": "15d1fa28ff0790a5a863626c9369ecca6b0fc007",
+      "afterBlob": "15d1fa28ff0790a5a863626c9369ecca6b0fc007"
+    },
+    {
+      "path": "frontend/src/features/reports/api.ts",
+      "beforeBlob": "7fca94f4f7e7bdd0f268b2013360b04d96fc3576",
+      "afterBlob": "7fca94f4f7e7bdd0f268b2013360b04d96fc3576"
+    },
+    {
+      "path": "frontend/src/features/reports/reports-page.test.tsx",
+      "beforeBlob": "aaaf1d33fd3211696d742790c14b5c8f030adad7",
+      "afterBlob": "aaaf1d33fd3211696d742790c14b5c8f030adad7"
+    },
+    {
+      "path": "frontend/src/features/reports/reports-page.tsx",
+      "beforeBlob": "82e9087497895da4ae4f473a50bdd6d03c2baeca",
+      "afterBlob": "82e9087497895da4ae4f473a50bdd6d03c2baeca"
+    },
+    {
+      "path": "frontend/src/features/reports/types.ts",
+      "beforeBlob": "4eea42a418dc0f771468bbecdc1f9d0c79180d17",
+      "afterBlob": "4eea42a418dc0f771468bbecdc1f9d0c79180d17"
+    },
+    {
+      "path": "frontend/src/features/tracked-sites/api.test.ts",
+      "beforeBlob": "c48bcc965fced2d0fdf7ee406d6f7c5a299e8c57",
+      "afterBlob": "c48bcc965fced2d0fdf7ee406d6f7c5a299e8c57"
+    },
+    {
+      "path": "frontend/src/features/tracked-sites/api.ts",
+      "beforeBlob": "f6a9bef1a0d7ec1fb7e0290ce09fe0edea5b49fe",
+      "afterBlob": "f6a9bef1a0d7ec1fb7e0290ce09fe0edea5b49fe"
+    },
+    {
+      "path": "frontend/src/features/tracked-sites/site-detail.tsx",
+      "beforeBlob": "49c54b984edc87dfb396a4259a175a93a7044ab5",
+      "afterBlob": "49c54b984edc87dfb396a4259a175a93a7044ab5"
+    },
+    {
+      "path": "frontend/src/features/tracked-sites/site-form.tsx",
+      "beforeBlob": "0675c23b1770a3b448b310729753fa52265e31e8",
+      "afterBlob": "0675c23b1770a3b448b310729753fa52265e31e8"
+    },
+    {
+      "path": "frontend/src/features/tracked-sites/site-list.tsx",
+      "beforeBlob": "b730a240d484a2a4e24f2c807449688520b369c0",
+      "afterBlob": "b730a240d484a2a4e24f2c807449688520b369c0"
+    },
+    {
+      "path": "frontend/src/features/tracked-sites/tracked-sites.test.tsx",
+      "beforeBlob": "8271307654fcad45f42adfd278d32fd0c5cd4069",
+      "afterBlob": "8271307654fcad45f42adfd278d32fd0c5cd4069"
+    },
+    {
+      "path": "frontend/src/features/tracked-sites/types.ts",
+      "beforeBlob": "96a0197cfe82e2986f0ee7373f31039afaba0dca",
+      "afterBlob": "96a0197cfe82e2986f0ee7373f31039afaba0dca"
+    },
+    {
+      "path": "frontend/src/lib/api/client.test.ts",
+      "beforeBlob": "3524d0f914f987ca46c2a638704fa4a849c528e4",
+      "afterBlob": "3524d0f914f987ca46c2a638704fa4a849c528e4"
+    },
+    {
+      "path": "frontend/src/lib/api/client.ts",
+      "beforeBlob": "7291d6f61878e589851864f3e8aa8acce1f30b48",
+      "afterBlob": "7291d6f61878e589851864f3e8aa8acce1f30b48"
+    },
+    {
+      "path": "frontend/src/lib/config.test.ts",
+      "beforeBlob": "bc2aba76d76007b54bc92016426b9d1ae5258c33",
+      "afterBlob": "bc2aba76d76007b54bc92016426b9d1ae5258c33"
+    },
+    {
+      "path": "frontend/src/lib/config.ts",
+      "beforeBlob": "634ad1d5e55349e3dee55bfb69b21ce163f909df",
+      "afterBlob": "634ad1d5e55349e3dee55bfb69b21ce163f909df"
+    },
+    {
+      "path": "frontend/src/lib/contact.ts",
+      "beforeBlob": "0ee85a31a70e475b8656b93806022829d6641d33",
+      "afterBlob": "0ee85a31a70e475b8656b93806022829d6641d33"
+    },
+    {
+      "path": "frontend/src/lib/landing-pages.ts",
+      "beforeBlob": "07af9c105cd066f3d85f3c51a6ef350ea29b9c36",
+      "afterBlob": "07af9c105cd066f3d85f3c51a6ef350ea29b9c36"
+    },
+    {
+      "path": "frontend/src/lib/public-locales.ts",
+      "beforeBlob": "aa393d5792e0969c056eeaa11888bb80f4ebfc0b",
+      "afterBlob": "aa393d5792e0969c056eeaa11888bb80f4ebfc0b"
+    },
+    {
+      "path": "frontend/src/lib/site.test.ts",
+      "beforeBlob": "8b9fbe8564d5b6f1956c0a3c23f49c7b12dc2606",
+      "afterBlob": "8b9fbe8564d5b6f1956c0a3c23f49c7b12dc2606"
+    },
+    {
+      "path": "frontend/src/lib/site.ts",
+      "beforeBlob": "5d581f2c0803d3a246cab381508808e21e1a6828",
+      "afterBlob": "5d581f2c0803d3a246cab381508808e21e1a6828"
+    },
+    {
+      "path": "frontend/src/proxy.test.ts",
+      "beforeBlob": "459ae153d446e47b3b99eecf23927aa93f897e64",
+      "afterBlob": "459ae153d446e47b3b99eecf23927aa93f897e64"
+    },
+    {
+      "path": "frontend/src/proxy.ts",
+      "beforeBlob": "fb3f704e6c1eee8ea27479865cd0ac3b53d59386",
+      "afterBlob": "fb3f704e6c1eee8ea27479865cd0ac3b53d59386"
+    },
+    {
+      "path": "frontend/src/test-setup.ts",
+      "beforeBlob": "46df9a590363c466e1187396d2df4faba22deb6d",
+      "afterBlob": "46df9a590363c466e1187396d2df4faba22deb6d"
+    },
+    {
+      "path": "frontend/src/types/health.ts",
+      "beforeBlob": "4497957141cfadbe7f63ae31703dc914055ff65f",
+      "afterBlob": "4497957141cfadbe7f63ae31703dc914055ff65f"
+    },
+    {
+      "path": "frontend/tsconfig.json",
+      "beforeBlob": "c707bed529fa2aa81664925be947a7c2b03b9870",
+      "afterBlob": "c707bed529fa2aa81664925be947a7c2b03b9870"
+    },
+    {
+      "path": "frontend/vitest.config.ts",
+      "beforeBlob": "7cbdb2a1541742a642d7a08182f735564da13c61",
+      "afterBlob": "7cbdb2a1541742a642d7a08182f735564da13c61"
+    }
+  ],
+  "allGitBlobsUnchanged": true
+}

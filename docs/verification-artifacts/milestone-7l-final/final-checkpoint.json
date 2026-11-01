@@ -1,0 +1,9 @@
+﻿{
+    "remoteMain":  "25dd7806a1385818541196785dc44c80261d5c29",
+    "readyForProduction":  false,
+    "branch":  "codex/m7l-final-release-20261101",
+    "nextRequiredAction":  "Manual Windows restart; confirm Docker Engine works before mandatory Linux gates",
+    "head":  "25dd7806a1385818541196785dc44c80261d5c29",
+    "releaseCommitCreated":  false,
+    "timestampUtc":  "2026-11-01T06:38:00.9607580Z"
+}

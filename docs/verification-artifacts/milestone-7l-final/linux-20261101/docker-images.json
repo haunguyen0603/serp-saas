@@ -1,0 +1,412 @@
+﻿[
+    {
+        "Id": "sha256:f8030d431f1a9e7e525869d5ac86faad3b7c73cc6b4bcb34099db23043c19ef4",
+        "RepoTags": [
+            "serp-m7l-final-frontend:local"
+        ],
+        "RepoDigests": [
+            "serp-m7l-final-frontend@sha256:f8030d431f1a9e7e525869d5ac86faad3b7c73cc6b4bcb34099db23043c19ef4"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-11-01T06:52:52.51988893Z",
+        "Config": {
+            "User": "node",
+            "ExposedPorts": {
+                "3000/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NODE_VERSION=22.22.0",
+                "YARN_VERSION=1.22.22",
+                "NODE_ENV=production",
+                "NEXT_TELEMETRY_DISABLED=1",
+                "HOSTNAME=0.0.0.0",
+                "PORT=3000"
+            ],
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Cmd": [
+                "node",
+                "server.js"
+            ],
+            "WorkingDir": "/app",
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 436575052,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:9eb9a78eeb101ab215acf43ffb2a709d5fca9ca2a22178564c7ee5cc30774c60",
+                "sha256:f6e71f9d22ec0d0bae2efa77e58e546696fdefb29ea86e480ff1692f30965d5b",
+                "sha256:4353f08b878699ccb1ddad75458dd7d17f97911b46d91a07779baca3b4755991",
+                "sha256:cc5e91a4e413ffbc14fc7624806852156d32444569b5d0ef61cb60ebce7e9b1a",
+                "sha256:a2a4e69ea5e16fe3f4301bf9e1e8e32e90918c26a72e59246a0220d8bb0b04ac",
+                "sha256:899baf0d5a209b0f109c8f05f846a1b113837fec64276048131fd69882c455aa",
+                "sha256:17fd5c43a458469a959525d69dc1f976c588337f042d377603b661090240e3d1",
+                "sha256:33583590d160354955bd5275c2eec0f643a481badd68488d2065dab04ab07ceb",
+                "sha256:03a1f23b492821605de0959a2d4c95bbd4663a1bc431120c09f5dcd9243a9f16"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-11-01T06:52:54.743639399Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:f8030d431f1a9e7e525869d5ac86faad3b7c73cc6b4bcb34099db23043c19ef4",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "xyz1pb61clm7ma06vsg5wdg5u",
+                    "CreatedAt": "2026-11-01T06:52:55.357229007Z"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:5eeea0a8903e1e821052d8e2c3bbcef5edf2478a8ff72fd1102b5631f7ea4279",
+        "RepoTags": [
+            "serp-m7l-final-backend:local"
+        ],
+        "RepoDigests": [
+            "serp-m7l-final-backend@sha256:5eeea0a8903e1e821052d8e2c3bbcef5edf2478a8ff72fd1102b5631f7ea4279"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-11-01T06:48:01.230297249Z",
+        "Config": {
+            "User": "app",
+            "ExposedPorts": {
+                "8000/tcp": {}
+            },
+            "Env": [
+                "PATH=/app/.venv/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.12.12",
+                "PYTHON_SHA256=fb85a13414b028c49ba18bbd523c2d055a30b56b18b92ce454ea2c51edc656c4",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONUNBUFFERED=1",
+                "UV_LINK_MODE=copy"
+            ],
+            "Cmd": [
+                "python",
+                "-m",
+                "app"
+            ],
+            "WorkingDir": "/app",
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 746667671,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:9eb9a78eeb101ab215acf43ffb2a709d5fca9ca2a22178564c7ee5cc30774c60",
+                "sha256:9a0912b10e7336b5032c96abfaaad92f0fba6c03cbb315ea5f9ff37442520911",
+                "sha256:78a4eeeff9630145665d0439c75b49eb0fb4ae92de07a5fa541365d8587ac5aa",
+                "sha256:1f6b48d1b8f31d448ca0c4f981b51eaec48e38809d015e7d941534aa12c452b6",
+                "sha256:76ef17b58a86e0fbf5811898ca7c77447e26cc84549386ed4276e0ef01bf6d75",
+                "sha256:6a2135c0a4ecb0f31919140a379424d8981d6d780bacd59a75fcb61365aa1baa",
+                "sha256:c84a39b4b3fcb985c5a4a0add41de130f23e1e96d1794984c68ebbaa4ab7cdb0",
+                "sha256:2441e579c30e9be9a89b4ef77fc1aed35f3ddabbe1ba6aa1f47707b4c29b5c1c",
+                "sha256:911d6972678c1de92cb43af785b7eead97ae383d15e6790a721b824423dbaf05",
+                "sha256:70ffe3758bda5b1d8bcc9fbc0dfe7d8c09b626622a21d10acdc2fa9d702c7d9a",
+                "sha256:e3580b4d4d4b0beecff84f8ac6b016867be58576d390ff78597d4e4e61b296a6",
+                "sha256:9f70041ea1eaa8f442e025bffefbc6d7327c540dfe603acae084df9618cf742b"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-11-01T06:48:08.200936416Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:5eeea0a8903e1e821052d8e2c3bbcef5edf2478a8ff72fd1102b5631f7ea4279",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "2p8ur79ndy6lpinnnt75dmep7",
+                    "CreatedAt": "2026-11-01T06:48:10.533419732Z"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:c027a73b1e19a49e60632f7935d7655083a016bdd04beea0e7473731e1d4a796",
+        "RepoTags": [
+            "serp-m7l-final-frontend-tests:local"
+        ],
+        "RepoDigests": [
+            "serp-m7l-final-frontend-tests@sha256:c027a73b1e19a49e60632f7935d7655083a016bdd04beea0e7473731e1d4a796"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-11-01T06:48:50.593822656Z",
+        "Config": {
+            "User": "node",
+            "ExposedPorts": {
+                "3000/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NODE_VERSION=22.22.0",
+                "YARN_VERSION=1.22.22",
+                "NEXT_TELEMETRY_DISABLED=1"
+            ],
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Cmd": [
+                "npm",
+                "run",
+                "dev"
+            ],
+            "WorkingDir": "/app",
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 2737050558,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:9eb9a78eeb101ab215acf43ffb2a709d5fca9ca2a22178564c7ee5cc30774c60",
+                "sha256:f6e71f9d22ec0d0bae2efa77e58e546696fdefb29ea86e480ff1692f30965d5b",
+                "sha256:4353f08b878699ccb1ddad75458dd7d17f97911b46d91a07779baca3b4755991",
+                "sha256:cc5e91a4e413ffbc14fc7624806852156d32444569b5d0ef61cb60ebce7e9b1a",
+                "sha256:a2a4e69ea5e16fe3f4301bf9e1e8e32e90918c26a72e59246a0220d8bb0b04ac",
+                "sha256:899baf0d5a209b0f109c8f05f846a1b113837fec64276048131fd69882c455aa",
+                "sha256:ba15e03fdd38d18560cb96e7e896eb5bfd292d259af032dc6b908b3bc249d4ca",
+                "sha256:439a3c980f9152bf5adbe9aa3a7de95e0cc905d5aa05d94db128e9ea89ec74f8",
+                "sha256:63ca8c9f018d0d903bb05ae718a5d32053fba56bccebda69f95a6fc14397fe0c",
+                "sha256:8c1819cbc60e399b88eae4bd03cb0892aea3e7d5632049711deac4453a15e3cb"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-11-01T06:49:34.84173334Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:c027a73b1e19a49e60632f7935d7655083a016bdd04beea0e7473731e1d4a796",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "h3d1uiuup8wgn25t7onjti3wh",
+                    "CreatedAt": "2026-11-01T06:49:54.802734489Z"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:41d32125ebab221c13635e243b27b32b5da514b31d6d34d4c73c7d3193df1687",
+        "RepoTags": [
+            "serp-m7l-final-backend-tests:local"
+        ],
+        "RepoDigests": [
+            "serp-m7l-final-backend-tests@sha256:41d32125ebab221c13635e243b27b32b5da514b31d6d34d4c73c7d3193df1687"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-11-01T06:44:36.786529075Z",
+        "Config": {
+            "User": "app",
+            "ExposedPorts": {
+                "8000/tcp": {}
+            },
+            "Env": [
+                "PATH=/app/.venv/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.12.12",
+                "PYTHON_SHA256=fb85a13414b028c49ba18bbd523c2d055a30b56b18b92ce454ea2c51edc656c4",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONUNBUFFERED=1",
+                "UV_LINK_MODE=copy"
+            ],
+            "Cmd": [
+                "python",
+                "-m",
+                "app"
+            ],
+            "WorkingDir": "/app",
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 1089781093,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:9eb9a78eeb101ab215acf43ffb2a709d5fca9ca2a22178564c7ee5cc30774c60",
+                "sha256:9a0912b10e7336b5032c96abfaaad92f0fba6c03cbb315ea5f9ff37442520911",
+                "sha256:78a4eeeff9630145665d0439c75b49eb0fb4ae92de07a5fa541365d8587ac5aa",
+                "sha256:1f6b48d1b8f31d448ca0c4f981b51eaec48e38809d015e7d941534aa12c452b6",
+                "sha256:76ef17b58a86e0fbf5811898ca7c77447e26cc84549386ed4276e0ef01bf6d75",
+                "sha256:6a2135c0a4ecb0f31919140a379424d8981d6d780bacd59a75fcb61365aa1baa",
+                "sha256:c84a39b4b3fcb985c5a4a0add41de130f23e1e96d1794984c68ebbaa4ab7cdb0",
+                "sha256:2441e579c30e9be9a89b4ef77fc1aed35f3ddabbe1ba6aa1f47707b4c29b5c1c",
+                "sha256:911d6972678c1de92cb43af785b7eead97ae383d15e6790a721b824423dbaf05",
+                "sha256:da68cb24b9f211dc1d59ddd60cd4a8eb7216c6d2cf57c351ea68d015276921de",
+                "sha256:e3580b4d4d4b0beecff84f8ac6b016867be58576d390ff78597d4e4e61b296a6",
+                "sha256:d2045554a62c2d05ad19549712327e51b21217b45ca01f212f93c79f1f82a4ff"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-11-01T06:44:48.318098286Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:41d32125ebab221c13635e243b27b32b5da514b31d6d34d4c73c7d3193df1687",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "jxztmxvdtavzbo4swzp3wk4jt",
+                    "CreatedAt": "2026-11-01T06:44:53.005513424Z"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:472efd9a66f2b2f1a5aeb18b28de74332e6ef88c2b93a1a5d812fb6db67a5f60",
+        "RepoTags": [
+            "postgres:16.13-bookworm"
+        ],
+        "RepoDigests": [
+            "postgres@sha256:472efd9a66f2b2f1a5aeb18b28de74332e6ef88c2b93a1a5d812fb6db67a5f60"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-05-08T19:33:52.797027974Z",
+        "Config": {
+            "ExposedPorts": {
+                "5432/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/16/bin",
+                "GOSU_VERSION=1.19",
+                "LANG=en_US.utf8",
+                "PG_MAJOR=16",
+                "PG_VERSION=16.13-1.pgdg12+1",
+                "PGDATA=/var/lib/postgresql/data"
+            ],
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Cmd": [
+                "postgres"
+            ],
+            "Volumes": {
+                "/var/lib/postgresql/data": {}
+            },
+            "StopSignal": "SIGINT"
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 615692681,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:5d0ffcca6050b9c12db964453426d0c2bf06c4a53fb7754feeda08f53a3cf424",
+                "sha256:e66785bb6cc2b777a72285860298bd3400041107511a969a65f97afa220b8ab1",
+                "sha256:8abf1955bef49f75f487ad8439b772ab5d47217e261838fb8d17602b46db89d3",
+                "sha256:e52982fd92a16bd55863aa5685507f9e0e5856c1e3ee26b27073c3576e99a587",
+                "sha256:379d272ad9f816531f099b5fd3cf3a1ff0f76bb390587025f2f94f4f876f08e7",
+                "sha256:904607d882068efc4b523164aba86bca59f1e70d0875e8e5d3b105e6bf275307",
+                "sha256:f0365f68eeb3927055dacbb94f52604fb60e5baf11aaa12263ecdea6a5f4c88c",
+                "sha256:52c5423692e01317c5cab4714cd264f2266d6f3635797a7d1932bc9b9a4750ef",
+                "sha256:a780f45ad820c1e0024455452efbccdc37a5694e6f21e2f81a127a05d7950f13",
+                "sha256:73f816703c6355977f4fc0976a4c1ae713e999c9bf7a45c47a3bc793061188be",
+                "sha256:1bf5b39a7005700c99aa7669ecc0fdd17907dd5a5b5ccb08a1b5862f3a94ad73",
+                "sha256:80911ef09bb2b165c5995e13267c601412c4d0cb993c2f7a59555bbcab9d4e97",
+                "sha256:e5f702db2d490de9da70b90a6f8a6adbd5bb398723c2963b1b652a2a744777c2",
+                "sha256:c41f13e1b5b1d39c14aafc5568e3bd103a62e48434277e97269999821f355ab4"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-11-01T06:45:32.867588376Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:472efd9a66f2b2f1a5aeb18b28de74332e6ef88c2b93a1a5d812fb6db67a5f60",
+            "size": 10344
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/library/postgres"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:3e0669e42d4fe421c9dea0ba5fbc04d336b80b4f32a6c7d25bee3a1d089288a1",
+        "RepoTags": [
+            "redis:7.4.8-bookworm"
+        ],
+        "RepoDigests": [
+            "redis@sha256:3e0669e42d4fe421c9dea0ba5fbc04d336b80b4f32a6c7d25bee3a1d089288a1"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-04-22T01:34:52.459672553Z",
+        "Config": {
+            "ExposedPorts": {
+                "6379/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.17",
+                "REDIS_VERSION=7.4.8",
+                "REDIS_DOWNLOAD_URL=http://download.redis.io/releases/redis-7.4.8.tar.gz",
+                "REDIS_DOWNLOAD_SHA=f6773cb7d63be236c59c2917a82f1f08e47b77d89b2f0c9f53becb22b8ea4172"
+            ],
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Cmd": [
+                "redis-server"
+            ],
+            "Volumes": {
+                "/data": {}
+            },
+            "WorkingDir": "/data"
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 172901976,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:0da811fd3ed46c38cea69079fa395a3d715dbdbdd5c8177107c450bf6332bbfa",
+                "sha256:f460b34b5c106090bde4a60f1b55b6f2c49671338ceb93b4418408e2211b339c",
+                "sha256:931e0cec6e2ca7c25dcd281ef638a09ec274ff6ca79d1ec610b224eaa81d0ab1",
+                "sha256:e4db5a01b61b4e68bc41a8ba79ed43429627bbc7d82cce403450519067e2a0e2",
+                "sha256:fe477e81d91c9334b3edc58601477e0c164cd6c3f73813c6a6a4a842e55c5406",
+                "sha256:ba7a5a63377faf2615218734ef27db2e38d34bae032e25abed4477cc18939fee",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:57c170fc3328dc7b52aadf9f942bebff7023771e521dd7c0afc2defc5a2f7f24"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-11-01T06:45:46.411808094Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:3e0669e42d4fe421c9dea0ba5fbc04d336b80b4f32a6c7d25bee3a1d089288a1",
+            "size": 10264
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/library/redis"
+                }
+            ]
+        }
+    }
+]

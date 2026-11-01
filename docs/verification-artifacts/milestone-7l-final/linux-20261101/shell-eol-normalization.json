@@ -1,0 +1,35 @@
+{
+  "changed": [
+    {
+      "path": "infrastructure/configure-rank-queue.sh",
+      "beforeBlob": "86af5613ef677349e7983dea63b25ce58db36d1a",
+      "afterBlob": "86af5613ef677349e7983dea63b25ce58db36d1a"
+    },
+    {
+      "path": "infrastructure/gcp/cloud-run-ci.sh",
+      "beforeBlob": "447467562ac97d27debc02f7e6f80b4d4fb153fb",
+      "afterBlob": "447467562ac97d27debc02f7e6f80b4d4fb153fb"
+    },
+    {
+      "path": "infrastructure/gcp/cloud-run-frontend.sh",
+      "beforeBlob": "782ae02e2f297e9063f1674e0b9b6d0623d570ee",
+      "afterBlob": "782ae02e2f297e9063f1674e0b9b6d0623d570ee"
+    },
+    {
+      "path": "infrastructure/gcp/cloud-run-release.sh",
+      "beforeBlob": "453547b0beceae17e122318c4d9195dae34b4bb4",
+      "afterBlob": "453547b0beceae17e122318c4d9195dae34b4bb4"
+    },
+    {
+      "path": "infrastructure/gcp/cloud-run-services.sh",
+      "beforeBlob": "042da08fe3876c06c6df8f4870d9e97eadd3402a",
+      "afterBlob": "042da08fe3876c06c6df8f4870d9e97eadd3402a"
+    },
+    {
+      "path": "infrastructure/gcp/cloudsql-migration.sh",
+      "beforeBlob": "98e04aab19a391f38f7c4e4466b4d7d1b59bacd6",
+      "afterBlob": "98e04aab19a391f38f7c4e4466b4d7d1b59bacd6"
+    }
+  ],
+  "allGitBlobsUnchanged": true
+}

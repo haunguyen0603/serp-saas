@@ -10,15 +10,17 @@ const { chromium } = await import(pathToFileURL(modulePath).href);
 const { default: AxeBuilder } = await import(pathToFileURL(axePath).href);
 const fixture = JSON.parse(
   execFileSync(
-    "docker",
-    [
-      "exec",
-      process.env.QA_CONTAINER ?? "serp-m7d-runtime",
-      "python",
-      "-m",
-      "scripts.seed_ranking_alerts_qa",
-    ],
-    { encoding: "utf8" },
+    process.env.QA_SEED_PYTHON ?? "docker",
+    process.env.QA_SEED_PYTHON
+      ? ["-m", "scripts.seed_ranking_alerts_qa"]
+      : [
+          "exec",
+          process.env.QA_CONTAINER ?? "serp-m7d-runtime",
+          "python",
+          "-m",
+          "scripts.seed_ranking_alerts_qa",
+        ],
+    { encoding: "utf8", cwd: process.env.QA_SEED_WORKDIR },
   ),
 );
 const browser = await chromium.launch({
@@ -27,8 +29,11 @@ const browser = await chromium.launch({
     process.env.CHROME_EXECUTABLE ??
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
 });
-const base = "http://localhost:3000";
-const folder = "docs/verification-artifacts/milestone-7d";
+const base = process.env.QA_BASE_URL ?? "http://localhost:3000";
+assert(["localhost", "127.0.0.1"].includes(new URL(base).hostname));
+const folder =
+  process.env.QA_ARTIFACT_DIRECTORY ??
+  "docs/verification-artifacts/milestone-7d";
 await mkdir(folder, { recursive: true });
 const report = {
   runtime: "local production standalone",

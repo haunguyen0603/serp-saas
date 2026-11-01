@@ -1,0 +1,20 @@
+﻿[
+    {
+        "name":  "m7l-final-frontend-runtime",
+        "id":  "e4ff4bec0b282afd7b993dc7a1ad5731687dc7b0c541b03ce2719920111434d9",
+        "image":  "sha256:f8030d431f1a9e7e525869d5ac86faad3b7c73cc6b4bcb34099db23043c19ef4",
+        "imageName":  "serp-m7l-final-frontend:local",
+        "user":  "node",
+        "running":  true,
+        "label":  "m7l-final-20261101"
+    },
+    {
+        "name":  "m7l-final-backend-runtime",
+        "id":  "6cf57c7d62c69875a5cc49fdd0205995c2ea68930666521842e39ec98a4d7b8e",
+        "image":  "sha256:5eeea0a8903e1e821052d8e2c3bbcef5edf2478a8ff72fd1102b5631f7ea4279",
+        "imageName":  "serp-m7l-final-backend:local",
+        "user":  "app",
+        "running":  true,
+        "label":  "m7l-final-20261101"
+    }
+]

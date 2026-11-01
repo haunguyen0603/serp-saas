@@ -1,0 +1,12 @@
+﻿{
+    "slat":  false,
+    "build":  "26300",
+    "virtualizationFirmwareEnabled":  false,
+    "version":  "10.0.26300",
+    "collectedUtc":  "2026-11-01T06:35:18.2374217Z",
+    "lastBootUpTime":  "2026-10-31T07:30:05.5000000Z",
+    "os":  "Microsoft Windows 11 Pro",
+    "hypervisorPresent":  true,
+    "ramBytes":  34164105216,
+    "cpu":  "12th Gen Intel(R) Core(TM) i5-12400F"
+}

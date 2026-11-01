@@ -1,0 +1,23 @@
+﻿[
+    {
+        "path":  "/health",
+        "status":  200,
+        "body":  {
+                     "status":  "ok"
+                 }
+    },
+    {
+        "path":  "/health/db",
+        "status":  200,
+        "body":  {
+                     "status":  "ok"
+                 }
+    },
+    {
+        "path":  "/health/redis",
+        "status":  200,
+        "body":  {
+                     "status":  "ok"
+                 }
+    }
+]

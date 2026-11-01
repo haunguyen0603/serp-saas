@@ -1,0 +1,57 @@
+{
+  "changes": [
+    {
+      "name": "node_modules/@vitest/expect",
+      "before": "4.1.11",
+      "after": "4.1.12"
+    },
+    {
+      "name": "node_modules/@vitest/mocker",
+      "before": "4.1.11",
+      "after": "4.1.12"
+    },
+    {
+      "name": "node_modules/@vitest/pretty-format",
+      "before": "4.1.11",
+      "after": "4.1.12"
+    },
+    {
+      "name": "node_modules/@vitest/runner",
+      "before": "4.1.11",
+      "after": "4.1.12"
+    },
+    {
+      "name": "node_modules/@vitest/snapshot",
+      "before": "4.1.11",
+      "after": "4.1.12"
+    },
+    {
+      "name": "node_modules/@vitest/spy",
+      "before": "4.1.11",
+      "after": "4.1.12"
+    },
+    {
+      "name": "node_modules/@vitest/utils",
+      "before": "4.1.11",
+      "after": "4.1.12"
+    },
+    {
+      "name": "node_modules/vite",
+      "before": "8.2.2",
+      "after": "8.2.4"
+    },
+    {
+      "name": "node_modules/vitest",
+      "before": "4.1.11",
+      "after": "4.1.12"
+    },
+    {
+      "name": "node_modules/zod",
+      "before": "4.6.1",
+      "after": "4.6.6"
+    }
+  ],
+  "selectedDirectDependenciesSatisfyLockedRanges": true,
+  "allRuntimeLockEntriesUnchanged": true,
+  "temporaryRootPinsNotAdopted": true
+}

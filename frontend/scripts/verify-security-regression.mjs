@@ -118,6 +118,20 @@ try {
       else if (url.pathname === "/api/v1/billing/me") body = billing;
       else if (url.pathname === "/api/v1/billing/payments/sepay/options")
         body = { enabled: false, eligible_plan_ids: [] };
+      else if (url.pathname === "/api/v1/ranking-alerts/unread-count")
+        body = { count: 0 };
+      else if (url.pathname === "/api/v1/ranking-alerts") body = emptyPage;
+      else if (url.pathname.endsWith("/ranking-alert-preferences"))
+        body = {
+          enabled: true,
+          notify_entered_top10: true,
+          notify_left_top10: true,
+          notify_improvement: true,
+          notify_decline: true,
+          movement_threshold: 3,
+          email_enabled: false,
+          email_available: false,
+        };
       else if (url.pathname === "/api/v1/auth/email-verification")
         body = {
           verified: false,
@@ -260,6 +274,7 @@ try {
     });
     const protectedRoutes = [
       ["/app", "Overview"],
+      ["/app/ranking-alerts", "Ranking Alerts"],
       ["/app/projects", "Projects"],
       ["/app/tracked-sites", "Tracked Sites"],
       ["/app/rankings", "Rankings"],

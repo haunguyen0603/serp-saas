@@ -53,11 +53,11 @@ class CloudRunCITests(unittest.TestCase):
         self.log = directory / "calls.jsonl"
         for name in ("gcloud", "curl"):
             executable = directory / name
-            executable.write_text(FAKE_CLI)
+            executable.write_text(FAKE_CLI, newline="\n")
             executable.chmod(0o755)
         self.env = {
             **os.environ,
-            "PATH": f"{directory}:{os.environ['PATH']}",
+            "PATH": f"{directory}{os.pathsep}{os.environ['PATH']}",
             "FAKE_LOG": str(self.log),
             "GCP_PROJECT_ID": "serp-saas",
             "GCP_LOCATION": "asia-southeast1",

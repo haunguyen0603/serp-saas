@@ -60,6 +60,9 @@ class AuthEmailToolTests(unittest.TestCase):
                         "AUTH_SMTP_USERNAME": "test-user",
                         "AUTH_SMTP_PASSWORD": "test-password",
                     }
+                    if os.name == "nt":
+                        # Windows OpenSSL needs this OS path even in an isolated env.
+                        environment["SYSTEMROOT"] = os.environ["SYSTEMROOT"]
                     if hostname:
                         environment["AUTH_SMTP_LOCAL_HOSTNAME"] = hostname
                     connection = MagicMock()

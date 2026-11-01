@@ -1,0 +1,138 @@
+﻿{
+  "version": "0.1.0",
+  "name": "serp-saas-frontend",
+  "dependencies": {
+    "eslint-config-next": {
+      "version": "16.4.3",
+      "resolved": "https://registry.npmjs.org/eslint-config-next/-/eslint-config-next-16.4.3.tgz",
+      "overridden": false,
+      "dependencies": {
+        "eslint-plugin-import": {
+          "version": "2.32.0",
+          "resolved": "https://registry.npmjs.org/eslint-plugin-import/-/eslint-plugin-import-2.32.0.tgz",
+          "overridden": false,
+          "dependencies": {
+            "minimatch": {
+              "version": "3.1.5"
+            }
+          }
+        },
+        "eslint-plugin-jsx-a11y": {
+          "version": "6.10.2",
+          "resolved": "https://registry.npmjs.org/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-6.10.2.tgz",
+          "overridden": false,
+          "dependencies": {
+            "minimatch": {
+              "version": "3.1.5"
+            }
+          }
+        },
+        "eslint-plugin-react-hooks": {
+          "version": "7.1.1",
+          "resolved": "https://registry.npmjs.org/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-7.1.1.tgz",
+          "overridden": false,
+          "dependencies": {
+            "zod-validation-error": {
+              "version": "4.0.2",
+              "resolved": "https://registry.npmjs.org/zod-validation-error/-/zod-validation-error-4.0.2.tgz",
+              "overridden": false,
+              "dependencies": {
+                "zod": {
+                  "version": "4.6.1"
+                }
+              }
+            },
+            "zod": {
+              "version": "4.6.1",
+              "resolved": "https://registry.npmjs.org/zod/-/zod-4.6.1.tgz",
+              "overridden": false
+            }
+          }
+        },
+        "eslint-plugin-react": {
+          "version": "7.37.5",
+          "resolved": "https://registry.npmjs.org/eslint-plugin-react/-/eslint-plugin-react-7.37.5.tgz",
+          "overridden": false,
+          "dependencies": {
+            "minimatch": {
+              "version": "3.1.5"
+            }
+          }
+        },
+        "typescript-eslint": {
+          "version": "8.70.0",
+          "resolved": "https://registry.npmjs.org/typescript-eslint/-/typescript-eslint-8.70.0.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@typescript-eslint/typescript-estree": {
+              "version": "8.70.0",
+              "resolved": "https://registry.npmjs.org/@typescript-eslint/typescript-estree/-/typescript-estree-8.70.0.tgz",
+              "overridden": false,
+              "dependencies": {
+                "minimatch": {
+                  "version": "10.2.6",
+                  "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-10.2.6.tgz",
+                  "overridden": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "eslint": {
+      "version": "9.39.4",
+      "resolved": "https://registry.npmjs.org/eslint/-/eslint-9.39.4.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@eslint/config-array": {
+          "version": "0.21.2",
+          "resolved": "https://registry.npmjs.org/@eslint/config-array/-/config-array-0.21.2.tgz",
+          "overridden": false,
+          "dependencies": {
+            "minimatch": {
+              "version": "3.1.5"
+            }
+          }
+        },
+        "@eslint/eslintrc": {
+          "version": "3.3.7",
+          "resolved": "https://registry.npmjs.org/@eslint/eslintrc/-/eslintrc-3.3.7.tgz",
+          "overridden": false,
+          "dependencies": {
+            "minimatch": {
+              "version": "3.1.5"
+            }
+          }
+        },
+        "minimatch": {
+          "version": "3.1.5",
+          "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-3.1.5.tgz",
+          "overridden": false
+        }
+      }
+    },
+    "vitest": {
+      "version": "4.1.11",
+      "resolved": "https://registry.npmjs.org/vitest/-/vitest-4.1.11.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@vitest/mocker": {
+          "version": "4.1.11",
+          "resolved": "https://registry.npmjs.org/@vitest/mocker/-/mocker-4.1.11.tgz",
+          "overridden": false,
+          "dependencies": {
+            "vite": {
+              "version": "8.2.2"
+            }
+          }
+        },
+        "vite": {
+          "version": "8.2.2",
+          "resolved": "https://registry.npmjs.org/vite/-/vite-8.2.2.tgz",
+          "overridden": false
+        }
+      }
+    }
+  }
+}
