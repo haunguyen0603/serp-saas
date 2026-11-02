@@ -236,7 +236,7 @@ it("hands definition readers to one practical checking guide while preserving ar
 
 it("isolates Vietnamese articles and retains English validation and feed content", async () => {
   const posts = getPublishedPosts(undefined, "vi");
-  expect(posts).toHaveLength(6);
+  expect(posts).toHaveLength(7);
   expect(getPublishedPosts()).toHaveLength(3);
   expect(generateStaticParams()).toEqual(
     posts.map((post) => ({ slug: post.slug })),

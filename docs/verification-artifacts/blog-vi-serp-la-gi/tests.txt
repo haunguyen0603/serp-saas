@@ -1,0 +1,53 @@
+
+> serp-saas-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 C:/Users/Admin/Desktop/serp-saas-main/frontend
+
+ ❯ src/proxy.test.ts (29 tests | 1 failed) 104ms
+   × publishes only commercial pages in the main site's sitemap 55ms
+npm.cmd : 
+At line:2 char:384
++ ... STEXITCODE; npm.cmd test *> ../docs/verification-artifacts/blog-vi-se ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/proxy.test.ts > publishes only commercial pages in the main site's sitemap
+AssertionError: expected [ 'https://serpsaas.com/', …(27) ] to deeply equal [ 'https://serpsaas.com/', …(26) ]
+
+- Expected
++ Received
+
+@@ -17,10 +17,11 @@
+    "https://serpsaas.com/vi/blog/cach-kiem-tra-thu-hang-tu-khoa",
+    "https://serpsaas.com/vi/blog/cach-theo-doi-thu-hang-doi-thu-seo",
+    "https://serpsaas.com/vi/blog/cach-theo-doi-thu-hang-google",
+    "https://serpsaas.com/vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay",
+    "https://serpsaas.com/vi/blog/cong-cu-rank-tracker-la-gi",
++   "https://serpsaas.com/vi/blog/serp-la-gi",
+    "https://serpsaas.com/vi/blog/serp-tracking-cho-agency",
+    "https://serpsaas.com/vi/chinh-sach-bao-mat",
+    "https://serpsaas.com/vi/cong-cu-kiem-tra-thu-hang-tu-khoa",
+    "https://serpsaas.com/vi/dieu-khoan-dich-vu",
+    "https://serpsaas.com/vi/gioi-thieu",
+
+ ❯ src/proxy.test.ts:17:5
+     15|       .map((page) => page.url)
+     16|       .sort(),
+     17|   ).toEqual(
+       |     ^
+     18|     [
+     19|       "/",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 37 passed (38)
+      Tests  1 failed | 347 passed (348)
+   Start at  16:28:29
+   Duration  26.97s (transform 6.51s, setup 50.65s, import 44.16s, tests 31.32s, environment 143.89s)
+

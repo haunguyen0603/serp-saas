@@ -1,0 +1,18 @@
+[
+    {
+        "sha256":  "ed952a81bad88de94cee2c7b2e4e7e275f22d29fed0b897d93268fe4471119cd",
+        "path":  "frontend/content/blog/vi/serp-la-gi.md"
+    },
+    {
+        "sha256":  "571e895ef27310c69db3a1de06e419f6f581f25bf2b2f712a3a7e58a9cad8e5b",
+        "path":  "frontend/src/features/blog/content.ts"
+    },
+    {
+        "sha256":  "679281ef1d87be5c99e4b5b5ec4c04fbcc25a1328fb0db0188f3607c4a129370",
+        "path":  "frontend/src/features/blog/seo.ts"
+    },
+    {
+        "sha256":  "d891727b8a8f5801f24f1436571e15eb43a27726adea62c96cc89d14269ac232",
+        "path":  "frontend/package-lock.json"
+    }
+]

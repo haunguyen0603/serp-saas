@@ -281,7 +281,7 @@ try {
       await page.waitForURL(base + "/vi");
       assert.equal(await page.locator("html").getAttribute("lang"), "vi");
       await page.goto(base + "/vi/blog", { waitUntil: "networkidle" });
-      assert.equal(await page.locator(".blog-card").count(), 6);
+      assert.equal(await page.locator(".blog-card").count(), 7);
       assert.equal(
         await page
           .getByRole("link", { name: title, exact: true })
@@ -300,7 +300,7 @@ try {
         overflow: false,
         languageFallback: "/",
         roundTrip: "/vi",
-        listingCards: 6,
+        listingCards: 7,
         keyboardTables: 4,
         axeViolations: javaScriptEnabled ? 0 : null,
         pageErrors: errors,
@@ -335,7 +335,7 @@ try {
   assert.equal(sitemap.body.split(`<loc>${origin + path}</loc>`).length - 1, 1);
   assert(!sitemap.body.includes(`${origin}/blog/${path.split("/").at(-1)}`));
   const sitemapCount = (sitemap.body.match(/<loc>/g) ?? []).length;
-  assert.equal(sitemapCount, 27);
+  assert.equal(sitemapCount, 28);
   await writeFile(resolve(directory, "sitemap.xml"), sitemap.body);
   const definition = await localGet("/vi/blog/cong-cu-rank-tracker-la-gi");
   assert.equal(definition.status, 200);

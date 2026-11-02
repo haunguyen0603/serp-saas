@@ -1,0 +1,123 @@
+{
+  "sourceFidelity": true,
+  "headings": [
+    "SERP là gì?",
+    "Những thành phần thường gặp trên SERP Google",
+    "1. Kết quả tìm kiếm tự nhiên (Organic Results)",
+    "2. Quảng cáo tìm kiếm (Search Ads)",
+    "3. Featured Snippet (Đoạn trích nổi bật)",
+    "4. People Also Ask và các câu hỏi liên quan",
+    "5. Hình ảnh, video và kết quả phong phú",
+    "6. Local Pack và kết quả địa phương",
+    "7. Các trải nghiệm tìm kiếm có AI",
+    "Bảng phân biệt các nhóm kết quả SERP",
+    "Vì sao SERP khác nhau theo từ khóa, quốc gia và thiết bị?",
+    "SERP có vai trò gì trong SEO?",
+    "SERP khác gì Rank Tracker và Google Search Console?",
+    "Cách phân tích SERP cho một từ khóa: Quy trình 5 bước",
+    "SERP SaaS hỗ trợ phần nào trong việc theo dõi SERP?",
+    "Câu hỏi thường gặp về SERP",
+    "SERP có phải chỉ gồm 10 kết quả tìm kiếm không?",
+    "Organic Results và Google Ads khác nhau thế nào?",
+    "Vì sao tôi tìm cùng một từ khóa nhưng thấy vị trí khác người khác?",
+    "Google Search Console có hiển thị thứ hạng chính xác tại một thời điểm không?",
+    "Có thể theo dõi toàn bộ thành phần SERP bằng SERP SaaS không?",
+    "Kết luận"
+  ],
+  "tables": [
+    [
+      [
+        "Thành phần",
+        "Mục đích chính",
+        "Có phải vị trí organic thông thường?"
+      ],
+      [
+        "Organic text result",
+        "Dẫn tới trang web phù hợp với truy vấn",
+        "Có, khi đó là kết quả organic được kiểm tra"
+      ],
+      [
+        "Search Ads",
+        "Hiển thị quảng cáo trả phí",
+        "Không"
+      ],
+      [
+        "Featured Snippet",
+        "Trình bày câu trả lời nổi bật từ nguồn được Google chọn",
+        "Không nên tự quy đổi thành vị trí organic thông thường"
+      ],
+      [
+        "People Also Ask",
+        "Mở rộng các câu hỏi liên quan",
+        "Không"
+      ],
+      [
+        "Image / Video results",
+        "Giúp khám phá nội dung hình ảnh hoặc video",
+        "Không mặc nhiên là thứ hạng organic text"
+      ],
+      [
+        "Local Pack",
+        "Cung cấp lựa chọn địa phương, bản đồ hoặc doanh nghiệp",
+        "Không"
+      ],
+      [
+        "AI search features",
+        "Hỗ trợ tổng hợp hoặc khám phá thông tin",
+        "Không"
+      ]
+    ],
+    [
+      [
+        "Khái niệm",
+        "Trả lời câu hỏi nào?",
+        "Điều cần nhớ"
+      ],
+      [
+        "SERP",
+        "Google đang hiển thị những loại kết quả gì cho truy vấn này?",
+        "Là trang kết quả và các thành phần hiển thị"
+      ],
+      [
+        "Rank Tracker",
+        "Một domain/URL được quan sát ở vị trí nào trong phạm vi và môi trường kiểm tra?",
+        "Là công cụ đo và lưu các lần quan sát theo cấu hình"
+      ],
+      [
+        "Google Search Console",
+        "Website đã xuất hiện và nhận tương tác trên Google Search như thế nào?",
+        "Dữ liệu hiệu suất tổng hợp; average position không phải ảnh chụp vị trí của một lần tìm kiếm"
+      ]
+    ]
+  ],
+  "links": [
+    {
+      "text": "Google Search Central — Visual Elements Gallery",
+      "href": "https://developers.google.com/search/docs/appearance/visual-elements-gallery"
+    },
+    {
+      "text": "tài liệu Featured Snippets của Google",
+      "href": "https://developers.google.com/search/docs/appearance/featured-snippets"
+    },
+    {
+      "text": "How Search Works",
+      "href": "https://developers.google.com/search/docs/fundamentals/how-search-works"
+    },
+    {
+      "text": "cách theo dõi thứ hạng đối thủ SEO bằng dữ liệu SERP",
+      "href": "https://serpsaas.com/vi/blog/cach-theo-doi-thu-hang-doi-thu-seo"
+    },
+    {
+      "text": "Rank Tracker là gì?",
+      "href": "https://serpsaas.com/vi/blog/cong-cu-rank-tracker-la-gi"
+    },
+    {
+      "text": "hướng dẫn kiểm tra thứ hạng từ khóa",
+      "href": "https://serpsaas.com/vi/blog/cach-kiem-tra-thu-hang-tu-khoa"
+    },
+    {
+      "text": "công cụ kiểm tra thứ hạng từ khóa Google của SERP SaaS",
+      "href": "https://serpsaas.com/vi/cong-cu-kiem-tra-thu-hang-tu-khoa"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+SERP definition blog QA passed: 8 viewport/JavaScript cases, metadata, tables, axe, language switch, links, sitemap, RSS and redirects.

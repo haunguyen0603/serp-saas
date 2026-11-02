@@ -36,7 +36,9 @@ export function blogMetadata(
   locale: "en" | "vi" = post?.locale ?? "en",
 ): Metadata {
   const title =
-    post?.title ?? (locale === "vi" ? vietnameseBlogTitle : blogTitle);
+    post?.seoTitle ??
+    post?.title ??
+    (locale === "vi" ? vietnameseBlogTitle : blogTitle);
   const description =
     post?.description ??
     (locale === "vi" ? vietnameseBlogDescription : blogDescription);

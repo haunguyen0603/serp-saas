@@ -241,6 +241,20 @@ it("rejects filename/slug mismatch and duplicate article metadata", () => {
   expect(readBlogPosts).toThrow("Duplicate blog title");
 });
 
+it("rejects an SEO title that duplicates another article's effective title", () => {
+  const { directory } = fixture();
+  const source = firstSource
+    .replaceAll(first.slug, "second-guide")
+    .replace(first.title, "Another article heading")
+    .replace(first.description, "A different article description.")
+    .replace(
+      "draft: false",
+      `draft: false\nseoTitle: ${JSON.stringify(first.title)}`,
+    );
+  writeFileSync(join(directory, "second-guide.md"), source);
+  expect(readBlogPosts).toThrow("Duplicate blog SEO title");
+});
+
 it("runs the real prebuild gate and exits unsuccessfully for invalid content", () => {
   const { root, directory } = fixture();
   const command = [

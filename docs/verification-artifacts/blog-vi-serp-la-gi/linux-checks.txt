@@ -1,0 +1,295 @@
+
+> serp-saas-frontend@0.1.0 prebuild
+> node --experimental-strip-types scripts/validate-blog.mjs
+
+Blog content validated: 10 published, 0 drafts.
+
+> serp-saas-frontend@0.1.0 test
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/app[39m
+
+docker.exe : [90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mhides provider and fallback 
+metadata from ranking history
+At line:2 char:475
++ ... cle-checks; & $dockerPath exec serp-article-checks sh -c 'npm run pre ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([90mstderr[2m...ranking history:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["projects","project-1","rankings","analytics","summary","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","rankings","analytics","movers","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-groups"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-tags"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+ [32m✓[39m src/features/billing/invoices-page.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 500[2mms[22m[39m
+ [32m✓[39m src/features/competitors/competitors-page.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 530[2mms[22m[39m
+ [32m✓[39m src/features/reports/reports-page.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 553[2mms[22m[39m
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mhides provider and fallback metadata from 
+ranking history
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["tracked-sites","list",{"limit":200,"status":"active"}]
+
+[90mstderr[2m | src/features/projects/projects.test.tsx[2m > [22m[2mexplains retained history after Delete and 
+guides the user to archive
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mrenders latest ranking, no-match, and failed 
+states from real API data
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["projects","project-1","rankings","analytics","summary","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","rankings","analytics","movers","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-groups"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-tags"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+ [32m✓[39m src/features/marketing/public-site.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 1082[2mms[22m[39m
+   [33m[2m✓[22m[39m sends commercial CTAs to app and keeps desktop/mobile legal links on the main domain [33m 305[2mms[22m[39m
+ [32m✓[39m src/features/billing/change-plan-page.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 1062[2mms[22m[39m
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mruns project and single Keyword checks with 
+loading-safe actions
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["projects","project-1","rankings","analytics","summary","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","rankings","analytics","movers","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-groups"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-tags"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+ [32m✓[39m src/features/ranking-explorer/ranking-explorer.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 1220[2mms[22m[39m
+   [33m[2m✓[22m[39m renders depth-aware comparison rows, sorting, pagination, and history [33m 412[2mms[22m[39m
+   [33m[2m✓[22m[39m drives filters from URL, debounces search, exposes chips, and clears them [33m 524[2mms[22m[39m
+ [32m✓[39m src/features/marketing/full-public-localization.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 966[2mms[22m[39m
+[90mstderr[2m | src/features/projects/projects.test.tsx[2m > [22m[2mexplains why an archived Project with history 
+still cannot be deleted
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+ [32m✓[39m src/features/auth/session.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32m✓[39m src/features/blog/blog.test.tsx [2m([22m[2m30 tests[22m[2m)[22m[33m 1259[2mms[22m[39m
+   [33m[2m✓[22m[39m runs the real prebuild gate and exits unsuccessfully for invalid content [33m 328[2mms[22m[39m
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mruns project and single Keyword checks with 
+loading-safe actions
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["projects","project-1","rankings","analytics","summary","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","rankings","analytics","movers","desktop","30d"]
+
+[90mstderr[2m | src/features/projects/projects.test.tsx[2m > [22m[2mkeeps other deletion errors separate from 
+history guidance
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mexpands and collapses inline history and 
+opens Rank Check detail
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["projects","project-1","rankings","analytics","summary","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","rankings","analytics","movers","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-groups"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-tags"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mexpands and collapses inline history and 
+opens Rank Check detail
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["tracked-sites","list",{"limit":200,"status":"active"}]
+
+[90mstderr[2m | src/features/projects/projects.test.tsx[2m > [22m[2mcancels deletion and still deletes a Project 
+without history after confirmation
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mexpands and collapses inline history and 
+opens Rank Check detail
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["tracked-sites","list",{"limit":200,"status":"active"}]
+
+[90mstderr[2m | src/features/projects/projects.test.tsx[2m > [22m[2mrenders query-only Keyword columns and 
+project-wide settings warning
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mswitches one expanded keyword at a time and 
+shows local empty and error states
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["projects","project-1","rankings","analytics","summary","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","rankings","analytics","movers","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-groups"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-tags"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+[90mstderr[2m | src/features/projects/projects.test.tsx[2m > [22m[2madds and edits only Keyword query data
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+ [32m✓[39m src/features/auth/auth.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 803[2mms[22m[39m
+ [32m✓[39m src/features/marketing/vietnamese-localization.test.tsx [2m([22m[2m35 tests[22m[2m)[22m[33m 1977[2mms[22m[39m
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mswitches one expanded keyword at a time and 
+shows local empty and error states
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["tracked-sites","list",{"limit":200,"status":"active"}]
+
+ [32m✓[39m src/features/admin/plans/plan-catalog.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 599[2mms[22m[39m
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mlinks history domains to Google using the 
+checked query in a new tab
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["projects","project-1","rankings","analytics","summary","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","rankings","analytics","movers","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-groups"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-tags"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+[90mstderr[2m | src/features/projects/projects.test.tsx[2m > [22m[2mmanages organization and bulk assigns the 
+current loaded rows
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+ [32m✓[39m src/features/auth/password-management.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 365[2mms[22m[39m
+ [32m✓[39m src/features/ranking-alerts/ranking-alerts.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 534[2mms[22m[39m
+ [32m✓[39m src/features/marketing/landing-pages.test.tsx [2m([22m[2m22 tests[22m[2m)[22m[33m 1030[2mms[22m[39m
+   [33m[2m✓[22m[39m renders '/google-serp-rank-tracker' with a public shell, one H1 and three CTA placements [33m 313[2mms[22m[39m
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mlinks history domains to Google using the 
+checked query in a new tab
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["tracked-sites","list",{"limit":200,"status":"active"}]
+
+ [32m✓[39m src/features/billing/billing.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 826[2mms[22m[39m
+     [33m[2m✓[22m[39m submits device-specific extension, cancellation and audited adjustment [33m 346[2mms[22m[39m
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mshows a local skeleton while expanded history 
+loads
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["projects","project-1","rankings","analytics","summary","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","rankings","analytics","movers","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-groups"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-tags"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+[90mstderr[2m | src/features/projects/projects.test.tsx[2m > [22m[2mbulk adds cleaned keyword lines and displays 
+counts
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mshows a local skeleton while expanded history 
+loads
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["tracked-sites","list",{"limit":200,"status":"active"}]
+
+ [32m✓[39m src/features/tracked-sites/tracked-sites.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 666[2mms[22m[39m
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mlimits ranking history to 10 records and 
+pages forward and backward
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["projects","project-1","rankings","analytics","summary","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","rankings","analytics","movers","desktop","30d"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-groups"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["projects","project-1","keyword-tags"]
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. 
+Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+[90mstderr[2m | src/features/projects/projects.test.tsx[2m > [22m[2mupdates Project SERP settings without default 
+fields
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+[90mstderr[2m | src/features/rankings/rankings.test.tsx[2m > [22m[2mlimits ranking history to 10 records and 
+pages forward and backward
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["tracked-sites","list",{"limit":200,"status":"active"}]
+
+[90mstderr[2m | src/features/projects/projects.test.tsx[2m > [22m[2msaves selected country and regional language 
+codes from Project settings
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+ [32m✓[39m src/features/rankings/rankings.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 3504[2mms[22m[39m
+   [33m[2m✓[22m[39m hides provider and fallback metadata from ranking history [33m 768[2mms[22m[39m
+   [33m[2m✓[22m[39m runs project and single Keyword checks with loading-safe actions [33m 498[2mms[22m[39m
+   [33m[2m✓[22m[39m expands and collapses inline history and opens Rank Check detail [33m 538[2mms[22m[39m
+   [33m[2m✓[22m[39m switches one expanded keyword at a time and shows local empty and error states [33m 481[2mms[22m[39m
+   [33m[2m✓[22m[39m links history domains to Google using the checked query in a new tab [33m 320[2mms[22m[39m
+   [33m[2m✓[22m[39m limits ranking history to 10 records and pages forward and backward [33m 434[2mms[22m[39m
+ [32m✓[39m src/proxy.test.ts [2m([22m[2m29 tests[22m[2m)[22m[32m 120[2mms[22m[39m
+ [32m✓[39m src/features/auth/email-verification.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 349[2mms[22m[39m
+ [32m✓[39m src/features/billing/payment-result-page.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 358[2mms[22m[39m
+[90mstderr[2m | src/features/projects/projects.test.tsx[2m > [22m[2mpreserves saved locale codes outside the 
+catalog when editing other settings
+[22m[39mQuery data cannot be undefined. Please make sure to return a value other than undefined from your query 
+function. Affected query key: ["ranking-alerts",null,"preferences","project-1"]
+
+ [32m✓[39m src/features/projects/projects.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 3668[2mms[22m[39m
+   [33m[2m✓[22m[39m creates a Project with initial keywords and no domain [33m 369[2mms[22m[39m
+   [33m[2m✓[22m[39m explains retained history after Delete and guides the user to archive [33m 585[2mms[22m[39m
+   [33m[2m✓[22m[39m adds and edits only Keyword query data [33m 401[2mms[22m[39m
+   [33m[2m✓[22m[39m manages organization and bulk assigns the current loaded rows [33m 372[2mms[22m[39m
+ [32m✓[39m src/features/projects/locale-select.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 462[2mms[22m[39m
+ [32m✓[39m src/design-system/ui.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 364[2mms[22m[39m
+ [32m✓[39m src/features/analytics/project-analytics.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 283[2mms[22m[39m
+ [32m✓[39m src/features/projects/api.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/features/blog/serp-article.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 569[2mms[22m[39m
+ [32m✓[39m src/features/auth/api.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32m✓[39m src/lib/site.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/components/health-dashboard.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 292[2mms[22m[39m
+ [32m✓[39m src/features/tracked-sites/api.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/features/rankings/api.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/features/blog/competitor-article.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 638[2mms[22m[39m
+   [33m[2m✓[22m[39m publishes the competitor guide once in the Vietnamese index, sitemap and related discovery [33m 331[2mms[22m[39m
+   [33m[2m✓[22m[39m renders the educational comparisons, accessible tables and both editorial links [33m 306[2mms[22m[39m
+ [32m✓[39m src/lib/api/client.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/features/overview/overview.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 213[2mms[22m[39m
+ [32m✓[39m src/lib/config.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/features/billing/money.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/features/rankings/batch-panel.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 4490[2mms[22m[39m
+   [33m[2m✓[22m[39m renders queued progress, polls until completion, then refreshes rankings and stops [33m 4295[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m38 passed[39m[22m[90m (38)[39m
+[2m      Tests [22m [1m[32m349 passed[39m[22m[90m (349)[39m
+[2m   Start at [22m 09:30:00
+[2m   Duration [22m 8.38s[2m (transform 4.96s, setup 7.92s, import 9.72s, tests 29.41s, environment 21.21s)[22m
+
+
+> serp-saas-frontend@0.1.0 lint
+> eslint .
+
+
+> serp-saas-frontend@0.1.0 typecheck
+> tsc --noEmit
+
+
+> serp-saas-frontend@0.1.0 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!

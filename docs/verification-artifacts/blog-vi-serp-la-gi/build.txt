@@ -1,0 +1,162 @@
+docker.exe : #0 building with "desktop-linux" instance using docker driver
+At line:2 char:84
++ ... ocker.exe"; & $dockerPath build --progress plain --target production  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (#0 building wit...g docker driver:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+#1 [internal] load build definition from frontend.Dockerfile
+#1 transferring dockerfile: 1.08kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:22.22.0-bookworm-slim
+#2 DONE 1.8s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 292B done
+#3 DONE 0.0s
+
+#4 [dependencies 1/4] FROM 
+docker.io/library/node:22.22.0-bookworm-slim@sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94
+#4 resolve 
+docker.io/library/node:22.22.0-bookworm-slim@sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94 
+0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 1.58MB 0.1s done
+#5 DONE 0.1s
+
+#6 [dependencies 2/4] WORKDIR /app
+#6 CACHED
+
+#7 [dependencies 3/4] COPY frontend/package.json frontend/package-lock.json ./
+#7 CACHED
+
+#8 [dependencies 4/4] RUN npm ci
+#8 CACHED
+
+#9 [builder 1/2] COPY frontend/ ./
+#9 DONE 0.1s
+
+#10 [builder 2/2] RUN npm run build
+#10 0.419 
+#10 0.419 > serp-saas-frontend@0.1.0 prebuild
+#10 0.419 > node --experimental-strip-types scripts/validate-blog.mjs
+#10 0.419 
+#10 0.561 Blog content validated: 10 published, 0 drafts.
+#10 0.567 
+#10 0.567 > serp-saas-frontend@0.1.0 build
+#10 0.567 > next build --webpack
+#10 0.567 
+#10 1.070 ▲ Next.js 16.4.3 (webpack)
+#10 1.155 ✓ Running next.config.ts took 84ms
+#10 1.165 
+#10 1.196   Creating an optimized production build ...
+#10 12.16 ✓ Compiled successfully in 9.1s
+#10 12.16   Running TypeScript ...
+#10 17.18   Finished TypeScript in 5.0s ...
+#10 17.18   Collecting page data using 11 workers ...
+#10 18.63   Generating static pages using 11 workers (0/59) ...
+#10 19.09   Generating static pages using 11 workers (14/59) 
+#10 19.09   Generating static pages using 11 workers (29/59) 
+#10 19.23   Generating static pages using 11 workers (44/59) 
+#10 19.36 ✓ Generating static pages using 11 workers (59/59) in 738ms
+#10 19.69   Finalizing page optimization ...
+#10 19.69   Collecting build traces ...
+#10 31.69 
+#10 31.69 Route (app)
+#10 31.69 ┌ ○ /
+#10 31.69 ├ ○ /_not-found
+#10 31.69 ├ ○ /about
+#10 31.69 ├ ○ /admin/customers
+#10 31.69 ├ ƒ /admin/customers/[userId]
+#10 31.69 ├ ○ /admin/plans
+#10 31.69 ├ ○ /app
+#10 31.69 ├ ○ /app/change-plan
+#10 31.69 ├ ○ /app/change-plan/payment/cancel
+#10 31.69 ├ ○ /app/change-plan/payment/error
+#10 31.69 ├ ○ /app/change-plan/payment/success
+#10 31.69 ├ ○ /app/invoices
+#10 31.69 ├ ƒ /app/invoices/[invoiceId]
+#10 31.69 ├ ○ /app/projects
+#10 31.69 ├ ƒ /app/projects/[projectId]
+#10 31.69 ├ ƒ /app/projects/[projectId]/competitors
+#10 31.69 ├ ƒ /app/projects/[projectId]/rankings
+#10 31.69 ├ ƒ /app/projects/[projectId]/reports
+#10 31.69 ├ ○ /app/projects/new
+#10 31.69 ├ ○ /app/ranking-alerts
+#10 31.69 ├ ○ /app/rankings
+#10 31.69 ├ ○ /app/settings
+#10 31.69 ├ ○ /app/tracked-sites
+#10 31.69 ├ ƒ /app/tracked-sites/[siteId]
+#10 31.69 ├ ○ /app/tracked-sites/new
+#10 31.69 ├ ○ /apple-icon.png
+#10 31.69 ├ ○ /blog
+#10 31.69 ├   /blog/[slug]
+#10 31.69 │ ├ ● /blog/how-to-monitor-keyword-ranking
+#10 31.69 │ ├ ● /blog/how-to-track-google-rankings
+#10 31.69 │ └ ● /blog/serp-tracking-for-agencies
+#10 31.69 ├ ○ /daily-serp-tracker
+#10 31.69 ├ ○ /feed.xml
+#10 31.69 ├ ○ /forgot-password
+#10 31.69 ├ ○ /google-serp-rank-tracker
+#10 31.69 ├ ○ /health
+#10 31.69 ├ ○ /icon.svg
+#10 31.69 ├ ○ /login
+#10 31.69 ├ ○ /pricing
+#10 31.69 ├ ○ /privacy
+#10 31.69 ├ ○ /register
+#10 31.69 ├ ○ /reset-password
+#10 31.69 ├ ○ /robots.txt
+#10 31.69 ├ ○ /serp-tracking-for-agencies
+#10 31.69 ├ ○ /settings/billing
+#10 31.69 ├ ○ /signup
+#10 31.69 ├ ○ /sitemap.xml
+#10 31.69 ├ ○ /terms
+#10 31.69 ├ ○ /verify-email
+#10 31.69 ├ ○ /vi
+#10 31.69 ├ ○ /vi/bang-gia
+#10 31.69 ├ ○ /vi/blog
+#10 31.69 ├   /vi/blog/[slug]
+#10 31.69 │ ├ ● /vi/blog/serp-la-gi
+#10 31.69 │ ├ ● /vi/blog/cach-theo-doi-thu-hang-doi-thu-seo
+#10 31.69 │ ├ ● /vi/blog/co-nen-theo-doi-thu-hang-tu-khoa-hang-ngay
+#10 31.69 │ └ ● [+4 more paths]
+#10 31.69 ├ ○ /vi/chinh-sach-bao-mat
+#10 31.69 ├ ○ /vi/cong-cu-kiem-tra-thu-hang-tu-khoa
+#10 31.69 ├ ○ /vi/dieu-khoan-dich-vu
+#10 31.69 ├ ○ /vi/gioi-thieu
+#10 31.69 ├ ○ /vi/seo-rank-tracking-cho-agency
+#10 31.69 └ ○ /vi/theo-doi-thu-hang-tu-khoa-hang-ngay
+#10 31.69 
+#10 31.69 
+#10 31.69 ƒ Proxy (Middleware)
+#10 31.69 
+#10 31.69 ○  (Static)   prerendered as static content
+#10 31.69 ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+#10 31.69 ƒ  (Dynamic)  server-rendered on demand
+#10 31.69 
+#10 DONE 31.8s
+
+#11 [production 3/5] COPY --from=builder --chown=node:node /app/public ./public
+#11 CACHED
+
+#12 [production 4/5] COPY --from=builder --chown=node:node /app/.next/standalone ./
+#12 DONE 0.3s
+
+#13 [production 5/5] COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+#13 DONE 0.1s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 1.8s done
+#14 exporting manifest sha256:4fe638afae2cfab1493dd819ad3a69d7dcfef8c9983e37adbfd2ec259ab8f9c9 0.0s done
+#14 exporting config sha256:fd0814dc74bdc19af65aac94ad65d56ac90513626bbbe238996fa3721538908c done
+#14 exporting attestation manifest sha256:32ec515228c243bf7519c590e16c7985f51c38163b1f9042e95ae5697e88c64c 0.0s done
+#14 exporting manifest list sha256:f6765810bf44c6a9104acf3e22422b62a0304dc33578aa65ed7bfb07af3eeddf done
+#14 naming to docker.io/library/serp-serp-article-frontend:local done
+#14 unpacking to docker.io/library/serp-serp-article-frontend:local
+#14 unpacking to docker.io/library/serp-serp-article-frontend:local 0.6s done
+#14 DONE 2.4s

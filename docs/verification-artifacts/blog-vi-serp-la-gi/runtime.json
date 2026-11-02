@@ -1,0 +1,9 @@
+{
+    "localUrl":  "http://127.0.0.1:3014",
+    "environment":  "Linux production standalone, local only",
+    "node":  "v22.22.0",
+    "buildId":  "4URUPSJkk3Sw_1ykAf04d",
+    "npm":  "10.9.4",
+    "image":  "sha256:f6765810bf44c6a9104acf3e22422b62a0304dc33578aa65ed7bfb07af3eeddf",
+    "next":  "16.4.3"
+}

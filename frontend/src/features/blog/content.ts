@@ -5,6 +5,7 @@ import { parseDocument } from "yaml";
 export interface BlogPost {
   locale?: "en" | "vi";
   title: string;
+  seoTitle?: string;
   slug: string;
   description: string;
   publishedAt: string;
@@ -102,6 +103,9 @@ export function parseBlogPost(source: string, filename: string): BlogPost {
   return {
     ...(data.locale ? { locale: data.locale as "en" | "vi" } : {}),
     title: string("title", 140),
+    ...(data.seoTitle !== undefined
+      ? { seoTitle: string("seoTitle", 140) }
+      : {}),
     slug,
     description: string("description", 220),
     publishedAt,
@@ -145,6 +149,11 @@ export function readBlogPosts(
     if (new Set(values).size !== values.length)
       throw new Error(`Duplicate blog ${field}; each article must be unique.`);
   }
+  const seoTitles = posts.map((post) =>
+    (post.seoTitle ?? post.title).toLowerCase(),
+  );
+  if (new Set(seoTitles).size !== seoTitles.length)
+    throw new Error("Duplicate blog SEO title; each article must be unique.");
   return posts.sort(
     (left, right) =>
       right.publishedAt.localeCompare(left.publishedAt) ||
